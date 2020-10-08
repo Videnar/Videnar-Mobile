@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/netinfo": "^5.9.7",
+    "amazon-cognito-identity-js": "^4.4.0",
+    "aws-amplify": "^3.3.3",
+    "aws-amplify-react-native": "^4.2.7",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "^1.8.0",

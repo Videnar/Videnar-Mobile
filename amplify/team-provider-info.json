@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-videnar-dev-200832-authRole",
+      "UnauthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-videnar-dev-200832-deployment",
+      "UnauthRoleName": "amplify-videnar-dev-200832-unauthRole",
+      "StackName": "amplify-videnar-dev-200832",
+      "StackId": "arn:aws:cloudformation:ap-south-1:853898204841:stack/amplify-videnar-dev-200832/f441e3e0-0973-11eb-a133-02153b7bf71a",
+      "AmplifyAppId": "dl83tn5ppjq6a"
+    }
+  }
+}
