@@ -12,9 +12,9 @@ import ActivityScreen from './src/screens/ActivityScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import QuestionScreen from './src/screens/QuestionScreen';
 import {setNavigator} from './src/navigations/navigationRef';
-// import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
-// import { Provider as LocationProvider } from './src/context/LocationContext';
 // import { FontAwesome } from '@expo/vector-icons';
+
+import {withAuthenticator} from 'aws-amplify-react-native';
 
 const Home = createStackNavigator({
   Home: HomeScreen,
@@ -38,20 +38,23 @@ const Home = createStackNavigator({
 //   }),
 // });
 
-const x = createBottomTabNavigator({
+const appNavigation = createBottomTabNavigator({
   Home,
   Activity: ActivityScreen,
   Profile: ProfileScreen,
 });
 
-const App = createAppContainer(x);
+const AppContent = createAppContainer(appNavigation);
 
-export default () => {
+const App = () => {
   return (
-    <App
+    <AppContent
       ref={(navigator) => {
         setNavigator(navigator);
       }}
     />
   );
 };
+
+export default App;
+// export default withAuthenticator(App);
