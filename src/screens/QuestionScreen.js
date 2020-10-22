@@ -34,7 +34,7 @@ class QuestionScreen extends Component {
           alignItems: 'center',
         }}>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(text) => this.setState({question: text})}
           value={this.state.value}
         />

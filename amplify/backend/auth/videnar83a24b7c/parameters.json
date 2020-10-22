@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "videnar1771dbef_identitypool_1771dbef",
+    "identityPoolName": "videnar83a24b7c_identitypool_83a24b7c",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "videna1771dbef",
-    "userPoolName": "videnar1771dbef_userpool_1771dbef",
+    "resourceNameTruncated": "videna83a24b7c",
+    "userPoolName": "videnar83a24b7c_userpool_83a24b7c",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "videna1771dbef_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "videna83a24b7c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "1771dbef",
-    "resourceName": "videnar1771dbef",
+    "sharedId": "83a24b7c",
+    "resourceName": "videnar83a24b7c",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -50,14 +50,30 @@
     "usernameAttributes": [
         "email"
     ],
+    "triggers": "{\n  \"CustomMessage\": [\n    \"verification-link\"\n  ]\n}",
     "hostedUIDomainName": "videnar",
     "authProvidersUserPool": [
         "Facebook",
         "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"myapp://\"],\"LogoutURLs\":[\"myapp://\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
-    "dependsOn": []
+    "verificationBucketName": "videnar83a24b7cverificationbucket",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "videnar83a24b7cCustomMessage",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ]
 }

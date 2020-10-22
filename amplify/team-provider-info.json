@@ -12,9 +12,16 @@
       "AmplifyAppId": "dl83tn5ppjq6a"
     },
     "categories": {
+      "function": {
+        "videnar83a24b7cCustomMessage": {
+          "REDIRECTURL": "myapp://",
+          "EMAILSUBJECT": "Sign In",
+          "EMAILMESSAGE": "Congrats! "
+        }
+      },
       "auth": {
-        "videnar1771dbef": {
-          "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"629977977694745\",\"client_secret\":\"0fa07a151ada55de27a31485997f326e\"},{\"ProviderName\":\"Google\",\"client_id\":\"1003541739972-jqgnmr56ivlqngrth5ncr7dq0chp1b05.apps.googleusercontent.com\",\"client_secret\":\"PAlNBgcqGnO3y3z-caZ8flpr\"}]"
+        "videnar83a24b7c": {
+          "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"629977977694745\",\"client_secret\":\"0fa07a151ada55de27a31485997f326e\"},{\"ProviderName\":\"Google\",\"client_id\":\"1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com\",\"client_secret\":\"emy0y-HByFjNipPDRdYN8pPK\"}]"
         }
       }
     }
