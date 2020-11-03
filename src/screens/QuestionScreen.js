@@ -1,28 +1,38 @@
 import React, {Component} from 'react';
 import {View, Button, TextInput} from 'react-native';
-
 import {API, graphqlOperation} from 'aws-amplify';
 import {createQuestion} from '../graphql/mutations';
+import Editor from '../components/Editor';
 
 class QuestionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: '',
+      questionTitle: '',
+      questionBody: '',
     };
   }
 
   submitQuestion = async () => {
     try {
-      const question = this.state.question;
+      const {questionTitle, questionBody} = this.state;
       await API.graphql(
-        graphqlOperation(createQuestion, {input: {title: question}}),
+        graphqlOperation(createQuestion, {input: {title: questionBody}}),
       );
-      this.setState({question: ''});
+      this.setState({questionTitle: ''});
       this.props.navigation.navigate('Home');
+      console.log(questionTitle, questionBody);
     } catch (err) {
-      console.log('error creating Question:', err);
+      console.log('error creating Question:', this.state.questionBody);
     }
+  };
+
+  setQuestionTitle = (questionTitle) => {
+    this.setState({questionTitle});
+  };
+
+  setQuestionBody = (questionBody) => {
+    this.setState({questionBody});
   };
 
   render() {
@@ -34,10 +44,11 @@ class QuestionScreen extends Component {
           alignItems: 'center',
         }}>
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={(text) => this.setState({question: text})}
-          value={this.state.value}
+          style={{height: 40, width: 300, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={(text) => this.setQuestionTitle(text)}
+          value={this.state.questionTitle}
         />
+        <Editor setQuestionBody={this.setQuestionBody} />
         <Button title="Submit Question" onPress={this.submitQuestion} />
       </View>
     );

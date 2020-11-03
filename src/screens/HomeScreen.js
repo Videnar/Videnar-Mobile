@@ -41,7 +41,9 @@ class HomeScreen extends Component {
         <ScrollView style={styles.scrollView}>
           <Button
             title="Question"
-            onPress={() => this.props.navigation.navigate('Question')}
+            onPress={() => {
+              this.props.navigation.navigate('Question');
+            }}
           />
           {this.state.questions.map((question, index) => (
             <View key={question.id ? question.id : index}>
