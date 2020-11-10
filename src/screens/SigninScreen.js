@@ -15,7 +15,6 @@ const SigninScreen = ({navigation}) => {
         password,
         attributes: {email},
       });
-      console.log(user);
       navigation.navigate('Home');
     } catch (error) {
       console.log('error signing in', error);
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     // foods: state.foodReducer.foodList,
   };

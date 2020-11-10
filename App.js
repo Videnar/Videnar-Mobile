@@ -11,14 +11,14 @@ import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ActivityScreen from './src/screens/ActivityScreen';
+import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import QuestionScreen from './src/screens/QuestionScreen';
-import { setNavigator } from './src/navigations/navigationRef';
+import AskQuestionScreen from './src/screens/AskQuestionScreen';
+import {setNavigator} from './src/navigations/navigationRef';
 
 const checkAuth = async () => {
   try {
     await Auth.currentAuthenticatedUser();
-    console.log('like rihana');
     return true;
   } catch (err) {
     return false;
@@ -27,7 +27,8 @@ const checkAuth = async () => {
 
 const Main = createStackNavigator({
   Home: HomeScreen,
-  Question: QuestionScreen,
+  QuestionDetails: QuestionDetailsScreen,
+  AskQuestion: AskQuestionScreen,
 });
 
 // trackListFlow.navigationOptions = {
@@ -48,7 +49,7 @@ const switchNavigator = createSwitchNavigator(
     }),
   },
   {
-    initialRouteName: checkAuth() ? 'mainFlow' : 'loginFlow',
+    initialRouteName: 'loginFlow',
   },
 );
 

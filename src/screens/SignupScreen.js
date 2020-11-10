@@ -16,7 +16,6 @@ const SignupScreen = ({navigation}) => {
           email,
         },
       });
-      console.log(user);
       navigation.navigate('Home');
     } catch (error) {
       console.log('error signing up:', error);

@@ -8,31 +8,39 @@ class QuestionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionTitle: '',
-      questionBody: '',
+      title: '',
+      content: '',
     };
   }
 
   submitQuestion = async () => {
     try {
-      const {questionTitle, questionBody} = this.state;
+      const {title, content} = this.state;
       await API.graphql(
-        graphqlOperation(createQuestion, {input: {title: questionBody}}),
+        graphqlOperation(createQuestion, {
+          input: {
+            title: title,
+            content: content,
+            upvotes: 0,
+            view: 0,
+            tags: 'neet',
+            noOfBookmarks: 0,
+          },
+        }),
       );
-      this.setState({questionTitle: ''});
+      this.setState({title: ''});
       this.props.navigation.navigate('Home');
-      console.log(questionTitle, questionBody);
     } catch (err) {
-      console.log('error creating Question:', this.state.questionBody);
+      console.log('error creating Question:', this.state.content);
     }
   };
 
-  setQuestionTitle = (questionTitle) => {
-    this.setState({questionTitle});
+  setTitle = (title) => {
+    this.setState({title});
   };
 
-  setQuestionBody = (questionBody) => {
-    this.setState({questionBody});
+  setContent = (content) => {
+    this.setState({content});
   };
 
   render() {
@@ -45,10 +53,10 @@ class QuestionScreen extends Component {
         }}>
         <TextInput
           style={{height: 40, width: 300, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={(text) => this.setQuestionTitle(text)}
-          value={this.state.questionTitle}
+          onChangeText={(text) => this.setTitle(text)}
+          value={this.state.title}
         />
-        <Editor setQuestionBody={this.setQuestionBody} />
+        <Editor setContent={this.setContent} />
         <Button title="Submit Question" onPress={this.submitQuestion} />
       </View>
     );

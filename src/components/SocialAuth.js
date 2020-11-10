@@ -10,7 +10,6 @@ const SocialAuth = ({navigation}) => {
     const user = await Auth.currentAuthenticatedUser().catch((err) =>
       console.log(err),
     );
-    console.log(user, 'User');
     navigation.navigate('Home');
   };
   return (

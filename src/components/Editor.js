@@ -31,7 +31,7 @@ class Editor extends Component {
                   </script>`,
         }}
         onMessage={(event) => {
-          this.props.setQuestionBody(event.nativeEvent.data);
+          this.props.setContent(event.nativeEvent.data);
         }}
         style={{height: 100, width: 350}}
       />

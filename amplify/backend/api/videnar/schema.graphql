@@ -1,12 +1,79 @@
-type Question @model {
+type Question
+  @model
+  @auth(
+    rules: [
+      {allow: owner, ownerField: "owner", operations: [create, delete, update]}
+    ]
+  ) {
   id: ID!
+  createdAt: AWSDateTime!
   title: String!
-  answers: [Answer] @connection(keyName: "byQuestion", fields: ["id"])
+  content: String!
+  upvotes: Int!
+  view: Int!
+  answers: [Answer] @connection(fields: ["id"])
+  commentsOnQuestion: [CommentOnQuestion] @connection(fields: ["id"])
+  tags: String!
+  noOfBookmarks: Int!
 }
 
-type Answer @model @key(name: "byQuestion", fields: ["questionID"]) {
+type CommentOnQuestion
+  @model
+  @key(
+    name: "commentsOnQuestionByquestionID"
+    fields: ["questionID", "createdAt"]
+    queryField: "commentsOnQuestionByquestionID"
+  )
+  @auth(
+    rules: [
+      {allow: owner, ownerField: "owner", operations: [create, delete, update]}
+    ]
+  ) {
   id: ID!
-  title: String!
   questionID: ID!
+  createdAt: AWSDateTime!
+  content: String!
+  upvotes: Int!
   question: Question @connection(fields: ["questionID"])
+}
+
+type Answer
+  @model
+  @key(
+    name: "answersByquestionID"
+    fields: ["questionID", "createdAt"]
+    queryField: "answersByquestionID"
+  )
+  @auth(
+    rules: [
+      {allow: owner, ownerField: "owner", operations: [create, delete, update]}
+    ]
+  ) {
+  id: ID!
+  questionID: ID!
+  createdAt: AWSDateTime!
+  content: String!
+  upvotes: Int!
+  question: Question @connection(fields: ["questionID"])
+  commentsOnAnswer: [CommentOnAnswer] @connection(fields: ["id"])
+}
+
+type CommentOnAnswer
+  @model
+  @key(
+    name: "commentsOnAnswerByanswerID"
+    fields: ["answerID", "createdAt"]
+    queryField: "commentsOnAnswerByanswerID"
+  )
+  @auth(
+    rules: [
+      {allow: owner, ownerField: "owner", operations: [create, delete, update]}
+    ]
+  ) {
+  id: ID!
+  answerID: ID!
+  createdAt: AWSDateTime!
+  content: String!
+  upvotes: Int!
+  answer: Answer @connection(fields: ["answerID"])
 }

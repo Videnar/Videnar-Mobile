@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  Button,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
-
+import {View, Button, StyleSheet, ScrollView} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
+import QuestionComponent from '../components/QuestionComponent';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -37,21 +30,24 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <Button
             title="Question"
             onPress={() => {
-              this.props.navigation.navigate('Question');
+              this.props.navigation.navigate('AskQuestion');
             }}
           />
           {this.state.questions.map((question, index) => (
             <View key={question.id ? question.id : index}>
-              <Text style={styles.questionTitle}>{question.title}</Text>
+              <QuestionComponent
+                question={question}
+                navigate={this.props.navigation.navigate}
+              />
             </View>
           ))}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }
