@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Text, Button, View, StyleSheet, ScrollView} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
-import { createAnswer } from '../graphql/mutations';
-import {answersByquestionId} from '../graphql/queries';
+import {createAnswer} from '../graphql/mutations';
+import {getQuestion} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -28,13 +28,14 @@ class QuestionDetailsScreen extends Component {
 
   fetchAnswers = async (questionID) => {
     try {
-      const answersData = await API.graphql(
-        graphqlOperation(answersByquestionId, {questionID}),
+      const questionData = await API.graphql(
+        graphqlOperation(getQuestion, {id: questionID}),
       );
-      const answers = answersData.data.listQuestions.items;
-      this.setState({
-        answers: [...this.state.answers, ...answers],
-      });
+      const {answers, commentsOnQuestion} = questionData.data;
+      console.log(questionData.data.getQuestion.answers, 'answers bitch');
+      // this.setState({
+      //   answers: [...this.state.answers, ...answers],
+      // });
     } catch (err) {
       console.log('error fetching answers', err);
     }
@@ -56,16 +57,15 @@ class QuestionDetailsScreen extends Component {
           },
         }),
       );
-      this.setState({title: ''});
-      this.props.navigation.navigate('Home');
+      // this.setState({title: ''});
+      // this.props.navigation.navigate('Home');
     } catch (err) {
       console.log('error creating Answer:', this.state.content);
     }
   };
 
   render() {
-    const { question, answers } = this.state;
-    console.log(question, answers, 'answers');
+    const {question, answers} = this.state;
     return (
       <View
         style={{

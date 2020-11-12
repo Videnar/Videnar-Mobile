@@ -1,25 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, Text, View, StyleSheet} from 'react-native';
-import {Auth} from 'aws-amplify';
-import {connect} from 'react-redux';
+import {Context as AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
-import actions from '../reduxStore/actions';
 import NavLink from '../components/NavLink';
-import SocialAuth from '../components/SocialAuth';
+import SocialAuth from '../components/SocialAuthComponent';
 
 const SigninScreen = ({navigation}) => {
-  const signIn = async (email, password) => {
-    try {
-      const user = await Auth.signIn({
-        username: email,
-        password,
-        attributes: {email},
-      });
-      navigation.navigate('Home');
-    } catch (error) {
-      console.log('error signing in', error);
-    }
-  };
+  const {signIn} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
@@ -49,16 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    // foods: state.foodReducer.foodList,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // add: (food) => dispatch(food),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SigninScreen);
+export default SigninScreen;

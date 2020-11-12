@@ -1,12 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  NavigationActions,
-} from 'react-navigation';
+import React from 'react';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import {Auth, Hub} from 'aws-amplify';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -14,16 +9,9 @@ import ActivityScreen from './src/screens/ActivityScreen';
 import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import AskQuestionScreen from './src/screens/AskQuestionScreen';
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import {setNavigator} from './src/navigations/navigationRef';
-
-const checkAuth = async () => {
-  try {
-    await Auth.currentAuthenticatedUser();
-    return true;
-  } catch (err) {
-    return false;
-  }
-};
+import {Provider as AuthProvider} from './src/contexts/AuthContext';
 
 const Main = createStackNavigator({
   Home: HomeScreen,
@@ -38,6 +26,7 @@ const Main = createStackNavigator({
 
 const switchNavigator = createSwitchNavigator(
   {
+    ResolveAuth: ResolveAuthScreen,
     loginFlow: createStackNavigator({
       Signup: SignupScreen,
       Signin: SigninScreen,
@@ -49,49 +38,20 @@ const switchNavigator = createSwitchNavigator(
     }),
   },
   {
-    initialRouteName: 'loginFlow',
+    initialRouteName: 'ResolveAuth',
   },
 );
 
-const AppContent = createAppContainer(switchNavigator);
+const App = createAppContainer(switchNavigator);
 
-const App = () => {
-  // let [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   let updateUser = async (authState) => {
-  //     try {
-  //       let user = await Auth.currentAuthenticatedUser();
-  //       setUser(user);
-  //     } catch {
-  //       setUser(null);
-  //     }
-  //   };
-  //   Hub.listen('auth', updateUser); // listen for login/signup events
-  //   updateUser(); // check manually the first time because we won't get a Hub event
-  //   return () => Hub.remove('auth', updateUser); // cleanup
-  // }, []);
-
+export default () => {
   return (
-    <AppContent
-      ref={(navigator) => {
-        setNavigator(navigator);
-      }}
-    />
+    <AuthProvider>
+      <App
+        ref={(navigator) => {
+          setNavigator(navigator);
+        }}
+      />
+    </AuthProvider>
   );
 };
-// class App extends React.Component {
-
-//   render() {
-//     return (
-//       <AppContent
-//         ref={(navigator) => {
-//           setNavigator(navigator);
-//         }}
-//         onNavigationStateChange={this.checkAuth}
-//       />
-//     );
-//   }
-// }
-
-export default App;

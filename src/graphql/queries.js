@@ -18,6 +18,17 @@ export const getQuestion = /* GraphQL */ `
           content
           upvotes
           updatedAt
+          commentsOnAnswer {
+            items {
+              id
+              answerID
+              createdAt
+              content
+              upvotes
+              updatedAt
+            }
+            nextToken
+          }
         }
         nextToken
       }

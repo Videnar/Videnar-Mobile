@@ -1,26 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, View, StyleSheet} from 'react-native';
-// import {NavigationEvents} from 'react-navigation';
-import {Auth} from 'aws-amplify';
+import {Context as AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
-import SocialAuth from '../components/SocialAuth';
+import SocialAuth from '../components/SocialAuthComponent';
 
 const SignupScreen = ({navigation}) => {
-  const signUp = async (email, password) => {
-    try {
-      const {user} = await Auth.signUp({
-        username: email,
-        password,
-        attributes: {
-          email,
-        },
-      });
-      navigation.navigate('Home');
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  };
+  const {signUp} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}

@@ -1,27 +1,20 @@
-import React, {Component} from 'react';
+import React, {useContext} from 'react';
 import {Button, Text, View} from 'react-native';
-import {Auth} from 'aws-amplify';
+import {Context as AuthContext} from '../contexts/AuthContext';
 
-class ProfileScreen extends Component {
-  render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text>Profile!</Text>
-        <Button
-          title="Sign Out"
-          onPress={async () => {
-            await Auth.signOut();
-            this.props.navigation.navigate('Signin');
-          }}
-        />
-      </View>
-    );
-  }
-}
+const ProfileScreen = () => {
+  const {signOut} = useContext(AuthContext);
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text>Profile!</Text>
+      <Button onPress={() => signOut()} title="Sign Out" />
+    </View>
+  );
+};
 
 export default ProfileScreen;
