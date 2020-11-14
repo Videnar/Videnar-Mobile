@@ -27,7 +27,6 @@ export const onCreateQuestion = /* GraphQL */ `
           questionID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -64,7 +63,6 @@ export const onUpdateQuestion = /* GraphQL */ `
           questionID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -101,7 +99,6 @@ export const onDeleteQuestion = /* GraphQL */ `
           questionID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -119,7 +116,6 @@ export const onCreateCommentOnQuestion = /* GraphQL */ `
       questionID
       createdAt
       content
-      upvotes
       question {
         id
         createdAt
@@ -148,7 +144,6 @@ export const onUpdateCommentOnQuestion = /* GraphQL */ `
       questionID
       createdAt
       content
-      upvotes
       question {
         id
         createdAt
@@ -177,7 +172,6 @@ export const onDeleteCommentOnQuestion = /* GraphQL */ `
       questionID
       createdAt
       content
-      upvotes
       question {
         id
         createdAt
@@ -230,7 +224,6 @@ export const onCreateAnswer = /* GraphQL */ `
           answerID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -270,7 +263,6 @@ export const onUpdateAnswer = /* GraphQL */ `
           answerID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -310,7 +302,6 @@ export const onDeleteAnswer = /* GraphQL */ `
           answerID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -326,7 +317,6 @@ export const onCreateCommentOnAnswer = /* GraphQL */ `
       answerID
       createdAt
       content
-      upvotes
       answer {
         id
         questionID
@@ -360,7 +350,6 @@ export const onUpdateCommentOnAnswer = /* GraphQL */ `
       answerID
       createdAt
       content
-      upvotes
       answer {
         id
         questionID
@@ -394,7 +383,6 @@ export const onDeleteCommentOnAnswer = /* GraphQL */ `
       answerID
       createdAt
       content
-      upvotes
       answer {
         id
         questionID

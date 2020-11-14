@@ -33,7 +33,6 @@ type CommentOnQuestion
   questionID: ID!
   createdAt: AWSDateTime!
   content: String!
-  upvotes: Int!
   question: Question @connection(fields: ["questionID"])
 }
 
@@ -55,16 +54,13 @@ type Answer
   content: String!
   upvotes: Int!
   question: Question @connection(fields: ["questionID"])
-  commentsOnAnswer: [CommentOnAnswer] @connection(fields: ["id"])
+  commentsOnAnswer: [CommentOnAnswer]
+    @connection(keyName: "byAnswer", fields: ["id"])
 }
 
 type CommentOnAnswer
   @model
-  @key(
-    name: "commentsOnAnswerByanswerID"
-    fields: ["answerID", "createdAt"]
-    queryField: "commentsOnAnswerByanswerID"
-  )
+  @key(name: "byAnswer", fields: ["answerID", "content"])
   @auth(
     rules: [
       {allow: owner, ownerField: "owner", operations: [create, delete, update]}
@@ -74,6 +70,5 @@ type CommentOnAnswer
   answerID: ID!
   createdAt: AWSDateTime!
   content: String!
-  upvotes: Int!
   answer: Answer @connection(fields: ["answerID"])
 }

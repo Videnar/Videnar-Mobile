@@ -27,7 +27,7 @@ const tryLocalSignin = (dispatch) => async () => {
 };
 
 const socialAuth = (dispatch) => async (provider) => {
-  Auth.federatedSignIn({provider});
+  Auth.federatedSignIn();
   // await Auth.currentAuthenticatedUser().catch((err) => console.log(err));
   // dispatch({ type: 'signin', payload: response.data.token });
   navigate('Home');

@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
-import {Text, Button, View, StyleSheet, ScrollView} from 'react-native';
+import {
+  Text,
+  TextInput,
+  Button,
+  View,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
-import {createAnswer} from '../graphql/mutations';
-import {getQuestion} from '../graphql/queries';
+import {createAnswer, createCommentOnQuestion} from '../graphql/mutations';
+import {listAnswers, listCommentOnQuestion} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -10,34 +17,57 @@ import Editor from '../components/Editor';
 class QuestionDetailsScreen extends Component {
   constructor(props) {
     super(props);
-    const {question} = this.props.navigation.state.params;
-    const {id} = question;
     this.state = {
-      question,
       answerInput: '',
+      commentsOnQuestionInput: '',
       answers: [],
-      questionID: id,
+      commentsOnQuestion: [],
+      commentsOnAnswer: [],
       showCommentBoxForQuestion: false,
-      showCommentBoxForAnswer: false,
     };
   }
 
   componentDidMount() {
-    this.fetchAnswers(this.state.questionID);
+    const {question} = this.props.navigation.state.params;
+    const {id} = question;
+    this.fetchAnswers(id);
+    this.fetchCommentOnQuestion(id);
   }
 
-  fetchAnswers = async (questionID) => {
+  fetchAnswers = async (id) => {
     try {
-      const questionData = await API.graphql(
-        graphqlOperation(getQuestion, {id: questionID}),
-      );
-      const {answers, commentsOnQuestion} = questionData.data;
-      console.log(questionData.data.getQuestion.answers, 'answers bitch');
-      // this.setState({
-      //   answers: [...this.state.answers, ...answers],
-      // });
+      const list = await API.graphql({
+        query: listAnswers,
+        variables: {
+          filter: {questionID: {eq: id}},
+        },
+      });
+      const answers = list.data.listAnswers.items;
+      this.setState({
+        answers: [...this.state.answers, ...answers],
+      });
     } catch (err) {
       console.log('error fetching answers', err);
+    }
+  };
+
+  fetchCommentOnQuestion = async (id) => {
+    try {
+      const list = await API.graphql({
+        query: listCommentOnQuestion,
+        variables: {
+          filter: {questionID: {eq: id}},
+        },
+      });
+      const commentsOnQuestion = list.data.listCommentOnQuestions.items;
+      this.setState({
+        commentsOnQuestion: [
+          ...this.state.commentsOnQuestion,
+          ...commentsOnQuestion,
+        ],
+      });
+    } catch (err) {
+      console.log('error fetching commentsOnQuestion', err);
     }
   };
 
@@ -47,25 +77,53 @@ class QuestionDetailsScreen extends Component {
 
   submitAnswer = async () => {
     try {
-      const {answer, questionID} = this.state;
+      const {question} = this.props.navigation.state.params;
+      const {id} = question;
+      const {answerInput} = this.state;
       await API.graphql(
         graphqlOperation(createAnswer, {
           input: {
-            questionID,
-            content: answer,
+            questionID: id,
+            content: answerInput,
             upvotes: 0,
           },
         }),
       );
-      // this.setState({title: ''});
-      // this.props.navigation.navigate('Home');
     } catch (err) {
       console.log('error creating Answer:', this.state.content);
     }
   };
 
+  submitCommentOnQuestion = async () => {
+    try {
+      const {question} = this.props.navigation.state.params;
+      const {id} = question;
+      const {commentsOnQuestionInput} = this.state;
+      await API.graphql(
+        graphqlOperation(createCommentOnQuestion, {
+          input: {
+            questionID: id,
+            content: commentsOnQuestionInput,
+          },
+        }),
+      );
+      this.setState({
+        commentsOnQuestionInput: '',
+        showCommentBoxForQuestion: false,
+      });
+    } catch (err) {
+      console.log('error creating comment:', this.state.content);
+    }
+  };
+
   render() {
-    const {question, answers} = this.state;
+    const {question} = this.props.navigation.state.params;
+    const {
+      commentsOnQuestion,
+      answers,
+      commentsOnQuestionInput,
+      showCommentBoxForQuestion,
+    } = this.state;
     return (
       <View
         style={{
@@ -75,7 +133,41 @@ class QuestionDetailsScreen extends Component {
         }}>
         <ScrollView style={styles.scrollView}>
           <QuestionComponent question={question} />
-          <Text>Comment on Question</Text>
+          {commentsOnQuestion.map((comment, index) => (
+            <View key={comment.id ? comment.id : index}>
+              <Text>{comment.content}</Text>
+            </View>
+          ))}
+          {showCommentBoxForQuestion ? (
+            <>
+              <TextInput
+                style={{
+                  height: 40,
+                  borderColor: 'gray',
+                  borderWidth: 1
+                }}
+                onChangeText={(text) =>
+                  this.setState({
+                    commentsOnQuestionInput: text,
+                  })
+                }
+                value={commentsOnQuestionInput}
+              />
+              <Button
+                title="Submit Comment"
+                onPress={this.submitCommentOnQuestion}
+              />
+            </>
+          ) : (
+            <Text
+              onPress={() =>
+                this.setState({
+                  showCommentBoxForQuestion: !showCommentBoxForQuestion,
+                })
+              }>
+              Comment on Question
+            </Text>
+          )}
           {answers.map((answer, index) => (
             <View key={answer.id ? answer.id : index}>
               <AnswerComponent answer={answer} />

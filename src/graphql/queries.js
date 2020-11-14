@@ -18,17 +18,6 @@ export const getQuestion = /* GraphQL */ `
           content
           upvotes
           updatedAt
-          commentsOnAnswer {
-            items {
-              id
-              answerID
-              createdAt
-              content
-              upvotes
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
@@ -38,7 +27,6 @@ export const getQuestion = /* GraphQL */ `
           questionID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -84,7 +72,6 @@ export const getCommentOnQuestion = /* GraphQL */ `
       questionID
       createdAt
       content
-      upvotes
       question {
         id
         createdAt
@@ -122,7 +109,6 @@ export const listCommentOnQuestions = /* GraphQL */ `
         questionID
         createdAt
         content
-        upvotes
         question {
           id
           createdAt
@@ -171,7 +157,6 @@ export const getAnswer = /* GraphQL */ `
           answerID
           createdAt
           content
-          upvotes
           updatedAt
         }
         nextToken
@@ -205,8 +190,15 @@ export const listAnswers = /* GraphQL */ `
           updatedAt
         }
         commentsOnAnswer {
-          nextToken
+        items {
+          id
+          answerID
+          createdAt
+          content
+          updatedAt
         }
+        nextToken
+      }
         updatedAt
       }
       nextToken
@@ -220,7 +212,6 @@ export const getCommentOnAnswer = /* GraphQL */ `
       answerID
       createdAt
       content
-      upvotes
       answer {
         id
         questionID
@@ -263,7 +254,6 @@ export const listCommentOnAnswers = /* GraphQL */ `
         answerID
         createdAt
         content
-        upvotes
         answer {
           id
           questionID
@@ -300,7 +290,6 @@ export const commentsOnQuestionByquestionId = /* GraphQL */ `
         questionID
         createdAt
         content
-        upvotes
         question {
           id
           createdAt
@@ -354,43 +343,6 @@ export const answersByquestionId = /* GraphQL */ `
         }
         commentsOnAnswer {
           nextToken
-        }
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const commentsOnAnswerByanswerId = /* GraphQL */ `
-  query CommentsOnAnswerByanswerId(
-    $answerID: ID
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentOnAnswerFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    commentsOnAnswerByanswerID(
-      answerID: $answerID
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        answerID
-        createdAt
-        content
-        upvotes
-        answer {
-          id
-          questionID
-          createdAt
-          content
-          upvotes
-          updatedAt
         }
         updatedAt
       }

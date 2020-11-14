@@ -11,29 +11,33 @@ class Editor extends Component {
         originWhitelist={['*']}
         source={{
           html: `<head>
+                <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
                  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
+                 <div id="editor"></div>
                  <body>
-                <div id="editor" style="width: auto; display: block;">${content}</div>
+                <div id="editor" >${content}</div>
                 </body>
-                <script> var toolbarOptions = [['bold', 'italic','blockquote', 'code-block', 'image', { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' },{ 'color': [] },],];
-                  var quill = new Quill('#editor', {
+                <script> 
+                var toolbarOptions = [[ { 'size': ['small', false, 'large', 'huge'] }, 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
+                var quill = new Quill('#editor', {
                   modules: {
                       toolbar: toolbarOptions
                   },
+                  placeholder: 'Describe your question...',
                    theme: 'snow'
                   });
           const content = JSON.stringify(quill.root.innerHTML);
           quill.on('text-change', function(delta, oldDelta, source) {
                  window.ReactNativeWebView.postMessage(JSON.stringify(quill.root.innerHTML))
-});
+           });
                   </script>`,
         }}
         onMessage={(event) => {
           this.props.setContent(event.nativeEvent.data);
         }}
-        style={{height: 100, width: 350}}
+        containerStyle={{height: 100, width: 350}}
       />
     );
   }
