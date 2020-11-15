@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Text, View, TouchableHighlight} from 'react-native';
+import React from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {WebView} from 'react-native-webview';
 
 const QuestionComponent = ({question, navigate}) => {
   const {title, content, view, upvotes, tags} = question;
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       onPress={() => {
         navigate && navigate('QuestionDetails', {question});
       }}>
@@ -14,7 +14,12 @@ const QuestionComponent = ({question, navigate}) => {
         <WebView
           originWhitelist={['*']}
           source={{
-            html: content,
+            html: `<head>
+                <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+                 </head>
+                 <body >
+                <div>${content}</div>
+                </body>`,
           }}
           style={{height: 100, width: 350}}
         />
@@ -24,7 +29,7 @@ const QuestionComponent = ({question, navigate}) => {
           <Text>{tags}</Text>
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

@@ -1,60 +1,65 @@
-import React, {Component} from 'react';
-import {View, Button, StyleSheet, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Button,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 
-class HomeScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      questions: [],
-    };
-  }
+const HomeScreen = (props) => {
+  const [questions, setQuestions] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  componentDidMount() {
-    this.fetchQuestions();
-  }
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
 
-  fetchQuestions = async () => {
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchQuestions();
+    setRefreshing(false);
+  }, []);
+
+  const fetchQuestions = async () => {
     try {
-      const questionsData = await API.graphql(graphqlOperation(listQuestions));
-      const questions = questionsData.data.listQuestions.items;
-      this.setState({
-        questions: [...this.state.questions, ...questions],
-      });
+      const responseData = await API.graphql(graphqlOperation(listQuestions));
+      const questionsData = responseData.data.listQuestions.items;
+      setQuestions([...questionsData]);
     } catch (err) {
       console.log('error fetching questions', err);
     }
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <Button
-            title="Question"
-            onPress={() => {
-              this.props.navigation.navigate('AskQuestion');
-            }}
+  return (
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={styles.scrollView}>
+      <Button
+        title="Question"
+        onPress={() => {
+          props.navigation.navigate('AskQuestion');
+        }}
+      />
+      {questions.map((question, index) => (
+        <View key={question.id ? question.id : index}>
+          <QuestionComponent
+            question={question}
+            navigate={props.navigation.navigate}
           />
-          {this.state.questions.map((question, index) => (
-            <View key={question.id ? question.id : index}>
-              <QuestionComponent
-                question={question}
-                navigate={this.props.navigation.navigate}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    );
-  }
-}
+        </View>
+      ))}
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', padding: 20},
-  scrollView: {marginHorizontal: 0},
+  scrollView: {marginHorizontal: 2},
   input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
   questionTitle: {fontSize: 18},
 });

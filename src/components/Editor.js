@@ -20,7 +20,7 @@ class Editor extends Component {
                 <div id="editor" >${content}</div>
                 </body>
                 <script> 
-                var toolbarOptions = [[ { 'size': ['small', false, 'large', 'huge'] }, 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
+                var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
                 var quill = new Quill('#editor', {
                   modules: {
                       toolbar: toolbarOptions
@@ -28,9 +28,8 @@ class Editor extends Component {
                   placeholder: 'Describe your question...',
                    theme: 'snow'
                   });
-          const content = JSON.stringify(quill.root.innerHTML);
           quill.on('text-change', function(delta, oldDelta, source) {
-                 window.ReactNativeWebView.postMessage(JSON.stringify(quill.root.innerHTML))
+                 window.ReactNativeWebView.postMessage(quill.root.innerHTML)
            });
                   </script>`,
         }}
