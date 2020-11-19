@@ -6,14 +6,15 @@ import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 
 const SignupScreen = ({navigation}) => {
-  const {signUp} = useContext(AuthContext);
+  const {state, signUp} = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
+      {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
       <AuthComponent
         headerText="Sign Up for Videnar"
-        // errorMessage={state.errorMessage}
+        errorMessage={state.errorMessage}
         submitButtonText="Sign Up"
+        nameInput
         onSubmit={signUp}
       />
       <NavLink
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 250,
+    marginBottom: 50,
   },
 });
 

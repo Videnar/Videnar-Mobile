@@ -16,6 +16,7 @@
     "amazon-cognito-identity-js": "^4.4.0",
     "aws-amplify": "^3.3.4",
     "aws-amplify-react-native": "^4.2.7",
+    "quill-image-resize-module": "^3.0.0",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "^1.8.0",

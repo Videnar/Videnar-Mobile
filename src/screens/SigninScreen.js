@@ -14,6 +14,7 @@ const SigninScreen = ({navigation}) => {
         headerText="Sign into Your Account"
         // errorMessage={state.errorMessage}
         onSubmit={signIn}
+        forgotPassword
         submitButtonText="Sign In"
       />
       <NavLink
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 250,
+    marginBottom: 50,
   },
 });
 

@@ -24,7 +24,6 @@ const AnswerComponent = ({answer}) => {
         },
       });
       const comments = list.data.listCommentOnAnswers.items;
-      console.log(comments);
       setCommentsOnAnswer([...commentsOnAnswer, ...comments]);
     } catch (err) {
       console.log('error fetching commentsOnQuestion', err);
@@ -54,7 +53,7 @@ const AnswerComponent = ({answer}) => {
         source={{
           html: content,
         }}
-        style={{height: 100, width: 350}}
+        style={{width: 'auto', display: 'inline-block'}}
       />
       <View>
         <Text>Upvotes: {upvotes}</Text>

@@ -1,4 +1,4 @@
-import {Auth} from 'aws-amplify';
+import {Auth, Hub} from 'aws-amplify';
 import createDataContext from './createDataContext';
 import {navigate} from '../navigations/navigationRef';
 
@@ -7,41 +7,50 @@ const authReducer = (state, action) => {
     case 'add_error':
       return {...state, errorMessage: action.payload};
     case 'signin':
-      return {errorMessage: '', token: action.payload};
+      return {userAttributes: action.payload};
     case 'clear_error_message':
       return {...state, errorMessage: ''};
     case 'signout':
-      return {token: null, errorMessage: ''};
+      return {userAttributes: null};
     default:
       return state;
   }
+};
+
+const openApp = (dispatch) => {
+  Hub.listen('auth', () => {
+    navigate('Home');
+    Auth.currentAuthenticatedUser()
+      .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
+      .catch((err) => console.log(err));
+  });
 };
 
 const tryLocalSignin = (dispatch) => async () => {
   try {
     await Auth.currentAuthenticatedUser();
     navigate('Home');
+    Auth.currentAuthenticatedUser()
+      .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
+      .catch((err) => console.log(err));
   } catch (err) {
     navigate('Signin');
   }
 };
 
 const socialAuth = (dispatch) => async (provider) => {
-  Auth.federatedSignIn();
-  // await Auth.currentAuthenticatedUser().catch((err) => console.log(err));
-  // dispatch({ type: 'signin', payload: response.data.token });
-  navigate('Home');
+  Auth.federatedSignIn({provider});
+  openApp(dispatch);
 };
 
 const signIn = (dispatch) => async (email, password) => {
   try {
-    const {user} = await Auth.signIn({
+    await Auth.signIn({
       username: email,
       password,
       attributes: {email},
     });
-    // dispatch({ type: 'signin', payload: response.data.token });
-    navigate('Home');
+    openApp(dispatch);
   } catch (error) {
     console.log('error signing in', error);
   }
@@ -49,28 +58,43 @@ const signIn = (dispatch) => async (email, password) => {
 
 const signUp = (dispatch) => async (email, password) => {
   try {
-    const {user} = await Auth.signUp({
+    await Auth.signUp({
       username: email,
       password,
       attributes: {
         email,
       },
     });
-    // dispatch({ type: 'signin', payload: response.data.token });
-    navigate('Home');
+    openApp(dispatch);
   } catch (error) {
     console.log('error signing up:', error);
   }
 };
 
 const signOut = (dispatch) => async () => {
-  await Auth.signOut();
-  // dispatch({ type: 'signin', payload: response.data.token });
-  navigate('Signin');
+  Auth.signOut()
+    .then((user) => {
+      navigate('Signin');
+      dispatch({type: 'signout'});
+    })
+    .catch((err) => console.log(err));
+};
+
+const changePassword = (oldPassword, newPassword) => {
+  try {
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        return Auth.changePassword(user, oldPassword, newPassword);
+      })
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const {Provider, Context} = createDataContext(
   authReducer,
-  {signIn, signOut, signUp, socialAuth, tryLocalSignin},
-  {userID: '', userName: ''},
+  {signIn, signOut, signUp, socialAuth, tryLocalSignin, changePassword},
+  {userAttributes: null},
 );

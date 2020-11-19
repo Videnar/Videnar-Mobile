@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {WebView} from 'react-native-webview';
-import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion} from '../graphql/mutations';
+import {Storage} from 'aws-amplify';
 
-class Editor extends Component {
-  render() {
-    const content = this.props.content || '<p><br></p>';
-    return (
-      <WebView
-        originWhitelist={['*']}
-        source={{
-          html: `<head>
+const Editor = (props) => {
+  const content = props.content || '<p><br></p>';
+  return (
+    <WebView
+      originWhitelist={['*']}
+      source={{
+        html: `<head>
                 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
                  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -23,7 +21,7 @@ class Editor extends Component {
                 var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
                 var quill = new Quill('#editor', {
                   modules: {
-                      toolbar: toolbarOptions
+                    toolbar: toolbarOptions
                   },
                   placeholder: 'Describe your question...',
                    theme: 'snow'
@@ -31,15 +29,24 @@ class Editor extends Component {
           quill.on('text-change', function(delta, oldDelta, source) {
                  window.ReactNativeWebView.postMessage(quill.root.innerHTML)
            });
-                  </script>`,
-        }}
-        onMessage={(event) => {
-          this.props.setContent(event.nativeEvent.data);
-        }}
-        containerStyle={{height: 100, width: 350}}
-      />
-    );
-  }
-}
+      
+      function selectLocalImage() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+      input.onchange = () => {
+        const file = input.files[0];
+          saveToServer(file);
+        };
+      }
+    </script>`,
+      }}
+      onMessage={(event) => {
+        props.setContent(event.nativeEvent.data);
+      }}
+      containerStyle={{ height: 100, width: 350 }}
+    />
+  );
+};
 
 export default Editor;

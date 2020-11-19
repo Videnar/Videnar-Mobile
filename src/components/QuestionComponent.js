@@ -21,7 +21,7 @@ const QuestionComponent = ({question, navigate}) => {
                 <div>${content}</div>
                 </body>`,
           }}
-          style={{height: 100, width: 350}}
+          style={{width: 'auto', height: 200}}
         />
         <View>
           <Text>View: {view}</Text>

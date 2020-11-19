@@ -10,6 +10,7 @@ import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import AskQuestionScreen from './src/screens/AskQuestionScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import {setNavigator} from './src/navigations/navigationRef';
 import {Provider as AuthProvider} from './src/contexts/AuthContext';
 
@@ -30,6 +31,7 @@ const switchNavigator = createSwitchNavigator(
     loginFlow: createStackNavigator({
       Signup: SignupScreen,
       Signin: SigninScreen,
+      ForgotPassword: ForgotPasswordScreen,
     }),
     mainFlow: createBottomTabNavigator({
       Home: Main,
@@ -42,12 +44,12 @@ const switchNavigator = createSwitchNavigator(
   },
 );
 
-const App = createAppContainer(switchNavigator);
+const AppContainer = createAppContainer(switchNavigator);
 
-export default () => {
+const App = () => {
   return (
     <AuthProvider>
-      <App
+      <AppContainer
         ref={(navigator) => {
           setNavigator(navigator);
         }}
@@ -55,3 +57,5 @@ export default () => {
     </AuthProvider>
   );
 };
+
+export default App;

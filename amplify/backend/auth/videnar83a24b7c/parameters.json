@@ -1,6 +1,6 @@
 {
     "identityPoolName": "videnar83a24b7c_identitypool_83a24b7c",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "videna83a24b7c",
     "userPoolName": "videnar83a24b7c_userpool_83a24b7c",
     "autoVerifiedAttributes": [
