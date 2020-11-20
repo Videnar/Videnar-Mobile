@@ -4,6 +4,7 @@ import {WebView} from 'react-native-webview';
 
 const QuestionComponent = ({question, navigate}) => {
   const {title, content, view, upvotes, tags} = question;
+
   return (
     <TouchableOpacity
       onPress={() => {

@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import SearchScreen from './src/screens/SearchScreen';
 import ActivityScreen from './src/screens/ActivityScreen';
 import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -36,6 +37,7 @@ const switchNavigator = createSwitchNavigator(
     mainFlow: createBottomTabNavigator({
       Home: Main,
       Activity: ActivityScreen,
+      Search: SearchScreen,
       Profile: ProfileScreen,
     }),
   },

@@ -1,11 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Button,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
+import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
@@ -34,32 +28,33 @@ const HomeScreen = (props) => {
     }
   };
 
+  const RenderItem = ({item}) => (
+    <QuestionComponent question={item} navigate={props.navigation.navigate} />
+  );
+
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      style={styles.scrollView}>
+    <>
       <Button
         title="Question"
         onPress={() => {
           props.navigation.navigate('AskQuestion');
         }}
       />
-      {questions.map((question, index) => (
-        <View key={question.id ? question.id : index}>
-          <QuestionComponent
-            question={question}
-            navigate={props.navigation.navigate}
-          />
-        </View>
-      ))}
-    </ScrollView>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        data={questions}
+        renderItem={RenderItem}
+        keyExtractor={(item) => item.id}
+        style={styles.FlatList}
+      />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {marginHorizontal: 2},
+  FlatList: {marginHorizontal: 2},
   input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
   questionTitle: {fontSize: 18},
 });

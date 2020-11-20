@@ -48,11 +48,27 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "S3Trigger63b4d3d9": {
+    "S3Triggerd992a67f": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
       "build": true
     }
   },
-  "storage": {}
+  "storage": {
+    "ContentImages": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerd992a67f",
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ]
+        }
+      ]
+    }
+  }
 }

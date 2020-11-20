@@ -28,12 +28,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "S3Trigger63b4d3d9",
+            "S3Triggerd992a67f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "S3Trigger63b4d3d9",
+                  "S3Triggerd992a67f",
                   "-",
                   {
                     "Ref": "env"
@@ -60,7 +60,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-videnar-dev-200832-deployment",
-          "S3Key": "amplify-builds/S3Trigger63b4d3d9-51655076523268726243-build.zip"
+          "S3Key": "amplify-builds/S3Triggerd992a67f-3941707a49545549634f-build.zip"
         }
       }
     },
@@ -70,12 +70,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "S3Trigger63b4d3d9LambdaRole63b4d3d9",
+            "S3Triggerd992a67fLambdaRoled992a67f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "S3Trigger63b4d3d9LambdaRole63b4d3d9",
+                  "S3Triggerd992a67fLambdaRoled992a67f",
                   "-",
                   {
                     "Ref": "env"
