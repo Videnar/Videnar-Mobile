@@ -26,7 +26,7 @@ const MBA = [CAT, XAT];
 const Banking = [SBI, RBI, IBPS];
 const SSC = [SSCCGL, SSCJE, SSCGD, SSCCPO, SSCCHSL];
 
-const Branches = {
+export const Branches = {
   BIO: 'Bio Technology',
   CER: 'Ceramic Engineering',
   CHE: 'Chemical Engineering',
@@ -42,20 +42,20 @@ const Branches = {
 };
 
 export const education = [
-  {
-    LEVEL: 'Class 12',
-    EXAMS: [NEET, JEE],
-  },
+  {LEVEL: 'Class 5'},
+  {LEVEL: 'Class 6'},
+  {LEVEL: 'Class 7'},
+  {LEVEL: 'Class 8'},
+  {LEVEL: 'Class 9'},
+  {LEVEL: 'Class 10'},
   {
     LEVEL: 'Class 11',
     EXAMS: [NEET, JEE],
   },
-  {LEVEL: 'Class 10'},
-  {LEVEL: 'Class 9'},
-  {LEVEL: 'Class 8'},
-  {LEVEL: 'Class 7'},
-  {LEVEL: 'Class 6'},
-  {LEVEL: 'Class 5'},
+  {
+    LEVEL: 'Class 12',
+    EXAMS: [NEET, JEE],
+  },
   {
     LEVEL: 'B.Tech',
     BRANCHES: Branches,

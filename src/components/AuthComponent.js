@@ -12,7 +12,6 @@ const AuthForm = ({
   submitButtonText,
   forgotPassword,
 }) => {
-  const {state} = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,8 +19,6 @@ const AuthForm = ({
   const forgotPasswordHandler = () => {
     navigate('ForgotPassword');
   };
-
-  console.log(state);
 
   return (
     <View style={styles.container}>

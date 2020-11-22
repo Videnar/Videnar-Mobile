@@ -1,4 +1,5 @@
 import {Auth, Hub} from 'aws-amplify';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import createDataContext from './createDataContext';
 import {navigate} from '../navigations/navigationRef';
 
@@ -29,7 +30,7 @@ const openApp = (dispatch) => {
 const tryLocalSignin = (dispatch) => async () => {
   try {
     await Auth.currentAuthenticatedUser();
-    navigate('Home');
+    navigate('UserInfo');
     Auth.currentAuthenticatedUser()
       .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
       .catch((err) => console.log(err));
