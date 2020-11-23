@@ -7,14 +7,15 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import {education} from '../utilities/constants/education';
+import {navigate} from '../navigations/navigationRef';
 
-const UserInfoScreen = () => {
-  const [data, setData] = useState(education);
+const SelectBranchScreen = (props) => {
+  const {education} = props.navigation.state.params;
+  const onPressHandler = (branch) => {
+    navigate('SelectExams', {education, branch});
+  };
   const RenderItem = ({item}) => (
-    <TouchableOpacity
-      onPress={() => setData(item.BRANCHES)}
-      style={styles.item}>
+    <TouchableOpacity onPress={() => onPressHandler(item)} style={styles.item}>
       <Text style={styles.title}>{item}</Text>
     </TouchableOpacity>
   );
@@ -22,9 +23,9 @@ const UserInfoScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={data}
+        data={education.branches}
         renderItem={RenderItem}
-        keyExtractor={(item) => item.level || item}
+        keyExtractor={(item) => item}
       />
     </SafeAreaView>
   );
@@ -46,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserInfoScreen;
+export default SelectBranchScreen;

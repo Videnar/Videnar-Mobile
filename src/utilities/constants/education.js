@@ -4,9 +4,10 @@ const NEETPG = 'NEET PG';
 const AIIMSPG = 'AIIMS PG';
 const JIPMERPG = 'JIPMER PG';
 const PGIMER = 'PGIMER';
+const NIMHANS = 'NIMHANS';
 const SSCCGL = 'SSC-CGL';
 const SSCJE = 'SSC-JE';
-const SSCGD = 'SSC_GD';
+const SSCGD = 'SSC-GD';
 const SSCCPO = 'SSC-CPO';
 const SSCCHSL = 'SSC-CHSL';
 const CSE = 'CIVIL SERVICE EXAMINATION';
@@ -26,58 +27,71 @@ const MBA = [CAT, XAT];
 const Banking = [SBI, RBI, IBPS];
 const SSC = [SSCCGL, SSCJE, SSCGD, SSCCPO, SSCCHSL];
 
-export const Branches = {
-  BIO: 'Bio Technology',
-  CER: 'Ceramic Engineering',
-  CHE: 'Chemical Engineering',
-  CE: 'Civil Engineering',
-  CSE: 'Computer Science and Engineering',
-  EE: 'Electrical Engineering',
-  ECE: 'Electronics and Communication Engineering',
-  EIE: 'Electronics and Instrumentation Engineering',
-  ME: 'Mechanical Engineering',
-  MME: 'Metallurgical and Materials Engineering',
-  MIN: 'Mining Engineering',
-  FOO: 'Food Process Engineering',
-};
+const BIO = 'Bio Technology';
+const CER = 'Ceramic Engineering';
+const CHE = 'Chemical Engineering';
+const CE = 'Civil Engineering';
+const CS = 'Computer Science and Engineering';
+const EE = 'Electrical Engineering';
+const ECE = 'Electronics and Communication Engineering';
+const EIE = 'Electronics and Instrumentation Engineering';
+const ME = 'Mechanical Engineering';
+const MME = 'Metallurgical and Materials Engineering';
+const MIN = 'Mining Engineering';
+const FOO = 'Food Process Engineering';
 
-export const education = [
-  {LEVEL: 'Class 5'},
-  {LEVEL: 'Class 6'},
-  {LEVEL: 'Class 7'},
-  {LEVEL: 'Class 8'},
-  {LEVEL: 'Class 9'},
-  {LEVEL: 'Class 10'},
+export const Branches = [
+  BIO,
+  CER,
+  CHE,
+  CE,
+  CS,
+  EE,
+  ECE,
+  EIE,
+  ME,
+  MME,
+  MIN,
+  FOO,
+];
+
+export const educations = [
+  {level: 'Class 5'},
+  {level: 'Class 6'},
+  {level: 'Class 7'},
+  {level: 'Class 8'},
+  {level: 'Class 9'},
+  {level: 'Class 10'},
   {
-    LEVEL: 'Class 11',
-    EXAMS: [NEET, JEE],
+    level: 'Class 11',
+    exams: [NEET, JEE],
   },
   {
-    LEVEL: 'Class 12',
-    EXAMS: [NEET, JEE],
+    level: 'Class 12',
+    exams: [NEET, JEE],
   },
   {
-    LEVEL: 'B.Tech',
-    BRANCHES: Branches,
-    EXAMS: [GATE, CSE, IESE, ...MBA, ...Banking, SSCCGL],
+    level: 'B.Tech',
+    branches: Branches,
+    exams: [GATE, IESE, ...MBA, CSE, ...Banking, SSCCGL],
   },
   {
-    LEVEL: 'MBBS (Bachelor of Medicine and Bachelor of Surgery)',
-    EXAMS: [NEETPG, AIIMSPG, JIPMERPG, PGIMER, CAT],
+    level: 'MBBS (Bachelor of Medicine and Bachelor of Surgery)',
+    exams: [NEETPG, AIIMSPG, JIPMERPG, PGIMER, NIMHANS, CAT],
   },
   {
-    LEVEL: 'Bachelor of Commerce',
-    EXAMS: [CAT, ...SSC, ...Banking],
+    level: 'Bachelor of Commerce',
+    exams: [CAT, ...SSC, ...Banking],
   },
   {
-    LEVEL: 'Bachelor of Science',
-    EXAMS: [CAT, CSE, IFSE, ...SSC, ...Banking, RRBNTPC],
+    level: 'Bachelor of Science',
+    exams: [CAT, CSE, IFSE, ...SSC, ...Banking, RRBNTPC],
   },
-  {LEVEL: 'Chartered Accountant (CA)'},
-  {LEVEL: 'Certified Management AccountantCMA (CMA)'},
-  {LEVEL: 'Company secretary(CS)'},
+  {level: 'Chartered Accountant (CA)'},
+  {level: 'Certified Management AccountantCMA (CMA)'},
+  {level: 'Company secretary(CS)'},
   {
-    LEVEL: 'Diploma',
-    EXAMS: [RRBJE, RRBALP, SSCJE, SSCGD],
+    level: 'Diploma',
+    exams: [RRBJE, RRBALP, SSCJE, SSCGD],
   },
 ];

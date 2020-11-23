@@ -7,7 +7,8 @@ const ProfileScreen = () => {
     signOut,
     changePassword,
     state: {
-      userAttributes: {name, picture},
+      attributes: {name, picture},
+      preferences: {level, branch, exams},
     },
   } = useContext(AuthContext);
   const [show, setShow] = useState(false);
@@ -25,8 +26,16 @@ const ProfileScreen = () => {
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
-      <Text>{name}</Text>
-      <Text onPress={() => setShow(true)}>Change Password</Text>
+      <Text style={styles.title}>Name: {name}</Text>
+      <Text style={styles.title}>Education: {level}</Text>
+      {branch && <Text style={styles.title}>Branch : {branch}</Text>}
+      <Text style={styles.title}>Exams:</Text>
+      {exams.map((exam, index) => (
+        <Text style={styles.title}>{exam}</Text>
+      ))}
+      <Text style={styles.title} onPress={() => setShow(true)}>
+        Change Password
+      </Text>
       {show ? (
         <>
           <Text h3>enter Old Password</Text>
@@ -59,9 +68,23 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // marginTop: StatusBar.currentHeight || 0,
+  },
   picture: {
     width: 100,
     height: 100,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 10,
+    marginVertical: 1,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 20,
+    padding: 5,
   },
 });
 

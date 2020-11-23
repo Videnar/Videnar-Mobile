@@ -12,7 +12,9 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import AskQuestionScreen from './src/screens/AskQuestionScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
-import UserInfoScreen from './src/screens/UserInfoScreen';
+import SelectEducationScreen from './src/screens/SelectEducationScreen';
+import SelectBranchScreen from './src/screens/SelectBranchScreen';
+import SelectExamsScreen from './src/screens/SelectExamsScreen';
 import {setNavigator} from './src/navigations/navigationRef';
 import {Provider as AuthProvider} from './src/contexts/AuthContext';
 
@@ -34,7 +36,9 @@ const switchNavigator = createSwitchNavigator(
       Signup: SignupScreen,
       Signin: SigninScreen,
       ForgotPassword: ForgotPasswordScreen,
-      UserInfo: UserInfoScreen,
+      SelectEducation: SelectEducationScreen,
+      SelectBranch: SelectBranchScreen,
+      SelectExams: SelectExamsScreen,
     }),
     mainFlow: createBottomTabNavigator({
       Home: Main,

@@ -7,12 +7,20 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return {...state, errorMessage: action.payload};
-    case 'signin':
-      return {userAttributes: action.payload};
+    case 'signin': {
+      const {preferencesData} = action.payload;
+      const preferences = preferencesData ? JSON.parse() : null;
+      return {
+        attributes: action.payload,
+        preferences: preferences,
+      };
+    }
     case 'clear_error_message':
       return {...state, errorMessage: ''};
     case 'signout':
-      return {userAttributes: null};
+      return {user: null, preferences: null};
+    case 'update_preferences':
+      return {...state, preferences: action.payload};
     default:
       return state;
   }
@@ -29,19 +37,40 @@ const openApp = (dispatch) => {
 
 const tryLocalSignin = (dispatch) => async () => {
   try {
-    await Auth.currentAuthenticatedUser();
-    navigate('UserInfo');
-    Auth.currentAuthenticatedUser()
+    await Auth.currentAuthenticatedUser()
       .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
       .catch((err) => console.log(err));
+    navigate('Home');
   } catch (err) {
     navigate('Signin');
   }
 };
 
+const updateUserPreferences = (dispatch) => async (preferences) => {
+  let user = await Auth.currentAuthenticatedUser();
+  let result = await Auth.updateUserAttributes(user, {
+    'custom:preferences': JSON.stringify(preferences),
+  })
+    .then((response) => console.log(response))
+    .catch((err) => console.log(err));
+  dispatch({type: 'update_preferences', payload: preferences});
+  console.log(result, 'result');
+};
+
 const socialAuth = (dispatch) => async (provider) => {
   Auth.federatedSignIn({provider});
-  openApp(dispatch);
+  Hub.listen('auth', () => {
+    Auth.currentAuthenticatedUser()
+      .then(({attributes}) => {
+        if (!attributes.preferences) {
+          navigate('SelectEducation');
+        } else {
+          navigate('Home');
+        }
+        dispatch({type: 'signin', payload: attributes});
+      })
+      .catch((err) => console.log(err));
+  });
 };
 
 const signIn = (dispatch) => async (email, password) => {
@@ -66,7 +95,10 @@ const signUp = (dispatch) => async (email, password) => {
         email,
       },
     });
-    openApp(dispatch);
+    Auth.currentAuthenticatedUser()
+      .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
+      .catch((err) => console.log(err));
+    navigate('SelectEducation');
   } catch (error) {
     console.log('error signing up:', error);
   }
@@ -96,6 +128,14 @@ const changePassword = (oldPassword, newPassword) => {
 
 export const {Provider, Context} = createDataContext(
   authReducer,
-  {signIn, signOut, signUp, socialAuth, tryLocalSignin, changePassword},
-  {userAttributes: null},
+  {
+    signIn,
+    signOut,
+    signUp,
+    socialAuth,
+    tryLocalSignin,
+    changePassword,
+    updateUserPreferences,
+  },
+  {attributes: null, preferences: null},
 );
