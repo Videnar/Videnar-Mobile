@@ -8,8 +8,10 @@ const authReducer = (state, action) => {
     case 'add_error':
       return {...state, errorMessage: action.payload};
     case 'signin': {
-      const {preferencesData} = action.payload;
-      const preferences = preferencesData ? JSON.parse() : null;
+      const customPreferences = action.payload['custom:preferences'];
+      const preferences = customPreferences
+        ? JSON.parse(customPreferences)
+        : null;
       return {
         attributes: action.payload,
         preferences: preferences,

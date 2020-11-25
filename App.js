@@ -43,7 +43,7 @@ const switchNavigator = createSwitchNavigator(
     mainFlow: createBottomTabNavigator({
       Home: Main,
       Activity: ActivityScreen,
-      Search: SearchScreen,
+      // Search: SearchScreen,
       Profile: ProfileScreen,
     }),
   },

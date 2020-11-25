@@ -18,31 +18,39 @@ const Editor = (props) => {
                 <div id="editor" >${content}</div>
                 </body>
                 <script> 
+                uploadToStorage = async pathToImageFile => {
+  try {
+    const response = await fetch(pathToImageFile)
+
+    const blob = await response.blob()
+
+    Storage.put('yourKeyHere.jpeg', blob, {
+      contentType: 'image/jpeg',
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+
                 var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
                 var quill = new Quill('#editor', {
                   modules: {
                     toolbar: toolbarOptions
                   },
                   placeholder: 'Describe your question...',
-                   theme: 'snow'
+                   theme: 'snow',
+                   imageHandler: uploadToStorage
                   });
           quill.on('text-change', function(delta, oldDelta, source) {
                  window.ReactNativeWebView.postMessage(quill.root.innerHTML)
            });
-      
-      function selectLocalImage() {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.click();
-      input.onchange = () => {
-        const file = input.files[0];
-          saveToServer(file);
-        };
-      }
     </script>`,
       }}
       onMessage={(event) => {
-        props.setContent(event.nativeEvent.data);
+        const {data} = event.nativeEvent;
+        props.setContent(data);
+        // console.log(images);
       }}
       containerStyle={{ height: 100, width: 350 }}
     />
