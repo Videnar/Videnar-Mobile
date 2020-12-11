@@ -33,8 +33,8 @@ const switchNavigator = createSwitchNavigator(
   {
     ResolveAuth: ResolveAuthScreen,
     loginFlow: createStackNavigator({
-      Signup: SignupScreen,
       Signin: SigninScreen,
+      Signup: SignupScreen,
       ForgotPassword: ForgotPasswordScreen,
       SelectEducation: SelectEducationScreen,
       SelectBranch: SelectBranchScreen,
@@ -43,7 +43,7 @@ const switchNavigator = createSwitchNavigator(
     mainFlow: createBottomTabNavigator({
       Home: Main,
       Activity: ActivityScreen,
-      // Search: SearchScreen,
+      Search: SearchScreen,
       Profile: ProfileScreen,
     }),
   },

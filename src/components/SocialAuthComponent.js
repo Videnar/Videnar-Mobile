@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
-import {Button, Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import {Button, SocialIcon} from 'react-native-elements';
 import {Context as AuthContext} from '../contexts/AuthContext';
 import Spacer from './Spacer';
 
@@ -8,14 +9,16 @@ const SocialAuthComponent = ({navigation}) => {
   const {socialAuth} = useContext(AuthContext);
   return (
     <View>
-      <Spacer />
-      <Button
-        title="Sign In with Google"
+      <SocialIcon
+        title= 'Sign In With Google'
+        button
+        type='google'
         onPress={() => socialAuth('Google')}
       />
-      <Spacer />
-      <Button
-        title="Sign In with Facebook"
+      <SocialIcon
+        title='Sign In With Facebook'
+        button
+        type='facebook'
         onPress={() => socialAuth('Facebook')}
       />
     </View>

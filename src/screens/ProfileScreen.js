@@ -1,5 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Image, Button, Text, TextInput, View} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Button,
+  Text,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import {Context as AuthContext} from '../contexts/AuthContext';
 
 const ProfileScreen = () => {
@@ -17,7 +24,7 @@ const ProfileScreen = () => {
   const pictureURL = picture || JSON.parse(picture).data.url;
 
   return (
-    <View>
+    <ScrollView>
       <Image
         style={styles.picture}
         source={
@@ -26,7 +33,7 @@ const ProfileScreen = () => {
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
-      <Text style={styles.title}>Name: {name}</Text>
+      <Text style={styles.title}>{name}</Text>
       <Text style={styles.title}>Education: {level}</Text>
       {branch && <Text style={styles.title}>Branch : {branch}</Text>}
       <Text style={styles.title}>Exams:</Text>
@@ -63,27 +70,25 @@ const ProfileScreen = () => {
         </>
       ) : null}
       <Button onPress={() => signOut()} title="Sign Out" />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
   },
   picture: {
     width: 100,
     height: 100,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 10,
-    marginVertical: 1,
-    marginHorizontal: 16,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginVertical: 10,
   },
   title: {
+    alignSelf: 'center',
     fontSize: 20,
+    fontWeight: '600',
     padding: 5,
   },
 });
