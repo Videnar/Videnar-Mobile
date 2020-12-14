@@ -41,8 +41,8 @@ const tryLocalSignin = (dispatch) => async () => {
   try {
     await Auth.currentAuthenticatedUser()
       .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
-      .catch((err) => console.log(err));
-    navigate('Home');
+      .catch((err) => console.log(err))
+      .navigate('Home');
   } catch (err) {
     navigate('Signin');
   }

@@ -1,16 +1,19 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Container, Header, Item, Input, Icon, Button, Text} from 'native-base';
 
 const SearchScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Text>Search!</Text>
-    </View>
+    <Container>
+      <Header searchBar>
+        <Item>
+          <Icon name="ios-search" />
+          <Input placeholder="Search" />
+        </Item>
+        <Button transparent>
+          <Text>Search</Text>
+        </Button>
+      </Header>
+    </Container>
   );
 };
 
