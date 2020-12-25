@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
 import {Text, View, StyleSheet, Button} from 'react-native';
-import {withNavigation} from 'react-navigation';
 import {Context as AuthContext} from '../contexts/AuthContext';
-import Spacer from './Spacer';
 
 const SocialAuthComponent = ({navigation}) => {
   const {socialAuth} = useContext(AuthContext);
@@ -28,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(SocialAuthComponent);
+export default SocialAuthComponent;

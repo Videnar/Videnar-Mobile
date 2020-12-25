@@ -1,7 +1,6 @@
 import {Auth, Hub} from 'aws-amplify';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import createDataContext from './createDataContext';
-import {navigate} from '../navigations/navigationRef';
+import * as RootNavigation from '../RootNavigation';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -19,8 +18,8 @@ const authReducer = (state, action) => {
     }
     case 'clear_error_message':
       return {...state, errorMessage: ''};
-    case 'signout':
-      return {user: null, preferences: null};
+    // case 'signout':
+    //   return {attributes: null, preferences: null};
     case 'update_preferences':
       return {...state, preferences: action.payload};
     default:
@@ -30,22 +29,11 @@ const authReducer = (state, action) => {
 
 const openApp = (dispatch) => {
   Hub.listen('auth', () => {
-    navigate('Home');
+    RootNavigation.navigate('Home');
     Auth.currentAuthenticatedUser()
       .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
       .catch((err) => console.log(err));
   });
-};
-
-const tryLocalSignin = (dispatch) => async () => {
-  try {
-    await Auth.currentAuthenticatedUser()
-      .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
-      .catch((err) => console.log(err))
-      .navigate('Home');
-  } catch (err) {
-    navigate('Signin');
-  }
 };
 
 const updateUserPreferences = (dispatch) => async (preferences) => {
@@ -64,15 +52,27 @@ const socialAuth = (dispatch) => async (provider) => {
   Hub.listen('auth', () => {
     Auth.currentAuthenticatedUser()
       .then(({attributes}) => {
-        if (!attributes.preferences) {
-          navigate('SelectEducation');
+        // eslint-disable-next-line quotes
+        if (attributes[`custom:preferences`]) {
+          RootNavigation.navigate('Main');
         } else {
-          navigate('Home');
+          RootNavigation.navigate('SelectEducation');
         }
         dispatch({type: 'signin', payload: attributes});
       })
       .catch((err) => console.log(err));
   });
+};
+
+const tryLocalSignin = (dispatch) => async () => {
+  try {
+    await Auth.currentAuthenticatedUser()
+      .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
+      .catch((err) => console.log(err))
+      .navigate('Main');
+  } catch (err) {
+    RootNavigation.navigate('Signin');
+  }
 };
 
 const signIn = (dispatch) => async (email, password) => {
@@ -100,7 +100,7 @@ const signUp = (dispatch) => async (email, password) => {
     Auth.currentAuthenticatedUser()
       .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
       .catch((err) => console.log(err));
-    navigate('SelectEducation');
+    RootNavigation.navigate('SelectEducation');
   } catch (error) {
     console.log('error signing up:', error);
   }
@@ -108,11 +108,10 @@ const signUp = (dispatch) => async (email, password) => {
 
 const signOut = (dispatch) => async () => {
   Auth.signOut()
-    .then((user) => {
-      navigate('Signin');
-      dispatch({type: 'signout'});
+    .then(() => {
+      RootNavigation.navigate('Signin');
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err, 'err'));
 };
 
 const changePassword = (oldPassword, newPassword) => {
@@ -134,8 +133,8 @@ export const {Provider, Context} = createDataContext(
     signIn,
     signOut,
     signUp,
-    socialAuth,
     tryLocalSignin,
+    socialAuth,
     changePassword,
     updateUserPreferences,
   },

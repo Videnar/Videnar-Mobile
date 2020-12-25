@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {educations} from '../utilities/constants/education';
-import {navigate} from '../navigations/navigationRef';
+import * as RootNavigation from '../RootNavigation';
 import {Context as AuthContext} from '../contexts/AuthContext';
 
 const SelectEducationScreen = () => {
@@ -18,12 +18,12 @@ const SelectEducationScreen = () => {
   } = useContext(AuthContext);
   const onPressHandler = (education) => {
     if (education.level === 'B.Tech') {
-      navigate('SelectBranch', {education});
+      RootNavigation.navigate('SelectBranch', {education});
     } else if (!education.exams) {
       updateUserPreferences(user, {level: education.level});
-      navigate('Home');
+      RootNavigation.navigate('Home');
     } else {
-      navigate('SelectExams', {education});
+      RootNavigation.navigate('SelectExams', {education});
     }
   };
 

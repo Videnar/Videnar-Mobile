@@ -9,20 +9,19 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
-import {navigate} from '../navigations/navigationRef';
 import {Context as AuthContext} from '../contexts/AuthContext';
 
-const SelectExamsScreen = (props) => {
+const SelectExamsScreen = ({route, navigation}) => {
   const {updateUserPreferences} = useContext(AuthContext);
   const [exams, setExams] = useState([]);
-  const {education, branch} = props.navigation.state.params;
+  const {education, branch} = route.params;
   const finishSignUp = (item) => {
     updateUserPreferences({
       level: education.level,
       branch: branch,
       exams: exams,
     });
-    navigate('Home');
+    navigation.navigate('Home');
   };
 
   const onPressHandler = (item) => {

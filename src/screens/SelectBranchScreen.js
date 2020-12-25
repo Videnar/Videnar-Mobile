@@ -7,12 +7,13 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import {navigate} from '../navigations/navigationRef';
+import * as RootNavigation from '../RootNavigation';
 
-const SelectBranchScreen = (props) => {
-  const {education} = props.navigation.state.params;
+const SelectBranchScreen = ({route}) => {
+  console.log();
+  const {education} = route.params;
   const onPressHandler = (branch) => {
-    navigate('SelectExams', {education, branch});
+    RootNavigation.navigate('SelectExams', {education, branch});
   };
   const RenderItem = ({item}) => (
     <TouchableOpacity onPress={() => onPressHandler(item)} style={styles.item}>

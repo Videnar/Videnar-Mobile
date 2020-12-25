@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -18,6 +18,7 @@ const ProfileScreen = () => {
       preferences: {level, branch, exams},
     },
   } = useContext(AuthContext);
+
   const [show, setShow] = useState(false);
   const [oldPassword, setOldPassword] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
@@ -45,7 +46,7 @@ const ProfileScreen = () => {
       </Text>
       {show ? (
         <>
-          <Text h3>enter Old Password</Text>
+          <Text h3>Enter Old Password</Text>
           <TextInput
             secureTextEntry
             value={oldPassword}
@@ -54,7 +55,7 @@ const ProfileScreen = () => {
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <Text h3>enter new password</Text>
+          <Text h3>Enter New Password</Text>
           <TextInput
             secureTextEntry
             value={newPassword}
@@ -93,4 +94,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+function propsAreEqual(prevProps, nextProps) {
+  console.log(prevProps, nextProps);
+  return prevProps === nextProps;
+}
+
+export default React.memo(ProfileScreen, propsAreEqual);

@@ -18,14 +18,14 @@ const Editor = (props) => {
 
   const content = props.content || '<p><br></p>';
 
-  const run = `
-      document.body.style.backgroundColor = 'blue';
-      true;
-    `;
+  // const run = `
+  //     document.body.style.backgroundColor = 'blue';
+  //     true;
+  //   `;
 
-  setTimeout(() => {
-    webref.injectJavaScript(run);
-  }, 4000);
+  // setTimeout(() => {
+  //   webref.injectJavaScript(run);
+  // }, 4000);
 
   const uploadToStorage = async (imageData) => {
     const {uri, fileName, type} = imageData;
@@ -41,10 +41,8 @@ const Editor = (props) => {
       });
       const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       const run = `
-      document.body.style.backgroundColor = 'blue';
-      console.log(window.ReactNativeWebView.postMessage('quill.root.innerHTML'),document);
-      const range = quill.getSelection();
-      quill.insertEmbed(range.index, 'image', ${url});
+      const range = window.quill.getSelection();
+      window.quill.insertEmbed(range.index, 'image', ${url});
     `;
       webref.injectJavaScript(run);
     } catch (err) {

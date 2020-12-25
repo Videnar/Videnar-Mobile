@@ -1,7 +1,8 @@
 import React from 'react';
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Icon} from 'react-native-eva-icons';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -10,58 +11,73 @@ import ActivityScreen from './src/screens/ActivityScreen';
 import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import AskQuestionScreen from './src/screens/AskQuestionScreen';
-import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import SelectEducationScreen from './src/screens/SelectEducationScreen';
 import SelectBranchScreen from './src/screens/SelectBranchScreen';
 import SelectExamsScreen from './src/screens/SelectExamsScreen';
-import {setNavigator} from './src/navigations/navigationRef';
+import {navigationRef, isReadyRef} from './src/RootNavigation';
 import {Provider as AuthProvider} from './src/contexts/AuthContext';
 
-const Main = createStackNavigator({
-  Home: HomeScreen,
-  QuestionDetails: QuestionDetailsScreen,
-  AskQuestion: AskQuestionScreen,
-});
+const Stack = createStackNavigator();
+const InnerStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-// trackListFlow.navigationOptions = {
-//   title: 'Tracks',
-//   tabBarIcon: <FontAwesome name="th-list" size={20} />,
-// };
-
-const switchNavigator = createSwitchNavigator(
-  {
-    ResolveAuth: ResolveAuthScreen,
-    loginFlow: createStackNavigator({
-      Signin: SigninScreen,
-      Signup: SignupScreen,
-      ForgotPassword: ForgotPasswordScreen,
-      SelectEducation: SelectEducationScreen,
-      SelectBranch: SelectBranchScreen,
-      SelectExams: SelectExamsScreen,
-    }),
-    mainFlow: createBottomTabNavigator({
-      Home: Main,
-      Activity: ActivityScreen,
-      Search: SearchScreen,
-      Profile: ProfileScreen,
-    }),
-  },
-  {
-    initialRouteName: 'ResolveAuth',
-  },
+const Home = () => (
+  <InnerStack.Navigator
+    initialRouteName="Home"
+    screenOptions={{gestureEnabled: false}}>
+    <InnerStack.Screen name="Home" component={HomeScreen} />
+    <InnerStack.Screen
+      name="QuestionDetails"
+      component={QuestionDetailsScreen}
+    />
+    <InnerStack.Screen name="AskQuestion" component={AskQuestionScreen} />
+  </InnerStack.Navigator>
 );
 
-const AppContainer = createAppContainer(switchNavigator);
+const Main = () => (
+  <Tab.Navigator initialRouteName="Home">
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Activity" component={ActivityScreen} />
+    <Tab.Screen name="Search" component={SearchScreen} />
+    <Tab.Screen name="Profile" component={ProfileScreen} />
+  </Tab.Navigator>
+);
 
 const App = () => {
+  React.useEffect(() => {
+    return () => {
+      isReadyRef.current = false;
+    };
+  }, []);
   return (
     <AuthProvider>
-      <AppContainer
-        ref={(navigator) => {
-          setNavigator(navigator);
-        }}
-      />
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={() => {
+          isReadyRef.current = true;
+        }}>
+        <Stack.Navigator
+          initialRouteName="Signin"
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: false,
+          }}>
+          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Signin" component={SigninScreen} />
+          <Stack.Screen name="Signup" component={SignupScreen} />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+          />
+          <Stack.Screen
+            name="SelectEducation"
+            component={SelectEducationScreen}
+          />
+          <Stack.Screen name="SelectBranch" component={SelectBranchScreen} />
+          <Stack.Screen name="SelectExams" component={SelectExamsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </AuthProvider>
   );
 };

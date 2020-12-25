@@ -1,12 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {API, graphqlOperation} from 'aws-amplify';
+import {API, graphqlOperation, Auth} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
+import {Context as AuthContext} from '../contexts/AuthContext';
 
 const HomeScreen = (props) => {
+  const {tryLocalSignin} = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+
+  // useEffect(() => {
+  //   tryLocalSignin();
+  // }, [tryLocalSignin]);
 
   useEffect(() => {
     fetchQuestions();

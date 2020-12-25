@@ -1,8 +1,7 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Button, TextInput, Text, View} from 'react-native';
 import Spacer from './Spacer';
-import {Context as AuthContext} from '../contexts/AuthContext';
-import {navigate} from '../navigations/navigationRef';
+import * as RootNavigation from '../RootNavigation';
 
 const AuthForm = ({
   headerText,
@@ -17,7 +16,7 @@ const AuthForm = ({
   const [password, setPassword] = useState('');
 
   const forgotPasswordHandler = () => {
-    navigate('ForgotPassword');
+    RootNavigation.navigate('ForgotPassword');
   };
 
   return (

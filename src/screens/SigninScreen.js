@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Button, Text, View, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Context as AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
