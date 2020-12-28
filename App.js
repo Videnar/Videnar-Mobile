@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Icon} from 'react-native-eva-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -36,11 +36,48 @@ const Home = () => (
 );
 
 const Main = () => (
-  <Tab.Navigator initialRouteName="Home">
-    <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="Activity" component={ActivityScreen} />
-    <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} />
+  <Tab.Navigator
+    initialRouteName="Home"
+    tabBarOptions={{
+      activeTintColor: '#e91e63',
+      showIcon: true,
+    }}>
+    <Tab.Screen
+      name="Home"
+      component={Home}
+      options={{
+        tabBarIcon: ({}) => (
+          <MaterialIcons name="home" color={'#e91e63'} size={32} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Activity"
+      component={ActivityScreen}
+      options={{
+        tabBarIcon: ({}) => (
+          <MaterialIcons name="history" color={'#e91e63'} size={32} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Search"
+      component={SearchScreen}
+      options={{
+        tabBarIcon: ({}) => (
+          <MaterialIcons name="search" color={'#e91e63'} size={32} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        tabBarIcon: ({}) => (
+          <MaterialIcons name="person" color={'#e91e63'} size={32} />
+        ),
+      }}
+    />
   </Tab.Navigator>
 );
 
