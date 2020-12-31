@@ -1,12 +1,12 @@
-import React, {useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Context as AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 
-const SigninScreen = ({navigation}) => {
-  const {signIn} = useContext(AuthContext);
+const SigninScreen = ({ navigation }) => {
+  const { signIn } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
@@ -15,10 +15,10 @@ const SigninScreen = ({navigation}) => {
         // errorMessage={state.errorMessage}
         onSubmit={signIn}
         forgotPassword
-        submitButtonText="Sign In"
+        submitButtonText="SIGN IN"
       />
       <NavLink
-        text="Dont have an account? Sign up instead"
+        text="Don't have an account? Sign up instead"
         routeName="Signup"
       />
       <SocialAuth />
