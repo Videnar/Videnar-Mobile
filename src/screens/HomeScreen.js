@@ -5,18 +5,28 @@ import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import {Context as AuthContext} from '../contexts/AuthContext';
 
-const HomeScreen = (props) => {
-  const {tryLocalSignin} = useContext(AuthContext);
+const HomeScreen = ({navigation}) => {
+  // const {tryLocalSignin} = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
   // useEffect(() => {
   //   tryLocalSignin();
-  // }, [tryLocalSignin]);
+  // }, []);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
+
+  const tryLocalSignin = (dispatch) => async () => {
+    try {
+      await Auth.currentAuthenticatedUser()
+        .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
+        .catch((err) => console.log(err));
+    } catch (err) {
+      navigation.navigate('Signin');
+    }
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -35,7 +45,7 @@ const HomeScreen = (props) => {
   };
 
   const RenderItem = ({item}) => (
-    <QuestionComponent question={item} navigate={props.navigation.navigate} />
+    <QuestionComponent question={item} navigate={navigation.navigate} />
   );
 
   return (
@@ -43,7 +53,7 @@ const HomeScreen = (props) => {
       <Button
         title="Question"
         onPress={() => {
-          props.navigation.navigate('AskQuestion');
+          navigation.navigate('AskQuestion');
         }}
       />
       <FlatList
