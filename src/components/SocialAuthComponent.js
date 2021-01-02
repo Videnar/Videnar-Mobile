@@ -4,8 +4,8 @@ import { Context as AuthContext } from '../contexts/AuthContext';
 import { Icon, Button } from 'native-base'
 import Spacer from './Spacer';
 
-const SocialAuthComponent = ({ navigation }) => {
-  const { socialAuth } = useContext(AuthContext);
+const SocialAuthComponent = () => {
+  const {socialAuth} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Button

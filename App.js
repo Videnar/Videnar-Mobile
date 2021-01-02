@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import WebViewScreen from './src/screens/WebViewScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import ActivityScreen from './src/screens/ActivityScreen';
@@ -95,7 +96,6 @@ const App = () => {
           isReadyRef.current = true;
         }}>
         <Stack.Navigator
-          initialRouteName="Signin"
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
@@ -103,6 +103,7 @@ const App = () => {
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="Signin" component={SigninScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
+          <Stack.Screen name="WebView" component={WebViewScreen} />
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}

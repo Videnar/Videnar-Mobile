@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, TextInput, Text, View} from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../RootNavigation';
 import { Container, Content, Header, Button, Input, Item, Label, Icon } from 'native-base';
@@ -44,7 +44,6 @@ const AuthForm = ({
             <Spacer />
           </>
         ) : null}
-
         <Item underline floatingLabel style={styles.inputStyle}>
           <Label style={styles.inputStyle}>Email</Label>
           <Input
@@ -58,7 +57,6 @@ const AuthForm = ({
           <Icon name='envelope' type='FontAwesome' style={styles.iconStyle} />
         </Item>
         <Spacer />
-
         <Item underline floatingLabel style={styles.inputStyle}>
           <Label style={styles.inputStyle}>Password</Label>
           <Input
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   textInput: {
-    fontSize: 15
+    fontSize: 15,
   },
   container: {
     marginLeft: 15,

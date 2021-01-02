@@ -6,8 +6,8 @@ import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
 
-const SignupScreen = ({ navigation }) => {
-  const { state, signUp } = useContext(AuthContext);
+const SignupScreen = ({navigation}) => {
+  const {state, signUp} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}

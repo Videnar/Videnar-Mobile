@@ -6,8 +6,8 @@ import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
 
-const SigninScreen = ({ navigation }) => {
-  const { signIn } = useContext(AuthContext);
+const SigninScreen = ({navigation}) => {
+  const {signIn} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
