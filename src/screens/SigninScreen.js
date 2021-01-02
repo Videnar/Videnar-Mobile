@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Context as AuthContext } from '../contexts/AuthContext';
+import React, {useContext} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
+import {Context as AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
@@ -12,7 +12,7 @@ const SigninScreen = ({navigation}) => {
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
       <AuthComponent
-        headerText="Sign into Your Account"
+        headerText="Sign into Videnar"
         // errorMessage={state.errorMessage}
         onSubmit={signIn}
         forgotPassword
@@ -20,10 +20,7 @@ const SigninScreen = ({navigation}) => {
       />
       <Spacer />
       <Text style={styles.textStyle}>Don't have an account?</Text>
-      <NavLink
-        text="Sign up here"
-        routeName="Signup"
-      />
+      <NavLink text="Sign up here" routeName="Signup" />
       <Text style={styles.textStyle}>or</Text>
       <Spacer />
       <SocialAuth />
@@ -39,13 +36,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 50,
-    backgroundColor: '#ffede6'
+    backgroundColor: '#ffede6',
   },
   textStyle: {
     fontSize: 18,
     fontWeight: '600',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default SigninScreen;

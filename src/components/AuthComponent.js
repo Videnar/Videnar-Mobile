@@ -2,7 +2,16 @@ import React, {useState} from 'react';
 import {StyleSheet, TextInput, Text, View} from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../RootNavigation';
-import { Container, Content, Header, Button, Input, Item, Label, Icon } from 'native-base';
+import {
+  Container,
+  Content,
+  Header,
+  Button,
+  Input,
+  Item,
+  Label,
+  Icon,
+} from 'native-base';
 
 const AuthForm = ({
   headerText,
@@ -24,7 +33,9 @@ const AuthForm = ({
     <View style={styles.container}>
       <View>
         <Spacer>
-          <Text h3 style={{ fontWeight: 'bold', fontSize: 30 }}>{headerText}</Text>
+          <Text h3 style={{fontWeight: 'bold', fontSize: 30}}>
+            {headerText}
+          </Text>
         </Spacer>
       </View>
       <View>
@@ -39,7 +50,11 @@ const AuthForm = ({
                 autoCorrect={false}
                 style={styles.textInput}
               />
-              <Icon name='user-circle' type='FontAwesome' style={styles.iconStyle} />
+              <Icon
+                name="user-circle"
+                type="FontAwesome"
+                style={styles.iconStyle}
+              />
             </Item>
             <Spacer />
           </>
@@ -54,7 +69,7 @@ const AuthForm = ({
             autoCorrect={false}
             style={styles.textInput}
           />
-          <Icon name='envelope' type='FontAwesome' style={styles.iconStyle} />
+          <Icon name="envelope" type="FontAwesome" style={styles.iconStyle} />
         </Item>
         <Spacer />
         <Item underline floatingLabel style={styles.inputStyle}>
@@ -68,23 +83,28 @@ const AuthForm = ({
             autoCorrect={false}
             style={styles.textInput}
           />
-          <Icon name='lock' type='FontAwesome' style={styles.iconStyle} />
+          <Icon name="lock" type="FontAwesome" style={styles.iconStyle} />
         </Item>
         <Spacer />
         {forgotPassword ? (
-          <Text onPress={() => forgotPasswordHandler()}
-            style={styles.forgetText}>Forgot Password?</Text>
+          <Text
+            onPress={() => forgotPasswordHandler()}
+            style={styles.forgetText}>
+            Forgot Password?
+          </Text>
         ) : null}
         {errorMessage ? (
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         ) : null}
         <Spacer>
           <Button
-            block info
+            block
+            info
             onPress={() => onSubmit(email, password)}
-            style={{ backgroundColor: '#f76f00' }}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{submitButtonText}</Text>
+            style={{backgroundColor: '#f76f00'}}>
+            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
+              {submitButtonText}
+            </Text>
           </Button>
         </Spacer>
       </View>
@@ -106,22 +126,22 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     backgroundColor: 'white',
-    borderRadius: 15
+    borderRadius: 15,
   },
   forgetText: {
     fontSize: 17,
     fontWeight: '800',
     textAlign: 'center',
-    color: '#85898f'
+    color: '#85898f',
   },
   inputStyle: {
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
   },
   iconStyle: {
     color: '#85898f',
-    fontSize: 22
-  }
+    fontSize: 22,
+  },
 });
 
 export default AuthForm;

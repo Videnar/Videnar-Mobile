@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Text, Button, View, StyleSheet } from 'react-native';
-import { Context as AuthContext } from '../contexts/AuthContext';
+import React, {useContext} from 'react';
+import {Text, Button, View, StyleSheet} from 'react-native';
+import {Context as AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
@@ -20,10 +20,7 @@ const SignupScreen = ({navigation}) => {
       />
       <Spacer />
       <Text style={styles.textStyle}>Already have an account?</Text>
-      <NavLink
-        routeName="Signin"
-        text="Sign in instead!"
-      />
+      <NavLink routeName="Signin" text="Sign in instead!" />
       <Text style={styles.textStyle}>or</Text>
       <Spacer />
       <SocialAuth />
@@ -42,13 +39,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 50,
-    backgroundColor: '#ffede6'
+    backgroundColor: '#ffede6',
   },
   textStyle: {
     fontSize: 18,
     fontWeight: '600',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default SignupScreen;

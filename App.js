@@ -96,6 +96,7 @@ const App = () => {
           isReadyRef.current = true;
         }}>
         <Stack.Navigator
+          initialRouteName="Signin"
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
