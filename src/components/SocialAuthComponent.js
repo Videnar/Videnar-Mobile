@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { Context as AuthContext } from '../contexts/AuthContext';
+import React, {useContext} from 'react';
+import {Text, View, StyleSheet, Button} from 'react-native';
+import {Context as AuthContext} from '../contexts/AuthContext';
 
-const SocialAuthComponent = ({ navigation }) => {
-  const { socialAuth } = useContext(AuthContext);
+const SocialAuthComponent = () => {
+  const {socialAuth} = useContext(AuthContext);
   return (
     <View>
       <Button

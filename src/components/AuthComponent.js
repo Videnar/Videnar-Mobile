@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, TextInput, Text, View} from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../RootNavigation';
-import { Container, Content, Header, Button, Input, Item, Label } from 'native-base';
+import {
+  Container,
+  Content,
+  Header,
+  Button,
+  Input,
+  Item,
+  Label,
+} from 'native-base';
 
 const AuthForm = ({
   headerText,
@@ -23,7 +31,9 @@ const AuthForm = ({
   return (
     <View style={styles.container}>
       <Spacer>
-        <Text h3 style={{ fontWeight: 'bold', fontSize: 30 }}>{headerText}</Text>
+        <Text h3 style={{fontWeight: 'bold', fontSize: 30}}>
+          {headerText}
+        </Text>
       </Spacer>
       <Spacer />
       {nameInput ? (
@@ -69,19 +79,22 @@ const AuthForm = ({
       </Item>
       <Spacer />
       {forgotPassword ? (
-        <Text onPress={() => forgotPasswordHandler()}
-          style={{ marginLeft: 18 }}>Forgot Password?</Text>
+        <Text onPress={() => forgotPasswordHandler()} style={{marginLeft: 18}}>
+          Forgot Password?
+        </Text>
       ) : null}
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
       <Spacer>
         <Button
-          block info
+          block
+          info
           onPress={() => onSubmit(email, password)}
-          style={{ backgroundColor: '#03b1fc' }}
-        >
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{submitButtonText}</Text>
+          style={{backgroundColor: '#03b1fc'}}>
+          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
+            {submitButtonText}
+          </Text>
         </Button>
       </Spacer>
     </View>
@@ -96,12 +109,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   textInput: {
-    fontSize: 15
+    fontSize: 15,
   },
   container: {
     marginLeft: 15,
-    marginRight: 15
-  }
+    marginRight: 15,
+  },
 });
 
 export default AuthForm;
