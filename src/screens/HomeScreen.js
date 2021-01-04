@@ -4,7 +4,7 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { listQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import { Context as AuthContext } from '../contexts/AuthContext';
-import { Card } from 'native-base'
+import { Fab, Icon, View } from 'native-base'
 
 const HomeScreen = (props) => {
   const { tryLocalSignin } = useContext(AuthContext);
@@ -36,19 +36,22 @@ const HomeScreen = (props) => {
   };
 
   const RenderItem = ({ item }) => (
-    <Card>
-      <QuestionComponent question={item} navigate={props.navigation.navigate} />
-    </Card>
+    <QuestionComponent question={item} navigate={props.navigation.navigate} />
   );
 
   return (
-    <>
-      <Button
-        title="Question"
+    <View style={{ flex: 0 }}>
+      <Fab
+        position='bottomRight'
+        direction='up'
+        containerStyle={{}}
+        style={{ backgroundColor: '#cf391b' }}
         onPress={() => {
           props.navigation.navigate('AskQuestion');
         }}
-      />
+      >
+        <Icon name='plus' type='FontAwesome' />
+      </Fab>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -58,7 +61,7 @@ const HomeScreen = (props) => {
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
       />
-    </>
+    </View>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Icon, CardItem } from 'native-base'
+import { Icon, Card, CardItem, Right, Text } from 'native-base'
 
 const QuestionComponent = ({ question, navigate }) => {
   const { title, content, view, upvotes, tags } = question;
@@ -11,11 +11,11 @@ const QuestionComponent = ({ question, navigate }) => {
       onPress={() => {
         navigate && navigate('QuestionDetails', { question });
       }}>
-      <View>
+      <Card>
         <CardItem>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
         </CardItem>
-        <CardItem cardBody>
+        <CardItem cardBody bordered>
           <WebView
             originWhitelist={['*']}
             source={{
@@ -29,19 +29,24 @@ const QuestionComponent = ({ question, navigate }) => {
             style={{ width: 'auto', height: 200 }}
           />
         </CardItem>
-        <CardItem>
-          <Text>View: {view}</Text>
-          <Text>Upvotes: {upvotes}</Text>
-          <Text>{tags}</Text>
-        </CardItem>
-        <CardItem>
+        <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
+          <Text style={{ color: '#cf391b' }}>{tags}</Text>
+          <Text style={styles.footerText}>Views: {view}</Text>
+          <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon name='caret-up' type='FontAwesome' />
           <Icon name='caret-down' type='FontAwesome' />
           <Icon name='ellipsis-h' type='FontAwesome' />
         </CardItem>
-      </View>
+      </Card>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  footerText: {
+    color: '#85898f',
+    textAlign: 'right'
+  },
+});
 
 export default QuestionComponent;
