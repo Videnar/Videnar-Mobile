@@ -28,7 +28,7 @@ class QuestionDetailsScreen extends Component {
   }
 
   componentDidMount() {
-    const {question} = this.props.navigation.state.params;
+    const {question} = this.props.route.params;
     const {id} = question;
     this.fetchAnswers(id);
     this.fetchCommentOnQuestion(id);
@@ -77,7 +77,7 @@ class QuestionDetailsScreen extends Component {
 
   submitAnswer = async () => {
     try {
-      const {question} = this.props.navigation.state.params;
+      const {question} = this.props.route.params;
       const {id} = question;
       const {answerInput} = this.state;
       await API.graphql(
@@ -96,7 +96,7 @@ class QuestionDetailsScreen extends Component {
 
   submitCommentOnQuestion = async () => {
     try {
-      const {question} = this.props.navigation.state.params;
+      const {question} = this.props.route.params;
       const {id} = question;
       const {commentsOnQuestionInput} = this.state;
       await API.graphql(
@@ -117,7 +117,7 @@ class QuestionDetailsScreen extends Component {
   };
 
   render() {
-    const {question} = this.props.navigation.state.params;
+    const {question} = this.props.route.params;
     const {
       commentsOnQuestion,
       answers,
