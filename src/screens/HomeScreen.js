@@ -1,12 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {API, graphqlOperation, Auth} from 'aws-amplify';
-import {listQuestions} from '../graphql/queries';
+import React, { useState, useEffect, useContext } from 'react';
+import { Button, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { listQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import { Context as AuthContext } from '../contexts/AuthContext';
+import { Card } from 'native-base'
 
 const HomeScreen = (props) => {
-  const {tryLocalSignin} = useContext(AuthContext);
+  const { tryLocalSignin } = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -34,8 +35,10 @@ const HomeScreen = (props) => {
     }
   };
 
-  const RenderItem = ({item}) => (
-    <QuestionComponent question={item} navigate={props.navigation.navigate} />
+  const RenderItem = ({ item }) => (
+    <Card>
+      <QuestionComponent question={item} navigate={props.navigation.navigate} />
+    </Card>
   );
 
   return (
@@ -60,9 +63,9 @@ const HomeScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  FlatList: {marginHorizontal: 2},
-  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
-  questionTitle: {fontSize: 18},
+  FlatList: { marginHorizontal: 2 },
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  questionTitle: { fontSize: 18 },
 });
 
 export default HomeScreen;

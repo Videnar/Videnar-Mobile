@@ -1,28 +1,26 @@
-import React, {useContext} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {Context as AuthContext} from '../contexts/AuthContext';
-import {Icon, Button} from 'native-base';
+import React, { useContext } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Context as AuthContext } from '../contexts/AuthContext';
+import { Icon, Button } from 'native-base';
 import Spacer from './Spacer';
 
 const SocialAuthComponent = () => {
-  const {socialAuth} = useContext(AuthContext);
+  const { socialAuth } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Button
-        iconRight
         transparent
         light
         bordered
         style={styles.buttonStyle}
         onPress={() => socialAuth('Google')}>
-        <Icon name="google" type="FontAwesome" style={{color: 'red'}} />
-        <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-          SIGN IN WITH GOOGLE
+        <Icon name="google" type="FontAwesome" style={{ color: 'red' }} />
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+          Sign In with Google
         </Text>
       </Button>
       <Spacer />
       <Button
-        iconRight
         transparent
         light
         bordered
@@ -31,11 +29,10 @@ const SocialAuthComponent = () => {
         <Icon
           name="facebook-square"
           type="FontAwesome"
-          style={{color: 'blue'}}
+          style={{ color: 'blue' }}
         />
-        <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-          {' '}
-          SIGN IN WITH FACEBOOK
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+          Sign In with Facebook
         </Text>
       </Button>
     </View>
@@ -47,8 +44,11 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   container: {
-    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
   },
   buttonStyle: {
     borderColor: '#d3d6db',
