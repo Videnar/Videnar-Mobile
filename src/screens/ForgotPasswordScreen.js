@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View, StyleSheet} from 'react-native';
 import {Auth} from 'aws-amplify';
-import * as RootNavigation from '../RootNavigation';
+import * as RootNavigation from '../navigation/RootNavigation';
 
 const SigninScreen = ({navigation}) => {
   const [email, setEmail] = useState('');

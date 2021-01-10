@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -7,7 +7,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 const ProfileScreen = () => {
   const {

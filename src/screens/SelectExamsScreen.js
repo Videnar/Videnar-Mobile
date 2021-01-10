@@ -9,7 +9,7 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 const SelectExamsScreen = ({route, navigation}) => {
   const {updateUserPreferences} = useContext(AuthContext);

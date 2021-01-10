@@ -1,19 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {API, graphqlOperation, Auth} from 'aws-amplify';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, FlatList, RefreshControl} from 'react-native';
+import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import {Context as AuthContext} from '../contexts/AuthContext';
 import {Fab, Icon, View} from 'native-base';
 
-const HomeScreen = (props) => {
-  const {tryLocalSignin} = useContext(AuthContext);
+const HomeScreen = ({navigation}) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  // useEffect(() => {
-  //   tryLocalSignin();
-  // }, [tryLocalSignin]);
 
   useEffect(() => {
     fetchQuestions();
@@ -36,7 +30,7 @@ const HomeScreen = (props) => {
   };
 
   const RenderItem = ({item}) => (
-    <QuestionComponent question={item} navigate={props.navigation.navigate} />
+    <QuestionComponent question={item} navigate={navigation.navigate} />
   );
 
   return (
@@ -47,7 +41,7 @@ const HomeScreen = (props) => {
         containerStyle={{}}
         style={{backgroundColor: '#cf391b'}}
         onPress={() => {
-          props.navigation.navigate('AskQuestion');
+          navigation.navigate('AskQuestion');
         }}>
         <Icon name="plus" type="FontAwesome" />
       </Fab>

@@ -1,95 +1,133 @@
-import React from 'react';
+import React, {useReducer, useEffect, useMemo} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SigninScreen from './src/screens/SigninScreen';
-import SignupScreen from './src/screens/SignupScreen';
-import WebViewScreen from './src/screens/WebViewScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import SearchScreen from './src/screens/SearchScreen';
-import ActivityScreen from './src/screens/ActivityScreen';
-import QuestionDetailsScreen from './src/screens/QuestionDetailsScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import AskQuestionScreen from './src/screens/AskQuestionScreen';
-import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
-import SelectEducationScreen from './src/screens/SelectEducationScreen';
-import SelectBranchScreen from './src/screens/SelectBranchScreen';
-import SelectExamsScreen from './src/screens/SelectExamsScreen';
-import {navigationRef, isReadyRef} from './src/RootNavigation';
-import {Provider as AuthProvider} from './src/contexts/AuthContext';
-import {Icon} from 'native-base';
+import {Auth, Hub} from 'aws-amplify';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingScreen from './src/screens/LoadingScreen';
+import {navigationRef, isReadyRef} from './src/navigation/RootNavigation';
+import {AuthContext} from './src/contexts/AuthContext';
+import {
+  Main,
+  Auth as AuthComponent,
+  UserInfo,
+} from './src/navigation/Navigators';
+import {AuthReducer, initialState} from './src/contexts/AuthReducer';
 
 const Stack = createStackNavigator();
-const InnerStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-const Home = () => (
-  <InnerStack.Navigator
-    initialRouteName="Home"
-    screenOptions={{gestureEnabled: false}}>
-    <InnerStack.Screen name="Home" component={HomeScreen} />
-    <InnerStack.Screen
-      name="QuestionDetails"
-      component={QuestionDetailsScreen}
-    />
-    <InnerStack.Screen name="AskQuestion" component={AskQuestionScreen} />
-  </InnerStack.Navigator>
-);
-
-const Main = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    tabBarOptions={{
-      activeTintColor: '#e91e63',
-      showIcon: true,
-    }}>
-    <Tab.Screen
-      name="Home"
-      component={Home}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="home" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Activity"
-      component={ActivityScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="history" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Search"
-      component={SearchScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="search" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="user" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
 
 const App = () => {
+  const [state, dispatch] = useReducer(AuthReducer, initialState);
+
+  useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let jsonValue;
+      try {
+        jsonValue = await AsyncStorage.getItem('@user');
+        jsonValue = jsonValue != null ? JSON.parse(jsonValue) : null;
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      if (jsonValue !== null) {
+        dispatch({type: 'signin', payload: jsonValue});
+      }
+    };
+    bootstrapAsync();
+  }, []);
+
   React.useEffect(() => {
     return () => {
       isReadyRef.current = false;
     };
   }, []);
+
+  const AuthContextValue = useMemo(
+    () => ({
+      signIn: async (email, password) => {
+        try {
+          await Auth.signIn({
+            username: email,
+            password,
+            attributes: {email},
+          });
+          Auth.currentAuthenticatedUser()
+            .then(({attributes}) =>
+              dispatch({type: 'signin', payload: attributes}),
+            )
+            .catch((err) => console.log(err));
+        } catch (error) {
+          console.log('error signing in', error);
+        }
+      },
+      signOut: async () => {
+        Auth.signOut()
+          .then(() => {
+            AsyncStorage.removeItem('@user');
+            dispatch({type: 'signout'});
+          })
+          .catch((err) => console.log(err, 'err'));
+      },
+
+      signUp: async (email, password) => {
+        try {
+          await Auth.signUp({
+            username: email,
+            password,
+            attributes: {
+              email,
+            },
+          });
+          Auth.currentAuthenticatedUser()
+            .then(({attributes}) =>
+              dispatch({type: 'signin', payload: attributes}),
+            )
+            .catch((err) => console.log(err));
+        } catch (error) {
+          console.log('error signing up:', error);
+        }
+      },
+      updateUserPreferences: async (preferences) => {
+        let user = await Auth.currentAuthenticatedUser();
+        let result = await Auth.updateUserAttributes(user, {
+          'custom:preferences': JSON.stringify(preferences),
+        })
+          .then((response) => console.log(response))
+          .catch((err) => console.log(err));
+        dispatch({type: 'update_preferences', payload: preferences});
+        console.log(result, 'result');
+      },
+      socialAuth: async (provider) => {
+        Auth.federatedSignIn({provider});
+        Auth.currentAuthenticatedUser()
+          .then(({attributes}) => {
+            dispatch({type: 'signin', payload: attributes});
+            const jsonValue = JSON.stringify(attributes);
+            AsyncStorage.setItem('@user', jsonValue);
+          })
+          .catch((err) => console.log(err));
+      },
+      changePassword: (oldPassword, newPassword) => {
+        try {
+          Auth.currentAuthenticatedUser()
+            .then((user) => {
+              return Auth.changePassword(user, oldPassword, newPassword);
+            })
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
+    [],
+  );
+
   return (
-    <AuthProvider>
+    <AuthContext.Provider value={{state, ...AuthContextValue}}>
       <NavigationContainer
         ref={navigationRef}
         onReady={() => {
@@ -101,23 +139,20 @@ const App = () => {
             headerShown: false,
             gestureEnabled: false,
           }}>
-          <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="Signin" component={SigninScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="WebView" component={WebViewScreen} />
-          <Stack.Screen
-            name="ForgotPassword"
-            component={ForgotPasswordScreen}
-          />
-          <Stack.Screen
-            name="SelectEducation"
-            component={SelectEducationScreen}
-          />
-          <Stack.Screen name="SelectBranch" component={SelectBranchScreen} />
-          <Stack.Screen name="SelectExams" component={SelectExamsScreen} />
+          {state.attributes ? (
+            state.attributes['custom:preferences'] ? (
+              <Stack.Screen name="Main" component={Main} />
+            ) : (
+              <Stack.Screen name="UserInfo" component={UserInfo} />
+            )
+          ) : (
+            <>
+              <Stack.Screen name="Auth" component={AuthComponent} />
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthProvider>
+    </AuthContext.Provider>
   );
 };
 
