@@ -1,21 +1,23 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
+  View,
   StyleSheet,
   Image,
-  Button,
-  Text,
   TextInput,
   ScrollView,
+  StatusBar
 } from 'react-native';
-import {AuthContext} from '../contexts/AuthContext';
+import Spacer from '../components/Spacer';
+import { AuthContext } from '../contexts/AuthContext';
+import { Button, Text, Input, Label, Item } from 'native-base'
 
 const ProfileScreen = () => {
   const {
     signOut,
     changePassword,
     state: {
-      attributes: {name, picture},
-      preferences: {level, branch, exams},
+      attributes: { name, picture },
+      preferences: { level, branch, exams },
     },
   } = useContext(AuthContext);
 
@@ -24,13 +26,23 @@ const ProfileScreen = () => {
   const [newPassword, setNewPassword] = useState(false);
   const pictureURL = picture || JSON.parse(picture).data.url;
 
+  const onChangePasswordHandler = () => {
+    if (show == true) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  }
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.container} >
+      <StatusBar backgroundColor='#fff8f5' barStyle='dark-content' />
+      <Spacer />
       <Image
         style={styles.picture}
         source={
           pictureURL
-            ? {uri: pictureURL}
+            ? { uri: pictureURL }
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
@@ -41,36 +53,50 @@ const ProfileScreen = () => {
       {exams.map((exam, index) => (
         <Text style={styles.title}>{exam}</Text>
       ))}
-      <Text style={styles.title} onPress={() => setShow(true)}>
+      <Text style={styles.button} onPress={onChangePasswordHandler}>
         Change Password
       </Text>
       {show ? (
         <>
-          <Text h3>Enter Old Password</Text>
-          <TextInput
-            secureTextEntry
-            value={oldPassword}
-            style={styles.textInput}
-            onChangeText={setOldPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Text h3>Enter New Password</Text>
-          <TextInput
-            secureTextEntry
-            value={newPassword}
-            style={styles.textInput}
-            onChangeText={setNewPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Button
-            onPress={() => changePassword(oldPassword, newPassword)}
-            title="Change Password"
-          />
+          <Item underline floatingLabel
+            style={styles.textInput}>
+            <Label style={styles.labelInput} >Enter Old Password</Label>
+            <Input
+              secureTextEntry
+              value={oldPassword}
+              onChangeText={setOldPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </Item>
+          <Spacer />
+          <Item underline floatingLabel
+            style={styles.textInput}>
+            <Label style={styles.labelInput} >Enter New Password</Label>
+            <Input
+              secureTextEntry
+              value={newPassword}
+              onChangeText={setNewPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </Item>
+          <Spacer />
+          <Button block info
+            style={styles.blockButton}
+            onPress={() => changePassword(oldPassword, newPassword)}>
+            <Text style={{ fontSize: 15, color: 'white' }}>Change Password</Text>
+          </Button>
+          <View style={{ borderWidth: 0.5, borderColor: '#85898f', marginHorizontal: 20, marginTop: 20 }} />
         </>
       ) : null}
-      <Button onPress={() => signOut()} title="Sign Out" />
+      <Spacer />
+      <Spacer />
+      <Button block info
+        style={styles.blockButton}
+        onPress={() => signOut()}>
+        <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
+      </Button>
     </ScrollView>
   );
 };
@@ -78,20 +104,42 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff8f5'
   },
   picture: {
     width: 100,
     height: 100,
-    borderRadius: 10,
+    borderRadius: 100,
     alignSelf: 'center',
     marginVertical: 10,
+    borderWidth: 1,
+    borderColor: 'grey'
   },
   title: {
     alignSelf: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     padding: 5,
   },
+  button: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#85898f',
+    alignSelf: 'center'
+  },
+  blockButton: {
+    backgroundColor: '#f76f00',
+    marginHorizontal: 100
+  },
+  textInput: {
+    marginHorizontal: 20,
+    paddingLeft: 20,
+    alignSelf: 'center'
+  },
+  labelInput: {
+    marginHorizontal: 10,
+    fontSize: 13
+  }
 });
 
 function propsAreEqual(prevProps, nextProps) {
