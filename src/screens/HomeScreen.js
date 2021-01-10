@@ -35,6 +35,15 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View style={{flex: 0}}>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        data={questions}
+        renderItem={RenderItem}
+        keyExtractor={(item) => item.id}
+        style={styles.FlatList}
+      />
       <Fab
         position="bottomRight"
         direction="up"
@@ -45,15 +54,6 @@ const HomeScreen = ({navigation}) => {
         }}>
         <Icon name="plus" type="FontAwesome" />
       </Fab>
-      <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        data={questions}
-        renderItem={RenderItem}
-        keyExtractor={(item) => item.id}
-        style={styles.FlatList}
-      />
     </View>
   );
 };

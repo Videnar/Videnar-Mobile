@@ -117,7 +117,7 @@ const Editor = (props) => {
                    theme: 'snow'
                   });
                   quill.on('text-change', function(delta, oldDelta, source) {
-                    window.ReactNativeWebView.postMessage('quill.root.innerHTML');
+                    window.ReactNativeWebView.postMessage(quill.root.innerHTML);
                   });
                   quill.getModule('toolbar').addHandler('image', () => {
                    window.ReactNativeWebView.postMessage('image');
