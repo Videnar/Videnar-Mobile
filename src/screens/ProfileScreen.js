@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -6,16 +6,18 @@ import {
   Text,
   TextInput,
   ScrollView,
+  StatusBar
 } from 'react-native';
-import {AuthContext} from '../contexts/AuthContext';
+import Spacer from '../components/Spacer';
+import { AuthContext } from '../contexts/AuthContext';
 
 const ProfileScreen = () => {
   const {
     signOut,
     changePassword,
     state: {
-      attributes: {name, picture},
-      preferences: {level, branch, exams},
+      attributes: { name, picture },
+      preferences: { level, branch, exams },
     },
   } = useContext(AuthContext);
 
@@ -24,13 +26,23 @@ const ProfileScreen = () => {
   const [newPassword, setNewPassword] = useState(false);
   const pictureURL = picture || JSON.parse(picture).data.url;
 
+  const onChangePasswordHandler = () => {
+    if (show == true) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  }
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.container} >
+      <StatusBar backgroundColor='#fff8f5' barStyle='dark-content' />
+      <Spacer />
       <Image
         style={styles.picture}
         source={
           pictureURL
-            ? {uri: pictureURL}
+            ? { uri: pictureURL }
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
@@ -41,7 +53,7 @@ const ProfileScreen = () => {
       {exams.map((exam, index) => (
         <Text style={styles.title}>{exam}</Text>
       ))}
-      <Text style={styles.title} onPress={() => setShow(true)}>
+      <Text style={styles.button} onPress={onChangePasswordHandler}>
         Change Password
       </Text>
       {show ? (
@@ -78,20 +90,27 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff8f5'
   },
   picture: {
     width: 100,
     height: 100,
-    borderRadius: 10,
+    borderRadius: 100,
     alignSelf: 'center',
     marginVertical: 10,
   },
   title: {
     alignSelf: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     padding: 5,
   },
+  button: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#85898f',
+    alignSelf: 'center'
+  }
 });
 
 function propsAreEqual(prevProps, nextProps) {
