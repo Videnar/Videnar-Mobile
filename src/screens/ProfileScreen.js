@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
 import {
+  View,
   StyleSheet,
   Image,
-  Button,
-  Text,
   TextInput,
   ScrollView,
   StatusBar
 } from 'react-native';
 import Spacer from '../components/Spacer';
 import { AuthContext } from '../contexts/AuthContext';
+import { Button, Text, Input, Label, Item } from 'native-base'
 
 const ProfileScreen = () => {
   const {
@@ -58,31 +58,45 @@ const ProfileScreen = () => {
       </Text>
       {show ? (
         <>
-          <Text h3>Enter Old Password</Text>
-          <TextInput
-            secureTextEntry
-            value={oldPassword}
-            style={styles.textInput}
-            onChangeText={setOldPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Text h3>Enter New Password</Text>
-          <TextInput
-            secureTextEntry
-            value={newPassword}
-            style={styles.textInput}
-            onChangeText={setNewPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Button
-            onPress={() => changePassword(oldPassword, newPassword)}
-            title="Change Password"
-          />
+          <Item underline floatingLabel
+            style={styles.textInput}>
+            <Label style={styles.labelInput} >Enter Old Password</Label>
+            <Input
+              secureTextEntry
+              value={oldPassword}
+              onChangeText={setOldPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </Item>
+          <Spacer />
+          <Item underline floatingLabel
+            style={styles.textInput}>
+            <Label style={styles.labelInput} >Enter New Password</Label>
+            <Input
+              secureTextEntry
+              value={newPassword}
+              onChangeText={setNewPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </Item>
+          <Spacer />
+          <Button block info
+            style={styles.blockButton}
+            onPress={() => changePassword(oldPassword, newPassword)}>
+            <Text style={{ fontSize: 15, color: 'white' }}>Change Password</Text>
+          </Button>
+          <View style={{ borderWidth: 0.5, borderColor: '#85898f', marginHorizontal: 20, marginTop: 20 }} />
         </>
       ) : null}
-      <Button onPress={() => signOut()} title="Sign Out" />
+      <Spacer />
+      <Spacer />
+      <Button block info
+        style={styles.blockButton}
+        onPress={() => signOut()}>
+        <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
+      </Button>
     </ScrollView>
   );
 };
@@ -98,6 +112,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignSelf: 'center',
     marginVertical: 10,
+    borderWidth: 1,
+    borderColor: 'grey'
   },
   title: {
     alignSelf: 'center',
@@ -110,6 +126,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#85898f',
     alignSelf: 'center'
+  },
+  blockButton: {
+    backgroundColor: '#f76f00',
+    marginHorizontal: 100
+  },
+  textInput: {
+    marginHorizontal: 20,
+    paddingLeft: 20,
+    alignSelf: 'center'
+  },
+  labelInput: {
+    marginHorizontal: 10,
+    fontSize: 13
   }
 });
 
