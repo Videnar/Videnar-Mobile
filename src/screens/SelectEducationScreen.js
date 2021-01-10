@@ -8,8 +8,8 @@ import {
   StatusBar,
 } from 'react-native';
 import {educations} from '../utilities/constants/education';
-import * as RootNavigation from '../RootNavigation';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import * as RootNavigation from '../navigation/RootNavigation';
+import {AuthContext} from '../contexts/AuthContext';
 
 const SelectEducationScreen = () => {
   const {

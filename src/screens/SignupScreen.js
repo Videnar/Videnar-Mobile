@@ -1,19 +1,19 @@
 import React, {useContext} from 'react';
-import {Text, Button, View, StyleSheet} from 'react-native';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import {Text, View, StyleSheet} from 'react-native';
+import {AuthContext} from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
 
 const SignupScreen = ({navigation}) => {
-  const {state, signUp} = useContext(AuthContext);
+  const {signUp} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
       <AuthComponent
         headerText="Sign Up for Videnar"
-        errorMessage={state.errorMessage}
+        // errorMessage={state.errorMessage}
         submitButtonText="SIGN UP"
         nameInput
         onSubmit={signUp}

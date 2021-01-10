@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, TextInput, Text, View} from 'react-native';
 import Spacer from './Spacer';
-import * as RootNavigation from '../RootNavigation';
+import * as RootNavigation from '../navigation/RootNavigation';
 import {
   Container,
   Content,

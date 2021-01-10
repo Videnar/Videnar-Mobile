@@ -7,7 +7,7 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import * as RootNavigation from '../RootNavigation';
+import * as RootNavigation from '../navigation/RootNavigation';
 
 const SelectBranchScreen = ({route}) => {
   console.log();

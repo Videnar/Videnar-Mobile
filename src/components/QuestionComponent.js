@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Icon, Card, CardItem, Right, Text} from 'native-base';
 
 const QuestionComponent = ({question, navigate}) => {
   const {title, content, view, upvotes, tags} = question;
@@ -11,31 +11,42 @@ const QuestionComponent = ({question, navigate}) => {
       onPress={() => {
         navigate && navigate('QuestionDetails', {question});
       }}>
-      <View>
-        <Text>{title}</Text>
-        <WebView
-          originWhitelist={['*']}
-          source={{
-            html: `<head>
+      <Card>
+        <CardItem>
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text>
+        </CardItem>
+        <CardItem cardBody bordered>
+          <WebView
+            originWhitelist={['*']}
+            source={{
+              html: `<head>
                 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                  </head>
                  <body >
                 <div>${content}</div>
                 </body>`,
-          }}
-          style={{width: 'auto', height: 200}}
-        />
-        <View>
-          <Text>View: {view}</Text>
-          <Text>Upvotes: {upvotes}</Text>
-          <Text>{tags}</Text>
-        </View>
-        <MaterialIcons name="more-horiz" color={'#e91e63'} size={32} />
-        <MaterialIcons name="arrow-drop-up" color={'#e91e63'} size={48} />
-        <MaterialIcons name="arrow-drop-down" color={'#e91e63'} size={48} />
-      </View>
+            }}
+            style={{width: 'auto', height: 200}}
+          />
+        </CardItem>
+        <CardItem style={{flex: 1, justifyContent: 'space-around'}}>
+          <Text style={{color: '#cf391b'}}>{tags}</Text>
+          <Text style={styles.footerText}>Views: {view}</Text>
+          <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
+          <Icon name="caret-up" type="FontAwesome" />
+          <Icon name="caret-down" type="FontAwesome" />
+          <Icon name="ellipsis-h" type="FontAwesome" />
+        </CardItem>
+      </Card>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  footerText: {
+    color: '#85898f',
+    textAlign: 'right',
+  },
+});
 
 export default QuestionComponent;

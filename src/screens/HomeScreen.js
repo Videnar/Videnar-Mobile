@@ -1,32 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {API, graphqlOperation, Auth} from 'aws-amplify';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, FlatList, RefreshControl} from 'react-native';
+import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import {Context as AuthContext} from '../contexts/AuthContext';
+import {Fab, Icon, View} from 'native-base';
 
 const HomeScreen = ({navigation}) => {
-  // const {tryLocalSignin} = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  // useEffect(() => {
-  //   tryLocalSignin();
-  // }, []);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
-
-  const tryLocalSignin = (dispatch) => async () => {
-    try {
-      await Auth.currentAuthenticatedUser()
-        .then(({attributes}) => dispatch({type: 'signin', payload: attributes}))
-        .catch((err) => console.log(err));
-    } catch (err) {
-      navigation.navigate('Signin');
-    }
-  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -49,13 +34,17 @@ const HomeScreen = ({navigation}) => {
   );
 
   return (
-    <>
-      <Button
-        title="Question"
+    <View style={{flex: 0}}>
+      <Fab
+        position="bottomRight"
+        direction="up"
+        containerStyle={{}}
+        style={{backgroundColor: '#cf391b'}}
         onPress={() => {
           navigation.navigate('AskQuestion');
-        }}
-      />
+        }}>
+        <Icon name="plus" type="FontAwesome" />
+      </Fab>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -65,7 +54,7 @@ const HomeScreen = ({navigation}) => {
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
       />
-    </>
+    </View>
   );
 };
 
