@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import WebViewScreen from './src/screens/WebViewScreen';
@@ -15,9 +15,9 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import SelectEducationScreen from './src/screens/SelectEducationScreen';
 import SelectBranchScreen from './src/screens/SelectBranchScreen';
 import SelectExamsScreen from './src/screens/SelectExamsScreen';
-import { navigationRef, isReadyRef } from './src/RootNavigation';
-import { Provider as AuthProvider } from './src/contexts/AuthContext';
-import { Icon } from 'native-base'
+import {navigationRef, isReadyRef} from './src/RootNavigation';
+import {Provider as AuthProvider} from './src/contexts/AuthContext';
+import {Icon} from 'native-base';
 
 const Stack = createStackNavigator();
 const InnerStack = createStackNavigator();
@@ -26,7 +26,7 @@ const Tab = createBottomTabNavigator();
 const Home = () => (
   <InnerStack.Navigator
     initialRouteName="Home"
-    screenOptions={{ gestureEnabled: false }}>
+    screenOptions={{gestureEnabled: false}}>
     <InnerStack.Screen name="Home" component={HomeScreen} />
     <InnerStack.Screen
       name="QuestionDetails"
@@ -47,8 +47,8 @@ const Main = () => (
       name="Home"
       component={Home}
       options={{
-        tabBarIcon: ({ }) => (
-          <Icon name='home' type='FontAwesome' style={{ fontSize: 27 }} />
+        tabBarIcon: ({}) => (
+          <Icon name="home" type="FontAwesome" style={{fontSize: 27}} />
         ),
       }}
     />
@@ -56,8 +56,8 @@ const Main = () => (
       name="Activity"
       component={ActivityScreen}
       options={{
-        tabBarIcon: ({ }) => (
-          <Icon name='history' type='FontAwesome' style={{ fontSize: 27 }} />
+        tabBarIcon: ({}) => (
+          <Icon name="history" type="FontAwesome" style={{fontSize: 27}} />
         ),
       }}
     />
@@ -65,8 +65,8 @@ const Main = () => (
       name="Search"
       component={SearchScreen}
       options={{
-        tabBarIcon: ({ }) => (
-          <Icon name='search' type='FontAwesome' style={{ fontSize: 27 }} />
+        tabBarIcon: ({}) => (
+          <Icon name="search" type="FontAwesome" style={{fontSize: 27}} />
         ),
       }}
     />
@@ -74,8 +74,8 @@ const Main = () => (
       name="Profile"
       component={ProfileScreen}
       options={{
-        tabBarIcon: ({ }) => (
-          <Icon name='user' type='FontAwesome' style={{ fontSize: 27 }} />
+        tabBarIcon: ({}) => (
+          <Icon name="user" type="FontAwesome" style={{fontSize: 27}} />
         ),
       }}
     />

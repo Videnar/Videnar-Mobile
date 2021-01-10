@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { listQuestions } from '../graphql/queries';
+import React, {useState, useEffect, useContext} from 'react';
+import {Button, StyleSheet, FlatList, RefreshControl} from 'react-native';
+import {API, graphqlOperation, Auth} from 'aws-amplify';
+import {listQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import { Context as AuthContext } from '../contexts/AuthContext';
-import { Fab, Icon, View } from 'native-base'
+import {Context as AuthContext} from '../contexts/AuthContext';
+import {Fab, Icon, View} from 'native-base';
 
 const HomeScreen = (props) => {
-  const { tryLocalSignin } = useContext(AuthContext);
+  const {tryLocalSignin} = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -35,22 +35,21 @@ const HomeScreen = (props) => {
     }
   };
 
-  const RenderItem = ({ item }) => (
+  const RenderItem = ({item}) => (
     <QuestionComponent question={item} navigate={props.navigation.navigate} />
   );
 
   return (
-    <View style={{ flex: 0 }}>
+    <View style={{flex: 0}}>
       <Fab
-        position='bottomRight'
-        direction='up'
+        position="bottomRight"
+        direction="up"
         containerStyle={{}}
-        style={{ backgroundColor: '#cf391b' }}
+        style={{backgroundColor: '#cf391b'}}
         onPress={() => {
           props.navigation.navigate('AskQuestion');
-        }}
-      >
-        <Icon name='plus' type='FontAwesome' />
+        }}>
+        <Icon name="plus" type="FontAwesome" />
       </Fab>
       <FlatList
         refreshControl={
@@ -66,9 +65,9 @@ const HomeScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  FlatList: { marginHorizontal: 2 },
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  questionTitle: { fontSize: 18 },
+  FlatList: {marginHorizontal: 2},
+  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
+  questionTitle: {fontSize: 18},
 });
 
 export default HomeScreen;
