@@ -1,10 +1,10 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {Icon, Card, CardItem, Right, Text} from 'native-base';
+import {Icon, Card, CardItem, Text} from 'native-base';
 
 const QuestionComponent = ({question, navigate}) => {
-  const {title, content, view, upvotes, tags} = question;
+  const {content, view, upvotes, tags} = question;
 
   return (
     <TouchableOpacity
@@ -12,9 +12,6 @@ const QuestionComponent = ({question, navigate}) => {
         navigate && navigate('QuestionDetails', {question});
       }}>
       <Card>
-        <CardItem>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text>
-        </CardItem>
         <CardItem cardBody bordered>
           <WebView
             originWhitelist={['*']}

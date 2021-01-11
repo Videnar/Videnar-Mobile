@@ -7,25 +7,16 @@ import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import {Storage} from 'aws-amplify';
 import config from '../../aws-exports';
 
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket,
-} = config;
+const {aws_user_files_s3_bucket: bucket} = config;
 
-const Editor = (props) => {
+const Editor = ({content, setContent}) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [webref, setWebref] = useState();
 
-  const content = props.content || '<p><br></p>';
-
-  // const run = `
-  //     document.body.style.backgroundColor = 'blue';
-  //     true;
-  //   `;
-
-  // setTimeout(() => {
-  //   webref.injectJavaScript(run);
-  // }, 4000);
+  const goToNewLine = () => {
+    console.log('long long long');
+    setContent(content + '<p><br></p>');
+  };
 
   const uploadToStorage = async (imageData) => {
     const {uri, fileName, type} = imageData;
@@ -34,17 +25,17 @@ const Editor = (props) => {
 
       const blob = await response.blob();
 
-      const key = `${uuid()}.${uuid()}.${fileName}.`;
+      const key = `${uuid()}-${uuid()}-${fileName}`;
 
       Storage.put(key, blob, {
         contentType: type,
       });
-      const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
+      const url = `https://${bucket}.s3.amazonaws.com/public/${key}`;
       const run = `
       const range = window.quill.getSelection();
-      window.quill.insertEmbed(range.index, 'image', ${url});
-    `;
-      webref.injectJavaScript(run);
+      window.quill.insertEmbed(range.index, 'image', '${url}');
+      `;
+      await webref.injectJavaScript(run).then(goToNewLine());
     } catch (err) {
       console.log(err);
     }
@@ -93,7 +84,7 @@ const Editor = (props) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <WebView
         originWhitelist={['*']}
         ref={(r) => setWebref(r)}
@@ -126,16 +117,15 @@ const Editor = (props) => {
         }}
         onMessage={(event) => {
           const {data} = event.nativeEvent;
+          console.log(data);
           if (data === 'image') {
             Keyboard.dismiss();
             setPopupVisible(true);
-          } else if (data === 'x') {
-            console.log('xxxxxxxx');
           } else {
-            props.setContent(data);
+            setContent(data);
           }
         }}
-        containerStyle={{height: 100, width: 350}}
+        containerStyle={styles.webview}
       />
       <Dialog
         visible={popupVisible}
@@ -159,15 +149,11 @@ const Editor = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
   },
+  webview: {height: 100, width: 350},
   button: {
     width: 250,
     height: 60,
-    // backgroundColor: '#3740ff',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,

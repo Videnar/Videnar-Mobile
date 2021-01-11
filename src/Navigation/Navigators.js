@@ -23,7 +23,10 @@ const Tab = createBottomTabNavigator();
 const Home = () => (
   <InnerStack.Navigator
     initialRouteName="Home"
-    screenOptions={{gestureEnabled: false}}>
+    screenOptions={{
+      headerShown: false,
+      gestureEnabled: false,
+    }}>
     <InnerStack.Screen name="Home" component={HomeScreen} />
     <InnerStack.Screen
       name="QuestionDetails"

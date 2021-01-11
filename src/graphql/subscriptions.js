@@ -6,7 +6,6 @@ export const onCreateQuestion = /* GraphQL */ `
     onCreateQuestion {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -42,7 +41,6 @@ export const onUpdateQuestion = /* GraphQL */ `
     onUpdateQuestion {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -78,7 +76,6 @@ export const onDeleteQuestion = /* GraphQL */ `
     onDeleteQuestion {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -119,7 +116,6 @@ export const onCreateCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -147,7 +143,6 @@ export const onUpdateCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -175,7 +170,6 @@ export const onDeleteCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -204,7 +198,6 @@ export const onCreateAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -243,7 +236,6 @@ export const onUpdateAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -282,7 +274,6 @@ export const onDeleteAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -326,7 +317,6 @@ export const onCreateCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -359,7 +349,6 @@ export const onUpdateCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -392,7 +381,6 @@ export const onDeleteCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view

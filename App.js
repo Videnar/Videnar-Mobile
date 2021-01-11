@@ -1,7 +1,7 @@
 import React, {useReducer, useEffect, useMemo} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Auth, Hub} from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './src/screens/LoadingScreen';
 import {navigationRef, isReadyRef} from './src/navigation/RootNavigation';

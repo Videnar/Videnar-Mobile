@@ -7,7 +7,6 @@ type Question
   ) {
   id: ID!
   createdAt: AWSDateTime!
-  title: String!
   content: String!
   upvotes: Int!
   view: Int!

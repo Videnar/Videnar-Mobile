@@ -9,7 +9,6 @@ export const createQuestion = /* GraphQL */ `
     createQuestion(input: $input, condition: $condition) {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -48,7 +47,6 @@ export const updateQuestion = /* GraphQL */ `
     updateQuestion(input: $input, condition: $condition) {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -87,7 +85,6 @@ export const deleteQuestion = /* GraphQL */ `
     deleteQuestion(input: $input, condition: $condition) {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -131,7 +128,6 @@ export const createCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -162,7 +158,6 @@ export const updateCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -193,7 +188,6 @@ export const deleteCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -225,7 +219,6 @@ export const createAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -267,7 +260,6 @@ export const updateAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -309,7 +301,6 @@ export const deleteAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -356,7 +347,6 @@ export const createCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -392,7 +382,6 @@ export const updateCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -428,7 +417,6 @@ export const deleteCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view

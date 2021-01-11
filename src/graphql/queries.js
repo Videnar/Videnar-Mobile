@@ -6,7 +6,6 @@ export const getQuestion = /* GraphQL */ `
     getQuestion(id: $id) {
       id
       createdAt
-      title
       content
       upvotes
       view
@@ -47,7 +46,6 @@ export const listQuestions = /* GraphQL */ `
       items {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -75,7 +73,6 @@ export const getCommentOnQuestion = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -112,7 +109,6 @@ export const listCommentOnQuestions = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -137,7 +133,6 @@ export const getAnswer = /* GraphQL */ `
       question {
         id
         createdAt
-        title
         content
         upvotes
         view
@@ -181,7 +176,6 @@ export const listAnswers = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -190,15 +184,8 @@ export const listAnswers = /* GraphQL */ `
           updatedAt
         }
         commentsOnAnswer {
-        items {
-          id
-          answerID
-          createdAt
-          content
-          updatedAt
+          nextToken
         }
-        nextToken
-      }
         updatedAt
       }
       nextToken
@@ -221,7 +208,6 @@ export const getCommentOnAnswer = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -293,7 +279,6 @@ export const commentsOnQuestionByquestionId = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
@@ -333,7 +318,6 @@ export const answersByquestionId = /* GraphQL */ `
         question {
           id
           createdAt
-          title
           content
           upvotes
           view
