@@ -117,7 +117,7 @@ const Editor = ({content, setContent}) => {
         }}
         onMessage={(event) => {
           const {data} = event.nativeEvent;
-          console.log(data);
+          console.log(data, 'content');
           if (data === 'image') {
             Keyboard.dismiss();
             setPopupVisible(true);
