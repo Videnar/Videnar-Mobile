@@ -55,9 +55,11 @@ const App = () => {
             attributes: {email},
           });
           Auth.currentAuthenticatedUser()
-            .then(({attributes}) =>
-              dispatch({type: 'signin', payload: attributes}),
-            )
+            .then(({attributes}) => {
+              dispatch({type: 'signin', payload: attributes});
+              const jsonValue = JSON.stringify(attributes);
+              AsyncStorage.setItem('@user', jsonValue);
+            })
             .catch((err) => console.log(err));
         } catch (error) {
           console.log('error signing in', error);
@@ -82,9 +84,11 @@ const App = () => {
             },
           });
           Auth.currentAuthenticatedUser()
-            .then(({attributes}) =>
-              dispatch({type: 'signin', payload: attributes}),
-            )
+            .then(({attributes}) => {
+              dispatch({type: 'signin', payload: attributes});
+              const jsonValue = JSON.stringify(attributes);
+              AsyncStorage.setItem('@user', jsonValue);
+            })
             .catch((err) => console.log(err));
         } catch (error) {
           console.log('error signing up:', error);

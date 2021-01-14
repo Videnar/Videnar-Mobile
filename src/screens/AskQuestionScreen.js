@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {View, Button, StyleSheet} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion} from '../graphql/mutations';
+import {createQuestion, updateQuestion} from '../graphql/mutations';
 import Editor from '../components/Editor';
 
 class QuestionScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      content: '<p><br></p>',
-    };
   }
 
   submitQuestion = async () => {
+    if (this.props.route.params) {
+      this.updateQuestion();
+    }
     try {
       const {content} = this.state;
       await API.graphql(
@@ -32,14 +32,33 @@ class QuestionScreen extends Component {
     }
   };
 
+  updateQuestion = async (n) => {
+    const {id} = this.props.route.params;
+    const {content} = this.state;
+    try {
+      await API.graphql({
+        query: updateQuestion,
+        variables: {
+          input: {
+            id,
+            content,
+          },
+        },
+      });
+    } catch (err) {
+      console.log('error updating Question:', err);
+    }
+  };
+
   setContent = (content) => {
     this.setState({content});
   };
 
   render() {
+    const {content} = this.props.route.params;
     return (
       <View style={styles.container}>
-        <Editor setContent={this.setContent} content={this.state.content} />
+        <Editor setContent={this.setContent} content={content} />
         <Button title="Submit Question" onPress={this.submitQuestion} />
       </View>
     );

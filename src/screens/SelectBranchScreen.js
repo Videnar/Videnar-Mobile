@@ -10,7 +10,6 @@ import {
 import * as RootNavigation from '../navigation/RootNavigation';
 
 const SelectBranchScreen = ({route}) => {
-  console.log();
   const {education} = route.params;
   const onPressHandler = (branch) => {
     RootNavigation.navigate('SelectExams', {education, branch});
