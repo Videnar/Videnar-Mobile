@@ -13,8 +13,9 @@ const Editor = ({content, setContent}) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [webref, setWebref] = useState();
 
+  const defaultContent = '<p><br></p>';
+
   const goToNewLine = () => {
-    console.log('long long long');
     setContent(content + '<p><br></p>');
   };
 
@@ -96,7 +97,7 @@ const Editor = ({content, setContent}) => {
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
                  <body>
-                  <div id="editor" >${content}</div>
+                  <div id="editor" >${content || defaultContent}</div>
                  </body>
                  <script> 
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
@@ -117,7 +118,6 @@ const Editor = ({content, setContent}) => {
         }}
         onMessage={(event) => {
           const {data} = event.nativeEvent;
-          console.log(data, 'content');
           if (data === 'image') {
             Keyboard.dismiss();
             setPopupVisible(true);
