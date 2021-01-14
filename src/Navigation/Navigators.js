@@ -1,7 +1,7 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Icon} from 'native-base';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon } from 'native-base';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ActivityScreen from '../screens/ActivityScreen';
@@ -42,42 +42,50 @@ export const Main = () => (
     tabBarOptions={{
       activeTintColor: '#e91e63',
       showIcon: true,
-    }}>
+      style: { backgroundColor: '#121212' },
+      showLabel: false
+    }}
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        let fontsize;
+        let colorName;
+        if (route.name === 'Home') {
+          iconName = 'home';
+          fontsize = focused ? 30 : 25;
+          colorName = focused ? '#eb4034' : 'white'
+        } else if (route.name === 'Activity') {
+          iconName = 'history';
+          fontsize = focused ? 30 : 25;
+          colorName = focused ? '#eb4034' : 'white'
+        } else if (route.name === 'Search') {
+          iconName = 'search';
+          fontsize = focused ? 30 : 25;
+          colorName = focused ? '#eb4034' : 'white'
+        } else {
+          iconName = 'user';
+          fontsize = focused ? 30 : 25;
+          colorName = focused ? '#eb4034' : 'white'
+        }
+
+        return <Icon name={iconName} type='FontAwesome' style={{ fontSize: fontsize, color: colorName }} />
+      }
+    })}>
     <Tab.Screen
       name="Home"
       component={Home}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="home" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
     />
     <Tab.Screen
       name="Activity"
       component={ActivityScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="history" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
     />
     <Tab.Screen
       name="Search"
       component={SearchScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="search" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
     />
     <Tab.Screen
       name="Profile"
       component={ProfileScreen}
-      options={{
-        tabBarIcon: ({}) => (
-          <Icon name="user" type="FontAwesome" style={{fontSize: 27}} />
-        ),
-      }}
     />
   </Tab.Navigator>
 );

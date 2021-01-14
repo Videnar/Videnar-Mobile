@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {API, graphqlOperation} from 'aws-amplify';
-import {listQuestions} from '../graphql/queries';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, FlatList, RefreshControl, StatusBar } from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import {Fab, Icon, View} from 'native-base';
+import { Fab, Icon, View, Header } from 'native-base';
+import Spacer from '../components/Spacer'
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -29,12 +30,14 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
-  const RenderItem = ({item}) => (
+  const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigate={navigation.navigate} />
   );
 
   return (
-    <View style={{flex: 0}}>
+    <View style={styles.container}>
+      <StatusBar barStyle='dark-content' backgroundColor='#fff8f5' />
+      <Spacer />
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -48,7 +51,7 @@ const HomeScreen = ({navigation}) => {
         position="bottomRight"
         direction="up"
         containerStyle={{}}
-        style={{backgroundColor: '#cf391b'}}
+        style={{ backgroundColor: '#cf391b' }}
         onPress={() => {
           navigation.navigate('AskQuestion');
         }}>
@@ -59,9 +62,10 @@ const HomeScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  FlatList: {marginHorizontal: 2},
-  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
-  questionTitle: {fontSize: 18},
+  FlatList: { marginHorizontal: 2 },
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  questionTitle: { fontSize: 18 },
+  container: { flex: 1, backgroundColor: '#fff8f5' }
 });
 
 export default HomeScreen;
