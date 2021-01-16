@@ -1,12 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  TextInput,
-  ScrollView,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, Image, ScrollView, StatusBar} from 'react-native';
 import Spacer from '../components/Spacer';
 import {AuthContext} from '../contexts/AuthContext';
 import {Button, Text, Input, Label, Item} from 'native-base';
@@ -27,7 +20,7 @@ const ProfileScreen = () => {
   const pictureURL = picture || JSON.parse(picture).data.url;
 
   const onChangePasswordHandler = () => {
-    if (show == true) {
+    if (show === true) {
       setShow(false);
     } else {
       setShow(true);
@@ -51,7 +44,9 @@ const ProfileScreen = () => {
       {branch && <Text style={styles.title}>Branch : {branch}</Text>}
       <Text style={styles.title}>Exams:</Text>
       {exams.map((exam, index) => (
-        <Text style={styles.title}>{exam}</Text>
+        <Text key={index} style={styles.title}>
+          {exam}
+        </Text>
       ))}
       <Text style={styles.button} onPress={onChangePasswordHandler}>
         Change Password
@@ -87,14 +82,6 @@ const ProfileScreen = () => {
             onPress={() => changePassword(oldPassword, newPassword)}>
             <Text style={{fontSize: 15, color: 'white'}}>Change Password</Text>
           </Button>
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: '#85898f',
-              marginHorizontal: 20,
-              marginTop: 20,
-            }}
-          />
         </>
       ) : null}
       <Spacer />
