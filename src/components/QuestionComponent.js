@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
 import {API} from 'aws-amplify';
-import {updateQuestion, deleteQuestion} from '../graphql/mutations';
 import {Icon, Card, CardItem, Text} from 'native-base';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import {updateQuestion, deleteQuestion} from '../graphql/mutations';
 import * as RootNavigation from '../navigation/RootNavigation';
 
 const QuestionComponent = ({question, navigate}) => {

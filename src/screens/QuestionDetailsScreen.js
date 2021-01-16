@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
 import {createAnswer, createCommentOnQuestion} from '../graphql/mutations';
-import {listAnswers, listCommentOnQuestion} from '../graphql/queries';
+import {listAnswers, listCommentOnQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -54,7 +54,7 @@ class QuestionDetailsScreen extends Component {
   fetchCommentOnQuestion = async (id) => {
     try {
       const list = await API.graphql({
-        query: listCommentOnQuestion,
+        query: listCommentOnQuestions,
         variables: {
           filter: {questionID: {eq: id}},
         },
@@ -169,7 +169,7 @@ class QuestionDetailsScreen extends Component {
             </Text>
           )}
           {answers.map((answer, index) => (
-            <View key={answer.id ? answer.id : index}>
+            <View key={answer.id || index}>
               <AnswerComponent answer={answer} />
             </View>
           ))}
