@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Header, Item, Input, Icon, Button, Text} from 'native-base';
+import {Container, Header, Item, Input, Icon} from 'native-base';
 import {StyleSheet} from 'react-native';
 
 const SearchScreen = () => {

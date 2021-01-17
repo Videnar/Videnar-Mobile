@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, Button, TextInput, View, StyleSheet} from 'react-native';
+import {
+  Text,
+  Button,
+  TextInput,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {WebView} from 'react-native-webview';
 import {API, graphqlOperation} from 'aws-amplify';
 import {Icon, Card, CardItem} from 'native-base';
@@ -8,10 +15,13 @@ import {
   createCommentOnAnswer,
   updateAnswer,
   deleteAnswer,
+  deleteCommentOnAnswer,
+  updateCommentOnAnswer,
 } from '../graphql/mutations';
 import {listCommentOnAnswers} from '../graphql/queries';
+import CommentComponent from './CommentComponent';
 
-const AnswerComponent = ({answer}) => {
+const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
   const [showCommentBoxForAnswer, setShowCommentBoxForAnswer] = useState(false);
   const [commentsOnAnswerInput, setCommentsOnAnswerInput] = useState('');
   const [commentsOnAnswer, setCommentsOnAnswer] = useState([]);
@@ -29,7 +39,7 @@ const AnswerComponent = ({answer}) => {
           },
         });
         const comments = list.data.listCommentOnAnswers.items;
-        setCommentsOnAnswer([...commentsOnAnswer, ...comments]);
+        setCommentsOnAnswer(comments);
       } catch (err) {
         console.log('error fetching commentsOnAnswer', err);
       }
@@ -70,6 +80,12 @@ const AnswerComponent = ({answer}) => {
     }
   };
 
+  const editAnswer = () => {
+    setAnswer(content);
+    setAnswerId(id);
+    setPopupVisible(false);
+  };
+
   const deleteSelectedAnswer = async () => {
     try {
       await API.graphql({
@@ -79,9 +95,40 @@ const AnswerComponent = ({answer}) => {
         },
       });
     } catch (err) {
-      console.log('error updating Answer:', err);
+      console.log('error deleting Answer:', err);
     }
     setPopupVisible(false);
+  };
+
+  const updateSelectedComment = async (Id, commentContent) => {
+    console.log(Id, commentContent, 'UPDATE');
+    try {
+      await API.graphql({
+        query: updateCommentOnAnswer,
+        variables: {
+          input: {
+            id: Id,
+            content: commentContent,
+          },
+        },
+      });
+    } catch (err) {
+      console.log('error updating Comment:', err);
+    }
+  };
+
+  const deleteSelectedComment = async (Id) => {
+    console.log(Id, 'DELETE');
+    try {
+      await API.graphql({
+        query: deleteCommentOnAnswer,
+        variables: {
+          input: {id: Id},
+        },
+      });
+    } catch (err) {
+      console.log('error updating Comment:', err);
+    }
   };
 
   return (
@@ -131,18 +178,25 @@ const AnswerComponent = ({answer}) => {
             setPopupVisible(false);
           }}>
           <DialogContent>
-            {/* <View onPress={editAnswer} style={styles.button}>
+            <TouchableOpacity onPress={editAnswer} style={styles.button}>
               <Text style={styles.buttonText}>Edit</Text>
-            </View> */}
-            <View onPress={deleteSelectedAnswer} style={styles.button}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={deleteSelectedAnswer}
+              style={styles.button}>
               <Text style={styles.buttonText}>Delete</Text>
-            </View>
+            </TouchableOpacity>
           </DialogContent>
         </Dialog>
       </Card>
       {commentsOnAnswer.map((comment, index) => (
         <View key={comment.id ? comment.id : index}>
-          <Text>{comment.content}</Text>
+          <CommentComponent
+            id={comment.id}
+            comment={comment.content}
+            updateComment={updateSelectedComment}
+            deleteComment={deleteSelectedComment}
+          />
         </View>
       ))}
       {showCommentBoxForAnswer ? (

@@ -8,17 +8,26 @@ import {
   ScrollView,
 } from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
-import {createAnswer, createCommentOnQuestion} from '../graphql/mutations';
+import {
+  createAnswer,
+  updateAnswer,
+  createCommentOnQuestion,
+  deleteCommentOnQuestion,
+  updateCommentOnQuestion,
+} from '../graphql/mutations';
 import {listAnswers, listCommentOnQuestions} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
+import CommentComponent from '../components/CommentComponent';
 
 class QuestionDetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answerInput: '',
+      id: null,
+      answerId: null,
+      content: '',
       commentsOnQuestionInput: '',
       answers: [],
       commentsOnQuestion: [],
@@ -71,20 +80,41 @@ class QuestionDetailsScreen extends Component {
     }
   };
 
-  setAnswer = (answerInput) => {
-    this.setState({answerInput});
+  setAnswer = (content) => {
+    this.setState({content});
+  };
+
+  setAnswerId = (answerId) => {
+    this.setState({answerId});
   };
 
   submitAnswer = async () => {
+    const {answerId, content} = this.state;
+    if (answerId) {
+      try {
+        await API.graphql({
+          query: updateAnswer,
+          variables: {
+            input: {
+              id: answerId,
+              content,
+            },
+          },
+        });
+      } catch (err) {
+        console.log('error updating Answer:', err);
+      }
+      return;
+    }
+
     try {
       const {question} = this.props.route.params;
       const {id} = question;
-      const {answerInput} = this.state;
       await API.graphql(
         graphqlOperation(createAnswer, {
           input: {
             questionID: id,
-            content: answerInput,
+            content,
             upvotes: 0,
           },
         }),
@@ -116,11 +146,43 @@ class QuestionDetailsScreen extends Component {
     }
   };
 
+  updateSelectedComment = async (Id, commentContent) => {
+    console.log(Id, commentContent, 'UPDATE');
+    try {
+      await API.graphql({
+        query: updateCommentOnQuestion,
+        variables: {
+          input: {
+            id: Id,
+            content: commentContent,
+          },
+        },
+      });
+    } catch (err) {
+      console.log('error updating Comment:', err);
+    }
+  };
+
+  deleteSelectedComment = async (Id) => {
+    console.log(Id, 'DELETE');
+    try {
+      await API.graphql({
+        query: deleteCommentOnQuestion,
+        variables: {
+          input: {id: Id},
+        },
+      });
+    } catch (err) {
+      console.log('error updating Comment:', err);
+    }
+  };
+
   render() {
     const {question} = this.props.route.params;
     const {
       commentsOnQuestion,
       answers,
+      content,
       commentsOnQuestionInput,
       showCommentBoxForQuestion,
     } = this.state;
@@ -135,7 +197,12 @@ class QuestionDetailsScreen extends Component {
           <QuestionComponent question={question} />
           {commentsOnQuestion.map((comment, index) => (
             <View key={comment.id ? comment.id : index}>
-              <Text>{comment.content}</Text>
+              <CommentComponent
+                id={comment.id}
+                comment={comment.content}
+                updateComment={this.updateSelectedComment}
+                deleteComment={this.deleteSelectedComment}
+              />
             </View>
           ))}
           {showCommentBoxForQuestion ? (
@@ -170,10 +237,14 @@ class QuestionDetailsScreen extends Component {
           )}
           {answers.map((answer, index) => (
             <View key={answer.id || index}>
-              <AnswerComponent answer={answer} />
+              <AnswerComponent
+                setAnswer={this.setAnswer}
+                setAnswerId={this.setAnswerId}
+                answer={answer}
+              />
             </View>
           ))}
-          <Editor setContent={this.setAnswer} />
+          <Editor content={content} setContent={this.setAnswer} />
           <Button title="Submit Answer" onPress={this.submitAnswer} />
         </ScrollView>
       </View>

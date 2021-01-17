@@ -10,11 +10,6 @@ import * as RootNavigation from '../navigation/RootNavigation';
 const QuestionComponent = ({question, navigate}) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const {id, content, view, upvotes, tags} = question;
-  // const [upvotes, setUpvotes] = useState(0);
-  // const [view, setView] = useState(0);
-
-  // useEffect(() => {
-  // },[view])
 
   const updateUpvote = async (n) => {
     try {

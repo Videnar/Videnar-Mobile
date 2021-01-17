@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Keyboard} from 'react-native';
 import {WebView} from 'react-native-webview';
 import ImagePicker from 'react-native-image-picker';
@@ -9,14 +9,19 @@ import config from '../../aws-exports';
 
 const {aws_user_files_s3_bucket: bucket} = config;
 
-const Editor = ({content, setContent}) => {
+const Editor = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
+  const [content, setContent] = useState('<p><br></p>');
   const [webref, setWebref] = useState();
 
-  const defaultContent = '<p><br></p>';
+  useEffect(() => {
+    if (props.content !== content) {
+      setContent(props.content);
+    }
+  }, [content, props.content]);
 
   const goToNewLine = () => {
-    setContent(content + '<p><br></p>');
+    props.setContent(content + '<p><br></p>');
   };
 
   const uploadToStorage = async (imageData) => {
@@ -97,7 +102,7 @@ const Editor = ({content, setContent}) => {
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
                  <body>
-                  <div id="editor" >${content || defaultContent}</div>
+                  <div id="editor" >${content}</div>
                  </body>
                  <script> 
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
@@ -122,7 +127,7 @@ const Editor = ({content, setContent}) => {
             Keyboard.dismiss();
             setPopupVisible(true);
           } else {
-            setContent(data);
+            props.setContent(data);
           }
         }}
         containerStyle={styles.webview}
