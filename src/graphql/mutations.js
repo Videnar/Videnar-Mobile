@@ -8,6 +8,7 @@ export const createQuestion = /* GraphQL */ `
   ) {
     createQuestion(input: $input, condition: $condition) {
       id
+      username
       createdAt
       content
       upvotes
@@ -15,6 +16,7 @@ export const createQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -26,6 +28,7 @@ export const createQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -46,6 +49,7 @@ export const updateQuestion = /* GraphQL */ `
   ) {
     updateQuestion(input: $input, condition: $condition) {
       id
+      username
       createdAt
       content
       upvotes
@@ -53,6 +57,7 @@ export const updateQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -64,6 +69,7 @@ export const updateQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -84,6 +90,7 @@ export const deleteQuestion = /* GraphQL */ `
   ) {
     deleteQuestion(input: $input, condition: $condition) {
       id
+      username
       createdAt
       content
       upvotes
@@ -91,6 +98,7 @@ export const deleteQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -102,6 +110,7 @@ export const deleteQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -122,11 +131,13 @@ export const createCommentOnQuestion = /* GraphQL */ `
   ) {
     createCommentOnQuestion(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -152,11 +163,13 @@ export const updateCommentOnQuestion = /* GraphQL */ `
   ) {
     updateCommentOnQuestion(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -182,11 +195,13 @@ export const deleteCommentOnQuestion = /* GraphQL */ `
   ) {
     deleteCommentOnQuestion(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -212,12 +227,14 @@ export const createAnswer = /* GraphQL */ `
   ) {
     createAnswer(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -235,7 +252,9 @@ export const createAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -253,12 +272,14 @@ export const updateAnswer = /* GraphQL */ `
   ) {
     updateAnswer(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -276,7 +297,9 @@ export const updateAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -294,12 +317,14 @@ export const deleteAnswer = /* GraphQL */ `
   ) {
     deleteAnswer(input: $input, condition: $condition) {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -317,7 +342,9 @@ export const deleteAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -335,17 +362,21 @@ export const createCommentOnAnswer = /* GraphQL */ `
   ) {
     createCommentOnAnswer(input: $input, condition: $condition) {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes
@@ -370,17 +401,21 @@ export const updateCommentOnAnswer = /* GraphQL */ `
   ) {
     updateCommentOnAnswer(input: $input, condition: $condition) {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes
@@ -405,17 +440,21 @@ export const deleteCommentOnAnswer = /* GraphQL */ `
   ) {
     deleteCommentOnAnswer(input: $input, condition: $condition) {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes

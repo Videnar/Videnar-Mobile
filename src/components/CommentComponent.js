@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {
   Icon,
-  Container,
   Button,
   Header,
   Content,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1003541739972",
+    "project_id": "videnar",
+    "storage_bucket": "videnar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003541739972:android:9c6ed76ff9582424facc91",
+        "android_client_info": {
+          "package_name": "com.videnar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqLjfN8wvqKBlZRSlmSPppwnYJW1KkMKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

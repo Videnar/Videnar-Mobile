@@ -1,11 +1,18 @@
 type Question
   @model
+  @searchable
+  @key(
+    name: "questionsByUsername"
+    fields: ["username", "createdAt"]
+    queryField: "questionsByUsername"
+  )
   @auth(
     rules: [
       {allow: owner, ownerField: "owner", operations: [create, delete, update]}
     ]
   ) {
   id: ID!
+  username: String!
   createdAt: AWSDateTime!
   content: String!
   upvotes: Int!
@@ -18,10 +25,16 @@ type Question
 
 type CommentOnQuestion
   @model
+  @searchable
   @key(
     name: "commentsOnQuestionByquestionID"
     fields: ["questionID", "createdAt"]
     queryField: "commentsOnQuestionByquestionID"
+  )
+  @key(
+    name: "commentsOnQuestionByUsername"
+    fields: ["username", "createdAt"]
+    queryField: "commentsOnQuestionByUsername"
   )
   @auth(
     rules: [
@@ -29,6 +42,7 @@ type CommentOnQuestion
     ]
   ) {
   id: ID!
+  username: String!
   questionID: ID!
   createdAt: AWSDateTime!
   content: String!
@@ -37,10 +51,16 @@ type CommentOnQuestion
 
 type Answer
   @model
+  @searchable
   @key(
     name: "answersByquestionID"
     fields: ["questionID", "createdAt"]
     queryField: "answersByquestionID"
+  )
+  @key(
+    name: "answersByUsername"
+    fields: ["username", "createdAt"]
+    queryField: "answersByUsername"
   )
   @auth(
     rules: [
@@ -48,6 +68,7 @@ type Answer
     ]
   ) {
   id: ID!
+  username: String!
   questionID: ID!
   createdAt: AWSDateTime!
   content: String!
@@ -59,14 +80,22 @@ type Answer
 
 type CommentOnAnswer
   @model
+  @searchable
   @key(name: "byAnswer", fields: ["answerID", "content"])
+  @key(
+    name: "commentsOnAnswerByUsername"
+    fields: ["username", "createdAt"]
+    queryField: "commentsOnAnswerByUsername"
+  )
   @auth(
     rules: [
       {allow: owner, ownerField: "owner", operations: [create, delete, update]}
     ]
   ) {
   id: ID!
+  username: String!
   answerID: ID!
+  questionID: ID!
   createdAt: AWSDateTime!
   content: String!
   answer: Answer @connection(fields: ["answerID"])

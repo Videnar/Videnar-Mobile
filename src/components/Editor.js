@@ -89,6 +89,8 @@ const Editor = (props) => {
     });
   };
 
+  console.log('rerendering');
+
   return (
     <View style={styles.container}>
       <WebView

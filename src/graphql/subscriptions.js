@@ -5,6 +5,7 @@ export const onCreateQuestion = /* GraphQL */ `
   subscription OnCreateQuestion {
     onCreateQuestion {
       id
+      username
       createdAt
       content
       upvotes
@@ -12,6 +13,7 @@ export const onCreateQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -23,6 +25,7 @@ export const onCreateQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -40,6 +43,7 @@ export const onUpdateQuestion = /* GraphQL */ `
   subscription OnUpdateQuestion {
     onUpdateQuestion {
       id
+      username
       createdAt
       content
       upvotes
@@ -47,6 +51,7 @@ export const onUpdateQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -58,6 +63,7 @@ export const onUpdateQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -75,6 +81,7 @@ export const onDeleteQuestion = /* GraphQL */ `
   subscription OnDeleteQuestion {
     onDeleteQuestion {
       id
+      username
       createdAt
       content
       upvotes
@@ -82,6 +89,7 @@ export const onDeleteQuestion = /* GraphQL */ `
       answers {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -93,6 +101,7 @@ export const onDeleteQuestion = /* GraphQL */ `
       commentsOnQuestion {
         items {
           id
+          username
           questionID
           createdAt
           content
@@ -110,11 +119,13 @@ export const onCreateCommentOnQuestion = /* GraphQL */ `
   subscription OnCreateCommentOnQuestion {
     onCreateCommentOnQuestion {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -137,11 +148,13 @@ export const onUpdateCommentOnQuestion = /* GraphQL */ `
   subscription OnUpdateCommentOnQuestion {
     onUpdateCommentOnQuestion {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -164,11 +177,13 @@ export const onDeleteCommentOnQuestion = /* GraphQL */ `
   subscription OnDeleteCommentOnQuestion {
     onDeleteCommentOnQuestion {
       id
+      username
       questionID
       createdAt
       content
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -191,12 +206,14 @@ export const onCreateAnswer = /* GraphQL */ `
   subscription OnCreateAnswer {
     onCreateAnswer {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -214,7 +231,9 @@ export const onCreateAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -229,12 +248,14 @@ export const onUpdateAnswer = /* GraphQL */ `
   subscription OnUpdateAnswer {
     onUpdateAnswer {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -252,7 +273,9 @@ export const onUpdateAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -267,12 +290,14 @@ export const onDeleteAnswer = /* GraphQL */ `
   subscription OnDeleteAnswer {
     onDeleteAnswer {
       id
+      username
       questionID
       createdAt
       content
       upvotes
       question {
         id
+        username
         createdAt
         content
         upvotes
@@ -290,7 +315,9 @@ export const onDeleteAnswer = /* GraphQL */ `
       commentsOnAnswer {
         items {
           id
+          username
           answerID
+          questionID
           createdAt
           content
           updatedAt
@@ -305,17 +332,21 @@ export const onCreateCommentOnAnswer = /* GraphQL */ `
   subscription OnCreateCommentOnAnswer {
     onCreateCommentOnAnswer {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes
@@ -337,17 +368,21 @@ export const onUpdateCommentOnAnswer = /* GraphQL */ `
   subscription OnUpdateCommentOnAnswer {
     onUpdateCommentOnAnswer {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes
@@ -369,17 +404,21 @@ export const onDeleteCommentOnAnswer = /* GraphQL */ `
   subscription OnDeleteCommentOnAnswer {
     onDeleteCommentOnAnswer {
       id
+      username
       answerID
+      questionID
       createdAt
       content
       answer {
         id
+        username
         questionID
         createdAt
         content
         upvotes
         question {
           id
+          username
           createdAt
           content
           upvotes

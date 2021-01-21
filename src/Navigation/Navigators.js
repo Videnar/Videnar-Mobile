@@ -1,10 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {Icon} from 'native-base';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import ActivityScreen from '../screens/ActivityScreen';
+import QuestionActivityScreen from '../screens/QuestionActivityScreen';
+import AnswerActivityScreen from '../screens/AnswerActivityScreen';
+import CommentActivityScreen from '../screens/CommentActivityScreen';
 import QuestionDetailsScreen from '../screens/QuestionDetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AskQuestionScreen from '../screens/AskQuestionScreen';
@@ -16,6 +19,7 @@ import SelectEducationScreen from '../screens/SelectEducationScreen';
 import SelectBranchScreen from '../screens/SelectBranchScreen';
 import SelectExamsScreen from '../screens/SelectExamsScreen';
 
+const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 const InnerStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,6 +39,17 @@ const Home = () => (
     <InnerStack.Screen name="AskQuestion" component={AskQuestionScreen} />
   </InnerStack.Navigator>
 );
+
+const ActivityTabs = () => {
+  return (
+    <TopTab.Navigator>
+      <TopTab.Screen name="Questions" component={QuestionActivityScreen} />
+      <TopTab.Screen name="Answers" component={AnswerActivityScreen} />
+      <TopTab.Screen name="Comments" component={CommentActivityScreen} />
+      {/* <TopTab.Screen name="BookMarks" component={ProfileScreen} /> */}
+    </TopTab.Navigator>
+  );
+};
 
 export const Main = () => (
   <Tab.Navigator
@@ -78,7 +93,7 @@ export const Main = () => (
       },
     })}>
     <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="Activity" component={ActivityScreen} />
+    <Tab.Screen name="Activity" component={ActivityTabs} />
     <Tab.Screen name="Search" component={SearchScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>

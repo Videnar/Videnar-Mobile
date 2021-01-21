@@ -70,5 +70,19 @@
         }
       ]
     }
+  },
+  "notifications": {
+    "VidenarPN": {
+      "service": "Pinpoint",
+      "channels": [
+        "FCM"
+      ]
+    }
+  },
+  "analytics": {
+    "VidenarPN": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

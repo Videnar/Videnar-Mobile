@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   Text,
   TextInput,
@@ -20,76 +20,61 @@ import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
 import CommentComponent from '../components/CommentComponent';
+import {AuthContext} from '../contexts/AuthContext';
 
-class QuestionDetailsScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: null,
-      answerId: null,
-      content: '',
-      commentsOnQuestionInput: '',
-      answers: [],
-      commentsOnQuestion: [],
-      commentsOnAnswer: [],
-      showCommentBoxForQuestion: false,
+const QuestionDetailsScreen = (props) => {
+  const {
+    state: {username},
+  } = useContext(AuthContext);
+  const [id, setId] = useState(null);
+  const [answerId, setAnswerId] = useState(null);
+  const [content, setContent] = useState('');
+  const [commentsOnQuestionInput, setCommentsOnQuestionInput] = useState('');
+  const [answers, setAnswers] = useState([]);
+  const [commentsOnQuestion, setCommentsOnQuestion] = useState([]);
+  const [showCommentBoxForQuestion, setShowCommentBoxForQuestion] = useState(
+    false,
+  );
+
+  useEffect(() => {
+    const {question} = props.route.params;
+    const {id: qid} = question;
+    setId(qid);
+
+    const fetchAnswers = async () => {
+      try {
+        const list = await API.graphql({
+          query: listAnswers,
+          variables: {
+            filter: {questionID: {eq: id}},
+          },
+        });
+        const answerslist = list.data.listAnswers.items;
+        setAnswers(answerslist);
+      } catch (err) {
+        console.log('error fetching answers', err);
+      }
     };
-  }
 
-  componentDidMount() {
-    const {question} = this.props.route.params;
-    const {id} = question;
-    this.fetchAnswers(id);
-    this.fetchCommentOnQuestion(id);
-  }
+    const fetchCommentOnQuestion = async () => {
+      try {
+        const list = await API.graphql({
+          query: listCommentOnQuestions,
+          variables: {
+            filter: {questionID: {eq: id}},
+          },
+        });
+        const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
+        setCommentsOnQuestion(commentsOnQuestionList);
+      } catch (err) {
+        console.log('error fetching commentsOnQuestion', err);
+      }
+    };
+    fetchAnswers();
+    fetchCommentOnQuestion();
+  }, [id, props.route.params]);
 
-  fetchAnswers = async (id) => {
-    try {
-      const list = await API.graphql({
-        query: listAnswers,
-        variables: {
-          filter: {questionID: {eq: id}},
-        },
-      });
-      const answers = list.data.listAnswers.items;
-      this.setState({
-        answers: [...this.state.answers, ...answers],
-      });
-    } catch (err) {
-      console.log('error fetching answers', err);
-    }
-  };
-
-  fetchCommentOnQuestion = async (id) => {
-    try {
-      const list = await API.graphql({
-        query: listCommentOnQuestions,
-        variables: {
-          filter: {questionID: {eq: id}},
-        },
-      });
-      const commentsOnQuestion = list.data.listCommentOnQuestions.items;
-      this.setState({
-        commentsOnQuestion: [
-          ...this.state.commentsOnQuestion,
-          ...commentsOnQuestion,
-        ],
-      });
-    } catch (err) {
-      console.log('error fetching commentsOnQuestion', err);
-    }
-  };
-
-  setAnswer = (content) => {
-    this.setState({content});
-  };
-
-  setAnswerId = (answerId) => {
-    this.setState({answerId});
-  };
-
-  submitAnswer = async () => {
-    const {answerId, content} = this.state;
+  const submitAnswer = async () => {
     if (answerId) {
       try {
         await API.graphql({
@@ -108,11 +93,10 @@ class QuestionDetailsScreen extends Component {
     }
 
     try {
-      const {question} = this.props.route.params;
-      const {id} = question;
       await API.graphql(
         graphqlOperation(createAnswer, {
           input: {
+            username,
             questionID: id,
             content,
             upvotes: 0,
@@ -120,34 +104,29 @@ class QuestionDetailsScreen extends Component {
         }),
       );
     } catch (err) {
-      console.log('error creating Answer:', this.state.content);
+      console.log('error creating Answer:', content);
     }
   };
 
-  submitCommentOnQuestion = async () => {
+  const submitCommentOnQuestion = async () => {
     try {
-      const {question} = this.props.route.params;
-      const {id} = question;
-      const {commentsOnQuestionInput} = this.state;
       await API.graphql(
         graphqlOperation(createCommentOnQuestion, {
           input: {
+            username,
             questionID: id,
             content: commentsOnQuestionInput,
           },
         }),
       );
-      this.setState({
-        commentsOnQuestionInput: '',
-        showCommentBoxForQuestion: false,
-      });
+      setCommentsOnQuestionInput('');
+      setShowCommentBoxForQuestion(false);
     } catch (err) {
-      console.log('error creating comment:', this.state.content);
+      console.log('error creating comment:', content);
     }
   };
 
-  updateSelectedComment = async (Id, commentContent) => {
-    console.log(Id, commentContent, 'UPDATE');
+  const updateSelectedComment = async (Id, commentContent) => {
     try {
       await API.graphql({
         query: updateCommentOnQuestion,
@@ -163,8 +142,7 @@ class QuestionDetailsScreen extends Component {
     }
   };
 
-  deleteSelectedComment = async (Id) => {
-    console.log(Id, 'DELETE');
+  const deleteSelectedComment = async (Id) => {
     try {
       await API.graphql({
         query: deleteCommentOnQuestion,
@@ -177,80 +155,62 @@ class QuestionDetailsScreen extends Component {
     }
   };
 
-  render() {
-    const {question} = this.props.route.params;
-    const {
-      commentsOnQuestion,
-      answers,
-      content,
-      commentsOnQuestionInput,
-      showCommentBoxForQuestion,
-    } = this.state;
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <ScrollView style={styles.scrollView}>
-          <QuestionComponent question={question} />
-          {commentsOnQuestion.map((comment, index) => (
-            <View key={comment.id ? comment.id : index}>
-              <CommentComponent
-                id={comment.id}
-                comment={comment.content}
-                updateComment={this.updateSelectedComment}
-                deleteComment={this.deleteSelectedComment}
-              />
-            </View>
-          ))}
-          {showCommentBoxForQuestion ? (
-            <>
-              <TextInput
-                style={{
-                  height: 40,
-                  borderColor: 'gray',
-                  borderWidth: 1,
-                }}
-                onChangeText={(text) =>
-                  this.setState({
-                    commentsOnQuestionInput: text,
-                  })
-                }
-                value={commentsOnQuestionInput}
-              />
-              <Button
-                title="Submit Comment"
-                onPress={this.submitCommentOnQuestion}
-              />
-            </>
-          ) : (
-            <Text
-              onPress={() =>
-                this.setState({
-                  showCommentBoxForQuestion: !showCommentBoxForQuestion,
-                })
-              }>
-              Comment on Question
-            </Text>
-          )}
-          {answers.map((answer, index) => (
-            <View key={answer.id || index}>
-              <AnswerComponent
-                setAnswer={this.setAnswer}
-                setAnswerId={this.setAnswerId}
-                answer={answer}
-              />
-            </View>
-          ))}
-          <Editor content={content} setContent={this.setAnswer} />
-          <Button title="Submit Answer" onPress={this.submitAnswer} />
-        </ScrollView>
-      </View>
-    );
-  }
-}
+  const {question} = props.route.params;
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <ScrollView style={styles.scrollView}>
+        <QuestionComponent question={question} />
+        {commentsOnQuestion.map((comment, index) => (
+          <View key={comment.id ? comment.id : index}>
+            <CommentComponent
+              id={comment.id}
+              comment={comment.content}
+              updateComment={updateSelectedComment}
+              deleteComment={deleteSelectedComment}
+            />
+          </View>
+        ))}
+        {showCommentBoxForQuestion ? (
+          <>
+            <TextInput
+              style={{
+                height: 40,
+                borderColor: 'gray',
+                borderWidth: 1,
+              }}
+              onChangeText={(text) => setCommentsOnQuestionInput(text)}
+              value={commentsOnQuestionInput}
+            />
+            <Button title="Submit Comment" onPress={submitCommentOnQuestion} />
+          </>
+        ) : (
+          <Text
+            onPress={() =>
+              setShowCommentBoxForQuestion(!showCommentBoxForQuestion)
+            }>
+            Comment on Question
+          </Text>
+        )}
+        {answers.map((answer, index) => (
+          <View key={answer.id || index}>
+            <AnswerComponent
+              setAnswer={setContent}
+              setAnswerId={setAnswerId}
+              answer={answer}
+            />
+          </View>
+        ))}
+        <Editor content={content} setContent={setContent} />
+        <Button title="Submit Answer" onPress={submitAnswer} />
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {flex: 1, justifyContent: 'center', padding: 20},

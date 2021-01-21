@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   Button,
@@ -20,13 +20,17 @@ import {
 } from '../graphql/mutations';
 import {listCommentOnAnswers} from '../graphql/queries';
 import CommentComponent from './CommentComponent';
+import {AuthContext} from '../contexts/AuthContext';
 
 const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
+  const {
+    state: {username},
+  } = useContext(AuthContext);
   const [showCommentBoxForAnswer, setShowCommentBoxForAnswer] = useState(false);
   const [commentsOnAnswerInput, setCommentsOnAnswerInput] = useState('');
   const [commentsOnAnswer, setCommentsOnAnswer] = useState([]);
   const [popupVisible, setPopupVisible] = useState(false);
-  const {content, id, upvotes} = answer;
+  const {content, questionID, id, upvotes} = answer;
   useEffect(() => {
     const fetchCommentsOnAnswer = async () => {
       try {
@@ -52,8 +56,10 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
       await API.graphql(
         graphqlOperation(createCommentOnAnswer, {
           input: {
+            username,
             content: commentsOnAnswerInput,
             answerID: id,
+            questionID,
           },
         }),
       );
@@ -101,7 +107,6 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
   };
 
   const updateSelectedComment = async (Id, commentContent) => {
-    console.log(Id, commentContent, 'UPDATE');
     try {
       await API.graphql({
         query: updateCommentOnAnswer,
@@ -118,7 +123,6 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
   };
 
   const deleteSelectedComment = async (Id) => {
-    console.log(Id, 'DELETE');
     try {
       await API.graphql({
         query: deleteCommentOnAnswer,

@@ -2,6 +2,7 @@ import React, {useReducer, useEffect, useMemo} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Auth} from 'aws-amplify';
+import PushNotification from '@aws-amplify/pushnotification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './src/screens/LoadingScreen';
 import {navigationRef, isReadyRef} from './src/navigation/RootNavigation';
@@ -12,6 +13,28 @@ import {
   UserInfo,
 } from './src/navigation/Navigators';
 import {AuthReducer, initialState} from './src/contexts/AuthReducer';
+
+PushNotification.onRegister((token) => {
+  console.log('onRegister', token);
+});
+PushNotification.onNotification((notification) => {
+  if (notification.foreground) {
+    console.log('onNotification foreground', notification);
+  } else {
+    console.log('onNotification background or closed', notification);
+  }
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+  console.log('onNotification data', data);
+  // iOS only
+  // notification.finish(PushNotificationIOS.FetchResult.NoData);
+});
+PushNotification.onNotificationOpened((notification) => {
+  console.log('onNotificationOpened', notification);
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification['pinpoint.jsonBody']);
+  console.log('onNotificationOpened data', data);
+});
 
 const Stack = createStackNavigator();
 
@@ -55,9 +78,9 @@ const App = () => {
             attributes: {email},
           });
           Auth.currentAuthenticatedUser()
-            .then(({attributes}) => {
-              dispatch({type: 'signin', payload: attributes});
-              const jsonValue = JSON.stringify(attributes);
+            .then(({username, attributes}) => {
+              dispatch({type: 'signin', payload: {username, attributes}});
+              const jsonValue = JSON.stringify({username, attributes});
               AsyncStorage.setItem('@user', jsonValue);
             })
             .catch((err) => console.log(err));
@@ -84,9 +107,9 @@ const App = () => {
             },
           });
           Auth.currentAuthenticatedUser()
-            .then(({attributes}) => {
-              dispatch({type: 'signin', payload: attributes});
-              const jsonValue = JSON.stringify(attributes);
+            .then(({username, attributes}) => {
+              dispatch({type: 'signin', payload: {username, attributes}});
+              const jsonValue = JSON.stringify({username, attributes});
               AsyncStorage.setItem('@user', jsonValue);
             })
             .catch((err) => console.log(err));
@@ -107,9 +130,9 @@ const App = () => {
       socialAuth: async (provider) => {
         Auth.federatedSignIn({provider});
         Auth.currentAuthenticatedUser()
-          .then(({attributes}) => {
-            dispatch({type: 'signin', payload: attributes});
-            const jsonValue = JSON.stringify(attributes);
+          .then(({username, attributes}) => {
+            dispatch({type: 'signin', payload: {username, attributes}});
+            const jsonValue = JSON.stringify({username, attributes});
             AsyncStorage.setItem('@user', jsonValue);
           })
           .catch((err) => console.log(err));
