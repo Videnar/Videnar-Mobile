@@ -4,7 +4,7 @@ import Spacer from '../components/Spacer';
 import {AuthContext} from '../contexts/AuthContext';
 import {Button, Text, Input, Label, Item} from 'native-base';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   const {
     signOut,
     changePassword,
@@ -86,7 +86,7 @@ const ProfileScreen = () => {
       ) : null}
       <Spacer />
       <Spacer />
-      <Button block info style={styles.blockButton} onPress={() => signOut()}>
+      <Button block info style={styles.blockButton} onPress={signOut}>
         <Text style={{fontSize: 15, color: 'white'}}>Sign Out</Text>
       </Button>
     </ScrollView>

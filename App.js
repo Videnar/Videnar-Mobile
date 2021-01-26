@@ -1,11 +1,15 @@
-import React, {useReducer, useEffect, useMemo} from 'react';
+import React, {useReducer, useMemo} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Auth} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoadingScreen from './src/screens/LoadingScreen';
-import {navigationRef, isReadyRef} from './src/navigation/RootNavigation';
+import SplashScreen from './src/screens/SplashScreen';
+import {
+  navigate,
+  navigationRef,
+  isReadyRef,
+} from './src/navigation/RootNavigation';
 import {AuthContext} from './src/contexts/AuthContext';
 import {
   Main,
@@ -13,6 +17,7 @@ import {
   UserInfo,
 } from './src/navigation/Navigators';
 import {AuthReducer, initialState} from './src/contexts/AuthReducer';
+import getDeepLink from './src/utilities/getDeepLink';
 
 PushNotification.onRegister((token) => {
   console.log('onRegister', token);
@@ -41,27 +46,6 @@ const Stack = createStackNavigator();
 const App = () => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      let jsonValue;
-      try {
-        jsonValue = await AsyncStorage.getItem('@user');
-        jsonValue = jsonValue != null ? JSON.parse(jsonValue) : null;
-      } catch (e) {
-        // Restoring token failed
-      }
-
-      // After restoring token, we may need to validate it in production apps
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      if (jsonValue !== null) {
-        dispatch({type: 'signin', payload: jsonValue});
-      }
-    };
-    bootstrapAsync();
-  }, []);
-
   React.useEffect(() => {
     return () => {
       isReadyRef.current = false;
@@ -82,17 +66,26 @@ const App = () => {
               dispatch({type: 'signin', payload: {username, attributes}});
               const jsonValue = JSON.stringify({username, attributes});
               AsyncStorage.setItem('@user', jsonValue);
+              if (attributes['custom:preferences']) {
+                navigate('Main');
+              } else {
+                navigate('UserInfo');
+              }
             })
             .catch((err) => console.log(err));
         } catch (error) {
           console.log('error signing in', error);
         }
       },
+      restoreUser: (data) => {
+        dispatch({type: 'signin', payload: data});
+      },
       signOut: async () => {
         Auth.signOut()
           .then(() => {
             AsyncStorage.removeItem('@user');
-            dispatch({type: 'signout'});
+            navigate('Auth');
+            // dispatch({type: 'signout'});
           })
           .catch((err) => console.log(err, 'err'));
       },
@@ -111,6 +104,7 @@ const App = () => {
               dispatch({type: 'signin', payload: {username, attributes}});
               const jsonValue = JSON.stringify({username, attributes});
               AsyncStorage.setItem('@user', jsonValue);
+              navigate('UserInfo');
             })
             .catch((err) => console.log(err));
         } catch (error) {
@@ -119,13 +113,19 @@ const App = () => {
       },
       updateUserPreferences: async (preferences) => {
         let user = await Auth.currentAuthenticatedUser();
-        let result = await Auth.updateUserAttributes(user, {
-          'custom:preferences': JSON.stringify(preferences),
+        const {username, attributes} = user;
+        const stringifiedPref = JSON.stringify(preferences);
+        await Auth.updateUserAttributes(user, {
+          'custom:preferences': stringifiedPref,
         })
           .then((response) => console.log(response))
           .catch((err) => console.log(err));
         dispatch({type: 'update_preferences', payload: preferences});
-        console.log(result, 'result');
+        const newAttributes = Object.assign({}, attributes, {
+          'custom:preferences': stringifiedPref,
+        });
+        const jsonValue = JSON.stringify({username, ...newAttributes});
+        AsyncStorage.setItem('@user', jsonValue);
       },
       socialAuth: async (provider) => {
         Auth.federatedSignIn({provider});
@@ -134,6 +134,11 @@ const App = () => {
             dispatch({type: 'signin', payload: {username, attributes}});
             const jsonValue = JSON.stringify({username, attributes});
             AsyncStorage.setItem('@user', jsonValue);
+            if (attributes['custom:preferences']) {
+              navigate('Main');
+            } else {
+              navigate('UserInfo');
+            }
           })
           .catch((err) => console.log(err));
       },
@@ -161,22 +166,15 @@ const App = () => {
           isReadyRef.current = true;
         }}>
         <Stack.Navigator
-          initialRouteName="Signin"
+          initialRouteName="Splash"
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
           }}>
-          {state.attributes ? (
-            state.attributes['custom:preferences'] ? (
-              <Stack.Screen name="Main" component={Main} />
-            ) : (
-              <Stack.Screen name="UserInfo" component={UserInfo} />
-            )
-          ) : (
-            <>
-              <Stack.Screen name="Auth" component={AuthComponent} />
-            </>
-          )}
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="UserInfo" component={UserInfo} />
+          <Stack.Screen name="Auth" component={AuthComponent} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

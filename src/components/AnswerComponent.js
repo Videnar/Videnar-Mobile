@@ -149,7 +149,7 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
                 <div>${content}</div>
                 </body>`,
             }}
-            style={{width: 'auto', height: 200}}
+            style={{width: 'auto', height: 400}}
           />
         </CardItem>
         <CardItem style={{flex: 1, justifyContent: 'space-around'}}>

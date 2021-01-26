@@ -13,7 +13,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 import AskQuestionScreen from '../screens/AskQuestionScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
-import WebViewScreen from '../screens/WebViewScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import SelectEducationScreen from '../screens/SelectEducationScreen';
 import SelectBranchScreen from '../screens/SelectBranchScreen';
@@ -101,21 +100,20 @@ export const Main = () => (
 
 export const Auth = () => (
   <Stack.Navigator
-    initialRouteName="Home"
+    initialRouteName="signin"
     screenOptions={{
       headerShown: false,
       gestureEnabled: false,
     }}>
     <Stack.Screen name="Signin" component={SigninScreen} />
     <Stack.Screen name="Signup" component={SignupScreen} />
-    <Stack.Screen name="WebView" component={WebViewScreen} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
   </Stack.Navigator>
 );
 
 export const UserInfo = () => (
   <Stack.Navigator
-    initialRouteName="Home"
+    initialRouteName="SelectEducation"
     screenOptions={{
       headerShown: false,
       gestureEnabled: false,

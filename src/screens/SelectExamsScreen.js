@@ -21,7 +21,7 @@ const SelectExamsScreen = ({route, navigation}) => {
       branch: branch,
       exams: exams,
     });
-    navigation.navigate('Home');
+    navigation.navigate('Main');
   };
 
   const onPressHandler = (item) => {

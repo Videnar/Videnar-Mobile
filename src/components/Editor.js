@@ -20,10 +20,6 @@ const Editor = (props) => {
     }
   }, [content, props.content]);
 
-  const goToNewLine = () => {
-    props.setContent(content + '<p><br></p>');
-  };
-
   const uploadToStorage = async (imageData) => {
     const {uri, fileName, type} = imageData;
     try {
@@ -38,12 +34,16 @@ const Editor = (props) => {
       });
       const url = `https://${bucket}.s3.amazonaws.com/public/${key}`;
       const run = `
-      const range = window.quill.getSelection();
+      let range = window.quill.getSelection();
+      window.ReactNativeWebView.postMessage(range.index);
       window.quill.insertEmbed(range.index, 'image', '${url}');
+      range = window.quill.getSelection()
+      window.ReactNativeWebView.postMessage(range.index);
       `;
-      await webref.injectJavaScript(run).then(goToNewLine());
+      await webref.injectJavaScript(run);
+      props.setContent(content + '<p><br></p>');
     } catch (err) {
-      console.log(err);
+      console.log(err, 'hello err');
     }
   };
 
@@ -89,8 +89,6 @@ const Editor = (props) => {
     });
   };
 
-  console.log('rerendering');
-
   return (
     <View style={styles.container}>
       <WebView
@@ -129,6 +127,7 @@ const Editor = (props) => {
             Keyboard.dismiss();
             setPopupVisible(true);
           } else {
+            console.log(data, '[console data]');
             props.setContent(data);
           }
         }}
@@ -156,6 +155,8 @@ const Editor = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: 'auto',
+    margin: 'auto',
   },
   webview: {height: 100, width: 350},
   button: {
