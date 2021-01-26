@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Keyboard} from 'react-native';
 import {WebView} from 'react-native-webview';
 import ImagePicker from 'react-native-image-picker';
@@ -9,13 +9,19 @@ import config from '../../aws-exports';
 
 const {aws_user_files_s3_bucket: bucket} = config;
 
-const Editor = ({content, setContent}) => {
+const Editor = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
+  const [content, setContent] = useState('<p><br></p>');
   const [webref, setWebref] = useState();
 
+  useEffect(() => {
+    if (props.content !== content) {
+      setContent(props.content);
+    }
+  }, [content, props.content]);
+
   const goToNewLine = () => {
-    console.log('long long long');
-    setContent(content + '<p><br></p>');
+    props.setContent(content + '<p><br></p>');
   };
 
   const uploadToStorage = async (imageData) => {
@@ -83,6 +89,8 @@ const Editor = ({content, setContent}) => {
     });
   };
 
+  console.log('rerendering');
+
   return (
     <View style={styles.container}>
       <WebView
@@ -117,12 +125,11 @@ const Editor = ({content, setContent}) => {
         }}
         onMessage={(event) => {
           const {data} = event.nativeEvent;
-          console.log(data, 'content');
           if (data === 'image') {
             Keyboard.dismiss();
             setPopupVisible(true);
           } else {
-            setContent(data);
+            props.setContent(data);
           }
         }}
         containerStyle={styles.webview}

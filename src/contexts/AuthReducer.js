@@ -3,19 +3,21 @@ export const AuthReducer = (state, action) => {
     case 'add_error':
       return {...state, errorMessage: action.payload};
     case 'signin': {
-      const customPreferences = action.payload['custom:preferences'];
+      const {username, attributes} = action.payload;
+      const customPreferences = attributes['custom:preferences'];
       const preferences = customPreferences
         ? JSON.parse(customPreferences)
         : null;
       return {
-        attributes: action.payload,
+        attributes: attributes,
         preferences: preferences,
+        username,
       };
     }
     case 'clear_error_message':
       return {...state, errorMessage: ''};
     case 'signout':
-      return {...state, attributes: null, preferences: null};
+      return {...state, attributes: null, preferences: null, username: null};
     case 'update_preferences':
       return {...state, preferences: action.payload};
     default:

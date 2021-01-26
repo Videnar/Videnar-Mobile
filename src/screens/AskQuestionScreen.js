@@ -1,23 +1,31 @@
-import React, {Component} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Button, StyleSheet} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion} from '../graphql/mutations';
+import {createQuestion, updateQuestion} from '../graphql/mutations';
 import Editor from '../components/Editor';
+import {AuthContext} from '../contexts/AuthContext';
 
-class QuestionScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: '<p><br></p>',
-    };
-  }
+const AskQuestionScreen = (props) => {
+  const {
+    state: {username},
+  } = useContext(AuthContext);
+  const [content, setContent] = useState('<p><br></p>');
 
-  submitQuestion = async () => {
+  useEffect(() => {
+    if (props.route.params) {
+      setContent(props.route.params.content);
+    }
+  }, [props.route.params]);
+
+  const submitQuestion = async () => {
+    if (props.route.params) {
+      updateSelectedQuestion();
+    }
     try {
-      const {content} = this.state;
       await API.graphql(
         graphqlOperation(createQuestion, {
           input: {
+            username,
             content: content,
             upvotes: 0,
             view: 0,
@@ -26,25 +34,36 @@ class QuestionScreen extends Component {
           },
         }),
       );
-      this.props.navigation.navigate('Home');
+      props.navigation.navigate('Home');
     } catch (err) {
-      console.log('error creating Question:', this.state.content);
+      console.log('error creating Question:', content);
     }
   };
 
-  setContent = (content) => {
-    this.setState({content});
+  const updateSelectedQuestion = async (n) => {
+    const {id} = props.route.params;
+    try {
+      await API.graphql({
+        query: updateQuestion,
+        variables: {
+          input: {
+            id,
+            content,
+          },
+        },
+      });
+    } catch (err) {
+      console.log('error updating Question:', err);
+    }
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Editor setContent={this.setContent} content={this.state.content} />
-        <Button title="Submit Question" onPress={this.submitQuestion} />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <Editor setContent={setContent} content={content} />
+      <Button title="Submit Question" onPress={submitQuestion} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -54,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionScreen;
+export default AskQuestionScreen;

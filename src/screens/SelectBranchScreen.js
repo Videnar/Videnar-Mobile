@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 import * as RootNavigation from '../navigation/RootNavigation';
 
-const SelectBranchScreen = ({ route }) => {
-  console.log();
-  const { education } = route.params;
+const SelectBranchScreen = ({route}) => {
+  const {education} = route.params;
   const onPressHandler = (branch) => {
     RootNavigation.navigate('SelectExams', { education, branch });
   };
