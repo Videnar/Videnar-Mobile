@@ -1,4 +1,14 @@
-import { Body, Content, Header, Left, Right, Title, List, ListItem, Icon } from 'native-base';
+import {
+  Body,
+  Content,
+  Header,
+  Left,
+  Right,
+  Title,
+  List,
+  ListItem,
+  Icon,
+} from 'native-base';
 import React from 'react';
 import {
   SafeAreaView,
@@ -13,7 +23,7 @@ import * as RootNavigation from '../navigation/RootNavigation';
 const SelectBranchScreen = ({route}) => {
   const {education} = route.params;
   const onPressHandler = (branch) => {
-    RootNavigation.navigate('SelectExams', { education, branch });
+    RootNavigation.navigate('SelectExams', {education, branch});
   };
   console.log(education.branches);
   const RenderItem = education.branches.map((item) => (
@@ -22,24 +32,25 @@ const SelectBranchScreen = ({route}) => {
         <Text style={styles.title}>{item}</Text>
       </Left>
       <Right>
-        <Icon name='arrow-circle-right' type='FontAwesome' />
+        <Icon name="arrow-circle-right" type="FontAwesome" />
       </Right>
     </ListItem>
   ));
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header androidStatusBarColor='#fff8f5' iosBarStyle='dark-content' style={styles.header} >
+      <Header
+        androidStatusBarColor="#fff8f5"
+        iosBarStyle="dark-content"
+        style={styles.header}>
         <Left />
-        <Body style={{ flex: 3 }}>
-          <Title style={{ fontWeight: 'bold' }}>Select your Branch</Title>
+        <Body style={{flex: 3}}>
+          <Title style={{fontWeight: 'bold'}}>Select your Branch</Title>
         </Body>
         <Right />
       </Header>
       <Content>
-        <List>
-          {RenderItem}
-        </List>
+        <List>{RenderItem}</List>
       </Content>
     </SafeAreaView>
   );
