@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Keyboard} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+  Dimensions,
+} from 'react-native';
 import {WebView} from 'react-native-webview';
 import ImagePicker from 'react-native-image-picker';
 import {v4 as uuid} from 'uuid';
@@ -8,6 +15,8 @@ import {Storage} from 'aws-amplify';
 import config from '../../aws-exports';
 
 const {aws_user_files_s3_bucket: bucket} = config;
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
 const Editor = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -90,8 +99,9 @@ const Editor = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} scrollEnabled={false}>
       <WebView
+        style={styles.webView}
         originWhitelist={['*']}
         ref={(r) => setWebref(r)}
         javaScriptEnabled={true}
@@ -101,7 +111,7 @@ const Editor = (props) => {
                   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
-                 <body>
+                 <body style="background-color:#fff8f8;">
                   <div id="editor" >${content}</div>
                  </body>
                  <script> 
@@ -158,7 +168,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 'auto',
   },
-  webview: {height: 100, width: 350},
+  webView: {width: deviceWidth},
   button: {
     width: 250,
     height: 60,

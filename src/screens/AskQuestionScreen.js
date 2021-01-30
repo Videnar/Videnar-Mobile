@@ -1,9 +1,20 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {API, graphqlOperation} from 'aws-amplify';
 import {createQuestion, updateQuestion} from '../graphql/mutations';
 import Editor from '../components/Editor';
 import {AuthContext} from '../contexts/AuthContext';
+import {
+  Button,
+  Text,
+  Header,
+  Container,
+  Right,
+  Left,
+  Body,
+  Title,
+  Content,
+} from 'native-base';
 
 const AskQuestionScreen = (props) => {
   const {
@@ -58,18 +69,46 @@ const AskQuestionScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Editor setContent={setContent} content={content} />
-      <Button title="Submit Question" onPress={submitQuestion} />
-    </View>
+    <Container style={styles.container}>
+      <Header
+        androidStatusBarColor="#fff8f5"
+        iosBarStyle="dark-content"
+        style={styles.header}
+        noLeft>
+        <Left />
+        <Body style={{flex: 3}}>
+          <Title>Ask Your Question</Title>
+        </Body>
+        <Right>
+          <Button style={styles.button} onPress={submitQuestion}>
+            <Text style={styles.buttonText}>Post</Text>
+          </Button>
+        </Right>
+      </Header>
+      <Editor style={styles.editor} setContent={setContent} content={content} />
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#fff8f5',
+  },
+  header: {
+    backgroundColor: '#f76f00',
+  },
+  editor: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignContent: 'center',
+  },
+  button: {
+    backgroundColor: '#fff8f5',
+    borderRadius: 8,
+    height: 36,
+  },
+  buttonText: {
+    color: 'black',
   },
 });
 
