@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
 });
 
 function propsAreEqual(prevProps, nextProps) {
-  console.log(prevProps, nextProps);
   return prevProps === nextProps;
 }
 

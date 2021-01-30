@@ -1,11 +1,39 @@
 import React, {useContext} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Linking, Text, View, StyleSheet} from 'react-native';
+import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {AuthContext} from '../contexts/AuthContext';
 import {Icon, Button} from 'native-base';
 import Spacer from './Spacer';
+import getDeepLink from '../utilities/getDeepLink';
 
 const SocialAuthComponent = () => {
   const {socialAuth} = useContext(AuthContext);
+
+  const onSignin = async () => {
+    const deepLink = getDeepLink('');
+    console.log(deepLink);
+    const url = `https://my-auth-login-page.com?redirect_uri=${deepLink}`;
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        InAppBrowser.openAuth(url, deepLink, {
+          // iOS Properties
+          ephemeralWebSession: false,
+          // Android Properties
+          showTitle: false,
+          enableUrlBarHiding: true,
+          enableDefaultShare: false,
+        }).then((response) => {
+          if (response.type === 'success' && response.url) {
+            Linking.openURL(response.url);
+          }
+        });
+      } else {
+        Linking.openURL(url);
+      }
+    } catch (error) {
+      Linking.openURL(url);
+    }
+  };
   return (
     <View style={styles.container}>
       <Button
@@ -13,7 +41,10 @@ const SocialAuthComponent = () => {
         light
         bordered
         style={styles.buttonStyle}
-        onPress={() => socialAuth('Google')}>
+        onPress={() => {
+          socialAuth('Google');
+          // onSignin();
+        }}>
         <Icon name="google" type="FontAwesome" style={{color: 'red'}} />
         <Text style={{fontSize: 15, fontWeight: 'bold'}}>
           Sign In with Google
@@ -25,7 +56,10 @@ const SocialAuthComponent = () => {
         light
         bordered
         style={styles.buttonStyle}
-        onPress={() => socialAuth('Facebook')}>
+        onPress={() => {
+          socialAuth('Facebook');
+          // onSignin();
+        }}>
         <Icon
           name="facebook-square"
           type="FontAwesome"

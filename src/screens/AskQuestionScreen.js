@@ -22,6 +22,8 @@ const AskQuestionScreen = (props) => {
   } = useContext(AuthContext);
   const [content, setContent] = useState('<p><br></p>');
 
+  console.log('rerendering');
+
   useEffect(() => {
     if (props.route.params) {
       setContent(props.route.params.content);
@@ -63,6 +65,7 @@ const AskQuestionScreen = (props) => {
           },
         },
       });
+      props.navigation.navigate('Home');
     } catch (err) {
       console.log('error updating Question:', err);
     }
@@ -112,4 +115,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AskQuestionScreen;
+function areEqual(prevProps, nextProps) {
+  return prevProps.route.params.id === nextProps.route.params.id;
+}
+export default React.memo(AskQuestionScreen, areEqual);

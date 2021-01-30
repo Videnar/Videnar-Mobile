@@ -13,9 +13,9 @@ import {
 const SearchScreen = () => {
   const [input, setInput] = useState('');
   const [Questions, setQuestions] = useState([]);
-  // const [Answers, setAnsers] = useState([]);
-  // const [CommentOnQuestions, setCommentOnQuestions] = useState([]);
-  // const [CommentOnAnswers, setCommentOnAnswers] = useState();
+  const [Answers, setAnsers] = useState([]);
+  const [CommentOnQuestions, setCommentOnQuestions] = useState([]);
+  const [CommentOnAnswers, setCommentOnAnswers] = useState();
 
   const searchItems = async (val) => {
     setInput(val);
