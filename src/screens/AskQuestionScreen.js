@@ -1,9 +1,9 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion, updateQuestion} from '../graphql/mutations';
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createQuestion, updateQuestion } from '../graphql/mutations';
 import Editor from '../components/Editor';
-import {AuthContext} from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import {
   Button,
   Text,
@@ -18,7 +18,7 @@ import {
 
 const AskQuestionScreen = (props) => {
   const {
-    state: {username},
+    state: { username },
   } = useContext(AuthContext);
   const [content, setContent] = useState('<p><br></p>');
 
@@ -54,7 +54,7 @@ const AskQuestionScreen = (props) => {
   };
 
   const updateSelectedQuestion = async (n) => {
-    const {id} = props.route.params;
+    const { id } = props.route.params;
     try {
       await API.graphql({
         query: updateQuestion,
@@ -79,7 +79,7 @@ const AskQuestionScreen = (props) => {
         style={styles.header}
         noLeft>
         <Left />
-        <Body style={{flex: 3}}>
+        <Body style={{ flex: 3 }}>
           <Title>Ask Your Question</Title>
         </Body>
         <Right>

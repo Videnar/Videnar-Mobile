@@ -1,9 +1,9 @@
 exports.handler = (event, context, callback) => {
   // Define the URL that you want the user to be directed to after verification is complete
   if (event.triggerSource === 'CustomMessage_SignUp') {
-    const {codeParameter} = event.request;
-    const {region, userName} = event;
-    const {clientId} = event.callerContext;
+    const { codeParameter } = event.request;
+    const { region, userName } = event;
+    const { clientId } = event.callerContext;
     const redirectUrl = `${process.env.REDIRECTURL}/?username=${userName}`;
     const resourcePrefix = process.env.RESOURCENAME.split('CustomMessage')[0];
 

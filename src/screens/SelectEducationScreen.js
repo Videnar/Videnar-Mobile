@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import {educations} from '../utilities/constants/education';
+import React, { useContext } from 'react';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { educations } from '../utilities/constants/education';
 import * as RootNavigation from '../navigation/RootNavigation';
-import {AuthContext} from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import {
   Body,
   Content,
@@ -18,16 +18,16 @@ import {
 const SelectEducationScreen = () => {
   const {
     updateUserPreferences,
-    state: {user},
+    state: { user },
   } = useContext(AuthContext);
   const onPressHandler = (education) => {
     if (education.level === 'B.Tech') {
-      RootNavigation.navigate('SelectBranch', {education});
+      RootNavigation.navigate('SelectBranch', { education });
     } else if (!education.exams) {
-      updateUserPreferences(user, {level: education.level});
+      updateUserPreferences(user, { level: education.level });
       RootNavigation.navigate('Home');
     } else {
-      RootNavigation.navigate('SelectExams', {education});
+      RootNavigation.navigate('SelectExams', { education });
     }
   };
 
@@ -49,8 +49,8 @@ const SelectEducationScreen = () => {
         iosBarStyle="dark-content"
         style={styles.header}>
         <Left />
-        <Body style={{flex: 3}}>
-          <Title style={{fontWeight: 'bold'}}>Select Your Education</Title>
+        <Body style={{ flex: 3 }}>
+          <Title style={{ fontWeight: 'bold' }}>Select Your Education</Title>
         </Body>
         <Right />
       </Header>

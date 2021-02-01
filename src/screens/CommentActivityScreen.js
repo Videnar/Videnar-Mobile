@@ -1,12 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {FlatList, Text, View, RefreshControl, StyleSheet} from 'react-native';
-import {API} from 'aws-amplify';
-import {listCommentOnQuestions, listCommentOnAnswers} from '../graphql/queries';
-import {AuthContext} from '../contexts/AuthContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { FlatList, Text, View, RefreshControl, StyleSheet } from 'react-native';
+import { API } from 'aws-amplify';
+import {
+  listCommentOnQuestions,
+  listCommentOnAnswers,
+} from '../graphql/queries';
+import { AuthContext } from '../contexts/AuthContext';
 
-const ActivityScreen = ({navigation}) => {
+const ActivityScreen = ({ navigation }) => {
   const {
-    state: {username},
+    state: { username },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -28,7 +31,7 @@ const ActivityScreen = ({navigation}) => {
       const list = await API.graphql({
         query: listCommentOnQuestions,
         variables: {
-          filter: {username: {eq: username}},
+          filter: { username: { eq: username } },
         },
       });
       const comments = list.data.listCommentOnQuestions.items;
@@ -44,7 +47,7 @@ const ActivityScreen = ({navigation}) => {
       const list = await API.graphql({
         query: listCommentOnAnswers,
         variables: {
-          filter: {username: {eq: username}},
+          filter: { username: { eq: username } },
         },
       });
       const comments = list.data.listCommentOnAnswers.items;
@@ -55,7 +58,7 @@ const ActivityScreen = ({navigation}) => {
     }
   };
 
-  const RenderItem = ({item}) => <Text>{item.content}</Text>;
+  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
 
   return (
     <View
@@ -78,9 +81,9 @@ const ActivityScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
-  questionTitle: {fontSize: 18},
-  container: {flex: 1, backgroundColor: '#fff8f5'},
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  questionTitle: { fontSize: 18 },
+  container: { flex: 1, backgroundColor: '#fff8f5' },
 });
 
 export default ActivityScreen;

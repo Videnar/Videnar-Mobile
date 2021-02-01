@@ -1,13 +1,13 @@
-import React, {useContext} from 'react';
-import {Linking, Text, View, StyleSheet} from 'react-native';
-import {InAppBrowser} from 'react-native-inappbrowser-reborn';
-import {AuthContext} from '../contexts/AuthContext';
-import {Icon, Button} from 'native-base';
+import React, { useContext } from 'react';
+import { Linking, Text, View, StyleSheet } from 'react-native';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import { AuthContext } from '../contexts/AuthContext';
+import { Icon, Button } from 'native-base';
 import Spacer from './Spacer';
 import getDeepLink from '../utilities/getDeepLink';
 
 const SocialAuthComponent = () => {
-  const {socialAuth} = useContext(AuthContext);
+  const { socialAuth } = useContext(AuthContext);
 
   const onSignin = async () => {
     const deepLink = getDeepLink('');
@@ -45,8 +45,8 @@ const SocialAuthComponent = () => {
           socialAuth('Google');
           // onSignin();
         }}>
-        <Icon name="google" type="FontAwesome" style={{color: 'red'}} />
-        <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+        <Icon name="google" type="FontAwesome" style={{ color: 'red' }} />
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
           Sign In with Google
         </Text>
       </Button>
@@ -63,9 +63,9 @@ const SocialAuthComponent = () => {
         <Icon
           name="facebook-square"
           type="FontAwesome"
-          style={{color: 'blue'}}
+          style={{ color: 'blue' }}
         />
-        <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
           Sign In with Facebook
         </Text>
       </Button>

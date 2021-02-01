@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation.js';
 
-const NavLink = ({text, routeName}) => {
+const NavLink = ({ text, routeName }) => {
   return (
     <TouchableOpacity onPress={() => RootNavigation.navigate(routeName)}>
       <Spacer>

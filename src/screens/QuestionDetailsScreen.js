@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Text,
   TextInput,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {API, graphqlOperation} from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import {
   createAnswer,
   updateAnswer,
@@ -15,16 +15,16 @@ import {
   deleteCommentOnQuestion,
   updateCommentOnQuestion,
 } from '../graphql/mutations';
-import {listAnswers, listCommentOnQuestions} from '../graphql/queries';
+import { listAnswers, listCommentOnQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
 import CommentComponent from '../components/CommentComponent';
-import {AuthContext} from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 const QuestionDetailsScreen = (props) => {
   const {
-    state: {username},
+    state: { username },
   } = useContext(AuthContext);
   const [id, setId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
@@ -37,8 +37,8 @@ const QuestionDetailsScreen = (props) => {
   );
 
   useEffect(() => {
-    const {question} = props.route.params;
-    const {id: qid} = question;
+    const { question } = props.route.params;
+    const { id: qid } = question;
     setId(qid);
 
     const fetchAnswers = async () => {
@@ -46,7 +46,7 @@ const QuestionDetailsScreen = (props) => {
         const list = await API.graphql({
           query: listAnswers,
           variables: {
-            filter: {questionID: {eq: id}},
+            filter: { questionID: { eq: id } },
           },
         });
         const answerslist = list.data.listAnswers.items;
@@ -61,7 +61,7 @@ const QuestionDetailsScreen = (props) => {
         const list = await API.graphql({
           query: listCommentOnQuestions,
           variables: {
-            filter: {questionID: {eq: id}},
+            filter: { questionID: { eq: id } },
           },
         });
         const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
@@ -147,7 +147,7 @@ const QuestionDetailsScreen = (props) => {
       await API.graphql({
         query: deleteCommentOnQuestion,
         variables: {
-          input: {id: Id},
+          input: { id: Id },
         },
       });
     } catch (err) {
@@ -155,7 +155,7 @@ const QuestionDetailsScreen = (props) => {
     }
   };
 
-  const {question} = props.route.params;
+  const { question } = props.route.params;
   return (
     <View
       style={{
@@ -213,10 +213,10 @@ const QuestionDetailsScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', padding: 20},
-  scrollView: {marginHorizontal: 0},
-  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
-  questionTitle: {fontSize: 18},
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  scrollView: { marginHorizontal: 0 },
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  questionTitle: { fontSize: 18 },
 });
 
 export default QuestionDetailsScreen;

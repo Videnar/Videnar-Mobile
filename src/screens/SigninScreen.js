@@ -1,13 +1,13 @@
-import React, {useContext} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {AuthContext} from '../contexts/AuthContext';
+import React, { useContext } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
 
-const SigninScreen = ({navigation}) => {
-  const {signIn} = useContext(AuthContext);
+const SigninScreen = ({ navigation }) => {
+  const { signIn } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>

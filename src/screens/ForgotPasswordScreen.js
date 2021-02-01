@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Button, Text, TextInput, View, StyleSheet} from 'react-native';
-import {Auth} from 'aws-amplify';
+import React, { useState } from 'react';
+import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Auth } from 'aws-amplify';
 import * as RootNavigation from '../navigation/RootNavigation';
 
-const SigninScreen = ({navigation}) => {
+const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     paddingTop: 10,
   },
-  textInput: {height: 40, borderColor: 'gray', borderWidth: 1},
+  textInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
 });
 
 export default SigninScreen;

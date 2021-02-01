@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
-import {Button, Input, Item, Label, Icon} from 'native-base';
+import { Button, Input, Item, Label, Icon } from 'native-base';
 
 const AuthForm = ({
   headerText,
@@ -24,7 +24,7 @@ const AuthForm = ({
     <View style={styles.container}>
       <View>
         <Spacer>
-          <Text h3 style={{fontWeight: 'bold', fontSize: 30}}>
+          <Text h3 style={{ fontWeight: 'bold', fontSize: 30 }}>
             {headerText}
           </Text>
         </Spacer>
@@ -92,8 +92,8 @@ const AuthForm = ({
             block
             info
             onPress={() => onSubmit(email, password)}
-            style={{backgroundColor: '#f76f00'}}>
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
+            style={{ backgroundColor: '#f76f00' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
               {submitButtonText}
             </Text>
           </Button>

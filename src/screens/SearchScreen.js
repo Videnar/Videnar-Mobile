@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {API} from 'aws-amplify';
-import {Container, Header, Item, Input, Icon} from 'native-base';
-import {StyleSheet, FlatList, Text} from 'react-native';
+import React, { useState } from 'react';
+import { API } from 'aws-amplify';
+import { Container, Header, Item, Input, Icon } from 'native-base';
+import { StyleSheet, FlatList, Text } from 'react-native';
 import {
   searchQuestions,
   searchAnswers,
@@ -39,7 +39,7 @@ const SearchScreen = () => {
         query: queryFunction,
         variables: {
           filter: {
-            content: {matchPhrasePrefix: input},
+            content: { matchPhrasePrefix: input },
           },
         },
       });
@@ -50,7 +50,7 @@ const SearchScreen = () => {
     }
   };
 
-  const RenderItem = ({item}) => <Text>{item.content}</Text>;
+  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
 
   return (
     <Container style={styles.container}>
@@ -61,7 +61,7 @@ const SearchScreen = () => {
         searchBar
         style={styles.header}>
         <Item regular style={styles.item}>
-          <Icon name="search" type="FontAwesome" style={{color: '#8f8c8b'}} />
+          <Icon name="search" type="FontAwesome" style={{ color: '#8f8c8b' }} />
           <Input
             placeholder="Search..."
             placeholderTextColor="#8f8c8b"

@@ -1,8 +1,8 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Icon} from 'native-base';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Icon } from 'native-base';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import QuestionActivityScreen from '../screens/QuestionActivityScreen';
@@ -56,11 +56,11 @@ export const Main = () => (
     tabBarOptions={{
       activeTintColor: '#e91e63',
       showIcon: true,
-      style: {backgroundColor: '#121212'},
+      style: { backgroundColor: '#121212' },
       showLabel: false,
     }}
-    screenOptions={({route}) => ({
-      tabBarIcon: ({focused, color, size}) => {
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         let fontsize;
         let colorName;
@@ -86,7 +86,7 @@ export const Main = () => (
           <Icon
             name={iconName}
             type="FontAwesome"
-            style={{fontSize: fontsize, color: colorName}}
+            style={{ fontSize: fontsize, color: colorName }}
           />
         );
       },

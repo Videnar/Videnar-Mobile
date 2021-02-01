@@ -1,16 +1,16 @@
-import React, {useContext, useState} from 'react';
-import {StyleSheet, Image, ScrollView, StatusBar} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import Spacer from '../components/Spacer';
-import {AuthContext} from '../contexts/AuthContext';
-import {Button, Text, Input, Label, Item} from 'native-base';
+import { AuthContext } from '../contexts/AuthContext';
+import { Button, Text, Input, Label, Item } from 'native-base';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({ navigation }) => {
   const {
     signOut,
     changePassword,
     state: {
-      attributes: {name, picture},
-      preferences: {level, branch, exams},
+      attributes: { name, picture },
+      preferences: { level, branch, exams },
     },
   } = useContext(AuthContext);
 
@@ -35,7 +35,7 @@ const ProfileScreen = ({navigation}) => {
         style={styles.picture}
         source={
           pictureURL
-            ? {uri: pictureURL}
+            ? { uri: pictureURL }
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
@@ -80,14 +80,16 @@ const ProfileScreen = ({navigation}) => {
             info
             style={styles.blockButton}
             onPress={() => changePassword(oldPassword, newPassword)}>
-            <Text style={{fontSize: 15, color: 'white'}}>Change Password</Text>
+            <Text style={{ fontSize: 15, color: 'white' }}>
+              Change Password
+            </Text>
           </Button>
         </>
       ) : null}
       <Spacer />
       <Spacer />
       <Button block info style={styles.blockButton} onPress={signOut}>
-        <Text style={{fontSize: 15, color: 'white'}}>Sign Out</Text>
+        <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
       </Button>
     </ScrollView>
   );

@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet} from 'react-native';
-import {WebView} from 'react-native-webview';
-import {API} from 'aws-amplify';
-import {Icon, Card, CardItem, Text} from 'native-base';
-import Dialog, {DialogContent} from 'react-native-popup-dialog';
-import {updateQuestion, deleteQuestion} from '../graphql/mutations';
+import React, { useState } from 'react';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { API } from 'aws-amplify';
+import { Icon, Card, CardItem, Text } from 'native-base';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { updateQuestion, deleteQuestion } from '../graphql/mutations';
 import * as RootNavigation from '../navigation/RootNavigation';
 
-const QuestionComponent = ({question, navigate}) => {
+const QuestionComponent = ({ question, navigate }) => {
   const [popupVisible, setPopupVisible] = useState(false);
-  const {id, content, view, upvotes, tags} = question;
+  const { id, content, view, upvotes, tags } = question;
 
   const updateUpvote = async (n) => {
     try {
@@ -29,7 +29,7 @@ const QuestionComponent = ({question, navigate}) => {
 
   const editQuestion = () => {
     setPopupVisible(false);
-    RootNavigation.navigate('AskQuestion', {id, content, tags});
+    RootNavigation.navigate('AskQuestion', { id, content, tags });
   };
 
   const deleteSelectedQuestion = async () => {
@@ -37,7 +37,7 @@ const QuestionComponent = ({question, navigate}) => {
       await API.graphql({
         query: deleteQuestion,
         variables: {
-          input: {id},
+          input: { id },
         },
       });
     } catch (err) {
@@ -49,7 +49,7 @@ const QuestionComponent = ({question, navigate}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigate && navigate('QuestionDetails', {question});
+        navigate && navigate('QuestionDetails', { question });
       }}>
       <Card>
         <CardItem>
@@ -63,11 +63,11 @@ const QuestionComponent = ({question, navigate}) => {
                 <div>${content}</div>
                 </body>`,
             }}
-            style={{width: 'auto', height: 400}}
+            style={{ width: 'auto', height: 400 }}
           />
         </CardItem>
-        <CardItem style={{flex: 1, justifyContent: 'space-around'}}>
-          <Text style={{color: '#cf391b'}}>{tags}</Text>
+        <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
+          <Text style={{ color: '#cf391b' }}>{tags}</Text>
           <Text style={styles.footerText}>Views: {view}</Text>
           <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon

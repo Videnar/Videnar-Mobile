@@ -56,12 +56,12 @@ export const Branches = [
 ];
 
 export const educations = [
-  {level: 'Class 5'},
-  {level: 'Class 6'},
-  {level: 'Class 7'},
-  {level: 'Class 8'},
-  {level: 'Class 9'},
-  {level: 'Class 10'},
+  { level: 'Class 5' },
+  { level: 'Class 6' },
+  { level: 'Class 7' },
+  { level: 'Class 8' },
+  { level: 'Class 9' },
+  { level: 'Class 10' },
   {
     level: 'Class 11',
     exams: [NEET, JEE],
@@ -87,9 +87,9 @@ export const educations = [
     level: 'Bachelor of Science',
     exams: [CAT, CSE, IFSE, ...SSC, ...Banking, RRBNTPC],
   },
-  {level: 'Chartered Accountant (CA)'},
-  {level: 'Certified Management AccountantCMA (CMA)'},
-  {level: 'Company secretary(CS)'},
+  { level: 'Chartered Accountant (CA)' },
+  { level: 'Certified Management AccountantCMA (CMA)' },
+  { level: 'Company secretary(CS)' },
   {
     level: 'Diploma',
     exams: [RRBJE, RRBALP, SSCJE, SSCGD],

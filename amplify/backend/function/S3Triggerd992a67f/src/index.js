@@ -16,7 +16,7 @@ exports.handler = function(event, context) {
   const quality = event.queryStringParameters.quality;
   const ext = name.split('.').reverse()[0];
 
-  Storage.get(key, {download: true})
+  Storage.get(key, { download: true })
     .promise()
     .then((data) => {
       const image = Sharp(data.Body);

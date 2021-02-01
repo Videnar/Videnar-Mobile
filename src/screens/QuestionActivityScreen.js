@@ -1,13 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {FlatList, View, RefreshControl, StyleSheet} from 'react-native';
-import {API} from 'aws-amplify';
-import {listQuestions} from '../graphql/queries';
-import {AuthContext} from '../contexts/AuthContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { FlatList, View, RefreshControl, StyleSheet } from 'react-native';
+import { API } from 'aws-amplify';
+import { listQuestions } from '../graphql/queries';
+import { AuthContext } from '../contexts/AuthContext';
 import QuestionComponent from '../components/QuestionComponent';
 
-const QuestionActivityScreen = ({navigation}) => {
+const QuestionActivityScreen = ({ navigation }) => {
   const {
-    state: {username},
+    state: { username },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -27,7 +27,7 @@ const QuestionActivityScreen = ({navigation}) => {
       const responseData = await API.graphql({
         query: listQuestions,
         variables: {
-          filter: {username: {eq: username}},
+          filter: { username: { eq: username } },
         },
       });
       const questionsData = responseData.data.listQuestions.items;
@@ -37,7 +37,7 @@ const QuestionActivityScreen = ({navigation}) => {
     }
   };
 
-  const RenderItem = ({item}) => (
+  const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigate={navigation.navigate} />
   );
 
@@ -62,9 +62,9 @@ const QuestionActivityScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  input: {height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8},
-  questionTitle: {fontSize: 18},
-  container: {flex: 1, backgroundColor: '#fff8f5'},
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  questionTitle: { fontSize: 18 },
+  container: { flex: 1, backgroundColor: '#fff8f5' },
 });
 
 export default QuestionActivityScreen;

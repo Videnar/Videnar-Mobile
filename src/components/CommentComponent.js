@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import {
   Icon,
   Button,
@@ -12,9 +12,9 @@ import {
   Item,
   Input,
 } from 'native-base';
-import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 
-const CommentComponent = ({id, comment, updateComment, deleteComment}) => {
+const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [enableEdit, setEnableEdit] = useState(false);
   const [input, setInput] = useState('');

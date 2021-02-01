@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -9,12 +9,12 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
-import {AuthContext} from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 
-const SelectExamsScreen = ({route, navigation}) => {
-  const {updateUserPreferences} = useContext(AuthContext);
+const SelectExamsScreen = ({ route, navigation }) => {
+  const { updateUserPreferences } = useContext(AuthContext);
   const [exams, setExams] = useState([]);
-  const {education, branch} = route.params;
+  const { education, branch } = route.params;
   const finishSignUp = (item) => {
     updateUserPreferences({
       level: education.level,
@@ -35,7 +35,7 @@ const SelectExamsScreen = ({route, navigation}) => {
     setExams([...dataArray]);
   };
 
-  const RenderItem = ({item}) => (
+  const RenderItem = ({ item }) => (
     <TouchableOpacity onPress={() => onPressHandler(item)}>
       <View
         style={

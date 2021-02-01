@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
   Button,
@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
-import {API, graphqlOperation} from 'aws-amplify';
-import {Icon, Card, CardItem} from 'native-base';
-import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import { WebView } from 'react-native-webview';
+import { API, graphqlOperation } from 'aws-amplify';
+import { Icon, Card, CardItem } from 'native-base';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import {
   createCommentOnAnswer,
   updateAnswer,
@@ -18,19 +18,19 @@ import {
   deleteCommentOnAnswer,
   updateCommentOnAnswer,
 } from '../graphql/mutations';
-import {listCommentOnAnswers} from '../graphql/queries';
+import { listCommentOnAnswers } from '../graphql/queries';
 import CommentComponent from './CommentComponent';
-import {AuthContext} from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 
-const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
+const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   const {
-    state: {username},
+    state: { username },
   } = useContext(AuthContext);
   const [showCommentBoxForAnswer, setShowCommentBoxForAnswer] = useState(false);
   const [commentsOnAnswerInput, setCommentsOnAnswerInput] = useState('');
   const [commentsOnAnswer, setCommentsOnAnswer] = useState([]);
   const [popupVisible, setPopupVisible] = useState(false);
-  const {content, questionID, id, upvotes} = answer;
+  const { content, questionID, id, upvotes } = answer;
   useEffect(() => {
     const fetchCommentsOnAnswer = async () => {
       try {
@@ -38,7 +38,7 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
           query: listCommentOnAnswers,
           variables: {
             filter: {
-              answerID: {eq: id},
+              answerID: { eq: id },
             },
           },
         });
@@ -97,7 +97,7 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
       await API.graphql({
         query: deleteAnswer,
         variables: {
-          input: {id},
+          input: { id },
         },
       });
     } catch (err) {
@@ -127,7 +127,7 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
       await API.graphql({
         query: deleteCommentOnAnswer,
         variables: {
-          input: {id: Id},
+          input: { id: Id },
         },
       });
     } catch (err) {
@@ -149,10 +149,10 @@ const AnswerComponent = ({answer, setAnswer, setAnswerId}) => {
                 <div>${content}</div>
                 </body>`,
             }}
-            style={{width: 'auto', height: 400}}
+            style={{ width: 'auto', height: 400 }}
           />
         </CardItem>
-        <CardItem style={{flex: 1, justifyContent: 'space-around'}}>
+        <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
           <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon
             name="caret-up"

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   View,
@@ -7,14 +7,14 @@ import {
   Keyboard,
   Dimensions,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 import ImagePicker from 'react-native-image-picker';
-import {v4 as uuid} from 'uuid';
-import Dialog, {DialogContent} from 'react-native-popup-dialog';
-import {Storage} from 'aws-amplify';
+import { v4 as uuid } from 'uuid';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { Storage } from 'aws-amplify';
 import config from '../../aws-exports';
 
-const {aws_user_files_s3_bucket: bucket} = config;
+const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -30,7 +30,7 @@ const Editor = (props) => {
   }, [content, props.content]);
 
   const uploadToStorage = async (imageData) => {
-    const {uri, fileName, type} = imageData;
+    const { uri, fileName, type } = imageData;
     try {
       const response = await fetch(uri);
 
@@ -132,7 +132,7 @@ const Editor = (props) => {
                 </script>`,
         }}
         onMessage={(event) => {
-          const {data} = event.nativeEvent;
+          const { data } = event.nativeEvent;
           if (data === 'image') {
             Keyboard.dismiss();
             setPopupVisible(true);
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 'auto',
   },
-  webView: {width: deviceWidth},
+  webView: { width: deviceWidth },
   button: {
     width: 250,
     height: 60,
