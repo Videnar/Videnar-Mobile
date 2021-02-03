@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   Keyboard,
   Dimensions,
+  PermissionsAndroid,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import ImagePicker from 'react-native-image-picker';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { v4 as uuid } from 'uuid';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import { Storage } from 'aws-amplify';
@@ -50,9 +51,9 @@ const Editor = (props) => {
       window.ReactNativeWebView.postMessage(range.index);
       `;
       await webref.injectJavaScript(run);
-      props.setContent(content + '<p><br></p>');
+      // props.setContent(content + '<p><br></p>');
     } catch (err) {
-      console.log(err, 'hello err');
+      console.log(err, imageData, 'error uploading image');
     }
   };
 
@@ -64,7 +65,7 @@ const Editor = (props) => {
       },
     };
     setPopupVisible(false);
-    ImagePicker.launchCamera(options, (res) => {
+    launchCamera(options, (res) => {
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
@@ -85,7 +86,7 @@ const Editor = (props) => {
       },
     };
     setPopupVisible(false);
-    ImagePicker.launchImageLibrary(options, (res) => {
+    launchImageLibrary(options, (res) => {
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
@@ -96,6 +97,28 @@ const Editor = (props) => {
         uploadToStorage(res);
       }
     });
+  };
+
+  const requestCameraLaunch = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'App Camera Permission',
+          message: 'App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        cameraLaunch();
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   };
 
   return (
@@ -149,7 +172,7 @@ const Editor = (props) => {
           setPopupVisible(false);
         }}>
         <DialogContent>
-          <TouchableOpacity onPress={cameraLaunch} style={styles.button}>
+          <TouchableOpacity onPress={requestCameraLaunch} style={styles.button}>
             <Text style={styles.buttonText}>Take a Photo</Text>
           </TouchableOpacity>
 

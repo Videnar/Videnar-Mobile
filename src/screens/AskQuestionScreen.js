@@ -13,7 +13,6 @@ import {
   Left,
   Body,
   Title,
-  Content,
 } from 'native-base';
 
 const AskQuestionScreen = (props) => {

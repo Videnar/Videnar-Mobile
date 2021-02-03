@@ -35,7 +35,6 @@ const ActivityScreen = ({ navigation }) => {
         },
       });
       const comments = list.data.listCommentOnQuestions.items;
-      console.log(comments, 'comments');
       setItems([...items, ...comments]);
     } catch (err) {
       console.log('error fetching commentsOnQuestion', err);
@@ -51,7 +50,6 @@ const ActivityScreen = ({ navigation }) => {
         },
       });
       const comments = list.data.listCommentOnAnswers.items;
-      console.log(comments, 'commentsAnswer');
       setItems([...items, ...comments]);
     } catch (err) {
       console.log('error fetching commentsOnAnswer', err);

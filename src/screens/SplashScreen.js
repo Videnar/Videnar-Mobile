@@ -17,7 +17,6 @@ const SplashScreen = ({ navigation }) => {
       }
 
       if (user !== null) {
-        console.log(user);
         restoreUser(user);
         navigation.navigate('Main');
       } else {

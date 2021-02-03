@@ -25,7 +25,6 @@ const SelectBranchScreen = ({ route }) => {
   const onPressHandler = (branch) => {
     RootNavigation.navigate('SelectExams', { education, branch });
   };
-  console.log(education.branches);
   const RenderItem = education.branches.map((item) => (
     <ListItem onPress={() => onPressHandler(item)} key={item.branches}>
       <Left>

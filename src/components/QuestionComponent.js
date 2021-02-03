@@ -41,7 +41,7 @@ const QuestionComponent = ({ question, navigate }) => {
         },
       });
     } catch (err) {
-      console.log('error updating Question:', err);
+      console.log('error deleting Question:', err);
     }
     setPopupVisible(false);
   };
