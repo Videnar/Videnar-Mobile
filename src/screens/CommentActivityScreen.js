@@ -45,7 +45,6 @@ const ActivityScreen = ({ navigation }) => {
         },
       });
       const comments = list.data.listCommentOnQuestions.items;
-      // console.log(comments, 'commentsOnQuestion');
       setItems(comments);
     } catch (err) {
       console.log('error fetching commentsOnQuestion', err);
