@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Icon, Card, CardItem } from 'native-base';
@@ -21,8 +22,10 @@ import {
 import { listCommentOnAnswers } from '../graphql/queries';
 import CommentComponent from './CommentComponent';
 import { AuthContext } from '../contexts/AuthContext';
+import { navigate } from '../navigation/RootNavigation.js';
 
 const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
+  const route = useRoute();
   const {
     state: { username },
   } = useContext(AuthContext);
@@ -134,9 +137,12 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
       console.log('error updating Comment:', err);
     }
   };
-
   return (
-    <View>
+    <TouchableOpacity
+      onPress={() => {
+        route.name !== 'QuestionDetails' &&
+          navigate('QuestionDetails', { questionID });
+      }}>
       <Card>
         <CardItem>
           <WebView
@@ -225,7 +231,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
           Comment on this answer
         </Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

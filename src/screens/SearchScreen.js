@@ -8,9 +8,10 @@ import {
   searchCommentOnQuestions,
   searchCommentOnAnswers,
 } from '../graphql/queries';
+import QuestionComponent from '../components/QuestionComponent';
 // import {useDebouncedEffect} from '../utilities/useDebouncedEffect';
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
   const [Questions, setQuestions] = useState([]);
   const [Answers, setAnsers] = useState([]);
@@ -50,7 +51,7 @@ const SearchScreen = () => {
     }
   };
 
-  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
+  const RenderItem = ({ item }) => <QuestionComponent question={item} />;
 
   return (
     <Container style={styles.container}>

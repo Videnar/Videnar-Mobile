@@ -15,7 +15,11 @@ import {
   deleteCommentOnQuestion,
   updateCommentOnQuestion,
 } from '../graphql/mutations';
-import { listAnswers, listCommentOnQuestions } from '../graphql/queries';
+import {
+  getQuestion,
+  listAnswers,
+  listCommentOnQuestions,
+} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -26,7 +30,8 @@ const QuestionDetailsScreen = (props) => {
   const {
     state: { username },
   } = useContext(AuthContext);
-  const [id, setId] = useState(null);
+  const [question, setQuestion] = useState(null);
+  const [questionId, setQuestionId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
   const [content, setContent] = useState('');
   const [commentsOnQuestionInput, setCommentsOnQuestionInput] = useState('');
@@ -37,16 +42,27 @@ const QuestionDetailsScreen = (props) => {
   );
 
   useEffect(() => {
-    const { question } = props.route.params;
-    const { id: qid } = question;
-    setId(qid);
+    const qid = props.route.params.questionID;
+    setQuestionId(qid);
+    console.log('useeffects inside');
+    const fetchQuestion = async () => {
+      try {
+        const result = await API.graphql(
+          graphqlOperation(getQuestion, { id: qid }),
+        );
+        await setQuestion(result.data.getQuestion);
+        console.log(question, 'question data');
+      } catch (err) {
+        console.log('error fetching answers', err);
+      }
+    };
 
     const fetchAnswers = async () => {
       try {
         const list = await API.graphql({
           query: listAnswers,
           variables: {
-            filter: { questionID: { eq: id } },
+            filter: { questionID: { eq: questionId } },
           },
         });
         const answerslist = list.data.listAnswers.items;
@@ -61,7 +77,7 @@ const QuestionDetailsScreen = (props) => {
         const list = await API.graphql({
           query: listCommentOnQuestions,
           variables: {
-            filter: { questionID: { eq: id } },
+            filter: { questionID: { eq: questionId } },
           },
         });
         const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
@@ -70,9 +86,11 @@ const QuestionDetailsScreen = (props) => {
         console.log('error fetching commentsOnQuestion', err);
       }
     };
+
+    fetchQuestion();
     fetchAnswers();
     fetchCommentOnQuestion();
-  }, [id, props.route.params]);
+  }, [props.route.params.questionID, question, questionId]);
 
   const submitAnswer = async () => {
     if (answerId) {
@@ -97,7 +115,7 @@ const QuestionDetailsScreen = (props) => {
         graphqlOperation(createAnswer, {
           input: {
             username,
-            questionID: id,
+            questionID: questionId,
             content,
             upvotes: 0,
           },
@@ -114,7 +132,7 @@ const QuestionDetailsScreen = (props) => {
         graphqlOperation(createCommentOnQuestion, {
           input: {
             username,
-            questionID: id,
+            questionID: questionId,
             content: commentsOnQuestionInput,
           },
         }),
@@ -155,7 +173,6 @@ const QuestionDetailsScreen = (props) => {
     }
   };
 
-  const { question } = props.route.params;
   return (
     <View
       style={{

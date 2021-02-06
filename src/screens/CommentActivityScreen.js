@@ -1,13 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, Text, View, RefreshControl, StyleSheet } from 'react-native';
+import {
+  FlatList,
+  Text,
+  View,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { API } from 'aws-amplify';
 import {
   listCommentOnQuestions,
   listCommentOnAnswers,
 } from '../graphql/queries';
 import { AuthContext } from '../contexts/AuthContext';
+import CommentComponent from '../components/CommentComponent';
 
 const ActivityScreen = ({ navigation }) => {
+  const route = useRoute();
   const {
     state: { username },
   } = useContext(AuthContext);
@@ -35,7 +45,8 @@ const ActivityScreen = ({ navigation }) => {
         },
       });
       const comments = list.data.listCommentOnQuestions.items;
-      setItems([...items, ...comments]);
+      // console.log(comments, 'commentsOnQuestion');
+      setItems(comments);
     } catch (err) {
       console.log('error fetching commentsOnQuestion', err);
     }
@@ -50,13 +61,24 @@ const ActivityScreen = ({ navigation }) => {
         },
       });
       const comments = list.data.listCommentOnAnswers.items;
+      // console.log(items, comments, 'commentsOnAnswer');
       setItems([...items, ...comments]);
     } catch (err) {
       console.log('error fetching commentsOnAnswer', err);
     }
   };
 
-  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
+  const RenderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        route.name !== 'QuestionDetails' &&
+          navigation.navigate('QuestionDetails', {
+            questionID: item.questionID,
+          });
+      }}>
+      <Text>{item.content}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View

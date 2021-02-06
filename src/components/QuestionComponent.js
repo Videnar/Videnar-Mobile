@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API } from 'aws-amplify';
 import { Icon, Card, CardItem, Text } from 'native-base';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import { updateQuestion, deleteQuestion } from '../graphql/mutations';
-import * as RootNavigation from '../navigation/RootNavigation';
+import { navigate } from '../navigation/RootNavigation.js';
 
-const QuestionComponent = ({ question, navigate }) => {
+const QuestionComponent = ({ question }) => {
+  const route = useRoute();
   const [popupVisible, setPopupVisible] = useState(false);
   const { id, content, view, upvotes, tags } = question;
 
@@ -29,7 +31,7 @@ const QuestionComponent = ({ question, navigate }) => {
 
   const editQuestion = () => {
     setPopupVisible(false);
-    RootNavigation.navigate('AskQuestion', { id, content, tags });
+    navigate('AskQuestion', { id, content, tags });
   };
 
   const deleteSelectedQuestion = async () => {
@@ -49,7 +51,8 @@ const QuestionComponent = ({ question, navigate }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigate && navigate('QuestionDetails', { question });
+        route.name !== 'QuestionDetails' &&
+          navigate('QuestionDetails', { questionID: question.id });
       }}>
       <Card>
         <CardItem>

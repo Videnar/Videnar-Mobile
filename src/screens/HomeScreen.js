@@ -23,15 +23,13 @@ const HomeScreen = ({ navigation }) => {
     try {
       const responseData = await API.graphql(graphqlOperation(listQuestions));
       const questionsData = responseData.data.listQuestions.items;
-      setQuestions([...questionsData]);
+      setQuestions(questionsData);
     } catch (err) {
       console.log('error fetching questions', err);
     }
   };
 
-  const RenderItem = ({ item }) => (
-    <QuestionComponent question={item} navigate={navigation.navigate} />
-  );
+  const RenderItem = ({ item }) => <QuestionComponent question={item} />;
 
   return (
     <View style={styles.container}>
