@@ -30,7 +30,11 @@ const Home = () => (
       headerShown: false,
       gestureEnabled: false,
     }}>
-    <InnerStack.Screen name="Home" component={HomeScreen} />
+    <InnerStack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{ title: 'Home' }}
+    />
     <InnerStack.Screen
       name="QuestionDetails"
       component={QuestionDetailsScreen}

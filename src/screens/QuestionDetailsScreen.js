@@ -51,7 +51,7 @@ const QuestionDetailsScreen = (props) => {
           graphqlOperation(getQuestion, { id: qid }),
         );
         await setQuestion(result.data.getQuestion);
-        console.log(question, 'question data');
+        console.log(result.data.getQuestion, question, 'question data');
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -67,6 +67,7 @@ const QuestionDetailsScreen = (props) => {
         });
         const answerslist = list.data.listAnswers.items;
         setAnswers(answerslist);
+        console.log(answerslist, 'answer');
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -82,6 +83,7 @@ const QuestionDetailsScreen = (props) => {
         });
         const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
         setCommentsOnQuestion(commentsOnQuestionList);
+        console.log(commentsOnQuestionList, ' comments on question');
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
@@ -181,7 +183,7 @@ const QuestionDetailsScreen = (props) => {
         alignItems: 'center',
       }}>
       <ScrollView style={styles.scrollView}>
-        <QuestionComponent question={question} />
+        {question && <QuestionComponent question={question} />}
         {commentsOnQuestion.map((comment, index) => (
           <View key={comment.id ? comment.id : index}>
             <CommentComponent
