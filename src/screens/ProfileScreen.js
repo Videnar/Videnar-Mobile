@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import Spacer from '../components/Spacer';
 import { AuthContext } from '../contexts/AuthContext';
-import { Button, Text, Input, Label, Item } from 'native-base';
+import { Button, Text, Input, Label, Item, Icon } from 'native-base';
+import Share from 'react-native-share';
 
 const ProfileScreen = ({ navigation }) => {
   const {
@@ -25,6 +26,20 @@ const ProfileScreen = ({ navigation }) => {
     } else {
       setShow(true);
     }
+  };
+
+  const shareAppHandler = () => {
+    const options = {
+      message:
+        'Hey There! Join Vedenar and start your career journey without any distraction',
+    };
+    Share.open(options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
+      });
   };
 
   return (
@@ -90,6 +105,11 @@ const ProfileScreen = ({ navigation }) => {
       <Spacer />
       <Button block info style={styles.blockButton} onPress={signOut}>
         <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
+      </Button>
+      <Spacer />
+      <Button transparent danger full onPress={shareAppHandler}>
+        <Icon name="share-square" type="FontAwesome" />
+        <Text>Share</Text>
       </Button>
     </ScrollView>
   );
