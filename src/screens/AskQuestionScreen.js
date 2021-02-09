@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createQuestion, updateQuestion } from '../graphql/mutations';
@@ -21,13 +21,9 @@ const AskQuestionScreen = (props) => {
   } = useContext(AuthContext);
   const [content, setContent] = useState('<p><br></p>');
 
-  console.log('rerendering');
-
-  useEffect(() => {
-    if (props.route.params) {
-      setContent(props.route.params.content);
-    }
-  }, [props.route.params]);
+  const updateContent = (str) => {
+    setContent(str);
+  };
 
   const submitQuestion = async () => {
     if (props.route.params) {
@@ -48,7 +44,7 @@ const AskQuestionScreen = (props) => {
       );
       props.navigation.navigate('Home');
     } catch (err) {
-      console.log('error creating Question:', content);
+      console.log('error creating Question:', err);
     }
   };
 
@@ -87,7 +83,14 @@ const AskQuestionScreen = (props) => {
           </Button>
         </Right>
       </Header>
-      <Editor style={styles.editor} setContent={setContent} content={content} />
+      <Editor
+        style={styles.editor}
+        setContent={updateContent}
+        oldContent={
+          props.route.params === undefined ? null : props.route.params.content
+        }
+        content={content}
+      />
     </Container>
   );
 };

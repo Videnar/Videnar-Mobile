@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, View, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { API } from 'aws-amplify';
 import { listQuestions } from '../graphql/queries';
 import { AuthContext } from '../contexts/AuthContext';
@@ -10,46 +10,30 @@ const QuestionActivityScreen = () => {
     state: { username },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const responseData = await API.graphql({
+          query: listQuestions,
+          variables: {
+            filter: { username: { eq: username } },
+          },
+        });
+        const questionsData = responseData.data.listQuestions.items;
+        setItems(questionsData);
+      } catch (err) {
+        console.log('error fetching questions', err);
+      }
+    };
     fetchQuestions();
-  }, []);
+  }, [username]);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    fetchQuestions();
-    setRefreshing(false);
-  }, []);
-
-  const fetchQuestions = async () => {
-    try {
-      const responseData = await API.graphql({
-        query: listQuestions,
-        variables: {
-          filter: { username: { eq: username } },
-        },
-      });
-      const questionsData = responseData.data.listQuestions.items;
-      setItems(questionsData);
-    } catch (err) {
-      console.log('error fetching questions', err);
-    }
-  };
-
-  const RenderItem = ({ item }) => <QuestionComponent question={item} />;
+  const RenderItem = (item) => <QuestionComponent question={item} />;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.container}>
       <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         data={items}
         renderItem={RenderItem}
         keyExtractor={(item) => item.id}
@@ -60,9 +44,7 @@ const QuestionActivityScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  questionTitle: { fontSize: 18 },
-  container: { flex: 1, backgroundColor: '#fff8f5' },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
-export default QuestionActivityScreen;
+export default React.memo(QuestionActivityScreen);

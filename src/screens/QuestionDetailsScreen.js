@@ -44,14 +44,15 @@ const QuestionDetailsScreen = (props) => {
   useEffect(() => {
     const qid = props.route.params.questionID;
     setQuestionId(qid);
-    console.log('useeffects inside');
+  }, [props.route.params.questionID]);
+
+  useEffect(() => {
     const fetchQuestion = async () => {
       try {
         const result = await API.graphql(
-          graphqlOperation(getQuestion, { id: qid }),
+          graphqlOperation(getQuestion, { id: questionId }),
         );
         await setQuestion(result.data.getQuestion);
-        console.log(result.data.getQuestion, question, 'question data');
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -67,7 +68,6 @@ const QuestionDetailsScreen = (props) => {
         });
         const answerslist = list.data.listAnswers.items;
         setAnswers(answerslist);
-        console.log(answerslist, 'answer');
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -83,7 +83,6 @@ const QuestionDetailsScreen = (props) => {
         });
         const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
         setCommentsOnQuestion(commentsOnQuestionList);
-        console.log(commentsOnQuestionList, ' comments on question');
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
@@ -92,7 +91,7 @@ const QuestionDetailsScreen = (props) => {
     fetchQuestion();
     fetchAnswers();
     fetchCommentOnQuestion();
-  }, [props.route.params.questionID, question, questionId]);
+  }, [questionId]);
 
   const submitAnswer = async () => {
     if (answerId) {
@@ -124,7 +123,7 @@ const QuestionDetailsScreen = (props) => {
         }),
       );
     } catch (err) {
-      console.log('error creating Answer:', content);
+      console.log('error creating Answer:', err);
     }
   };
 
@@ -174,6 +173,10 @@ const QuestionDetailsScreen = (props) => {
       console.log('error updating Comment:', err);
     }
   };
+
+  console.log(
+    '================================ rendering qds =================================',
+  );
 
   return (
     <View
@@ -238,4 +241,4 @@ const styles = StyleSheet.create({
   questionTitle: { fontSize: 18 },
 });
 
-export default QuestionDetailsScreen;
+export default React.memo(QuestionDetailsScreen);

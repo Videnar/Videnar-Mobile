@@ -137,6 +137,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
       console.log('error updating Comment:', err);
     }
   };
+
   return (
     <TouchableOpacity
       onPress={() => {

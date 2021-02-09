@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, View, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { API } from 'aws-amplify';
 import { listAnswers } from '../graphql/queries';
 import { AuthContext } from '../contexts/AuthContext';
@@ -10,46 +10,30 @@ const AnswerActivityScreen = () => {
     state: { username },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
+    const fetchAnswers = async () => {
+      try {
+        const list = await API.graphql({
+          query: listAnswers,
+          variables: {
+            filter: { username: { eq: username } },
+          },
+        });
+        const answersList = list.data.listAnswers.items;
+        setItems(answersList);
+      } catch (err) {
+        console.log('error fetching answers', err);
+      }
+    };
     fetchAnswers();
-  }, []);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    fetchAnswers();
-    setRefreshing(false);
-  }, []);
-
-  const fetchAnswers = async () => {
-    try {
-      const list = await API.graphql({
-        query: listAnswers,
-        variables: {
-          filter: { username: { eq: username } },
-        },
-      });
-      const answersList = list.data.listAnswers.items;
-      setItems(answersList);
-    } catch (err) {
-      console.log('error fetching answers', err);
-    }
-  };
+  }, [username]);
 
   const RenderItem = ({ item }) => <AnswerComponent answer={item} />;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.container}>
       <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         data={items}
         renderItem={RenderItem}
         keyExtractor={(item) => item.id}
@@ -60,9 +44,7 @@ const AnswerActivityScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  questionTitle: { fontSize: 18 },
-  container: { flex: 1, backgroundColor: '#fff8f5' },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default AnswerActivityScreen;

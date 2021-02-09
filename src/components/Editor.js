@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -17,18 +17,10 @@ import config from '../../aws-exports';
 
 const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
 
 const Editor = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
-  const [content, setContent] = useState('<p><br></p>');
   const [webref, setWebref] = useState();
-
-  useEffect(() => {
-    if (props.content !== content) {
-      setContent(props.content);
-    }
-  }, [content, props.content]);
 
   const uploadToStorage = async (imageData) => {
     const { uri, fileName, type } = imageData;
@@ -51,9 +43,8 @@ const Editor = (props) => {
       window.ReactNativeWebView.postMessage(range.index);
       `;
       await webref.injectJavaScript(run);
-      // props.setContent(content + '<p><br></p>');
     } catch (err) {
-      console.log(err, imageData, 'error uploading image');
+      console.log('error uploading image', err);
     }
   };
 
@@ -135,7 +126,7 @@ const Editor = (props) => {
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
                  <body style="background-color:#fff8f8;">
-                  <div id="editor" >${content}</div>
+                  <div id="editor" >${props.oldContent || props.content}</div>
                  </body>
                  <script> 
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
@@ -160,7 +151,6 @@ const Editor = (props) => {
             Keyboard.dismiss();
             setPopupVisible(true);
           } else {
-            console.log(data, '[console data]');
             props.setContent(data);
           }
         }}
