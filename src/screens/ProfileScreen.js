@@ -108,7 +108,11 @@ const ProfileScreen = ({ navigation }) => {
       </Button>
       <Spacer />
       <Button transparent danger full onPress={shareAppHandler}>
-        <Icon name="share-square" type="FontAwesome" />
+        <Icon
+          name="share-square"
+          type="FontAwesome"
+          style={{ color: 'white' }}
+        />
         <Text>Share</Text>
       </Button>
     </ScrollView>
