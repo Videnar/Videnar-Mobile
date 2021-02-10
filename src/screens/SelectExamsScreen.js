@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
 import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  StatusBar,
+  Body,
+  Header,
+  Left,
+  ListItem,
+  Right,
+  Title,
   Button,
-} from 'react-native';
+} from 'native-base';
+import React, { useContext, useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, FlatList } from 'react-native';
+import Spacer from '../components/Spacer';
 import { AuthContext } from '../contexts/AuthContext';
 
 const SelectExamsScreen = ({ route, navigation }) => {
@@ -36,34 +37,36 @@ const SelectExamsScreen = ({ route, navigation }) => {
   };
 
   const RenderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => onPressHandler(item)}>
-      <View
-        style={
-          [...exams].includes(item)
-            ? {
-                padding: 10,
-                borderRadius: 5,
-                backgroundColor: '#f9c2ff',
-              }
-            : {
-                padding: 10,
-                borderRadius: 5,
-                backgroundColor: '#a1a1a1',
-              }
-        }>
-        <Text>{item}</Text>
-      </View>
-    </TouchableOpacity>
+    <ListItem
+      onPress={() => onPressHandler(item)}
+      style={
+        [...exams].includes(item) ? styles.itemSelected : styles.itemNotSelected
+      }>
+      <Text style={styles.textItem}>{item}</Text>
+    </ListItem>
   );
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header
+        androidStatusBarColor="#fff8f5"
+        iosBarStyle="dark-content"
+        style={styles.header}>
+        <Left />
+        <Body style={{ flex: 3 }}>
+          <Title style={{ fontWeight: 'bold' }}>Exams</Title>
+        </Body>
+        <Right />
+      </Header>
+      <Spacer />
       <FlatList
         data={education.exams}
         renderItem={RenderItem}
         keyExtractor={(item) => item}
       />
-      <Button title="Finish Signing Up" onPress={finishSignUp} />
+      <Button full success onPress={finishSignUp}>
+        <Text style={styles.textItem}>Finish Signing Up</Text>
+      </Button>
     </SafeAreaView>
   );
 };
@@ -81,6 +84,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+  },
+  header: {
+    backgroundColor: '#f76f00',
+  },
+  itemSelected: {
+    padding: 10,
+    borderRadius: 100,
+    margin: 7,
+    backgroundColor: '#de5f57',
+  },
+  itemNotSelected: {
+    padding: 10,
+    borderRadius: 100,
+    margin: 7,
+    backgroundColor: '#c7a32c',
+  },
+  textItem: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 
