@@ -1,4 +1,4 @@
-import React, { useReducer, useMemo } from 'react';
+import React, { useEffect, useReducer, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from 'aws-amplify';
@@ -46,7 +46,25 @@ const Stack = createStackNavigator();
 const App = () => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+      let user;
+      try {
+        const stringifiedValue = await AsyncStorage.getItem('@user');
+        user = stringifiedValue != null ? JSON.parse(stringifiedValue) : null;
+      } catch (e) {
+        // Restoring token failed
+      }
+      if (user !== null) {
+        dispatch({ type: 'signin', payload: user });
+      } else {
+        dispatch({ type: 'updateScreen', payload: 'Auth' });
+      }
+    };
+    bootstrapAsync();
+  }, []);
+
+  useEffect(() => {
     return () => {
       isReadyRef.current = false;
     };
@@ -67,9 +85,9 @@ const App = () => {
               const jsonValue = JSON.stringify({ username, attributes });
               AsyncStorage.setItem('@user', jsonValue);
               if (attributes['custom:preferences']) {
-                navigate('Main');
+                dispatch({ type: 'updateScreen', payload: 'Main' });
               } else {
-                navigate('UserInfo');
+                dispatch({ type: 'updateScreen', payload: 'UserInfo' });
               }
             })
             .catch((err) => console.log(err));
@@ -83,9 +101,8 @@ const App = () => {
       signOut: async () => {
         Auth.signOut()
           .then(() => {
+            dispatch({ type: 'updateScreen', payload: 'Auth' });
             AsyncStorage.removeItem('@user');
-            navigate('Auth');
-            // dispatch({type: 'signout'});
           })
           .catch((err) => console.log(err, 'err'));
       },
@@ -104,7 +121,7 @@ const App = () => {
               dispatch({ type: 'signin', payload: { username, attributes } });
               const jsonValue = JSON.stringify({ username, attributes });
               AsyncStorage.setItem('@user', jsonValue);
-              navigate('UserInfo');
+              dispatch({ type: 'updateScreen', payload: 'UserInfo' });
             })
             .catch((err) => console.log(err));
         } catch (error) {
@@ -135,9 +152,9 @@ const App = () => {
             const jsonValue = JSON.stringify({ username, attributes });
             AsyncStorage.setItem('@user', jsonValue);
             if (attributes['custom:preferences']) {
-              navigate('Main');
+              dispatch({ type: 'updateScreen', payload: 'Main' });
             } else {
-              navigate('UserInfo');
+              dispatch({ type: 'updateScreen', payload: 'UserInfo' });
             }
           })
           .catch((err) => console.log(err));
@@ -166,15 +183,17 @@ const App = () => {
           isReadyRef.current = true;
         }}>
         <Stack.Navigator
-          initialRouteName="Splash"
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
           }}>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="UserInfo" component={UserInfo} />
-          <Stack.Screen name="Auth" component={AuthComponent} />
+          {
+            {
+              Main: <Stack.Screen name="Main" component={Main} />,
+              UserInfo: <Stack.Screen name="UserInfo" component={UserInfo} />,
+              Auth: <Stack.Screen name="Auth" component={AuthComponent} />,
+            }[state.screen]
+          }
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

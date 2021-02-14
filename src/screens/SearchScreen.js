@@ -9,29 +9,20 @@ import {
   searchCommentOnAnswers,
 } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
+import AnswerComponent from '../components/AnswerComponent';
+import CommentComponent from '../components/CommentComponent';
 // import {useDebouncedEffect} from '../utilities/useDebouncedEffect';
 
 const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
-  const [Questions, setQuestions] = useState([]);
-  const [Answers, setAnsers] = useState([]);
-  const [CommentOnQuestions, setCommentOnQuestions] = useState([]);
-  const [CommentOnAnswers, setCommentOnAnswers] = useState();
+  const [results, setResults] = useState([]);
 
   const searchItems = async (val) => {
     setInput(val);
-    search(searchQuestions, 'searchQuestions', setQuestions);
-    // search(searchAnswers, 'searchAnswers', setAnsers);
-    // search(
-    //   searchCommentOnQuestions,
-    //   'searchCommentOnQuestions',
-    //   setCommentOnQuestions,
-    // );
-    // search(
-    //   searchCommentOnAnswers,
-    //   'searchCommentOnAnswers',
-    //   setCommentOnAnswers,
-    // );
+    search(searchQuestions, 'searchQuestions');
+    search(searchAnswers, 'searchAnswers');
+    search(searchCommentOnQuestions, 'searchCommentOnQuestions');
+    search(searchCommentOnAnswers, 'searchCommentOnAnswers');
   };
 
   const search = async (queryFunction, queryString, callback) => {
@@ -44,14 +35,16 @@ const SearchScreen = ({ navigation }) => {
           },
         },
       });
-      const result = list.data[queryString].items;
-      callback(result);
+      const res = list.data[queryString].items;
+      setResults([...results, ...res]);
     } catch (err) {
       console.log('error fetching commentsOnAnswer', err);
     }
   };
 
-  const RenderItem = ({ item }) => <QuestionComponent question={item} />;
+  // const RenderItem = ({ item }) => <QuestionComponent question={item} />;
+
+  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
 
   return (
     <Container style={styles.container}>
@@ -73,7 +66,7 @@ const SearchScreen = ({ navigation }) => {
         </Item>
       </Header>
       <FlatList
-        data={Questions}
+        data={results}
         renderItem={RenderItem}
         keyExtractor={(item) => item.id}
         style={styles.FlatList}

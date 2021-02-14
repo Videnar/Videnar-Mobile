@@ -24,7 +24,7 @@ const SplashScreen = ({ navigation }) => {
       }
     };
     bootstrapAsync();
-  }, []);
+  }, [navigation, restoreUser]);
 
   return (
     <View
