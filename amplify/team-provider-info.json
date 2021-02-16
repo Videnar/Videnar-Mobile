@@ -1,36 +1,36 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-videnar-dev-200832-authRole",
-      "UnauthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-authRole",
-      "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-videnar-dev-200832-deployment",
-      "UnauthRoleName": "amplify-videnar-dev-200832-unauthRole",
-      "StackName": "amplify-videnar-dev-200832",
-      "StackId": "arn:aws:cloudformation:ap-south-1:853898204841:stack/amplify-videnar-dev-200832/f441e3e0-0973-11eb-a133-02153b7bf71a",
-      "AmplifyAppId": "dl83tn5ppjq6a"
-    },
-    "categories": {
-      "function": {
-        "videnar83a24b7cCustomMessage": {
-          "REDIRECTURL": "myapp://",
-          "EMAILSUBJECT": "Sign In",
-          "EMAILMESSAGE": "Congrats! "
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-videnar-dev-200832-authRole",
+            "UnauthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::853898204841:role/amplify-videnar-dev-200832-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "amplify-videnar-dev-200832-deployment",
+            "UnauthRoleName": "amplify-videnar-dev-200832-unauthRole",
+            "StackName": "amplify-videnar-dev-200832",
+            "StackId": "arn:aws:cloudformation:ap-south-1:853898204841:stack/amplify-videnar-dev-200832/f441e3e0-0973-11eb-a133-02153b7bf71a",
+            "AmplifyAppId": "dl83tn5ppjq6a"
+        },
+        "categories": {
+            "function": {
+                "videnar83a24b7cCustomMessage": {
+                    "REDIRECTURL": "myapp://",
+                    "EMAILSUBJECT": "Sign In",
+                    "EMAILMESSAGE": "Congrats! "
+                }
+            },
+            "auth": {
+                "videnar83a24b7c": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"629977977694745\",\"client_secret\":\"0fa07a151ada55de27a31485997f326e\"},{\"ProviderName\":\"Google\",\"client_id\":\"1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com\",\"client_secret\":\"emy0y-HByFjNipPDRdYN8pPK\"}]"
+                }
+            },
+            "notifications": {
+                "Pinpoint": {
+                    "Name": "videnarFCM-dev",
+                    "Id": "b9af98f3323c433e9536a69caa53eb16",
+                    "Region": "us-west-2"
+                }
+            }
         }
-      },
-      "auth": {
-        "videnar83a24b7c": {
-          "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"629977977694745\",\"client_secret\":\"0fa07a151ada55de27a31485997f326e\"},{\"ProviderName\":\"Google\",\"client_id\":\"1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com\",\"client_secret\":\"emy0y-HByFjNipPDRdYN8pPK\"}]"
-        }
-      },
-      "notifications": {
-        "Pinpoint": {
-          "Name": "VidenarPN-dev",
-          "Id": "de028f4c4298480582134aff114595ec",
-          "Region": "us-west-2"
-        }
-      }
     }
-  }
 }
