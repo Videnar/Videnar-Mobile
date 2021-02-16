@@ -79,5 +79,10 @@
             ]
         }
     },
-    "analytics": {}
+    "analytics": {
+        "VidenarPN": {
+            "service": "Pinpoint",
+            "providerPlugin": "awscloudformation"
+        }
+    }
 }

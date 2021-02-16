@@ -1,0 +1,22 @@
+{
+    "appName": "VidenarPN",
+    "roleName": "pinpointLambdaRolea3fabd43",
+    "cloudformationPolicyName": "cloudformationPolicya3fabd43",
+    "cloudWatchPolicyName": "cloudWatchPolicya3fabd43",
+    "pinpointPolicyName": "pinpointPolicya3fabd43",
+    "authPolicyName": "pinpoint_amplify_a3fabd43",
+    "unauthPolicyName": "pinpoint_amplify_a3fabd43",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "appId": "de028f4c4298480582134aff114595ec"
+}
