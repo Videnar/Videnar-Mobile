@@ -74,7 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function areEqual(prevProps, nextProps) {
-  return prevProps.route.params.id === nextProps.route.params.id;
-}
-export default React.memo(AskQuestionScreen, areEqual);
+export default AskQuestionScreen;

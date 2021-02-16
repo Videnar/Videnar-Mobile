@@ -30,6 +30,7 @@ const QuestionDetailsScreen = (props) => {
   const {
     state: { username },
   } = useContext(AuthContext);
+  const [webref, setWebref] = useState();
   const [question, setQuestion] = useState(null);
   const [questionId, setQuestionId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
@@ -174,10 +175,6 @@ const QuestionDetailsScreen = (props) => {
     }
   };
 
-  console.log(
-    '================================ rendering qds =================================',
-  );
-
   return (
     <View
       style={{
@@ -227,7 +224,13 @@ const QuestionDetailsScreen = (props) => {
             />
           </View>
         ))}
-        <Editor content={content} setContent={setContent} />
+        <Editor
+          style={styles.editor}
+          content={content}
+          setContent={setContent}
+          webref={webref}
+          setWebref={setWebref}
+        />
         <Button title="Submit Answer" onPress={submitAnswer} />
       </ScrollView>
     </View>
@@ -239,6 +242,11 @@ const styles = StyleSheet.create({
   scrollView: { marginHorizontal: 0 },
   input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
   questionTitle: { fontSize: 18 },
+  editor: {
+    flex: 1,
+    height: 100,
+    width: 'auto',
+  },
 });
 
 export default React.memo(QuestionDetailsScreen);

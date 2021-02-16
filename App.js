@@ -5,11 +5,7 @@ import { Auth } from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
-import {
-  navigate,
-  navigationRef,
-  isReadyRef,
-} from './src/navigation/RootNavigation';
+import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
 import { AuthContext } from './src/contexts/AuthContext';
 import {
   Main,
