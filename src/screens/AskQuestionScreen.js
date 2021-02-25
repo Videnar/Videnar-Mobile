@@ -1,9 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createQuestion, updateQuestion } from '../graphql/mutations';
 import Editor from '../components/Editor';
-import { AuthContext } from '../contexts/AuthContext';
 import {
   Button,
   Text,
@@ -16,54 +13,11 @@ import {
 } from 'native-base';
 
 const AskQuestionScreen = (props) => {
-  const {
-    state: { username },
-  } = useContext(AuthContext);
-  const [content, setContent] = useState('<p><br></p>');
+  const [webref, setWebref] = useState();
 
-  const updateContent = (str) => {
-    setContent(str);
-  };
-
-  const submitQuestion = async () => {
-    if (props.route.params) {
-      updateSelectedQuestion();
-    }
-    try {
-      await API.graphql(
-        graphqlOperation(createQuestion, {
-          input: {
-            username,
-            content: content,
-            upvotes: 0,
-            view: 0,
-            tags: 'neet',
-            noOfBookmarks: 0,
-          },
-        }),
-      );
-      props.navigation.navigate('Home');
-    } catch (err) {
-      console.log('error creating Question:', err);
-    }
-  };
-
-  const updateSelectedQuestion = async (n) => {
-    const { id } = props.route.params;
-    try {
-      await API.graphql({
-        query: updateQuestion,
-        variables: {
-          input: {
-            id,
-            content,
-          },
-        },
-      });
-      props.navigation.navigate('Home');
-    } catch (err) {
-      console.log('error updating Question:', err);
-    }
+  const submit = () => {
+    const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
+    webref.injectJavaScript(code);
   };
 
   return (
@@ -78,18 +32,21 @@ const AskQuestionScreen = (props) => {
           <Title>Ask Your Question</Title>
         </Body>
         <Right>
-          <Button style={styles.button} onPress={submitQuestion}>
+          <Button style={styles.button} onPress={submit}>
             <Text style={styles.buttonText}>Post</Text>
           </Button>
         </Right>
       </Header>
       <Editor
         style={styles.editor}
-        setContent={updateContent}
         oldContent={
           props.route.params === undefined ? null : props.route.params.content
         }
-        content={content}
+        questionID={
+          props.route.params === undefined ? null : props.route.params.id
+        }
+        webref={webref}
+        setWebref={setWebref}
       />
     </Container>
   );
@@ -117,7 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function areEqual(prevProps, nextProps) {
-  return prevProps.route.params.id === nextProps.route.params.id;
-}
-export default React.memo(AskQuestionScreen, areEqual);
+export default AskQuestionScreen;

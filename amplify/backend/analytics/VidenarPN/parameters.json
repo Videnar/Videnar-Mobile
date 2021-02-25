@@ -1,11 +1,11 @@
 {
     "appName": "VidenarPN",
-    "roleName": "pinpointLambdaRolee7183a1a",
-    "cloudformationPolicyName": "cloudformationPolicye7183a1a",
-    "cloudWatchPolicyName": "cloudWatchPolicye7183a1a",
-    "pinpointPolicyName": "pinpointPolicye7183a1a",
-    "authPolicyName": "pinpoint_amplify_e7183a1a",
-    "unauthPolicyName": "pinpoint_amplify_e7183a1a",
+    "roleName": "pinpointLambdaRolea3fabd43",
+    "cloudformationPolicyName": "cloudformationPolicya3fabd43",
+    "cloudWatchPolicyName": "cloudWatchPolicya3fabd43",
+    "pinpointPolicyName": "pinpointPolicya3fabd43",
+    "authPolicyName": "pinpoint_amplify_a3fabd43",
+    "unauthPolicyName": "pinpoint_amplify_a3fabd43",
     "authRoleName": {
         "Ref": "AuthRoleName"
     },

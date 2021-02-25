@@ -9,6 +9,7 @@ export const AuthReducer = (state, action) => {
         ? JSON.parse(customPreferences)
         : null;
       return {
+        ...state,
         isSignedIn: true,
         attributes: attributes,
         preferences: preferences,
@@ -21,12 +22,15 @@ export const AuthReducer = (state, action) => {
       return { ...state, isSignedIn: false };
     case 'update_preferences':
       return { ...state, preferences: action.payload };
+    case 'updateScreen':
+      return { ...state, screen: action.payload };
     default:
       return state;
   }
 };
 
 export const initialState = {
+  screen: 'Main',
   username: null,
   isSignedIn: false,
   attributes: null,

@@ -60,7 +60,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-videnar-dev-200832-deployment",
-          "S3Key": "amplify-builds/S3Triggerd992a67f-3941707a49545549634f-build.zip"
+          "S3Key": "amplify-builds/S3Triggerd992a67f-64796152416a636a656e-build.zip"
         }
       }
     },

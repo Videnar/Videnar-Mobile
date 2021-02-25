@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Keyboard,
-  Dimensions,
-  PermissionsAndroid,
-} from 'react-native';
+import React, { useContext } from 'react';
+import { KeyboardAvoidingView, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { v4 as uuid } from 'uuid';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import { Storage } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createQuestion, updateQuestion } from '../graphql/mutations';
+import { AuthContext } from '../contexts/AuthContext';
 import config from '../../aws-exports';
+import { navigate } from '../navigation/RootNavigation';
 
 const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
 
-const Editor = (props) => {
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [webref, setWebref] = useState();
+const Editor = ({ navigation, webref, setWebref, oldContent, questionID }) => {
+  const {
+    state: { username },
+  } = useContext(AuthContext);
+  const defaultContent = '<p><br></p>';
 
   const uploadToStorage = async (imageData) => {
     const { uri, fileName, type } = imageData;
@@ -35,85 +31,53 @@ const Editor = (props) => {
         contentType: type,
       });
       const url = `https://${bucket}.s3.amazonaws.com/public/${key}`;
-      const run = `
-      let range = window.quill.getSelection();
-      window.ReactNativeWebView.postMessage(range.index);
-      window.quill.insertEmbed(range.index, 'image', '${url}');
-      range = window.quill.getSelection()
-      window.ReactNativeWebView.postMessage(range.index);
-      `;
-      await webref.injectJavaScript(run);
     } catch (err) {
       console.log('error uploading image', err);
     }
   };
 
-  const cameraLaunch = () => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    setPopupVisible(false);
-    launchCamera(options, (res) => {
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-      } else {
-        uploadToStorage(res);
-      }
-    });
-  };
-
-  const imageGalleryLaunch = () => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    setPopupVisible(false);
-    launchImageLibrary(options, (res) => {
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-      } else {
-        uploadToStorage(res);
-      }
-    });
-  };
-
-  const requestCameraLaunch = async () => {
+  const submitQuestion = async (str) => {
+    if (oldContent) {
+      updateSelectedQuestion(str);
+    }
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'App Camera Permission',
-          message: 'App needs access to your camera ',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
+      await API.graphql(
+        graphqlOperation(createQuestion, {
+          input: {
+            username,
+            content: str,
+            upvotes: 0,
+            view: 0,
+            tags: 'neet',
+            noOfBookmarks: 0,
+          },
+        }),
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        cameraLaunch();
-      } else {
-        console.log('Camera permission denied');
-      }
+      navigate('Home');
     } catch (err) {
-      console.warn(err);
+      console.log('error creating Question:', err);
+    }
+  };
+
+  const updateSelectedQuestion = async (str) => {
+    try {
+      await API.graphql({
+        query: updateQuestion,
+        variables: {
+          input: {
+            id: questionID,
+            content: str,
+          },
+        },
+      });
+      navigate('Home');
+    } catch (err) {
+      console.log('error updating Question:', err);
     }
   };
 
   return (
-    <View style={styles.container} scrollEnabled={false}>
+    <KeyboardAvoidingView style={styles.container} scrollEnabled={false}>
       <WebView
         style={styles.webView}
         originWhitelist={['*']}
@@ -126,7 +90,7 @@ const Editor = (props) => {
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
                  <body style="background-color:#fff8f8;">
-                  <div id="editor" >${props.oldContent || props.content}</div>
+                  <div id="editor" >${oldContent || defaultContent}</div>
                  </body>
                  <script> 
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
@@ -137,41 +101,17 @@ const Editor = (props) => {
                   placeholder: 'Describe your question...',
                    theme: 'snow'
                   });
-                  quill.on('text-change', function(delta, oldDelta, source) {
-                    window.ReactNativeWebView.postMessage(quill.root.innerHTML);
-                  });
-                  quill.getModule('toolbar').addHandler('image', () => {
-                   window.ReactNativeWebView.postMessage('image');
-                  });
                 </script>`,
         }}
-        onMessage={(event) => {
+        onMessage={async (event) => {
           const { data } = event.nativeEvent;
-          if (data === 'image') {
-            Keyboard.dismiss();
-            setPopupVisible(true);
-          } else {
-            props.setContent(data);
+          if (data !== defaultContent) {
+            submitQuestion(data);
           }
         }}
         containerStyle={styles.webview}
       />
-      <Dialog
-        visible={popupVisible}
-        onTouchOutside={() => {
-          setPopupVisible(false);
-        }}>
-        <DialogContent>
-          <TouchableOpacity onPress={requestCameraLaunch} style={styles.button}>
-            <Text style={styles.buttonText}>Take a Photo</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={imageGalleryLaunch} style={styles.button}>
-            <Text style={styles.buttonText}>Pick a Photo from Gallery</Text>
-          </TouchableOpacity>
-        </DialogContent>
-      </Dialog>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
