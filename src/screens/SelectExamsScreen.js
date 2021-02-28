@@ -13,16 +13,16 @@ import Spacer from '../components/Spacer';
 import { AuthContext } from '../contexts/AuthContext';
 
 const SelectExamsScreen = ({ route, navigation }) => {
-  const { updateUserPreferences } = useContext(AuthContext);
+  const { updateUserPreferences, changeScreen } = useContext(AuthContext);
   const [exams, setExams] = useState([]);
   const { education, branch } = route.params;
-  const finishSignUp = (item) => {
-    updateUserPreferences({
+  const finishSignUp = async (item) => {
+    await updateUserPreferences({
       level: education.level,
       branch: branch,
       exams: exams,
     });
-    navigation.navigate('Main');
+    changeScreen('Main');
   };
 
   const onPressHandler = (item) => {
@@ -65,7 +65,7 @@ const SelectExamsScreen = ({ route, navigation }) => {
         keyExtractor={(item) => item}
       />
       <Button full success onPress={finishSignUp}>
-        <Text style={styles.textItem}>Finish Signing Up</Text>
+        <Text style={styles.textItem}>Save Info</Text>
       </Button>
     </SafeAreaView>
   );

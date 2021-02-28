@@ -9,6 +9,7 @@ const ProfileScreen = ({ navigation }) => {
   const {
     signOut,
     changePassword,
+    changeScreen,
     state: {
       attributes: { name, picture },
       preferences: { level, branch, exams },
@@ -29,8 +30,7 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const onEditExamPreferences = () => {
-    console.log('Edit clicked');
-    navigation.push('UserInfo');
+    changeScreen('UserInfo');
   };
 
   const shareAppHandler = () => {

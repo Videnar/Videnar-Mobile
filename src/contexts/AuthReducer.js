@@ -22,7 +22,7 @@ export const AuthReducer = (state, action) => {
       return { ...state, isSignedIn: false };
     case 'update_preferences':
       return { ...state, preferences: action.payload };
-    case 'updateScreen':
+    case 'changeScreen':
       return { ...state, screen: action.payload };
     default:
       return state;

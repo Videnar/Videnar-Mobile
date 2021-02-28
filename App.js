@@ -54,7 +54,7 @@ const App = () => {
       if (user !== null) {
         dispatch({ type: 'signin', payload: user });
       } else {
-        dispatch({ type: 'updateScreen', payload: 'Auth' });
+        dispatch({ type: 'changeScreen', payload: 'Auth' });
       }
     };
     bootstrapAsync();
@@ -81,9 +81,9 @@ const App = () => {
               const jsonValue = JSON.stringify({ username, attributes });
               AsyncStorage.setItem('@user', jsonValue);
               if (attributes['custom:preferences']) {
-                dispatch({ type: 'updateScreen', payload: 'Main' });
+                dispatch({ type: 'changeScreen', payload: 'Main' });
               } else {
-                dispatch({ type: 'updateScreen', payload: 'UserInfo' });
+                dispatch({ type: 'changeScreen', payload: 'UserInfo' });
               }
             })
             .catch((err) => console.log(err));
@@ -97,7 +97,7 @@ const App = () => {
       signOut: async () => {
         Auth.signOut()
           .then(() => {
-            dispatch({ type: 'updateScreen', payload: 'Auth' });
+            dispatch({ type: 'changeScreen', payload: 'Auth' });
             AsyncStorage.removeItem('@user');
           })
           .catch((err) => console.log(err, 'err'));
@@ -117,7 +117,7 @@ const App = () => {
               dispatch({ type: 'signin', payload: { username, attributes } });
               const jsonValue = JSON.stringify({ username, attributes });
               AsyncStorage.setItem('@user', jsonValue);
-              dispatch({ type: 'updateScreen', payload: 'UserInfo' });
+              dispatch({ type: 'changeScreen', payload: 'UserInfo' });
             })
             .catch((err) => console.log(err));
         } catch (error) {
@@ -148,9 +148,9 @@ const App = () => {
             const jsonValue = JSON.stringify({ username, attributes });
             AsyncStorage.setItem('@user', jsonValue);
             if (attributes['custom:preferences']) {
-              dispatch({ type: 'updateScreen', payload: 'Main' });
+              dispatch({ type: 'changeScreen', payload: 'Main' });
             } else {
-              dispatch({ type: 'updateScreen', payload: 'UserInfo' });
+              dispatch({ type: 'changeScreen', payload: 'UserInfo' });
             }
           })
           .catch((err) => console.log(err));
@@ -166,6 +166,9 @@ const App = () => {
         } catch (err) {
           console.log(err);
         }
+      },
+      changeScreen: (screen) => {
+        dispatch({ type: 'changeScreen', payload: screen });
       },
     }),
     [],

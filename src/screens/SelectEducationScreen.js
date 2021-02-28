@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import { educations } from '../utilities/constants/education';
-import * as RootNavigation from '../navigation/RootNavigation';
 import { AuthContext } from '../contexts/AuthContext';
 import {
   Body,
@@ -15,19 +14,19 @@ import {
   Title,
 } from 'native-base';
 
-const SelectEducationScreen = () => {
+const SelectEducationScreen = ({ navigation }) => {
   const {
     updateUserPreferences,
     state: { user },
   } = useContext(AuthContext);
   const onPressHandler = (education) => {
     if (education.level === 'B.Tech') {
-      RootNavigation.navigate('SelectBranch', { education });
+      navigation.navigate('SelectBranch', { education });
     } else if (!education.exams) {
       updateUserPreferences(user, { level: education.level });
-      RootNavigation.navigate('Home');
+      navigation.navigate('Home');
     } else {
-      RootNavigation.navigate('SelectExams', { education });
+      navigation.navigate('SelectExams', { education });
     }
   };
 

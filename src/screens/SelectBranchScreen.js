@@ -10,20 +10,12 @@ import {
   Icon,
 } from 'native-base';
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  StatusBar,
-} from 'react-native';
-import * as RootNavigation from '../navigation/RootNavigation';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
-const SelectBranchScreen = ({ route }) => {
+const SelectBranchScreen = ({ navigation, route }) => {
   const { education } = route.params;
   const onPressHandler = (branch) => {
-    RootNavigation.navigate('SelectExams', { education, branch });
+    navigation.navigate('SelectExams', { education, branch });
   };
   const RenderItem = education.branches.map((item) => (
     <ListItem onPress={() => onPressHandler(item)} key={item.branches}>
