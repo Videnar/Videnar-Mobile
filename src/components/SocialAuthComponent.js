@@ -45,10 +45,7 @@ const SocialAuthComponent = () => {
           socialAuth('Google');
           // onSignin();
         }}>
-        <Icon name="google" type="FontAwesome" style={{ color: 'red' }} />
-        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-          Sign In with Google
-        </Text>
+        <Icon name="google" type="FontAwesome" style={styles.googleIcon} />
       </Button>
       <Spacer />
       <Button
@@ -63,11 +60,8 @@ const SocialAuthComponent = () => {
         <Icon
           name="facebook-square"
           type="FontAwesome"
-          style={{ color: 'blue' }}
+          style={styles.facebookIcon}
         />
-        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-          Sign In with Facebook
-        </Text>
       </Button>
     </View>
   );
@@ -79,7 +73,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
@@ -88,7 +82,15 @@ const styles = StyleSheet.create({
     borderColor: '#d3d6db',
     padding: 7,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius: 15,
+  },
+  googleIcon: {
+    color: 'red',
+    fontSize: 35,
+  },
+  facebookIcon: {
+    color: 'blue',
+    fontSize: 35,
   },
 });
 

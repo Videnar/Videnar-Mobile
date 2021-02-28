@@ -5,6 +5,7 @@ import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
+import { AUTH_BACKGROUND } from '../assets/colors/colors';
 
 const SignupScreen = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
@@ -12,9 +13,9 @@ const SignupScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
       <AuthComponent
-        headerText="Sign Up for Videnar"
+        headerText="Sign Up"
         // errorMessage={state.errorMessage}
-        submitButtonText="SIGN UP"
+        submitButtonText="Create Account"
         nameInput
         onSubmit={signUp}
       />
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 50,
-    backgroundColor: '#ffede6',
+    backgroundColor: AUTH_BACKGROUND,
   },
   textStyle: {
     fontSize: 18,

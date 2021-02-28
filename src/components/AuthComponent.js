@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
 import { Button, Input, Item, Label, Icon } from 'native-base';
+import { ICON, NEW_RED } from '../assets/colors/colors';
+
+const HEIGHT = Dimensions.get('window').height;
 
 const AuthForm = ({
   headerText,
@@ -24,7 +27,7 @@ const AuthForm = ({
     <View style={styles.container}>
       <View>
         <Spacer>
-          <Text h3 style={{ fontWeight: 'bold', fontSize: 30 }}>
+          <Text h3 style={styles.headerText}>
             {headerText}
           </Text>
         </Spacer>
@@ -42,8 +45,8 @@ const AuthForm = ({
                 style={styles.textInput}
               />
               <Icon
-                name="user-circle"
-                type="FontAwesome"
+                name="account-circle"
+                type="MaterialIcons"
                 style={styles.iconStyle}
               />
             </Item>
@@ -60,7 +63,7 @@ const AuthForm = ({
             autoCorrect={false}
             style={styles.textInput}
           />
-          <Icon name="envelope" type="FontAwesome" style={styles.iconStyle} />
+          <Icon name="email" type="MaterialIcons" style={styles.iconStyle} />
         </Item>
         <Spacer />
         <Item underline floatingLabel style={styles.inputStyle}>
@@ -74,7 +77,7 @@ const AuthForm = ({
             autoCorrect={false}
             style={styles.textInput}
           />
-          <Icon name="lock" type="FontAwesome" style={styles.iconStyle} />
+          <Icon name="lock" type="MaterialIcons" style={styles.iconStyle} />
         </Item>
         <Spacer />
         {forgotPassword ? (
@@ -92,10 +95,8 @@ const AuthForm = ({
             block
             info
             onPress={() => onSubmit(email, password)}
-            style={{ backgroundColor: '#f76f00' }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
-              {submitButtonText}
-            </Text>
+            style={styles.button}>
+            <Text style={styles.buttonText}>{submitButtonText}</Text>
           </Button>
         </Spacer>
       </View>
@@ -117,7 +118,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     backgroundColor: 'white',
-    borderRadius: 15,
+    borderRadius: 20,
+    marginTop: HEIGHT * 0.1,
   },
   forgetText: {
     fontSize: 17,
@@ -126,12 +128,24 @@ const styles = StyleSheet.create({
     color: '#85898f',
   },
   inputStyle: {
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 20,
   },
   iconStyle: {
-    color: '#85898f',
-    fontSize: 22,
+    color: ICON,
+    fontSize: 28,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  button: {
+    backgroundColor: NEW_RED,
+    borderRadius: 30,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 25,
   },
 });
 
