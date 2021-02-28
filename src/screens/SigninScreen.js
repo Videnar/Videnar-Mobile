@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, StatusBar } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import Spacer from '../components/Spacer';
+import { AUTH_BACKGROUND } from '../assets/colors/colors';
 
 const SigninScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
@@ -12,12 +13,13 @@ const SigninScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
+      <StatusBar barStyle="dark-content" backgroundColor={AUTH_BACKGROUND} />
       <AuthComponent
-        headerText="Sign into Videnar"
+        headerText="Login"
         // errorMessage={state.errorMessage}
         onSubmit={signIn}
         forgotPassword
-        submitButtonText="SIGN IN"
+        submitButtonText="Sign In"
       />
       <Spacer />
       <Text style={styles.textStyle}>Don't have an account?</Text>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 50,
-    backgroundColor: '#ffede6',
+    backgroundColor: AUTH_BACKGROUND,
   },
   textStyle: {
     fontSize: 18,
