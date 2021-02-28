@@ -176,12 +176,7 @@ const QuestionDetailsScreen = (props) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {question && <QuestionComponent question={question} />}
         {commentsOnQuestion.map((comment, index) => (
@@ -197,11 +192,7 @@ const QuestionDetailsScreen = (props) => {
         {showCommentBoxForQuestion ? (
           <>
             <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                borderWidth: 1,
-              }}
+              style={styles.textInput}
               onChangeText={(text) => setCommentsOnQuestionInput(text)}
               value={commentsOnQuestionInput}
             />
@@ -238,7 +229,16 @@ const QuestionDetailsScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+  },
   scrollView: { marginHorizontal: 0 },
   input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
   questionTitle: { fontSize: 18 },
