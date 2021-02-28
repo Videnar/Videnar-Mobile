@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createQuestion, updateQuestion } from '../graphql/mutations';
 import Editor from '../components/Editor';
 import {
   Button,
@@ -11,13 +13,59 @@ import {
   Body,
   Title,
 } from 'native-base';
+import { AuthContext } from '../contexts/AuthContext';
 
-const AskQuestionScreen = (props) => {
+const AskQuestionScreen = ({ route, navigation }) => {
+  const {
+    state: { username },
+  } = useContext(AuthContext);
   const [webref, setWebref] = useState();
 
   const submit = () => {
     const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
     webref.injectJavaScript(code);
+  };
+
+  const submitQuestion = async (str) => {
+    const oldContent = route.params === undefined ? null : route.params.content;
+    if (oldContent) {
+      updateSelectedQuestion(str);
+    }
+    try {
+      await API.graphql(
+        graphqlOperation(createQuestion, {
+          input: {
+            username,
+            content: str,
+            upvotes: 0,
+            view: 0,
+            tags: 'neet',
+            noOfBookmarks: 0,
+          },
+        }),
+      );
+      navigation.navigate('Home');
+    } catch (err) {
+      console.log('error creating Question:', err);
+    }
+  };
+
+  const updateSelectedQuestion = async (str) => {
+    const questionID = route.params === undefined ? null : route.params.id;
+    try {
+      await API.graphql({
+        query: updateQuestion,
+        variables: {
+          input: {
+            id: questionID,
+            content: str,
+          },
+        },
+      });
+      navigation.navigate('Home');
+    } catch (err) {
+      console.log('error updating Question:', err);
+    }
   };
 
   return (
@@ -38,13 +86,8 @@ const AskQuestionScreen = (props) => {
         </Right>
       </Header>
       <Editor
-        style={styles.editor}
-        oldContent={
-          props.route.params === undefined ? null : props.route.params.content
-        }
-        questionID={
-          props.route.params === undefined ? null : props.route.params.id
-        }
+        submit={submitQuestion}
+        oldContent={route.params === undefined ? null : route.params.content}
         webref={webref}
         setWebref={setWebref}
       />
@@ -58,11 +101,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#f76f00',
-  },
-  editor: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
   },
   button: {
     backgroundColor: '#fff8f5',

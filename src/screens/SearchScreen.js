@@ -2,16 +2,9 @@ import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import { Container, Header, Item, Input, Icon } from 'native-base';
 import { StyleSheet, FlatList, Text } from 'react-native';
-import {
-  searchQuestions,
-  searchAnswers,
-  searchCommentOnQuestions,
-  searchCommentOnAnswers,
-} from '../graphql/queries';
+import { searchQuestions, searchAnswers } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
-import CommentComponent from '../components/CommentComponent';
-// import {useDebouncedEffect} from '../utilities/useDebouncedEffect';
 
 const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
@@ -19,13 +12,13 @@ const SearchScreen = ({ navigation }) => {
 
   const searchItems = async (val) => {
     setInput(val);
+    setResults([]);
     search(searchQuestions, 'searchQuestions');
     search(searchAnswers, 'searchAnswers');
-    search(searchCommentOnQuestions, 'searchCommentOnQuestions');
-    search(searchCommentOnAnswers, 'searchCommentOnAnswers');
   };
 
   const search = async (queryFunction, queryString, callback) => {
+    let res = [];
     try {
       const list = await API.graphql({
         query: queryFunction,
@@ -35,16 +28,19 @@ const SearchScreen = ({ navigation }) => {
           },
         },
       });
-      const res = list.data[queryString].items;
+      res = list.data[queryString].items;
       setResults([...results, ...res]);
     } catch (err) {
-      console.log('error fetching commentsOnAnswer', err);
+      console.log('error fetching items', err);
     }
   };
 
-  // const RenderItem = ({ item }) => <QuestionComponent question={item} />;
-
-  const RenderItem = ({ item }) => <Text>{item.content}</Text>;
+  const RenderItem = ({ item }) =>
+    item.questionID ? (
+      <AnswerComponent answer={item} />
+    ) : (
+      <QuestionComponent question={item} />
+    );
 
   return (
     <Container style={styles.container}>
