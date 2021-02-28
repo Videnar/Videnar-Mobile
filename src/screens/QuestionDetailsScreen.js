@@ -34,7 +34,7 @@ const QuestionDetailsScreen = (props) => {
   const [question, setQuestion] = useState(null);
   const [questionId, setQuestionId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
-  const [content, setContent] = useState('');
+  const [contentToEdit, setContentToEdit] = useState('');
   const [commentsOnQuestionInput, setCommentsOnQuestionInput] = useState('');
   const [answers, setAnswers] = useState([]);
   const [commentsOnQuestion, setCommentsOnQuestion] = useState([]);
@@ -94,7 +94,12 @@ const QuestionDetailsScreen = (props) => {
     fetchCommentOnQuestion();
   }, [questionId]);
 
-  const submitAnswer = async () => {
+  const submit = () => {
+    const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
+    webref.injectJavaScript(code);
+  };
+
+  const submitAnswer = async (str) => {
     if (answerId) {
       try {
         await API.graphql({
@@ -102,7 +107,7 @@ const QuestionDetailsScreen = (props) => {
           variables: {
             input: {
               id: answerId,
-              content,
+              content: str,
             },
           },
         });
@@ -118,7 +123,7 @@ const QuestionDetailsScreen = (props) => {
           input: {
             username,
             questionID: questionId,
-            content,
+            content: str,
             upvotes: 0,
           },
         }),
@@ -142,7 +147,7 @@ const QuestionDetailsScreen = (props) => {
       setCommentsOnQuestionInput('');
       setShowCommentBoxForQuestion(false);
     } catch (err) {
-      console.log('error creating comment:', content);
+      console.log('error creating comment:', contentToEdit);
     }
   };
 
@@ -176,12 +181,7 @@ const QuestionDetailsScreen = (props) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {question && <QuestionComponent question={question} />}
         {commentsOnQuestion.map((comment, index) => (
@@ -197,11 +197,7 @@ const QuestionDetailsScreen = (props) => {
         {showCommentBoxForQuestion ? (
           <>
             <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                borderWidth: 1,
-              }}
+              style={styles.text}
               onChangeText={(text) => setCommentsOnQuestionInput(text)}
               value={commentsOnQuestionInput}
             />
@@ -218,34 +214,33 @@ const QuestionDetailsScreen = (props) => {
         {answers.map((answer, index) => (
           <View key={answer.id || index}>
             <AnswerComponent
-              setAnswer={setContent}
+              setAnswer={setContentToEdit}
               setAnswerId={setAnswerId}
               answer={answer}
             />
           </View>
         ))}
         <Editor
-          style={styles.editor}
-          content={content}
-          setContent={setContent}
+          oldContent={contentToEdit}
+          submit={submitAnswer}
           webref={webref}
           setWebref={setWebref}
         />
-        <Button title="Submit Answer" onPress={submitAnswer} />
+        <Button title="Submit Answer" onPress={submit} />
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  text: { height: 40, borderColor: 'gray', borderWidth: 1 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   scrollView: { marginHorizontal: 0 },
   input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
   questionTitle: { fontSize: 18 },
   editor: {
-    flex: 1,
     height: 100,
-    width: 'auto',
+    width: 200,
   },
 });
 

@@ -156,10 +156,10 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
                 <div>${content}</div>
                 </body>`,
             }}
-            style={{ width: 'auto', height: 400 }}
+            style={styles.WebView}
           />
         </CardItem>
-        <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
+        <CardItem style={styles.cardItem}>
           <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon
             name="caret-up"
@@ -213,11 +213,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
       {showCommentBoxForAnswer ? (
         <>
           <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-            }}
+            style={styles.text}
             onChangeText={(text) => setCommentsOnAnswerInput(text)}
             value={commentsOnAnswerInput}
           />
@@ -241,6 +237,9 @@ const styles = StyleSheet.create({
     color: '#85898f',
     textAlign: 'right',
   },
+  text: { height: 40, borderColor: 'gray', borderWidth: 1 },
+  cardItem: { flex: 1, justifyContent: 'space-around' },
+  WebView: { width: 'auto', height: 400 },
 });
 
 export default AnswerComponent;
