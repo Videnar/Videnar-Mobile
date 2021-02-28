@@ -197,7 +197,7 @@ const QuestionDetailsScreen = (props) => {
         {showCommentBoxForQuestion ? (
           <>
             <TextInput
-              style={styles.text}
+              style={styles.textInput}
               onChangeText={(text) => setCommentsOnQuestionInput(text)}
               value={commentsOnQuestionInput}
             />
@@ -233,8 +233,8 @@ const QuestionDetailsScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  text: { height: 40, borderColor: 'gray', borderWidth: 1 },
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  textInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
   scrollView: { marginHorizontal: 0 },
   input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
   questionTitle: { fontSize: 18 },

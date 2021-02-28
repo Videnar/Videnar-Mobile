@@ -28,6 +28,11 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const onEditExamPreferences = () => {
+    console.log('Edit clicked');
+    navigation.push('UserInfo');
+  };
+
   const shareAppHandler = () => {
     const options = {
       message:
@@ -63,6 +68,13 @@ const ProfileScreen = ({ navigation }) => {
           {exam}
         </Text>
       ))}
+      <Button
+        transparent
+        style={styles.editButton}
+        onPress={onEditExamPreferences}>
+        <Text style={styles.editText}>Edit</Text>
+        <Icon name="edit" type="FontAwesome" />
+      </Button>
       <Text style={styles.button} onPress={onChangePasswordHandler}>
         Change Password
       </Text>
@@ -145,6 +157,9 @@ const styles = StyleSheet.create({
     color: '#85898f',
     alignSelf: 'center',
   },
+  editButton: {
+    alignSelf: 'center',
+  },
   blockButton: {
     backgroundColor: '#f76f00',
     marginHorizontal: 100,
@@ -153,6 +168,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingLeft: 20,
     alignSelf: 'center',
+  },
+  editText: {
+    fontSize: 28,
+    color: 'black',
+    fontWeight: 'bold',
   },
   labelInput: {
     marginHorizontal: 10,
