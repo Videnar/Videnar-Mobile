@@ -11,7 +11,7 @@ import { navigate } from '../navigation/RootNavigation.js';
 const QuestionComponent = ({ question }) => {
   const route = useRoute();
   const [popupVisible, setPopupVisible] = useState(false);
-  const { id, content, view, upvotes, tags } = question;
+  const { id, content, upvotes, tags } = question;
 
   const updateUpvote = async (n) => {
     try {
@@ -71,7 +71,7 @@ const QuestionComponent = ({ question }) => {
         </CardItem>
         <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
           <Text style={{ color: '#cf391b' }}>{tags}</Text>
-          <Text style={styles.footerText}>Views: {view}</Text>
+          {/* <Text style={styles.footerText}>Views: {view}</Text> */}
           <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon
             name="caret-up"

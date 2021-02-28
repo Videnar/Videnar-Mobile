@@ -1,21 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { v4 as uuid } from 'uuid';
 import { Storage } from 'aws-amplify';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createQuestion, updateQuestion } from '../graphql/mutations';
-import { AuthContext } from '../contexts/AuthContext';
 import config from '../../aws-exports';
-import { navigate } from '../navigation/RootNavigation';
 
 const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
 
-const Editor = ({ navigation, webref, setWebref, oldContent, questionID }) => {
-  const {
-    state: { username },
-  } = useContext(AuthContext);
+const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
   const defaultContent = '<p><br></p>';
 
   const uploadToStorage = async (imageData) => {
@@ -33,46 +26,6 @@ const Editor = ({ navigation, webref, setWebref, oldContent, questionID }) => {
       const url = `https://${bucket}.s3.amazonaws.com/public/${key}`;
     } catch (err) {
       console.log('error uploading image', err);
-    }
-  };
-
-  const submitQuestion = async (str) => {
-    if (oldContent) {
-      updateSelectedQuestion(str);
-    }
-    try {
-      await API.graphql(
-        graphqlOperation(createQuestion, {
-          input: {
-            username,
-            content: str,
-            upvotes: 0,
-            view: 0,
-            tags: 'neet',
-            noOfBookmarks: 0,
-          },
-        }),
-      );
-      navigate('Home');
-    } catch (err) {
-      console.log('error creating Question:', err);
-    }
-  };
-
-  const updateSelectedQuestion = async (str) => {
-    try {
-      await API.graphql({
-        query: updateQuestion,
-        variables: {
-          input: {
-            id: questionID,
-            content: str,
-          },
-        },
-      });
-      navigate('Home');
-    } catch (err) {
-      console.log('error updating Question:', err);
     }
   };
 
@@ -101,12 +54,15 @@ const Editor = ({ navigation, webref, setWebref, oldContent, questionID }) => {
                   placeholder: 'Describe your question...',
                    theme: 'snow'
                   });
+                   quill.getModule('toolbar').addHandler('image', () => {
+                   window.ReactNativeWebView.postMessage('image');
+                  });
                 </script>`,
         }}
         onMessage={async (event) => {
           const { data } = event.nativeEvent;
           if (data !== defaultContent) {
-            submitQuestion(data);
+            submit(data);
           }
         }}
         containerStyle={styles.webview}
@@ -121,7 +77,10 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 'auto',
   },
-  webView: { width: deviceWidth },
+  webView: {
+    width: deviceWidth,
+    height: 300,
+  },
   button: {
     width: 250,
     height: 60,
