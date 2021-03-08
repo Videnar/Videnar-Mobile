@@ -19,7 +19,7 @@ const ProfileScreen = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const [oldPassword, setOldPassword] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
-  const pictureURL = picture || JSON.parse(picture).data.url;
+  const pictureURL = picture && (picture || JSON.parse(picture).data.url);
 
   const onChangePasswordHandler = () => {
     if (show === true) {
@@ -59,7 +59,7 @@ const ProfileScreen = ({ navigation }) => {
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
-      <Text style={styles.title}>{name}</Text>
+      {name && <Text style={styles.title}>{name}</Text>}
       <Text style={styles.title}>Education: {level}</Text>
       {branch && <Text style={styles.title}>Branch : {branch}</Text>}
       <Text style={styles.title}>Exams:</Text>

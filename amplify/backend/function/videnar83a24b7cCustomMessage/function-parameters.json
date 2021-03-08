@@ -7,12 +7,7 @@
   "functionName": "videnar83a24b7cCustomMessage",
   "resourceName": "videnar83a24b7cCustomMessage",
   "parentStack": "auth",
-  "triggerEnvs": [
-    {
-      "key": "RESOURCENAME",
-      "value": "resourceName"
-    }
-  ],
+  "triggerEnvs": "[\n  {\n    \"key\": \"RESOURCENAME\",\n    \"value\": \"resourceName\"\n  }\n]",
   "triggerDir": "C:\\Users\\m_mal\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\CustomMessage",
   "triggerTemplate": "CustomMessage.json.ejs",
   "roleName": "videnar83a24b7cCustomMessage",
@@ -21,5 +16,6 @@
   "EMAILSUBJECT": "Sign In",
   "EMAILMESSAGE": "Congrats! ",
   "RESOURCENAME": "resourceName",
-  "enableCors": false
+  "enableCors": false,
+  "triggerEventPath": "CustomMessage.event.json"
 }

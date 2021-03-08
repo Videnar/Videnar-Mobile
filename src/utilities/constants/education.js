@@ -56,10 +56,10 @@ export const Branches = [
 ];
 
 export const educations = [
-  { level: 'Class 5' },
-  { level: 'Class 6' },
-  { level: 'Class 7' },
-  { level: 'Class 8' },
+  // { level: 'Class 5' },
+  // { level: 'Class 6' },
+  // { level: 'Class 7' },
+  // { level: 'Class 8' },
   { level: 'Class 9' },
   { level: 'Class 10' },
   {

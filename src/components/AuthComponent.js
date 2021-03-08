@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     backgroundColor: 'white',
     borderRadius: 20,
-    marginTop: HEIGHT * 0.1,
+    // marginTop: HEIGHT * 0.1,
   },
   forgetText: {
     fontSize: 17,

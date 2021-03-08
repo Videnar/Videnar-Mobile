@@ -39,6 +39,17 @@ PushNotification.onNotificationOpened((notification) => {
 
 const Stack = createStackNavigator();
 
+const linking = {
+  prefixes: [
+    /* your linking prefixes */
+    'https://videnar.com',
+    'videnar://',
+  ],
+  config: {
+    /* configuration for matching screens with paths */
+  },
+};
+
 const App = () => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
@@ -134,10 +145,10 @@ const App = () => {
           .then((response) => console.log(response))
           .catch((err) => console.log(err));
         dispatch({ type: 'update_preferences', payload: preferences });
-        const newAttributes = Object.assign({}, attributes, {
-          'custom:preferences': stringifiedPref,
+        const jsonValue = JSON.stringify({
+          username,
+          attributes: { ...attributes, 'custom:preferences': stringifiedPref },
         });
-        const jsonValue = JSON.stringify({ username, ...newAttributes });
         AsyncStorage.setItem('@user', jsonValue);
       },
       socialAuth: async (provider) => {
@@ -175,7 +186,10 @@ const App = () => {
   );
 
   return (
-    <AuthContext.Provider value={{ state, ...AuthContextValue }}>
+    <AuthContext.Provider
+      value={{ state, ...AuthContextValue }}
+      linking={linking}
+      fallback={SplashScreen}>
       <NavigationContainer
         ref={navigationRef}
         onReady={() => {

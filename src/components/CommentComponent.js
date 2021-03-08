@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import {
-  Icon,
-  Button,
-  Header,
-  Content,
-  Card,
-  CardItem,
-  Text,
-  Body,
-  Item,
-  Input,
-} from 'native-base';
+import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import { Icon, Button, Text, Body } from 'native-base';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
 
 const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
@@ -69,19 +58,17 @@ const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
           setPopupVisible(false);
         }}>
         <DialogContent>
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               setPopupVisible(false);
               setEnableEdit(true);
             }}
             style={styles.button}>
             <Text style={styles.buttonText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={deleteSelectedComment}
-            style={styles.button}>
+          </Pressable>
+          <Pressable onPress={deleteSelectedComment} style={styles.button}>
             <Text style={styles.buttonText}>Delete</Text>
-          </TouchableOpacity>
+          </Pressable>
         </DialogContent>
       </Dialog>
     </View>

@@ -5,7 +5,7 @@ import {
   View,
   RefreshControl,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { API } from 'aws-amplify';
@@ -68,7 +68,7 @@ const ActivityScreen = ({ navigation }) => {
   };
 
   const RenderItem = ({ item }) => (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         route.name !== 'QuestionDetails' &&
           navigation.navigate('QuestionDetails', {
@@ -76,7 +76,7 @@ const ActivityScreen = ({ navigation }) => {
           });
       }}>
       <Text>{item.content}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (

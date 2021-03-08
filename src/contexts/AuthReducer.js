@@ -10,7 +10,6 @@ export const AuthReducer = (state, action) => {
         : null;
       return {
         ...state,
-        isSignedIn: true,
         attributes: attributes,
         preferences: preferences,
         username,
@@ -19,7 +18,7 @@ export const AuthReducer = (state, action) => {
     case 'clear_error_message':
       return { ...state, errorMessage: '' };
     case 'signout':
-      return { ...state, isSignedIn: false };
+      return { ...state };
     case 'update_preferences':
       return { ...state, preferences: action.payload };
     case 'changeScreen':
@@ -32,7 +31,6 @@ export const AuthReducer = (state, action) => {
 export const initialState = {
   screen: 'Main',
   username: null,
-  isSignedIn: false,
   attributes: null,
   preferences: null,
 };

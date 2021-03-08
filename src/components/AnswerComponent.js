@@ -4,7 +4,7 @@ import {
   Button,
   TextInput,
   View,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -139,7 +139,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   };
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         route.name !== 'QuestionDetails' &&
           navigate('QuestionDetails', { questionID });
@@ -189,14 +189,12 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
             setPopupVisible(false);
           }}>
           <DialogContent>
-            <TouchableOpacity onPress={editAnswer} style={styles.button}>
+            <Pressable onPress={editAnswer} style={styles.button}>
               <Text style={styles.buttonText}>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={deleteSelectedAnswer}
-              style={styles.button}>
+            </Pressable>
+            <Pressable onPress={deleteSelectedAnswer} style={styles.button}>
               <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
+            </Pressable>
           </DialogContent>
         </Dialog>
       </Card>
@@ -228,7 +226,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
           Comment on this answer
         </Text>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

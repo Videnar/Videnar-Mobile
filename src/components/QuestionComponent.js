@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Dimensions, Pressable, StyleSheet } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API } from 'aws-amplify';
@@ -49,7 +50,7 @@ const QuestionComponent = ({ question }) => {
   };
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         route.name !== 'QuestionDetails' &&
           navigate('QuestionDetails', { questionID: question.id });
@@ -102,18 +103,16 @@ const QuestionComponent = ({ question }) => {
           setPopupVisible(false);
         }}>
         <DialogContent>
-          <TouchableOpacity onPress={editQuestion} style={styles.button}>
+          <Pressable onPress={editQuestion} style={styles.button}>
             <Text style={styles.buttonText}>Edit</Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
-            onPress={deleteSelectedQuestion}
-            style={styles.button}>
+          <Pressable onPress={deleteSelectedQuestion} style={styles.button}>
             <Text style={styles.buttonText}>Delete</Text>
-          </TouchableOpacity>
+          </Pressable>
         </DialogContent>
       </Dialog>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
