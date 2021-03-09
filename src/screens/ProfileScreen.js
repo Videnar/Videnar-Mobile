@@ -59,7 +59,7 @@ const ProfileScreen = ({ navigation }) => {
             : require('../assets/images/DefaultProfilePic.png')
         }
       />
-      {name && <Text style={styles.title}>{name}</Text>}
+      <Text style={styles.title}>{name}</Text>
       <Text style={styles.title}>Education: {level}</Text>
       {branch && <Text style={styles.title}>Branch : {branch}</Text>}
       <Text style={styles.title}>Exams:</Text>

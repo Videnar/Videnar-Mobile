@@ -94,7 +94,7 @@ const AuthForm = ({
           <Button
             block
             info
-            onPress={() => onSubmit(email, password)}
+            onPress={() => onSubmit(email, password, name)}
             style={styles.button}>
             <Text style={styles.buttonText}>{submitButtonText}</Text>
           </Button>

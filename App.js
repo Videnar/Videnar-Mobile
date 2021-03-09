@@ -114,13 +114,14 @@ const App = () => {
           .catch((err) => console.log(err, 'err'));
       },
 
-      signUp: async (email, password) => {
+      signUp: async (email, password, name) => {
         try {
           await Auth.signUp({
             username: email,
             password,
             attributes: {
               email,
+              name,
             },
           });
           Auth.currentAuthenticatedUser()
