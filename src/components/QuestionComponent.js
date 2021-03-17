@@ -6,11 +6,10 @@ import { WebView } from 'react-native-webview';
 import { API } from 'aws-amplify';
 import { Icon, Card, CardItem, Text } from 'native-base';
 import { updateQuestion, deleteQuestion } from '../graphql/mutations';
-import { navigate } from '../navigation/RootNavigation.js';
 import ActionDialog from './ActionDialog';
 import { AuthContext } from '../contexts/AuthContext';
 
-const QuestionComponent = ({ question }) => {
+const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const route = useRoute();
   const {
     state: { username },
@@ -51,6 +50,7 @@ const QuestionComponent = ({ question }) => {
       console.log('error deleting Question:', err);
     }
     setPopupVisible(false);
+    route.name === 'QuestionDetails' && goBack();
   };
 
   return (

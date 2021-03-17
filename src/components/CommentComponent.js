@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { Icon, Button, Text, Body } from 'native-base';
 import ActionDialog from './ActionDialog';
 import { AuthContext } from '../contexts/AuthContext';
@@ -13,8 +13,8 @@ const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    setInput(comment);
-  }, [comment]);
+    setInput(comment.content);
+  }, [comment.content]);
 
   const deleteSelectedComment = () => {
     deleteComment(id);

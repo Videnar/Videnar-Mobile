@@ -29,7 +29,9 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const RenderItem = ({ item }) => <QuestionComponent question={item} />;
+  const RenderItem = ({ item }) => (
+    <QuestionComponent question={item} navigation={navigation} />
+  );
 
   return (
     <View style={styles.container}>

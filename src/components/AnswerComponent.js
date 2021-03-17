@@ -196,7 +196,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
         <View key={comment.id ? comment.id : index}>
           <CommentComponent
             id={comment.id}
-            comment={comment.content}
+            comment={comment}
             updateComment={updateSelectedComment}
             deleteComment={deleteSelectedComment}
           />
@@ -209,10 +209,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
             onChangeText={(text) => setCommentsOnAnswerInput(text)}
             value={commentsOnAnswerInput}
           />
-          <Button
-            title="Submit Comment"
-            onPress={() => submitCommentOnAnswer()}
-          />
+          <Button title="Submit Comment" onPress={submitCommentOnAnswer} />
         </>
       ) : (
         <Text

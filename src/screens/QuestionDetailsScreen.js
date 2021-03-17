@@ -183,12 +183,17 @@ const QuestionDetailsScreen = (props) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {question && <QuestionComponent question={question} />}
+        {question && (
+          <QuestionComponent
+            question={question}
+            navigation={props.navigation}
+          />
+        )}
         {commentsOnQuestion.map((comment, index) => (
           <View key={comment.id ? comment.id : index}>
             <CommentComponent
               id={comment.id}
-              comment={comment.content}
+              comment={comment}
               updateComment={updateSelectedComment}
               deleteComment={deleteSelectedComment}
             />
