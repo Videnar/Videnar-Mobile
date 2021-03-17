@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { Icon, Button, Text, Body } from 'native-base';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import ActionDialog from './ActionDialog';
+import { AuthContext } from '../contexts/AuthContext';
 
 const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
+  const {
+    state: { username },
+  } = useContext(AuthContext);
   const [popupVisible, setPopupVisible] = useState(false);
   const [enableEdit, setEnableEdit] = useState(false);
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    setInput(comment);
-  }, [comment]);
+    setInput(comment.content);
+  }, [comment.content]);
 
   const deleteSelectedComment = () => {
     deleteComment(id);
@@ -24,13 +28,15 @@ const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
           <Body>
             <Text>{input}</Text>
           </Body>
-          <Icon
-            name="ellipsis-h"
-            type="FontAwesome"
-            onPress={() => {
-              setPopupVisible(true);
-            }}
-          />
+          {comment.username === username && (
+            <Icon
+              name="ellipsis-h"
+              type="FontAwesome"
+              onPress={() => {
+                setPopupVisible(true);
+              }}
+            />
+          )}
         </>
       ) : (
         <>
@@ -52,25 +58,15 @@ const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
           </Button>
         </>
       )}
-      <Dialog
-        visible={popupVisible}
-        onTouchOutside={() => {
+      <ActionDialog
+        popupVisible={popupVisible}
+        setPopupVisible={setPopupVisible}
+        editItem={() => {
           setPopupVisible(false);
-        }}>
-        <DialogContent>
-          <Pressable
-            onPress={() => {
-              setPopupVisible(false);
-              setEnableEdit(true);
-            }}
-            style={styles.button}>
-            <Text style={styles.buttonText}>Edit</Text>
-          </Pressable>
-          <Pressable onPress={deleteSelectedComment} style={styles.button}>
-            <Text style={styles.buttonText}>Delete</Text>
-          </Pressable>
-        </DialogContent>
-      </Dialog>
+          setEnableEdit(true);
+        }}
+        deleteItem={deleteSelectedComment}
+      />
     </View>
   );
 };

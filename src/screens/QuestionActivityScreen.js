@@ -5,7 +5,7 @@ import { listQuestions } from '../graphql/queries';
 import { AuthContext } from '../contexts/AuthContext';
 import QuestionComponent from '../components/QuestionComponent';
 
-const QuestionActivityScreen = () => {
+const QuestionActivityScreen = ({ navigation }) => {
   const {
     state: { username },
   } = useContext(AuthContext);
@@ -29,7 +29,9 @@ const QuestionActivityScreen = () => {
     fetchQuestions();
   }, [username]);
 
-  const RenderItem = (item) => <QuestionComponent question={item} />;
+  const RenderItem = (item) => (
+    <QuestionComponent question={item} navigation={navigation} />
+  );
 
   return (
     <View style={styles.container}>

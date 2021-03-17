@@ -44,7 +44,7 @@ const AskQuestionScreen = ({ route, navigation }) => {
           },
         }),
       );
-      navigation.navigate('Home');
+      navigation.goBack();
     } catch (err) {
       console.log('error creating Question:', err);
     }
@@ -62,7 +62,7 @@ const AskQuestionScreen = ({ route, navigation }) => {
           },
         },
       });
-      navigation.navigate('Home');
+      navigation.goBack();
     } catch (err) {
       console.log('error updating Question:', err);
     }

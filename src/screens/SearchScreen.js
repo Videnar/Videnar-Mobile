@@ -39,7 +39,7 @@ const SearchScreen = ({ navigation }) => {
     item.questionID ? (
       <AnswerComponent answer={item} />
     ) : (
-      <QuestionComponent question={item} />
+      <QuestionComponent question={item} navigation={navigation} />
     );
 
   return (
