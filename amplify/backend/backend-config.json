@@ -83,6 +83,10 @@
     "VidenarPN": {
       "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
+    },
+    "undefined": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
     }
   }
 }
