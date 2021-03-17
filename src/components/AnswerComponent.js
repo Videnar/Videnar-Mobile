@@ -11,7 +11,6 @@ import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Icon, Card, CardItem } from 'native-base';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import {
   createCommentOnAnswer,
   updateAnswer,
@@ -23,6 +22,7 @@ import { listCommentOnAnswers } from '../graphql/queries';
 import CommentComponent from './CommentComponent';
 import { AuthContext } from '../contexts/AuthContext';
 import { navigate } from '../navigation/RootNavigation.js';
+import ActionDialog from './ActionDialog';
 
 const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   const route = useRoute();
@@ -175,28 +175,22 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
               updateUpvote(-1);
             }}
           />
-          <Icon
-            name="ellipsis-h"
-            type="FontAwesome"
-            onPress={() => {
-              setPopupVisible(true);
-            }}
-          />
+          {answer.username === username && (
+            <Icon
+              name="ellipsis-h"
+              type="FontAwesome"
+              onPress={() => {
+                setPopupVisible(true);
+              }}
+            />
+          )}
         </CardItem>
-        <Dialog
-          visible={popupVisible}
-          onTouchOutside={() => {
-            setPopupVisible(false);
-          }}>
-          <DialogContent>
-            <Pressable onPress={editAnswer} style={styles.button}>
-              <Text style={styles.buttonText}>Edit</Text>
-            </Pressable>
-            <Pressable onPress={deleteSelectedAnswer} style={styles.button}>
-              <Text style={styles.buttonText}>Delete</Text>
-            </Pressable>
-          </DialogContent>
-        </Dialog>
+        <ActionDialog
+          popupVisible={popupVisible}
+          setPopupVisible={setPopupVisible}
+          editItem={editAnswer}
+          deleteItem={deleteSelectedAnswer}
+        />
       </Card>
       {commentsOnAnswer.map((comment, index) => (
         <View key={comment.id ? comment.id : index}>

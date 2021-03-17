@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
-import { Dimensions, Pressable, StyleSheet } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API } from 'aws-amplify';
 import { Icon, Card, CardItem, Text } from 'native-base';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import { updateQuestion, deleteQuestion } from '../graphql/mutations';
 import { navigate } from '../navigation/RootNavigation.js';
+import ActionDialog from './ActionDialog';
+import { AuthContext } from '../contexts/AuthContext';
 
 const QuestionComponent = ({ question }) => {
   const route = useRoute();
+  const {
+    state: { username },
+  } = useContext(AuthContext);
   const [popupVisible, setPopupVisible] = useState(false);
   const { id, content, upvotes, tags } = question;
 
@@ -88,30 +92,23 @@ const QuestionComponent = ({ question }) => {
               updateUpvote(-1);
             }}
           />
-          <Icon
-            name="ellipsis-h"
-            type="FontAwesome"
-            onPress={() => {
-              setPopupVisible(true);
-            }}
-          />
+          {question.username === username && (
+            <Icon
+              name="ellipsis-h"
+              type="FontAwesome"
+              onPress={() => {
+                setPopupVisible(true);
+              }}
+            />
+          )}
         </CardItem>
       </Card>
-      <Dialog
-        visible={popupVisible}
-        onTouchOutside={() => {
-          setPopupVisible(false);
-        }}>
-        <DialogContent>
-          <Pressable onPress={editQuestion} style={styles.button}>
-            <Text style={styles.buttonText}>Edit</Text>
-          </Pressable>
-
-          <Pressable onPress={deleteSelectedQuestion} style={styles.button}>
-            <Text style={styles.buttonText}>Delete</Text>
-          </Pressable>
-        </DialogContent>
-      </Dialog>
+      <ActionDialog
+        popupVisible={popupVisible}
+        setPopupVisible={setPopupVisible}
+        editItem={editQuestion}
+        deleteItem={deleteSelectedQuestion}
+      />
     </Pressable>
   );
 };
