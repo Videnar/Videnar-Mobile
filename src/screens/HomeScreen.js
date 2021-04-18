@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  Pressable,
-} from 'react-native';
+import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import { Icon, Header } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const HomeScreen = ({ navigation }) => {
@@ -73,18 +67,7 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   FlatList: { marginHorizontal: 2 },
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  questionTitle: { fontSize: 18 },
   container: { flex: 1, backgroundColor: 'white' },
-  touchable: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 25,
-  },
 });
 
 export default HomeScreen;
