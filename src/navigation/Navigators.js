@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Icon } from 'native-base';
+import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import QuestionActivityScreen from '../screens/QuestionActivityScreen';
@@ -60,7 +60,7 @@ export const Main = () => (
     tabBarOptions={{
       activeTintColor: '#e91e63',
       showIcon: true,
-      style: { backgroundColor: '#121212' },
+      style: { backgroundColor: 'white' },
       showLabel: false,
     }}
     screenOptions={({ route }) => ({
@@ -68,36 +68,40 @@ export const Main = () => (
         let iconName;
         let fontsize;
         let colorName;
+        let style;
         if (route.name === 'Home') {
           iconName = 'home';
-          fontsize = focused ? 30 : 25;
-          colorName = focused ? '#eb4034' : 'white';
+          fontsize = focused ? 36 : 32;
+          colorName = focused ? '#8000FF' : '#857683';
         } else if (route.name === 'Activity') {
-          iconName = 'history';
-          fontsize = focused ? 30 : 25;
-          colorName = focused ? '#eb4034' : 'white';
+          iconName = 'done-all';
+          fontsize = focused ? 36 : 32;
+          colorName = focused ? '#8000FF' : '#857683';
         } else if (route.name === 'Search') {
           iconName = 'search';
-          fontsize = focused ? 30 : 25;
-          colorName = focused ? '#eb4034' : 'white';
+          fontsize = focused ? 36 : 32;
+          colorName = focused ? '#8000FF' : '#857683';
+          style = { transform: [{ rotateY: '180deg' }] };
         } else {
-          iconName = 'user';
-          fontsize = focused ? 30 : 25;
-          colorName = focused ? '#eb4034' : 'white';
+          iconName = 'person';
+          fontsize = focused ? 36 : 32;
+          colorName = focused ? '#8000FF' : '#857683';
         }
 
         return (
           <Icon
             name={iconName}
-            type="FontAwesome"
-            style={{ fontSize: fontsize, color: colorName }}
+            type="material"
+            color={colorName}
+            size={fontsize}
+            iconStyle={style}
           />
         );
       },
     })}>
     <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="Activity" component={ActivityTabs} />
     <Tab.Screen name="Search" component={SearchScreen} />
+    <Tab.Screen name="Activity" component={ActivityTabs} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
