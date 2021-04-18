@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import { Linking, Text, View, StyleSheet } from 'react-native';
+import { Linking, View, StyleSheet } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { AuthContext } from '../contexts/AuthContext';
-import { Icon, Button } from 'native-base';
-import Spacer from './Spacer';
+import { SocialIcon, Button } from 'react-native-elements';
 import getDeepLink from '../utilities/getDeepLink';
 
 const SocialAuthComponent = () => {
@@ -36,33 +35,24 @@ const SocialAuthComponent = () => {
   };
   return (
     <View style={styles.container}>
+      {/* Google button*/}
       <Button
-        transparent
-        light
-        bordered
-        style={styles.buttonStyle}
+        type="clear"
+        icon={<SocialIcon light raised type="google" />}
         onPress={() => {
           socialAuth('Google');
           // onSignin();
-        }}>
-        <Icon name="google" type="FontAwesome" style={styles.googleIcon} />
-      </Button>
-      <Spacer />
+        }}
+      />
+      {/* Facebook button*/}
       <Button
-        transparent
-        light
-        bordered
-        style={styles.buttonStyle}
+        type="clear"
+        icon={<SocialIcon raised type="facebook" />}
         onPress={() => {
           socialAuth('Facebook');
           // onSignin();
-        }}>
-        <Icon
-          name="facebook-square"
-          type="FontAwesome"
-          style={styles.facebookIcon}
-        />
-      </Button>
+        }}
+      />
     </View>
   );
 };
@@ -72,25 +62,10 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   container: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-  },
-  buttonStyle: {
-    borderColor: '#d3d6db',
-    padding: 7,
-    backgroundColor: 'white',
-    borderRadius: 15,
-  },
-  googleIcon: {
-    color: 'red',
-    fontSize: 35,
-  },
-  facebookIcon: {
-    color: 'blue',
-    fontSize: 35,
   },
 });
 

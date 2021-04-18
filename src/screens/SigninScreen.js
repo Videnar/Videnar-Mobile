@@ -4,8 +4,6 @@ import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
-import Spacer from '../components/Spacer';
-import { AUTH_BACKGROUND } from '../assets/colors/colors';
 
 const SigninScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
@@ -13,19 +11,16 @@ const SigninScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
-      <StatusBar barStyle="dark-content" backgroundColor={AUTH_BACKGROUND} />
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
       <AuthComponent
-        headerText="Login"
+        headerText="Hello there!"
         // errorMessage={state.errorMessage}
         onSubmit={signIn}
         forgotPassword
-        submitButtonText="Sign In"
+        submitButtonText="Login"
       />
-      <Spacer />
-      <Text style={styles.textStyle}>Don't have an account?</Text>
       <NavLink text="Sign up here" routeName="Signup" />
       <Text style={styles.textStyle}>or</Text>
-      <Spacer />
       <SocialAuth />
     </View>
   );
@@ -38,8 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 50,
-    backgroundColor: AUTH_BACKGROUND,
+    backgroundColor: 'white',
   },
   textStyle: {
     fontSize: 18,
