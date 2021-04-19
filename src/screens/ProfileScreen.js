@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
-import Spacer from '../components/Spacer';
+import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
+import { Text, Card, Header, Icon, Button } from 'react-native-elements';
 import { AuthContext } from '../contexts/AuthContext';
-import { Button, Text, Input, Label, Item, Icon } from 'native-base';
 import Share from 'react-native-share';
+
+const WIDTH = Dimensions.get('window').width;
 
 const ProfileScreen = ({ navigation }) => {
   const {
@@ -49,9 +50,77 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <StatusBar backgroundColor="#fff8f5" barStyle="dark-content" />
-      <Spacer />
-      <Image
+      {/* <Image
+        source={require('../assets/images/coverImage.png')}
+        style={styles.cover}
+      /> */}
+      <Header
+        statusBarProps={{
+          barStyle: 'dark-content',
+          backgroundColor: 'transparent',
+        }}
+        backgroundColor="transparent"
+        rightComponent={{ icon: 'more-vert' }}
+      />
+      <View style={styles.profile}>
+        <Image
+          style={styles.picture}
+          source={
+            pictureURL
+              ? { uri: pictureURL }
+              : require('../assets/images/DefaultProfilePic.png')
+          }
+        />
+        <View style={styles.details}>
+          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.educationText}>Education: {level}</Text>
+          {branch && <Text h5>Branch : {branch}</Text>}
+          <Text style={styles.educationText}>Exams:</Text>
+          {exams.map((exam, index) => (
+            <Text key={index} style={styles.examtags}>
+              {exam}
+            </Text>
+          ))}
+        </View>
+      </View>
+      <Card.Divider />
+      <Card containerStyle={styles.activityCard}>
+        <View style={styles.activity}>
+          <Text>5 Questions Asked</Text>
+          <Text>12 Questions Answered</Text>
+        </View>
+      </Card>
+      <Card containerStyle={styles.optionsCard}>
+        <View>
+          <View style={styles.cardItem}>
+            <Icon name="book" type="material" color="grey" />
+            <Text style={styles.cardItemText}>Saved</Text>
+          </View>
+          <Card.Divider />
+          <View style={styles.cardItem}>
+            <Icon name="edit" type="material" color="grey" />
+            <Text style={styles.cardItemText}>Edit Exam Preference</Text>
+          </View>
+          <Card.Divider />
+          <View style={styles.cardItem}>
+            <Icon name="notifications" type="material" color="grey" />
+            <Text style={styles.cardItemText}>Notification</Text>
+          </View>
+          <Card.Divider />
+          <View style={styles.cardItem}>
+            <Icon name="settings" type="material" color="grey" />
+            <Text style={styles.cardItemText}>Setting</Text>
+          </View>
+        </View>
+      </Card>
+      <Button
+        type="solid"
+        raised
+        title="Sign Out"
+        onPress={signOut}
+        buttonStyle={styles.signOutButton}
+      />
+      {/* <Image
         style={styles.picture}
         source={
           pictureURL
@@ -126,7 +195,7 @@ const ProfileScreen = ({ navigation }) => {
           style={{ color: 'white' }}
         />
         <Text>Share</Text>
-      </Button>
+      </Button> */}
     </ScrollView>
   );
 };
@@ -134,49 +203,72 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff8f5',
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
   picture: {
     width: 100,
     height: 100,
     borderRadius: 100,
-    alignSelf: 'center',
+    marginLeft: 20,
     marginVertical: 10,
     borderWidth: 1,
     borderColor: 'grey',
   },
-  title: {
-    alignSelf: 'center',
-    fontSize: 18,
-    fontWeight: '600',
-    padding: 5,
+  profile: {
+    flex: 1,
+    flexDirection: 'row',
   },
-  button: {
+  details: {
+    paddingLeft: 40,
+    paddingTop: 5,
+  },
+  nameText: {
+    fontSize: 20,
     fontWeight: 'bold',
-    fontSize: 15,
-    color: '#85898f',
-    alignSelf: 'center',
+    letterSpacing: 1.4,
+    color: '#474949',
   },
-  editButton: {
-    alignSelf: 'center',
-  },
-  blockButton: {
-    backgroundColor: '#f76f00',
-    marginHorizontal: 100,
-  },
-  textInput: {
-    marginHorizontal: 20,
-    paddingLeft: 20,
-    alignSelf: 'center',
-  },
-  editText: {
-    fontSize: 28,
+  educationText: {
+    fontSize: 16,
+    letterSpacing: 1.6,
     color: 'black',
-    fontWeight: 'bold',
   },
-  labelInput: {
-    marginHorizontal: 10,
-    fontSize: 13,
+  examtags: {
+    color: 'red',
+  },
+  activity: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  activityCard: {
+    flex: 1,
+    borderRadius: 10,
+    elevation: 2,
+  },
+  optionsCard: {
+    flex: 1,
+    borderRadius: 10,
+    elevation: 1,
+  },
+  cardItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardItemText: {
+    marginLeft: 10,
+    paddingBottom: 5,
+    fontWeight: 'bold',
+    color: 'grey',
+  },
+  signOutButton: {
+    marginTop: 10,
+    width: WIDTH * 0.5,
+    alignItems: 'center',
+    left: WIDTH * 0.25,
+    backgroundColor: '#E03F3F',
+    borderRadius: 8,
   },
 });
 
