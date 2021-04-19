@@ -1,7 +1,9 @@
 import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
+// import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { v4 as uuid } from 'uuid';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import { Storage } from 'aws-amplify';
 import config from '../../aws-exports';
 
@@ -9,6 +11,7 @@ const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
 
 const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
+  // const [popupVisible, setPopupVisible] = useState(false);
   const defaultContent = '<p><br></p>';
 
   const uploadToStorage = async (imageData) => {
@@ -49,6 +52,9 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
                   var quill = new Quill('#editor', {
                   modules: {
+                    imageResize: {
+                              displaySize: true
+                    },
                     toolbar: toolbarOptions
                   },
                   placeholder: 'Describe your question...',

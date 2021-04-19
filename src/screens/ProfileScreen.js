@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
+import { Share, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import Spacer from '../components/Spacer';
 import { AuthContext } from '../contexts/AuthContext';
 import { Button, Text, Input, Label, Item, Icon } from 'native-base';
-import Share from 'react-native-share';
 
 const ProfileScreen = ({ navigation }) => {
   const {
@@ -33,18 +32,24 @@ const ProfileScreen = ({ navigation }) => {
     changeScreen('UserInfo');
   };
 
-  const shareAppHandler = () => {
-    const options = {
-      message:
-        'Hey There! Join Vedenar and start your career journey without any distraction',
-    };
-    Share.open(options)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        err && console.log(err);
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'Hey There! Join Vedenar and get answers to all your questions!',
       });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -119,7 +124,7 @@ const ProfileScreen = ({ navigation }) => {
         <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
       </Button>
       <Spacer />
-      <Button transparent danger full onPress={shareAppHandler}>
+      <Button transparent danger full onPress={onShare}>
         <Icon
           name="share-square"
           type="FontAwesome"

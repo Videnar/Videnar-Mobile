@@ -17,6 +17,7 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import SelectEducationScreen from '../screens/SelectEducationScreen';
 import SelectBranchScreen from '../screens/SelectBranchScreen';
 import SelectExamsScreen from '../screens/SelectExamsScreen';
+import WebViewScreen from '../screens/WebViewScreen';
 
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -112,6 +113,7 @@ export const Auth = () => (
     <Stack.Screen name="Signin" component={SigninScreen} />
     <Stack.Screen name="Signup" component={SignupScreen} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    <Stack.Screen name="WebView" component={WebViewScreen} />
   </Stack.Navigator>
 );
 

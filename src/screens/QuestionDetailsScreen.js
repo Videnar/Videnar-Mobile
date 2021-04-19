@@ -42,6 +42,8 @@ const QuestionDetailsScreen = (props) => {
     false,
   );
 
+  console.log('opened by the link');
+
   useEffect(() => {
     const qid = props.route.params.questionID;
     setQuestionId(qid);

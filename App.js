@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
+import { Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from 'aws-amplify';
@@ -14,6 +15,7 @@ import {
 } from './src/navigation/Navigators';
 import { AuthReducer, initialState } from './src/contexts/AuthReducer';
 import getDeepLink from './src/utilities/getDeepLink';
+import { navigate } from './src/navigation/RootNavigation.js';
 
 PushNotification.onRegister((token) => {
   console.log('onRegister', token);
@@ -42,16 +44,47 @@ const Stack = createStackNavigator();
 const linking = {
   prefixes: [
     /* your linking prefixes */
-    'https://videnar.com',
+    'https://videnar.com/',
     'videnar://',
+    'https://videnar-dev.auth.ap-south-1.amazoncognito.com',
   ],
   config: {
     /* configuration for matching screens with paths */
+    screens: {
+      Main: {
+        screens: {
+          Home: {
+            screens: {
+              QuestionDetails: 'question',
+              // {
+              //   path: 'question/:questionID',
+              //   parse: {
+              //     questionID: (questionID) => questionID,
+              //   },
+              // },
+            },
+          },
+        },
+      },
+      Auth: {
+        WebView: 'oauth2/authorize',
+      },
+    },
   },
 };
 
 const App = () => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
+
+  // useEffect(() => {
+  //   Linking.addEventListener('url', openWebViewScreen());
+  // });
+
+  // const openWebViewScreen = async () => {
+  //   const initialUrl = await Linking.getInitialURL();
+  //   console.log(initialUrl, 'initialUrl');
+  //   // initialUrl && navigate();
+  // };
 
   useEffect(() => {
     const bootstrapAsync = async () => {

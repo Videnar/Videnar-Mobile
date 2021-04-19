@@ -1,39 +1,23 @@
-import React, { useContext } from 'react';
-import { Linking, Text, View, StyleSheet } from 'react-native';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import React, { useContext, useEffect } from 'react';
+import { Linking, View, StyleSheet } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import { Icon, Button } from 'native-base';
 import Spacer from './Spacer';
-import getDeepLink from '../utilities/getDeepLink';
+import { navigate } from '../navigation/RootNavigation';
 
 const SocialAuthComponent = () => {
   const { socialAuth } = useContext(AuthContext);
 
-  const onSignin = async () => {
-    const deepLink = getDeepLink('');
-    console.log(deepLink);
-    const url = `https://my-auth-login-page.com?redirect_uri=${deepLink}`;
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        InAppBrowser.openAuth(url, deepLink, {
-          // iOS Properties
-          ephemeralWebSession: false,
-          // Android Properties
-          showTitle: false,
-          enableUrlBarHiding: true,
-          enableDefaultShare: false,
-        }).then((response) => {
-          if (response.type === 'success' && response.url) {
-            Linking.openURL(response.url);
-          }
-        });
-      } else {
-        Linking.openURL(url);
-      }
-    } catch (error) {
-      Linking.openURL(url);
-    }
+  useEffect(() => {
+    Linking.addEventListener('url', openWebViewScreen());
+  });
+
+  const openWebViewScreen = async () => {
+    const initialUrl = await Linking.getInitialURL();
+    console.log(initialUrl, 'initialUrl');
+    initialUrl && navigate('WebView', { uri: initialUrl });
   };
+
   return (
     <View style={styles.container}>
       <Button
@@ -43,7 +27,6 @@ const SocialAuthComponent = () => {
         style={styles.buttonStyle}
         onPress={() => {
           socialAuth('Google');
-          // onSignin();
         }}>
         <Icon name="google" type="FontAwesome" style={styles.googleIcon} />
       </Button>
@@ -55,7 +38,6 @@ const SocialAuthComponent = () => {
         style={styles.buttonStyle}
         onPress={() => {
           socialAuth('Facebook');
-          // onSignin();
         }}>
         <Icon
           name="facebook-square"

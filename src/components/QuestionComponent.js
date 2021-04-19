@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Share, Pressable, StyleSheet } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
@@ -53,6 +53,25 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
     route.name === 'QuestionDetails' && goBack();
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Can you answer the question in the link? https://videnar.com/question?id=${id}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Pressable
       onPress={() => {
@@ -92,6 +111,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
               updateUpvote(-1);
             }}
           />
+          <Icon name="share" type="FontAwesome" onPress={onShare} />
           {question.username === username && (
             <Icon
               name="ellipsis-h"

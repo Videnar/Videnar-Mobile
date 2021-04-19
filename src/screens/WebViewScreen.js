@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-const AnswerComponent = () => {
-  useEffect(() => {});
+export default ({
+  route: {
+    params: { uri },
+  },
+}) => {
+  const [URL, setURL] = useState(uri || null);
+  useEffect(() => {
+    Linking.addEventListener('url', openWebViewScreen());
+    return Linking.removeEventListener('url');
+  });
 
-  return (
-    <WebView
-      originWhitelist={['*']}
-      source={{ uri: 'https://reactnative.dev/' }}
-    />
-  );
+  const openWebViewScreen = async () => {
+    const initialUrl = await Linking.getInitialURL();
+    console.log(initialUrl, 'initialUrl');
+    initialUrl && setURL(initialUrl);
+  };
+  return <WebView originWhitelist={['*']} source={URL} />;
 };
-
-export default AnswerComponent;
