@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
-import { Button, Input, Item, Label, Icon } from 'native-base';
-import { ICON, NEW_RED } from '../assets/colors/colors';
-
-const HEIGHT = Dimensions.get('window').height;
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Button, Input } from 'react-native-elements';
 
 const AuthForm = ({
   headerText,
@@ -35,56 +33,41 @@ const AuthForm = ({
       <View>
         {nameInput ? (
           <>
-            <Item underline floatingLabel style={styles.inputStyle}>
-              <Label style={styles.inputStyle}>Name</Label>
-              <Input
-                value={name}
-                onChangeText={setName}
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={styles.textInput}
-              />
-              <Icon
-                name="account-circle"
-                type="MaterialIcons"
-                style={styles.iconStyle}
-              />
-            </Item>
-            <Spacer />
+            <Input
+              placeholder="your name"
+              leftIcon={<Icon name="person" size={24} color="#666666" />}
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.textInput}
+            />
           </>
         ) : null}
-        <Item underline floatingLabel style={styles.inputStyle}>
-          <Label style={styles.inputStyle}>Email</Label>
-          <Input
-            label="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-          <Icon name="email" type="MaterialIcons" style={styles.iconStyle} />
-        </Item>
-        <Spacer />
-        <Item underline floatingLabel style={styles.inputStyle}>
-          <Label style={styles.inputStyle}>Password</Label>
-          <Input
-            secureTextEntry
-            label="Password"
-            value={password}
-            onChangeText={setPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-          <Icon name="lock" type="MaterialIcons" style={styles.iconStyle} />
-        </Item>
-        <Spacer />
+        <Input
+          placeholder="email@address.com"
+          leftIcon={<Icon name="email" size={24} color="#666666" />}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          autoCorrect={false}
+          inputStyle={styles.textInput}
+        />
+        <Input
+          secureTextEntry={true}
+          placeholder="password"
+          leftIcon={<Icon name="lock" size={24} color="#666666" />}
+          value={password}
+          onChangeText={setPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+          inputStyle={styles.textInput}
+        />
         {forgotPassword ? (
           <Text
             onPress={() => forgotPasswordHandler()}
             style={styles.forgetText}>
-            Forgot Password?
+            Forgot Password ?
           </Text>
         ) : null}
         {errorMessage ? (
@@ -92,12 +75,13 @@ const AuthForm = ({
         ) : null}
         <Spacer>
           <Button
-            block
-            info
+            title={submitButtonText}
+            titleStyle={styles.buttonText}
+            type="clear"
+            raised={true}
             onPress={() => onSubmit(email, password, name)}
-            style={styles.button}>
-            <Text style={styles.buttonText}>{submitButtonText}</Text>
-          </Button>
+            buttonStyle={nameInput ? styles.buttonSignup : styles.buttonLogin}
+          />
         </Spacer>
       </View>
     </View>
@@ -117,35 +101,33 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 15,
     marginRight: 15,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    // marginTop: HEIGHT * 0.1,
   },
   forgetText: {
-    fontSize: 17,
-    fontWeight: '800',
-    textAlign: 'center',
-    color: '#85898f',
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    paddingRight: 15,
+    color: '#000078',
   },
   inputStyle: {
     paddingLeft: 20,
   },
-  iconStyle: {
-    color: ICON,
-    fontSize: 28,
-  },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 20,
   },
-  button: {
-    backgroundColor: NEW_RED,
-    borderRadius: 30,
+  buttonLogin: {
+    backgroundColor: '#F07D60',
+    borderRadius: 10,
+  },
+  buttonSignup: {
+    backgroundColor: '#825399',
+    borderRadius: 10,
   },
   headerText: {
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 22,
   },
 });
 

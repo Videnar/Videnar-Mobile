@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import { Pressable, StyleSheet, View, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { API } from 'aws-amplify';
-import { Icon, Card, CardItem, Text } from 'native-base';
-import { updateQuestion, deleteQuestion } from '../graphql/mutations';
-import ActionDialog from './ActionDialog';
+import { Card, Text, Icon, Overlay } from 'react-native-elements';
+import Share from 'react-native-share';
+import { deleteQuestion } from '../graphql/mutations';
 import { AuthContext } from '../contexts/AuthContext';
+
+const WIDTH = Dimensions.get('window').width;
 
 const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const route = useRoute();
@@ -17,20 +18,21 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const { id, content, upvotes, tags } = question;
 
-  const updateUpvote = async (n) => {
-    try {
-      await API.graphql({
-        query: updateQuestion,
-        variables: {
-          input: {
-            id,
-            upvotes: upvotes + n,
-          },
-        },
+  const toggleOverlay = () => {
+    setPopupVisible(!popupVisible);
+  };
+
+  const shareQuestionHandler = () => {
+    const options = {
+      message: 'Can you answer this Question',
+    };
+    Share.open(options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
       });
-    } catch (err) {
-      console.log('error updating Question:', err);
-    }
   };
 
   const editQuestion = () => {
@@ -59,8 +61,18 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
         route.name !== 'QuestionDetails' &&
           navigate('QuestionDetails', { questionID: question.id });
       }}>
-      <Card>
-        <CardItem>
+      <Card containerStyle={styles.Card}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.Profile}>
+            <Icon name="person" type="material" iconStyle={styles.image} />
+            <Text>Jyotiranjan Sahoo</Text>
+          </View>
+          <Text h6>20 April 2021</Text>
+        </View>
+        <Card.Divider />
+        {/* Question Asked */}
+        <View>
           <WebView
             originWhitelist={['*']}
             source={{
@@ -71,52 +83,100 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
                 <div>${content}</div>
                 </body>`,
             }}
-            style={{ width: 'auto', height: 400 }}
+            style={styles.WebView}
           />
-        </CardItem>
-        <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
-          <Text style={{ color: '#cf391b' }}>{tags}</Text>
-          {/* <Text style={styles.footerText}>Views: {view}</Text> */}
+        </View>
+        <Card.Divider />
+        {/* Interactivity Section */}
+        <View style={styles.Options}>
+          <Text style={styles.tags}>#{tags}</Text>
           <Text style={styles.footerText}>Upvotes: {upvotes}</Text>
           <Icon
-            name="caret-up"
-            type="FontAwesome"
-            onPress={() => {
-              updateUpvote(1);
-            }}
-          />
-          <Icon
-            name="caret-down"
-            type="FontAwesome"
-            onPress={() => {
-              updateUpvote(-1);
-            }}
+            name="share"
+            type="material"
+            color="grey"
+            onPress={shareQuestionHandler}
           />
           {question.username === username && (
             <Icon
-              name="ellipsis-h"
-              type="FontAwesome"
+              name="more-vert"
+              type="material"
+              color="grey"
               onPress={() => {
                 setPopupVisible(true);
               }}
             />
           )}
-        </CardItem>
+        </View>
       </Card>
-      <ActionDialog
-        popupVisible={popupVisible}
-        setPopupVisible={setPopupVisible}
-        editItem={editQuestion}
-        deleteItem={deleteSelectedQuestion}
-      />
+      {/* Edit Delete actions */}
+      <Overlay
+        isVisible={popupVisible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={styles.overlayStyle}
+        backdropStyle={styles.backdropStyle}>
+        <Pressable onPress={editQuestion} style={styles.button}>
+          <Text style={styles.buttonText}>Edit</Text>
+        </Pressable>
+        <Card.Divider />
+        <Pressable onPress={deleteSelectedQuestion} style={styles.button}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </Pressable>
+      </Overlay>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
+  Options: {
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 18,
+  },
+  WebView: {
+    width: 'auto',
+    height: 50,
+  },
   footerText: {
-    color: '#85898f',
+    color: 'orange',
     textAlign: 'right',
+  },
+  header: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 5,
+  },
+  Profile: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    paddingRight: 5,
+    color: 'grey',
+  },
+  Card: {
+    borderRadius: 10,
+    elevation: 4,
+  },
+  tags: {
+    color: '#FF303A',
+  },
+  button: {
+    height: 25,
+    width: WIDTH * 0.5,
+    margin: 5,
+    alignItems: 'center',
+  },
+  overlayStyle: {
+    borderRadius: 5,
+    elevation: 50,
+  },
+  backdropStyle: {
+    backgroundColor: 'transparent',
   },
 });
 

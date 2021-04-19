@@ -13,17 +13,14 @@ const SignupScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
       <AuthComponent
-        headerText="Sign Up"
+        headerText="Welcome Aboard!"
         // errorMessage={state.errorMessage}
-        submitButtonText="Create Account"
+        submitButtonText="Register"
         nameInput
         onSubmit={signUp}
       />
-      <Spacer />
-      <Text style={styles.textStyle}>Already have an account?</Text>
       <NavLink routeName="Signin" text="Sign in instead!" />
       <Text style={styles.textStyle}>or</Text>
-      <Spacer />
       <SocialAuth />
     </View>
   );
@@ -39,8 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 50,
-    backgroundColor: AUTH_BACKGROUND,
+    backgroundColor: 'white',
   },
   textStyle: {
     fontSize: 18,

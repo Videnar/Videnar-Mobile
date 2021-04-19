@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, RefreshControl, StatusBar } from 'react-native';
+import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listQuestions } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
-import { Fab, Icon, View } from 'native-base';
+import { Header } from 'react-native-elements';
+import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
@@ -35,7 +36,20 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff8f5" />
+      <Header
+        statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white' }}
+        placement="left"
+        centerComponent={{
+          text: 'Videnar',
+          style: {
+            color: '#A97CB0',
+            fontSize: 20,
+            fontWeight: 'bold',
+            letterSpacing: 1.5,
+          },
+        }}
+        backgroundColor="white"
+      />
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -45,25 +59,15 @@ const HomeScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
       />
-      <Fab
-        position="bottomRight"
-        direction="up"
-        containerStyle={{}}
-        style={{ backgroundColor: '#cf391b' }}
-        onPress={() => {
-          navigation.navigate('AskQuestion');
-        }}>
-        <Icon name="plus" type="FontAwesome" />
-      </Fab>
+      {/* FAB */}
+      <FloatingAskQuestionButton navigation={navigation} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   FlatList: { marginHorizontal: 2 },
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  questionTitle: { fontSize: 18 },
-  container: { flex: 1, backgroundColor: '#fff8f5' },
+  container: { flex: 1, backgroundColor: 'white' },
 });
 
 export default HomeScreen;
