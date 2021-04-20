@@ -27,11 +27,12 @@ const ProfileMoreComponent = () => {
       .catch((err) => {
         err && console.log(err);
       });
+    setVisible(!visible);
   };
 
   const contactSupportHandler = () => {
     setVisibleContact(true); // Visible Contact us
-    setVisible(false); // Close More Options
+    setVisible(!visible); // Close More Options
   };
 
   return (

@@ -1,8 +1,24 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
-import { Text, Card, Header, Icon, Button } from 'react-native-elements';
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import {
+  Text,
+  Card,
+  Header,
+  Icon,
+  Button,
+  Overlay,
+} from 'react-native-elements';
 import { AuthContext } from '../contexts/AuthContext';
 import Share from 'react-native-share';
+import ProfileMoreComponent from '../components/ProfileMoreComponent';
+import ProfileEditableComponent from '../components/ProfileEditableComponent';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -21,6 +37,11 @@ const ProfileScreen = ({ navigation }) => {
   const [oldPassword, setOldPassword] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
   const pictureURL = picture && (picture || JSON.parse(picture).data.url);
+  // More Button
+  const [moreVisible, setMoreVisible] = useState(false);
+  const toggleOverlay = () => {
+    setMoreVisible(!moreVisible);
+  };
 
   const onChangePasswordHandler = () => {
     if (show === true) {
@@ -50,17 +71,13 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <Image
-        source={require('../assets/images/coverImage.png')}
-        style={styles.cover}
-      /> */}
       <Header
         statusBarProps={{
           barStyle: 'dark-content',
           backgroundColor: 'transparent',
         }}
         backgroundColor="transparent"
-        rightComponent={{ icon: 'more-vert' }}
+        rightComponent={<ProfileMoreComponent />}
       />
       <View style={styles.profile}>
         <Image
@@ -90,112 +107,15 @@ const ProfileScreen = ({ navigation }) => {
           <Text>12 Questions Answered</Text>
         </View>
       </Card>
-      <Card containerStyle={styles.optionsCard}>
-        <View>
-          <View style={styles.cardItem}>
-            <Icon name="book" type="material" color="grey" />
-            <Text style={styles.cardItemText}>Saved</Text>
-          </View>
-          <Card.Divider />
-          <View style={styles.cardItem}>
-            <Icon name="edit" type="material" color="grey" />
-            <Text style={styles.cardItemText}>Edit Exam Preference</Text>
-          </View>
-          <Card.Divider />
-          <View style={styles.cardItem}>
-            <Icon name="notifications" type="material" color="grey" />
-            <Text style={styles.cardItemText}>Notification</Text>
-          </View>
-          <Card.Divider />
-          <View style={styles.cardItem}>
-            <Icon name="settings" type="material" color="grey" />
-            <Text style={styles.cardItemText}>Setting</Text>
-          </View>
-        </View>
-      </Card>
+      <ProfileEditableComponent />
       <Button
-        type="solid"
+        type="clear"
         raised
         title="Sign Out"
         onPress={signOut}
+        titleStyle={styles.signOutText}
         buttonStyle={styles.signOutButton}
       />
-      {/* <Image
-        style={styles.picture}
-        source={
-          pictureURL
-            ? { uri: pictureURL }
-            : require('../assets/images/DefaultProfilePic.png')
-        }
-      />
-      <Text style={styles.title}>{name}</Text>
-      <Text style={styles.title}>Education: {level}</Text>
-      {branch && <Text style={styles.title}>Branch : {branch}</Text>}
-      <Text style={styles.title}>Exams:</Text>
-      {exams.map((exam, index) => (
-        <Text key={index} style={styles.title}>
-          {exam}
-        </Text>
-      ))}
-      <Button
-        transparent
-        style={styles.editButton}
-        onPress={onEditExamPreferences}>
-        <Text style={styles.editText}>Edit</Text>
-        <Icon name="edit" type="FontAwesome" />
-      </Button>
-      <Text style={styles.button} onPress={onChangePasswordHandler}>
-        Change Password
-      </Text>
-      {show ? (
-        <>
-          <Item underline floatingLabel style={styles.textInput}>
-            <Label style={styles.labelInput}>Enter Old Password</Label>
-            <Input
-              secureTextEntry
-              value={oldPassword}
-              onChangeText={setOldPassword}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </Item>
-          <Spacer />
-          <Item underline floatingLabel style={styles.textInput}>
-            <Label style={styles.labelInput}>Enter New Password</Label>
-            <Input
-              secureTextEntry
-              value={newPassword}
-              onChangeText={setNewPassword}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </Item>
-          <Spacer />
-          <Button
-            block
-            info
-            style={styles.blockButton}
-            onPress={() => changePassword(oldPassword, newPassword)}>
-            <Text style={{ fontSize: 15, color: 'white' }}>
-              Change Password
-            </Text>
-          </Button>
-        </>
-      ) : null}
-      <Spacer />
-      <Spacer />
-      <Button block info style={styles.blockButton} onPress={signOut}>
-        <Text style={{ fontSize: 15, color: 'white' }}>Sign Out</Text>
-      </Button>
-      <Spacer />
-      <Button transparent danger full onPress={shareAppHandler}>
-        <Icon
-          name="share-square"
-          type="FontAwesome"
-          style={{ color: 'white' }}
-        />
-        <Text>Share</Text>
-      </Button> */}
     </ScrollView>
   );
 };
@@ -247,28 +167,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
   },
-  optionsCard: {
-    flex: 1,
-    borderRadius: 10,
-    elevation: 1,
-  },
-  cardItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardItemText: {
-    marginLeft: 10,
-    paddingBottom: 5,
-    fontWeight: 'bold',
-    color: 'grey',
-  },
   signOutButton: {
     marginTop: 10,
     width: WIDTH * 0.5,
     alignItems: 'center',
     left: WIDTH * 0.25,
-    backgroundColor: '#E03F3F',
     borderRadius: 8,
+  },
+  signOutText: {
+    color: 'grey',
   },
 });
 
