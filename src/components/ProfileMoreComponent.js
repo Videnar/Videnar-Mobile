@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     top: 35,
     elevation: 20,
     borderRadius: 8,
-    width: 150,
+    width: 140,
     padding: 10,
   },
   backdrop: {
