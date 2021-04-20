@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { Overlay, Icon, Text, Card } from 'react-native-elements';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Overlay, Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
+import ContactUsOverlay from './ContactUsOverlay';
 
 const ProfileMoreComponent = () => {
   const [visible, setVisible] = useState(false);
+  const [visibleContact, setVisibleContact] = useState(false);
 
-  const toggleOverlay = () => {
+  const toggleOverlayMore = () => {
     setVisible(!visible);
+  };
+  const toggleOverlayContact = () => {
+    setVisibleContact(!visibleContact);
   };
 
   const shareAppHandler = () => {
@@ -25,7 +30,8 @@ const ProfileMoreComponent = () => {
   };
 
   const contactSupportHandler = () => {
-    console.log('Contact us Clicked!');
+    setVisibleContact(true); // Visible Contact us
+    setVisible(false); // Close More Options
   };
 
   return (
@@ -33,18 +39,24 @@ const ProfileMoreComponent = () => {
       <Icon type="material" name="more-vert" onPress={() => setVisible(true)} />
       <Overlay
         isVisible={visible}
-        onBackdropPress={toggleOverlay}
+        onBackdropPress={toggleOverlayMore}
         overlayStyle={styles.overlay}
         backdropStyle={styles.backdrop}>
-        <Pressable onPress={contactSupportHandler} style={styles.pressable}>
+        <TouchableOpacity
+          onPress={contactSupportHandler}
+          style={styles.pressable}>
           <Text>Contact Us</Text>
-          <Icon type="material" name="info" color="blue" />
-        </Pressable>
-        <Pressable onPress={shareAppHandler} style={styles.pressable}>
-          <Text>Share</Text>
-          <Icon type="material" name="share" color="green" />
-        </Pressable>
+          <Icon type="material" name="info" color="blue" size={22} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={shareAppHandler} style={styles.pressable}>
+          <Text>Share Our App</Text>
+          <Icon type="material" name="share" color="green" size={22} />
+        </TouchableOpacity>
       </Overlay>
+      <ContactUsOverlay
+        visible={visibleContact}
+        toggleVisible={toggleOverlayContact}
+      />
     </>
   );
 };
@@ -56,7 +68,7 @@ const styles = StyleSheet.create({
     right: 22,
     top: 35,
     elevation: 20,
-    borderRadius: 10,
+    borderRadius: 8,
     width: 150,
     padding: 10,
   },
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
   pressable: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
   },
 });
 
