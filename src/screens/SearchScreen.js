@@ -46,7 +46,7 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header
-        statusBarProps={{ barStyle: 'dark-content' }}
+        statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white' }}
         style={styles.header}
         backgroundColor="white"
       />
