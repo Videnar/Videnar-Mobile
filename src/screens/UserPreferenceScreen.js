@@ -31,6 +31,7 @@ const UserPreferenceScreen = () => {
       />
       <ExamSelectionComponent
         userPref={(input) => updateUserPrefHandler(input)}
+        education={userPref.education}
       />
     </View>
   );
