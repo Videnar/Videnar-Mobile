@@ -15,6 +15,11 @@ const UserPreferenceScreen = () => {
     setUserPref(newUserPref);
   };
 
+  const isBranchComponentVisible = () => {
+    console.log(userPref.education);
+    return userPref.education === 'B.Tech';
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -22,17 +27,27 @@ const UserPreferenceScreen = () => {
         backgroundColor="white"
       />
       <Text h4>Select Your Preference</Text>
+      {/** Education level Selection */}
       <EducationSelectionComponent
         userPref={(input) => updateUserPrefHandler(input)}
       />
-      {console.log(userPref)}
-      <BranchSelectionComponent
-        userPref={(input) => updateUserPrefHandler(input)}
-      />
-      <ExamSelectionComponent
-        userPref={(input) => updateUserPrefHandler(input)}
-        education={userPref.education}
-      />
+      {/** Branch Selection conditional rendering based on B.Tech lavel */}
+      {isBranchComponentVisible() ? (
+        <BranchSelectionComponent
+          userPref={(input) => updateUserPrefHandler(input)}
+        />
+      ) : (
+        <></>
+      )}
+      {/** Exam Selection Based on selected level */}
+      {userPref.education ? (
+        <ExamSelectionComponent
+          userPref={(input) => updateUserPrefHandler(input)}
+          education={userPref.education}
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
