@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Text, Overlay, Button, Header, ListItem } from 'react-native-elements';
+import { Text, Overlay, Header, ListItem } from 'react-native-elements';
 import { educations } from '../utilities/constants/education';
 
-const EducationSelectionComponent = () => {
+const EducationSelectionComponent = ({ userPref }) => {
   const [showEduOverlay, setShowEduOverlay] = useState(false);
   const [selectText, setSelectText] = useState('Select');
 
   const onPressHandler = (education) => {
     setSelectText(education);
+    userPref({ education: education });
     setShowEduOverlay(false);
   };
 
