@@ -40,6 +40,9 @@ const MME = 'Metallurgical and Materials Engineering';
 const MIN = 'Mining Engineering';
 const FOO = 'Food Process Engineering';
 
+const CBSE = 'CBSE';
+const KVPY = 'KVPY';
+
 export const Branches = [
   BIO,
   CER,
@@ -60,15 +63,21 @@ export const educations = [
   // { level: 'Class 6' },
   // { level: 'Class 7' },
   // { level: 'Class 8' },
-  { level: 'Class 9' },
-  { level: 'Class 10' },
+  {
+    level: 'Class 9',
+    exams: [CBSE, KVPY, JEE, NEET],
+  },
+  {
+    level: 'Class 10',
+    exams: [CBSE, KVPY, JEE, NEET],
+  },
   {
     level: 'Class 11',
-    exams: [NEET, JEE],
+    exams: [CBSE, NEET, JEE],
   },
   {
     level: 'Class 12',
-    exams: [NEET, JEE],
+    exams: [CBSE, NEET, JEE],
   },
   {
     level: 'B.Tech',
