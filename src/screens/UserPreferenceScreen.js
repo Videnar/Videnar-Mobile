@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Header } from 'react-native-elements';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import { Header, Button } from 'react-native-elements';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
 import EducationSelectionComponent from '../components/EducationSelectionComponent';
 import ExamSelectionComponent from '../components/ExamSelectionComponent';
 
+const WIDTH = Dimensions.get('window').width;
+
 const UserPreferenceScreen = () => {
   const [userPref, setUserPref] = useState({});
+  const [buttonEnable, setButtonEnable] = useState(false);
 
   // Populating UserPreference details from child components
   const updateUserPrefHandler = (userRef) => {
@@ -21,41 +24,86 @@ const UserPreferenceScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <Header
-        statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white' }}
+        statusBarProps={{
+          barStyle: 'dark-content',
+          backgroundColor: 'white',
+        }}
+        leftComponent={{
+          icon: 'arrow-back',
+          color: 'purple',
+        }}
+        centerComponent={{
+          text: 'Select Your Preference',
+          style: styles.headerText,
+        }}
         backgroundColor="white"
       />
-      <Text h4>Select Your Preference</Text>
-      {/** Education level Selection */}
-      <EducationSelectionComponent
-        userPref={(input) => updateUserPrefHandler(input)}
-      />
-      {/** Branch Selection conditional rendering based on B.Tech lavel */}
-      {isBranchComponentVisible() ? (
-        <BranchSelectionComponent
+      <View style={styles.container}>
+        {/** Education level Selection */}
+        <EducationSelectionComponent
           userPref={(input) => updateUserPrefHandler(input)}
         />
-      ) : (
-        <></>
-      )}
-      {/** Exam Selection Based on selected level */}
-      {userPref.education ? (
-        <ExamSelectionComponent
-          userPref={(input) => updateUserPrefHandler(input)}
-          education={userPref.education}
+        {/** Branch Selection conditional rendering based on B.Tech lavel */}
+        {isBranchComponentVisible() ? (
+          <BranchSelectionComponent
+            userPref={(input) => updateUserPrefHandler(input)}
+          />
+        ) : (
+          <></>
+        )}
+        {/** Exam Selection Based on selected level */}
+        {userPref.education ? (
+          <ExamSelectionComponent
+            userPref={(input) => updateUserPrefHandler(input)}
+            education={userPref.education}
+            saveEnable={(input) => setButtonEnable(input)}
+          />
+        ) : (
+          <></>
+        )}
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          type="solid"
+          title="Save"
+          buttonStyle={styles.buttonStyle}
+          titleStyle={styles.buttonText}
+          disabled={!buttonEnable}
         />
-      ) : (
-        <></>
-      )}
-    </View>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 4,
+    alignContent: 'center',
+    backgroundColor: 'white',
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'purple',
+    letterSpacing: 0.2,
+  },
+  buttonStyle: {
+    backgroundColor: '#3DDC84',
+    width: WIDTH * 0.7,
+    height: 40,
+    marginTop: 20,
+    alignSelf: 'center',
+    alignContent: 'center',
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontSize: 25,
+  },
+  buttonContainer: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
   },
 });
 
