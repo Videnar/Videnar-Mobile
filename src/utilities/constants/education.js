@@ -95,12 +95,33 @@ const RRBALP = {
   key: 'RRB-ALP',
   description: 'Assistant Loco Pilot',
 };
+const CBSE = {
+  key: 'CBSE',
+  description: 'Central Board of Secondary Education',
+};
+const ICSE = {
+  key: 'ICSE',
+  description: 'Indian Certificate of Secondary Education',
+};
+const HSCE = {
+  key: 'HSCE',
+  description: 'High School Certificate Examination, Odisha',
+};
+const CHSE = {
+  key: 'CHSE',
+  description: 'Council of Higher Secondary Education, Odisha',
+};
+const KVPY = {
+  key: 'KVPY',
+  description: 'Kishore Vaigyanik Protsahan Yojana',
+};
 
 const MBA = [CAT, XAT];
 const Banking = [SBI, RBI, IBPS];
 const SSC = [SSCCGL, SSCJE, SSCGD, SSCCPO, SSCCHSL];
 
-const BIO = 'Bio Technology';
+const AE = 'Aerospace Engineering';
+const BIO = 'Bio Technology Engineering';
 const CER = 'Ceramic Engineering';
 const CHE = 'Chemical Engineering';
 const CE = 'Civil Engineering';
@@ -113,10 +134,8 @@ const MME = 'Metallurgical and Materials Engineering';
 const MIN = 'Mining Engineering';
 const FOO = 'Food Process Engineering';
 
-const CBSE = 'CBSE';
-const KVPY = 'KVPY';
-
 export const Branches = [
+  AE,
   BIO,
   CER,
   CHE,
@@ -138,19 +157,19 @@ export const educations = [
   // { level: 'Class 8' },
   {
     level: 'Class 9',
-    exams: [CBSE, KVPY, JEE, NEET],
+    exams: [CBSE, ICSE, HSCE, KVPY, JEE, NEET],
   },
   {
     level: 'Class 10',
-    exams: [CBSE, KVPY, JEE, NEET],
+    exams: [CBSE, ICSE, HSCE, KVPY, JEE, NEET],
   },
   {
     level: 'Class 11',
-    exams: [CBSE, NEET, JEE],
+    exams: [CBSE, ICSE, CHSE, NEET, JEE],
   },
   {
     level: 'Class 12',
-    exams: [CBSE, NEET, JEE],
+    exams: [CBSE, ICSE, CHSE, NEET, JEE],
   },
   {
     level: 'B.Tech',
@@ -158,20 +177,20 @@ export const educations = [
     exams: [GATE, IES, ...MBA, CSE, ...Banking, SSCCGL],
   },
   {
-    level: 'MBBS (Bachelor of Medicine and Bachelor of Surgery)',
+    level: 'MBBS',
     exams: [NEETPG, AIIMSPG, JIPMERPG, PGIMER, NIMHANS, CAT],
   },
   {
-    level: 'Bachelor of Commerce',
+    level: 'B.Com',
     exams: [CAT, ...SSC, ...Banking],
   },
   {
-    level: 'Bachelor of Science',
+    level: 'B.Sc',
     exams: [CAT, CSE, IFS, ...SSC, ...Banking, RRBNTPC],
   },
-  { level: 'Chartered Accountant (CA)' },
-  { level: 'Certified Management AccountantCMA (CMA)' },
-  { level: 'Company secretary(CS)' },
+  // { level: 'Chartered Accountant (CA)' },
+  // { level: 'Certified Management AccountantCMA (CMA)' },
+  // { level: 'Company secretary(CS)' },
   {
     level: 'Diploma',
     exams: [RRBJE, RRBALP, SSCJE, SSCGD],
