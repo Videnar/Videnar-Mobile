@@ -1,27 +1,100 @@
-const NEET = 'NEET';
-const JEE = 'JEE';
-const NEETPG = 'NEET PG';
-const AIIMSPG = 'AIIMS PG';
-const JIPMERPG = 'JIPMER PG';
-const PGIMER = 'PGIMER';
-const NIMHANS = 'NIMHANS';
-const SSCCGL = 'SSC-CGL';
-const SSCJE = 'SSC-JE';
-const SSCGD = 'SSC-GD';
-const SSCCPO = 'SSC-CPO';
-const SSCCHSL = 'SSC-CHSL';
-const CSE = 'CIVIL SERVICE EXAMINATION';
-const IFSE = 'INDIAN FOREST SERVICE EXAMINATION';
-const IESE = 'INDIAN ENGINEERING SERVICE EXAMINATION';
-const CAT = 'CAT';
-const XAT = 'XAT';
-const GATE = 'GATE';
-const SBI = 'SBI EXAM';
-const RBI = 'RBI EXAM';
-const IBPS = 'IBPS EXAM';
-const RRBJE = 'RRB-JE';
-const RRBNTPC = 'RRB-NTPC';
-const RRBALP = 'RRB-ALP';
+const NEET = {
+  key: 'NEET',
+  description: 'National Eligibility cum Entrance Test (UG)',
+};
+const JEE = {
+  key: 'JEE',
+  description: 'Joint Entrance Examination',
+};
+const NEETPG = {
+  key: 'NEET PG',
+  description: 'National Eligibility cum Entrance Test (PG)',
+};
+const AIIMSPG = {
+  key: 'AIIMS PG',
+  description: 'All India Institute of Medical Science (PG)',
+};
+const JIPMERPG = {
+  key: 'JIPMER PG',
+  description:
+    'Jawaharlal Institute of Postgraduate Medical Education & Research (PG)',
+};
+const PGIMER = {
+  key: 'PGIMER',
+  description: 'Postgraduate Institute of Medical Education and Research',
+};
+const NIMHANS = {
+  key: 'NIMHANS',
+  description: 'National Institute of Mental Health and Neurosciences',
+};
+const SSCCGL = {
+  key: 'SSC-CGL',
+  description: 'Combined Graduate Level',
+};
+const SSCJE = {
+  key: 'SSC-JE',
+  description: 'Junior Engineers',
+};
+const SSCGD = {
+  key: 'SSC-GD',
+  description: 'General Duty',
+};
+const SSCCPO = {
+  key: 'SSC-CPO',
+  description: 'Central Police Organization',
+};
+const SSCCHSL = {
+  key: 'SSC-CHSL',
+  description: 'Combined Higher Secondary Level',
+};
+const CSE = {
+  key: 'CSE',
+  description: 'Civil Services Examination',
+};
+const IFS = {
+  key: 'IFS',
+  description: 'Indian Forest Service',
+};
+const IES = {
+  key: 'IES',
+  description: 'Indian Engineering Service',
+};
+const CAT = {
+  key: 'CAT',
+  description: 'Common Admission Test',
+};
+const XAT = {
+  key: 'XAT',
+  description: 'Xavier Aptitude Test',
+};
+const GATE = {
+  key: 'GATE',
+  description: 'Graduate Aptitude Test in Engineering',
+};
+const SBI = {
+  key: 'SBI',
+  description: 'SBI PO & Clerk',
+};
+const RBI = {
+  key: 'RBI',
+  description: 'RBI Grade-B & Assistant',
+};
+const IBPS = {
+  key: 'IBPS',
+  description: 'Institute of Banking Personnel Selection',
+};
+const RRBJE = {
+  key: 'RRB-JE',
+  description: 'Junior Engineer',
+};
+const RRBNTPC = {
+  key: 'RRB-NTPC',
+  description: 'Non Technical Popular Categories',
+};
+const RRBALP = {
+  key: 'RRB-ALP',
+  description: 'Assistant Loco Pilot',
+};
 
 const MBA = [CAT, XAT];
 const Banking = [SBI, RBI, IBPS];
@@ -82,7 +155,7 @@ export const educations = [
   {
     level: 'B.Tech',
     branches: Branches,
-    exams: [GATE, IESE, ...MBA, CSE, ...Banking, SSCCGL],
+    exams: [GATE, IES, ...MBA, CSE, ...Banking, SSCCGL],
   },
   {
     level: 'MBBS (Bachelor of Medicine and Bachelor of Surgery)',
@@ -94,7 +167,7 @@ export const educations = [
   },
   {
     level: 'Bachelor of Science',
-    exams: [CAT, CSE, IFSE, ...SSC, ...Banking, RRBNTPC],
+    exams: [CAT, CSE, IFS, ...SSC, ...Banking, RRBNTPC],
   },
   { level: 'Chartered Accountant (CA)' },
   { level: 'Certified Management AccountantCMA (CMA)' },
