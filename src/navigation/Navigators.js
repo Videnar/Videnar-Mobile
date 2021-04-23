@@ -17,6 +17,7 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import SelectEducationScreen from '../screens/SelectEducationScreen';
 import SelectBranchScreen from '../screens/SelectBranchScreen';
 import SelectExamsScreen from '../screens/SelectExamsScreen';
+import UserPreferenceScreen from '../screens/UserPreferenceScreen';
 
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -121,12 +122,12 @@ export const Auth = () => (
 
 export const UserInfo = () => (
   <Stack.Navigator
-    initialRouteName="SelectEducation"
+    initialRouteName="userPref"
     screenOptions={{
       headerShown: false,
       gestureEnabled: false,
     }}>
-    <Stack.Screen name="SelectEducation" component={SelectEducationScreen} />
+    <Stack.Screen name="userPref" component={UserPreferenceScreen} />
     <Stack.Screen name="SelectBranch" component={SelectBranchScreen} />
     <Stack.Screen name="SelectExams" component={SelectExamsScreen} />
   </Stack.Navigator>
