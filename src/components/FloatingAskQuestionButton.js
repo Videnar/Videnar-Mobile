@@ -1,16 +1,15 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { FAB, Icon } from 'react-native-elements';
 
 const FloatingAskQuestionButton = ({ navigation }) => {
   return (
-    <>
-      <Pressable
-        activeOpacity={0.5}
-        onPress={() => {
-          navigation.navigate('AskQuestion');
-        }}
-        style={styles.touchable}>
+    <FAB
+      placement="right"
+      size="large"
+      onPress={() => {
+        navigation.navigate('AskQuestion');
+      }}
+      icon={
         <Icon
           type="material"
           name="live-help"
@@ -19,21 +18,9 @@ const FloatingAskQuestionButton = ({ navigation }) => {
           reverse
           raised
         />
-      </Pressable>
-    </>
+      }
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  touchable: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 25,
-  },
-});
 
 export default FloatingAskQuestionButton;
