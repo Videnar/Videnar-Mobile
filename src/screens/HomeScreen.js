@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   FlatList: { marginHorizontal: 2 },
-  container: { flex: 1, backgroundColor: 'white' },
+  container: { flex: 1 },
 });
 
 export default HomeScreen;

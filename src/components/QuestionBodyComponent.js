@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   WebView: {
     width: 'auto',
     height: 50,
+    marginTop: 5,
   },
 });
 

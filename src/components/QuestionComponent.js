@@ -20,28 +20,27 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
 
   return (
     <>
-      <Pressable
-        onPress={() => {
-          route.name !== 'QuestionDetails' &&
-            navigate('QuestionDetails', { questionID: question.id });
-        }}>
-        <Card containerStyle={styles.Card}>
+      <Card containerStyle={styles.Card}>
+        <Pressable
+          onPress={() => {
+            route.name !== 'QuestionDetails' &&
+              navigate('QuestionDetails', { questionID: question.id });
+          }}>
           {/* Header Section */}
           <QuestionHeaderComponent />
-          <Card.Divider />
           {/* Question Asked */}
           <QuestionBodyComponent content={content} />
-          <Card.Divider />
           {/* Interactivity Section */}
-          <QuestionBottomComponent
-            username={username}
-            question={question}
-            isPopupVisible={(event) => {
-              setPopupVisible(event);
-            }}
-          />
-        </Card>
-      </Pressable>
+        </Pressable>
+        <Card.Divider />
+        <QuestionBottomComponent
+          username={username}
+          question={question}
+          isPopupVisible={(event) => {
+            setPopupVisible(event);
+          }}
+        />
+      </Card>
       {/* Edit Delete actions */}
       <QuestionMoreOverlayComponent
         popupVisible={popupVisible}
@@ -56,8 +55,10 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
 
 const styles = StyleSheet.create({
   Card: {
-    borderRadius: 10,
+    width: WIDTH,
     elevation: 4,
+    start: -17,
+    marginVertical: 10,
   },
 });
 

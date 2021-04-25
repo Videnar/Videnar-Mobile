@@ -6,6 +6,7 @@ import Share from 'react-native-share';
 const QuestionBottomComponent = ({ username, question, isPopupVisible }) => {
   const { tags, upvotes } = question;
 
+  // Share the Question
   const shareQuestionHandler = () => {
     const options = {
       message: 'Can you answer this Question',
@@ -27,13 +28,16 @@ const QuestionBottomComponent = ({ username, question, isPopupVisible }) => {
         name="share"
         type="material"
         color="grey"
+        size={20}
         onPress={shareQuestionHandler}
       />
+      {/** more options Edit/Delete */}
       {question.username === username && (
         <Icon
           name="more-vert"
           type="material"
           color="grey"
+          size={22}
           onPress={() => isPopupVisible(true)}
         />
       )}
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 18,
+    height: 15,
   },
   upvotes: {
     color: 'orange',
