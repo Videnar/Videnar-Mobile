@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -198,7 +199,7 @@ dependencies {
     
     implementation 'com.android.support:multidex:2.0.1'
 
-    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
 
     implementation 'com.google.firebase:firebase-crashlytics'
 
@@ -244,8 +245,6 @@ project.ext.vectoricons = [
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-
-apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
 
