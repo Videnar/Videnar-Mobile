@@ -3,55 +3,75 @@ import { Linking, View, StyleSheet } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { AuthContext } from '../contexts/AuthContext';
 import { SocialIcon, Button } from 'react-native-elements';
-import getDeepLink from '../utilities/getDeepLink';
+import auth from '@react-native-firebase/auth';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId:
+    '1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com',
+});
 
 const SocialAuthComponent = () => {
-  const { socialAuth } = useContext(AuthContext);
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
 
-  const onSignin = async () => {
-    const deepLink = getDeepLink('');
-    console.log(deepLink);
-    const url = `https://my-auth-login-page.com?redirect_uri=${deepLink}`;
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        InAppBrowser.openAuth(url, deepLink, {
-          // iOS Properties
-          ephemeralWebSession: false,
-          // Android Properties
-          showTitle: false,
-          enableUrlBarHiding: true,
-          enableDefaultShare: false,
-        }).then((response) => {
-          if (response.type === 'success' && response.url) {
-            Linking.openURL(response.url);
-          }
-        });
-      } else {
-        Linking.openURL(url);
-      }
-    } catch (error) {
-      Linking.openURL(url);
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
     }
-  };
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
   return (
     <View style={styles.container}>
       {/* Google button*/}
       <Button
         type="clear"
         icon={<SocialIcon light raised type="google" />}
-        onPress={() => {
-          socialAuth('Google');
-          // onSignin();
-        }}
+        onPress={() =>
+          onGoogleButtonPress().then(() =>
+            console.log('Signed in with Google!'),
+          )
+        }
       />
       {/* Facebook button*/}
       <Button
         type="clear"
         icon={<SocialIcon raised type="facebook" />}
-        onPress={() => {
-          socialAuth('Facebook');
-          // onSignin();
-        }}
+        onPress={() =>
+          onFacebookButtonPress().then(() =>
+            console.log('Signed in with Facebook!'),
+          )
+        }
       />
     </View>
   );
