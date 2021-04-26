@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
-import { Linking, View, StyleSheet } from 'react-native';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn';
-import { AuthContext } from '../contexts/AuthContext';
+import { View, StyleSheet } from 'react-native';
 import { SocialIcon, Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AuthContext } from '../contexts/AuthContext';
 
 GoogleSignin.configure({
   webClientId:
@@ -13,6 +12,7 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
+  const { changeScreen } = useContext(AuthContext);
   async function onFacebookButtonPress() {
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
@@ -35,6 +35,7 @@ const SocialAuthComponent = () => {
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
+    changeScreen('Main');
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(facebookCredential);
@@ -46,6 +47,8 @@ const SocialAuthComponent = () => {
 
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    changeScreen('Main');
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
