@@ -2,8 +2,8 @@ import React, { useEffect, useReducer, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from 'aws-amplify';
-import PushNotification from '@aws-amplify/pushnotification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
 import SplashScreen from './src/screens/SplashScreen';
 import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
 import { AuthContext } from './src/contexts/AuthContext';
@@ -13,29 +13,6 @@ import {
   UserInfo,
 } from './src/navigation/Navigators';
 import { AuthReducer, initialState } from './src/contexts/AuthReducer';
-import getDeepLink from './src/utilities/getDeepLink';
-
-PushNotification.onRegister((token) => {
-  console.log('onRegister', token);
-});
-PushNotification.onNotification((notification) => {
-  if (notification.foreground) {
-    console.log('onNotification foreground', notification);
-  } else {
-    console.log('onNotification background or closed', notification);
-  }
-  // extract the data passed in the push notification
-  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
-  console.log('onNotification data', data);
-  // iOS only
-  // notification.finish(PushNotificationIOS.FetchResult.NoData);
-});
-PushNotification.onNotificationOpened((notification) => {
-  console.log('onNotificationOpened', notification);
-  // extract the data passed in the push notification
-  const data = JSON.parse(notification['pinpoint.jsonBody']);
-  console.log('onNotificationOpened data', data);
-});
 
 const Stack = createStackNavigator();
 
@@ -106,7 +83,8 @@ const App = () => {
         dispatch({ type: 'signin', payload: data });
       },
       signOut: async () => {
-        Auth.signOut()
+        auth
+          .signOut()
           .then(() => {
             dispatch({ type: 'changeScreen', payload: 'Auth' });
             AsyncStorage.removeItem('@user');
@@ -151,21 +129,6 @@ const App = () => {
           attributes: { ...attributes, 'custom:preferences': stringifiedPref },
         });
         AsyncStorage.setItem('@user', jsonValue);
-      },
-      socialAuth: async (provider) => {
-        Auth.federatedSignIn({ provider });
-        Auth.currentAuthenticatedUser()
-          .then(({ username, attributes }) => {
-            dispatch({ type: 'signin', payload: { username, attributes } });
-            const jsonValue = JSON.stringify({ username, attributes });
-            AsyncStorage.setItem('@user', jsonValue);
-            if (attributes['custom:preferences']) {
-              dispatch({ type: 'changeScreen', payload: 'Main' });
-            } else {
-              dispatch({ type: 'changeScreen', payload: 'UserInfo' });
-            }
-          })
-          .catch((err) => console.log(err));
       },
       changePassword: (oldPassword, newPassword) => {
         try {
