@@ -13,7 +13,6 @@
     "jetify": "npx jetify"
   },
   "dependencies": {
-    "@aws-amplify/pushnotification": "^3.2.17",
     "@eva-design/eva": "^2.0.0",
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/masked-view": "^0.1.10",
@@ -21,6 +20,7 @@
     "@react-native-firebase/app": "^11.3.3",
     "@react-native-firebase/auth": "^11.3.3",
     "@react-native-firebase/crashlytics": "^11.3.3",
+    "@react-native-firebase/firestore": "^11.3.3",
     "@react-native-google-signin/google-signin": "^6.0.0",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/material-top-tabs": "^5.3.11",
@@ -28,7 +28,6 @@
     "@react-navigation/stack": "^5.12.8",
     "@reduxjs/toolkit": "^1.4.0",
     "@welldone-software/why-did-you-render": "^6.0.5",
-    "amazon-cognito-identity-js": "^4.4.0",
     "aws-amplify": "^3.3.4",
     "aws-amplify-react-native": "^4.2.7",
     "lottie-ios": "3.0.3",

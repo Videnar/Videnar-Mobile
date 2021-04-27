@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createQuestion, updateQuestion } from '../graphql/mutations';
+import firestore from '@react-native-firebase/firestore';
 import Editor from '../components/Editor';
 import {
   Button,
@@ -17,7 +16,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const AskQuestionScreen = ({ route, navigation }) => {
   const {
-    state: { username },
+    state: { uid },
   } = useContext(AuthContext);
   const [webref, setWebref] = useState();
 
@@ -32,18 +31,14 @@ const AskQuestionScreen = ({ route, navigation }) => {
       updateSelectedQuestion(str);
     }
     try {
-      await API.graphql(
-        graphqlOperation(createQuestion, {
-          input: {
-            username,
-            content: str,
-            upvotes: 0,
-            view: 0,
-            tags: 'neet',
-            noOfBookmarks: 0,
-          },
-        }),
-      );
+      firestore
+        .collection('questions')
+        .then(() => {
+          console.log('Document successfully written!');
+        })
+        .catch((error) => {
+          console.error('Error writing document: ', error);
+        });
       navigation.goBack();
     } catch (err) {
       console.log('error creating Question:', err);
@@ -53,16 +48,7 @@ const AskQuestionScreen = ({ route, navigation }) => {
   const updateSelectedQuestion = async (str) => {
     const questionID = route.params === undefined ? null : route.params.id;
     try {
-      await API.graphql({
-        query: updateQuestion,
-        variables: {
-          input: {
-            id: questionID,
-            content: str,
-          },
-        },
-      });
-      navigation.goBack();
+      // navigation.goBack();
     } catch (err) {
       console.log('error updating Question:', err);
     }

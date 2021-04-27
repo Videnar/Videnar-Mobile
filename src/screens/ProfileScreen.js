@@ -10,13 +10,8 @@ const WIDTH = Dimensions.get('window').width;
 const ProfileScreen = ({ navigation }) => {
   const {
     signOut,
-    state: {
-      attributes: { name, picture },
-      preferences: { level, branch, exams },
-    },
+    state: { name, photoURL },
   } = useContext(AuthContext);
-
-  const pictureURL = picture && (picture || JSON.parse(picture).data.url);
 
   return (
     <ScrollView style={styles.container}>
@@ -32,21 +27,21 @@ const ProfileScreen = ({ navigation }) => {
         <Image
           style={styles.picture}
           source={
-            pictureURL
-              ? { uri: pictureURL }
+            photoURL
+              ? { uri: photoURL }
               : require('../assets/images/DefaultProfilePic.png')
           }
         />
         <View style={styles.details}>
           <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.educationText}>Education: {level}</Text>
-          {branch && <Text h5>Branch : {branch}</Text>}
+          {/* <Text style={styles.educationText}>Education: {level}</Text>
+          {branch && <Text h5>Branch : {branch}</Text>} */}
           <Text style={styles.educationText}>Exams:</Text>
-          {exams.map((exam, index) => (
+          {/* {exams.map((exam, index) => (
             <Text key={index} style={styles.examtags}>
               {exam}
             </Text>
-          ))}
+          ))} */}
         </View>
       </View>
       <Card.Divider />

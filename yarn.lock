@@ -129,14 +129,6 @@
     uuid "^3.2.1"
     zen-observable-ts "0.8.19"
 
-"@aws-amplify/pushnotification@^3.2.17":
-  version "3.2.27"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/pushnotification/-/pushnotification-3.2.27.tgz#ed3a7df45574e753505b0b7fe928413e10050b89"
-  integrity sha512-JlIXrD2tuDlSVq0OjTp6/VruqAi3Wt4LgP0Rt3+AEsIv27Mc3dp6yEPdT/dZmpNaHZHY+P7Gc+HH+YanYkqgoA==
-  dependencies:
-    "@aws-amplify/core" "3.8.19"
-    "@react-native-community/push-notification-ios" "1.0.3"
-
 "@aws-amplify/storage@3.3.27":
   version "3.3.27"
   resolved "https://registry.yarnpkg.com/@aws-amplify/storage/-/storage-3.3.27.tgz#80fa4032768e23ed0e2e1a602c4f1805844ccd15"
@@ -3164,13 +3156,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.10.tgz#97d3a9fa62a3a4838ec7a6ec91cfec5a26e365b6"
   integrity sha512-1NPlBA2Hu/KWc3EnQcDRPRX0x8Dg9tuQlQQVWVQjlg+u+PjCq7ANEtbikOFKp5yQqfF8tqzU5+84/IfDO8zpiA==
 
-"@react-native-community/push-notification-ios@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.3.tgz#cd2c7f29aeeb431942eda0bd729738fd2b444ae9"
-  integrity sha512-f+Y3lFLt5OBWHDtGHE+PiZH4aLeS8w2D47c0G/S5XpzeGoEeggOiALtou/r6raiVLP+D5CrLkIBMs2U2+LGJhw==
-  dependencies:
-    invariant "^2.2.4"
-
 "@react-native-firebase/app@^11.3.3":
   version "11.3.3"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-11.3.3.tgz#cd6c4a9f69133ff0c4ecbb1f4322d421dd5ebcf5"
@@ -3190,6 +3175,11 @@
   integrity sha512-0XeR80OL01EEhACwIQOm4EYEkL6fPCmJE45GMu/BfTqxCaT/+PhqRZjNAZhFHX7fMPopfXOFd4rUBfl7wqOw3g==
   dependencies:
     stacktrace-js "^2.0.0"
+
+"@react-native-firebase/firestore@^11.3.3":
+  version "11.3.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-11.3.3.tgz#f77e42221437158d4190b6fa5f24300916d59f21"
+  integrity sha512-tuJJm3+SxuxDWdnyHpPE8b7aeFo8/V6mkgiaPcuZGipOuxUDqsQUNk9pMc9xynR81tD/wKVPLQ0NO9AgHZkuTw==
 
 "@react-native-google-signin/google-signin@^6.0.0":
   version "6.0.0"
@@ -3561,7 +3551,7 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-cognito-identity-js@4.5.14, amazon-cognito-identity-js@^4.4.0:
+amazon-cognito-identity-js@4.5.14:
   version "4.5.14"
   resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-4.5.14.tgz#58c0b687387008b4bb27bcf3f4bb40711aea772e"
   integrity sha512-Q6NMHMrHFM/qUi8CGDVI+mW/NM5RX7+BHyw7KLPNJ6e+w1XR+nRrGBKHCEA60JQUujFqxWxh2o+tVHHqrA5GZg==
