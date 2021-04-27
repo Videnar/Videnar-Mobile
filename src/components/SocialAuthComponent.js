@@ -12,51 +12,51 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
-  const { changeScreen } = useContext(AuthContext);
-  async function onFacebookButtonPress() {
-    // Attempt login with permissions
+  const { changeScreen, restoreUser } = useContext(AuthContext);
+
+  const onFacebookButtonPress = async () => {
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
       'email',
     ]);
-
     if (result.isCancelled) {
       throw 'User cancelled the login process';
     }
-
-    // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
-
     if (!data) {
       throw 'Something went wrong obtaining access token';
     }
-
-    // Create a Firebase credential with the AccessToken
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
+    auth().signInWithCredential(facebookCredential);
+    const { displayName, email, photoURL, uid } = auth().currentUser;
+    restoreUser({
+      name: displayName,
+      email,
+      photoURL,
+      uid,
+    });
     changeScreen('Main');
+  };
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
-  }
-
-  async function onGoogleButtonPress() {
-    // Get the users ID token
+  const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
+      auth().signInWithCredential(googleCredential);
+      const { displayName, email, photoURL, uid } = auth().currentUser;
+      restoreUser({
+        name: displayName,
+        email,
+        photoURL,
+        uid,
+      });
       changeScreen('Main');
-
-      // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
     } catch (err) {
       console.log('Error ---> ' + err);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -64,21 +64,13 @@ const SocialAuthComponent = () => {
       <Button
         type="clear"
         icon={<SocialIcon light raised type="google" />}
-        onPress={() =>
-          onGoogleButtonPress().then(() =>
-            console.log('Signed in with Google!'),
-          )
-        }
+        onPress={onGoogleButtonPress}
       />
       {/* Facebook button*/}
       <Button
         type="clear"
         icon={<SocialIcon raised type="facebook" />}
-        onPress={() =>
-          onFacebookButtonPress().then(() =>
-            console.log('Signed in with Facebook!'),
-          )
-        }
+        onPress={onFacebookButtonPress}
       />
     </View>
   );
