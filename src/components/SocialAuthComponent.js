@@ -8,7 +8,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 GoogleSignin.configure({
   webClientId:
-    '1003541739972-63q1an14045tmqqo4t842un42f9jsd33.apps.googleusercontent.com',
+    '492932528639-jcas4av97bd4t80jvhd86p2fl7711amp.apps.googleusercontent.com',
 });
 
 const SocialAuthComponent = () => {
@@ -43,15 +43,19 @@ const SocialAuthComponent = () => {
 
   async function onGoogleButtonPress() {
     // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+    try {
+      const { idToken } = await GoogleSignin.signIn();
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    changeScreen('Main');
+      changeScreen('Main');
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+    } catch (err) {
+      console.log('Error ---> ' + err);
+    }
   }
 
   return (
