@@ -67,7 +67,7 @@ const AuthForm = ({
           <Text
             onPress={() => forgotPasswordHandler()}
             style={styles.forgetText}>
-            Forgot Password ?
+            Forgot Password?
           </Text>
         ) : null}
         {errorMessage ? (
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right',
     paddingRight: 15,
-    color: '#000078',
+    color: 'grey',
+    letterSpacing: 0.5,
   },
   inputStyle: {
     paddingLeft: 20,
