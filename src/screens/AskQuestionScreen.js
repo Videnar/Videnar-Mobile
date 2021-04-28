@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Editor from '../components/Editor';
-import { Button, Text, Header, Icon } from 'react-native-elements';
+import { Button, Header, Icon } from 'react-native-elements';
 import { AuthContext } from '../contexts/AuthContext';
 
 const AskQuestionScreen = ({ route, navigation }) => {
