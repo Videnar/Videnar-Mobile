@@ -4,25 +4,30 @@ import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
-import Spacer from '../components/Spacer';
-import { AUTH_BACKGROUND } from '../assets/colors/colors';
+import { Header } from 'react-native-elements';
 
 const SignupScreen = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
   return (
-    <View style={styles.container}>
-      {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
-      <AuthComponent
-        headerText="Welcome Aboard!"
-        // errorMessage={state.errorMessage}
-        submitButtonText="Register"
-        nameInput
-        onSubmit={signUp}
+    <>
+      <Header
+        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        backgroundColor="white"
       />
-      <NavLink routeName="Signin" text="Sign in instead!" />
-      <Text style={styles.textStyle}>or</Text>
-      <SocialAuth />
-    </View>
+      <View style={styles.container}>
+        {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
+        <AuthComponent
+          headerText="Welcome Aboard!"
+          // errorMessage={state.errorMessage}
+          submitButtonText="Register"
+          nameInput
+          onSubmit={signUp}
+        />
+        <NavLink routeName="Signin" text="Sign in instead!" />
+        <Text style={styles.textStyle}>or</Text>
+        <SocialAuth />
+      </View>
+    </>
   );
 };
 

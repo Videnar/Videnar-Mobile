@@ -4,25 +4,32 @@ import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
+import { Header } from 'react-native-elements';
 
 const SigninScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
-      {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <AuthComponent
-        headerText="Hello there!"
-        // errorMessage={state.errorMessage}
-        onSubmit={signIn}
-        forgotPassword
-        submitButtonText="Login"
+    <>
+      <Header
+        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        backgroundColor="white"
       />
-      <NavLink text="Sign up here" routeName="Signup" />
-      <Text style={styles.textStyle}>or</Text>
-      <SocialAuth />
-    </View>
+      <View style={styles.container}>
+        {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
+        <AuthComponent
+          headerText="Hello there!"
+          // errorMessage={state.errorMessage}
+          onSubmit={signIn}
+          forgotPassword
+          submitButtonText="Login"
+        />
+        <NavLink text="Sign up here" routeName="Signup" />
+        <Text style={styles.textStyle}>or</Text>
+        <SocialAuth />
+      </View>
+    </>
   );
 };
 SigninScreen.navigationOptions = {
