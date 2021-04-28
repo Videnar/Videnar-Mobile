@@ -7,19 +7,6 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import {
-  createAnswer,
-  updateAnswer,
-  createCommentOnQuestion,
-  deleteCommentOnQuestion,
-  updateCommentOnQuestion,
-} from '../graphql/mutations';
-import {
-  getQuestion,
-  listAnswers,
-  listCommentOnQuestions,
-} from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -50,10 +37,10 @@ const QuestionDetailsScreen = (props) => {
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const result = await API.graphql(
-          graphqlOperation(getQuestion, { id: questionId }),
-        );
-        await setQuestion(result.data.getQuestion);
+        // const result = await API.graphql(
+        //   graphqlOperation(getQuestion, { id: questionId }),
+        // );
+        // await setQuestion(result.data.getQuestion);
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -61,14 +48,14 @@ const QuestionDetailsScreen = (props) => {
 
     const fetchAnswers = async () => {
       try {
-        const list = await API.graphql({
-          query: listAnswers,
-          variables: {
-            filter: { questionID: { eq: questionId } },
-          },
-        });
-        const answerslist = list.data.listAnswers.items;
-        setAnswers(answerslist);
+        // const list = await API.graphql({
+        //   query: listAnswers,
+        //   variables: {
+        //     filter: { questionID: { eq: questionId } },
+        //   },
+        // });
+        // const answerslist = list.data.listAnswers.items;
+        // setAnswers(answerslist);
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -76,14 +63,14 @@ const QuestionDetailsScreen = (props) => {
 
     const fetchCommentOnQuestion = async () => {
       try {
-        const list = await API.graphql({
-          query: listCommentOnQuestions,
-          variables: {
-            filter: { questionID: { eq: questionId } },
-          },
-        });
-        const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
-        setCommentsOnQuestion(commentsOnQuestionList);
+        // const list = await API.graphql({
+        //   query: listCommentOnQuestions,
+        //   variables: {
+        //     filter: { questionID: { eq: questionId } },
+        //   },
+        // });
+        // const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
+        // setCommentsOnQuestion(commentsOnQuestionList);
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
@@ -102,15 +89,15 @@ const QuestionDetailsScreen = (props) => {
   const submitAnswer = async (str) => {
     if (answerId) {
       try {
-        await API.graphql({
-          query: updateAnswer,
-          variables: {
-            input: {
-              id: answerId,
-              content: str,
-            },
-          },
-        });
+        // await API.graphql({
+        //   query: updateAnswer,
+        //   variables: {
+        //     input: {
+        //       id: answerId,
+        //       content: str,
+        //     },
+        //   },
+        // });
       } catch (err) {
         console.log('error updating Answer:', err);
       }
@@ -118,16 +105,16 @@ const QuestionDetailsScreen = (props) => {
     }
 
     try {
-      await API.graphql(
-        graphqlOperation(createAnswer, {
-          input: {
-            username,
-            questionID: questionId,
-            content: str,
-            upvotes: 0,
-          },
-        }),
-      );
+      // await API.graphql(
+      //   graphqlOperation(createAnswer, {
+      //     input: {
+      //       username,
+      //       questionID: questionId,
+      //       content: str,
+      //       upvotes: 0,
+      //     },
+      //   }),
+      // );
     } catch (err) {
       console.log('error creating Answer:', err);
     }
@@ -135,17 +122,17 @@ const QuestionDetailsScreen = (props) => {
 
   const submitCommentOnQuestion = async () => {
     try {
-      await API.graphql(
-        graphqlOperation(createCommentOnQuestion, {
-          input: {
-            username,
-            questionID: questionId,
-            content: commentsOnQuestionInput,
-          },
-        }),
-      );
-      setCommentsOnQuestionInput('');
-      setShowCommentBoxForQuestion(false);
+      // await API.graphql(
+      //   graphqlOperation(createCommentOnQuestion, {
+      //     input: {
+      //       username,
+      //       questionID: questionId,
+      //       content: commentsOnQuestionInput,
+      //     },
+      //   }),
+      // );
+      // setCommentsOnQuestionInput('');
+      // setShowCommentBoxForQuestion(false);
     } catch (err) {
       console.log('error creating comment:', contentToEdit);
     }
@@ -153,15 +140,15 @@ const QuestionDetailsScreen = (props) => {
 
   const updateSelectedComment = async (Id, commentContent) => {
     try {
-      await API.graphql({
-        query: updateCommentOnQuestion,
-        variables: {
-          input: {
-            id: Id,
-            content: commentContent,
-          },
-        },
-      });
+      // await API.graphql({
+      //   query: updateCommentOnQuestion,
+      //   variables: {
+      //     input: {
+      //       id: Id,
+      //       content: commentContent,
+      //     },
+      //   },
+      // });
     } catch (err) {
       console.log('error updating Comment:', err);
     }
@@ -169,12 +156,12 @@ const QuestionDetailsScreen = (props) => {
 
   const deleteSelectedComment = async (Id) => {
     try {
-      await API.graphql({
-        query: deleteCommentOnQuestion,
-        variables: {
-          input: { id: Id },
-        },
-      });
+      // await API.graphql({
+      //   query: deleteCommentOnQuestion,
+      //   variables: {
+      //     input: { id: Id },
+      //   },
+      // });
     } catch (err) {
       console.log('error updating Comment:', err);
     }

@@ -1,35 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { API } from 'aws-amplify';
-import { listAnswers } from '../graphql/queries';
 import { AuthContext } from '../contexts/AuthContext';
-import AnswerComponent from '../components/AnswerComponent';
+import QuestionComponent from '../components/QuestionComponent';
 
-const AnswerActivityScreen = () => {
+const ActivityScreen = ({ navigation }) => {
   const {
     state: { username },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fetchAnswers = async () => {
+    const fetchQuestions = async () => {
       try {
-        const list = await API.graphql({
-          query: listAnswers,
-          variables: {
-            filter: { username: { eq: username } },
-          },
-        });
-        const answersList = list.data.listAnswers.items;
-        setItems(answersList);
       } catch (err) {
-        console.log('error fetching answers', err);
+        console.log('error fetching questions', err);
       }
     };
-    fetchAnswers();
+    fetchQuestions();
   }, [username]);
 
-  const RenderItem = ({ item }) => <AnswerComponent answer={item} />;
+  const RenderItem = (item) => (
+    <QuestionComponent question={item} navigation={navigation} />
+  );
 
   return (
     <View style={styles.container}>
@@ -47,4 +39,4 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
-export default AnswerActivityScreen;
+export default React.memo(ActivityScreen);

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
 import { Header, SearchBar } from 'react-native-elements';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { searchQuestions, searchAnswers } from '../graphql/queries';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
@@ -14,23 +12,23 @@ const SearchScreen = ({ navigation }) => {
   const searchItems = async (val) => {
     setInput(val);
     setResults([]);
-    search(searchQuestions, 'searchQuestions');
-    search(searchAnswers, 'searchAnswers');
+    // search(searchQuestions, 'searchQuestions');
+    // search(searchAnswers, 'searchAnswers');
   };
 
   const search = async (queryFunction, queryString, callback) => {
     let res = [];
     try {
-      const list = await API.graphql({
-        query: queryFunction,
-        variables: {
-          filter: {
-            content: { matchPhrasePrefix: input },
-          },
-        },
-      });
-      res = list.data[queryString].items;
-      setResults([...results, ...res]);
+      // const list = await API.graphql({
+      //   query: queryFunction,
+      //   variables: {
+      //     filter: {
+      //       content: { matchPhrasePrefix: input },
+      //     },
+      //   },
+      // });
+      // res = list.data[queryString].items;
+      // setResults([...results, ...res]);
     } catch (err) {
       console.log('error fetching items', err);
     }

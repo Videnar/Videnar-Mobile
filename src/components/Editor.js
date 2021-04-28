@@ -2,10 +2,7 @@ import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { v4 as uuid } from 'uuid';
-import { Storage } from 'aws-amplify';
-import config from '../../aws-exports';
 
-const { aws_user_files_s3_bucket: bucket } = config;
 const deviceWidth = Dimensions.get('window').width;
 
 const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
@@ -19,11 +16,6 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
       const blob = await response.blob();
 
       const key = `${uuid()}-${uuid()}-${fileName}`;
-
-      Storage.put(key, blob, {
-        contentType: type,
-      });
-      const url = `https://${bucket}.s3.amazonaws.com/public/${key}`;
     } catch (err) {
       console.log('error uploading image', err);
     }

@@ -1,38 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { listQuestions } from '../graphql/queries';
-import QuestionComponent from '../components/QuestionComponent';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native';
 import { Header } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
+import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const HomeScreen = ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    fetchQuestions();
-  }, []);
+    const subscriber = fetchQuestions();
+
+    return () => subscriber();
+  }, [fetchQuestions]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchQuestions();
     setRefreshing(false);
-  }, []);
+  }, [fetchQuestions]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     try {
-      const responseData = await API.graphql(graphqlOperation(listQuestions));
-      const questionsData = responseData.data.listQuestions.items;
-      setQuestions(questionsData);
+      firestore()
+        .collection('Questions')
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((documentSnapshot) => {
+            questions.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            });
+          });
+          setQuestions(questions);
+          setLoading(false);
+        });
     } catch (err) {
       console.log('error fetching questions', err);
     }
-  };
+  }, [questions]);
 
   const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigation={navigation} />
   );
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <View style={styles.container}>

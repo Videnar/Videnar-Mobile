@@ -16,7 +16,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
     state: { username },
   } = useContext(AuthContext);
   const [popupVisible, setPopupVisible] = useState(false);
-  const { content } = question;
+  const { content, name } = question;
 
   return (
     <>
@@ -27,7 +27,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
               navigate('QuestionDetails', { questionID: question.id });
           }}>
           {/* Header Section */}
-          <QuestionHeaderComponent />
+          <QuestionHeaderComponent name={name} />
           {/* Question Asked */}
           <QuestionBodyComponent content={content} />
           {/* Interactivity Section */}

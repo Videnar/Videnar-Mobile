@@ -9,16 +9,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
-import { API, graphqlOperation } from 'aws-amplify';
 import { Icon, Card, CardItem } from 'native-base';
-import {
-  createCommentOnAnswer,
-  updateAnswer,
-  deleteAnswer,
-  deleteCommentOnAnswer,
-  updateCommentOnAnswer,
-} from '../graphql/mutations';
-import { listCommentOnAnswers } from '../graphql/queries';
 import CommentComponent from './CommentComponent';
 import { AuthContext } from '../contexts/AuthContext';
 import { navigate } from '../navigation/RootNavigation.js';
@@ -37,16 +28,16 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   useEffect(() => {
     const fetchCommentsOnAnswer = async () => {
       try {
-        const list = await API.graphql({
-          query: listCommentOnAnswers,
-          variables: {
-            filter: {
-              answerID: { eq: id },
-            },
-          },
-        });
-        const comments = list.data.listCommentOnAnswers.items;
-        setCommentsOnAnswer(comments);
+        // const list = await API.graphql({
+        //   query: listCommentOnAnswers,
+        //   variables: {
+        //     filter: {
+        //       answerID: { eq: id },
+        //     },
+        //   },
+        // });
+        // const comments = list.data.listCommentOnAnswers.items;
+        // setCommentsOnAnswer(comments);
       } catch (err) {
         console.log('error fetching commentsOnAnswer', err);
       }
@@ -56,18 +47,18 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const submitCommentOnAnswer = async () => {
     try {
-      await API.graphql(
-        graphqlOperation(createCommentOnAnswer, {
-          input: {
-            username,
-            content: commentsOnAnswerInput,
-            answerID: id,
-            questionID,
-          },
-        }),
-      );
-      setCommentsOnAnswerInput('');
-      setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
+      // await API.graphql(
+      //   graphqlOperation(createCommentOnAnswer, {
+      //     input: {
+      //       username,
+      //       content: commentsOnAnswerInput,
+      //       answerID: id,
+      //       questionID,
+      //     },
+      //   }),
+      // );
+      // setCommentsOnAnswerInput('');
+      // setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
     } catch (err) {
       console.log('error creating comment:', this.state.content);
     }
@@ -75,15 +66,15 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const updateUpvote = async (n) => {
     try {
-      await API.graphql({
-        query: updateAnswer,
-        variables: {
-          input: {
-            id,
-            upvotes: upvotes + n,
-          },
-        },
-      });
+      // await API.graphql({
+      //   query: updateAnswer,
+      //   variables: {
+      //     input: {
+      //       id,
+      //       upvotes: upvotes + n,
+      //     },
+      //   },
+      // });
     } catch (err) {
       console.log('error updating Answer:', err);
     }
@@ -97,12 +88,12 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const deleteSelectedAnswer = async () => {
     try {
-      await API.graphql({
-        query: deleteAnswer,
-        variables: {
-          input: { id },
-        },
-      });
+      // await API.graphql({
+      //   query: deleteAnswer,
+      //   variables: {
+      //     input: { id },
+      //   },
+      // });
     } catch (err) {
       console.log('error deleting Answer:', err);
     }
@@ -111,15 +102,15 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const updateSelectedComment = async (Id, commentContent) => {
     try {
-      await API.graphql({
-        query: updateCommentOnAnswer,
-        variables: {
-          input: {
-            id: Id,
-            content: commentContent,
-          },
-        },
-      });
+      // await API.graphql({
+      //   query: updateCommentOnAnswer,
+      //   variables: {
+      //     input: {
+      //       id: Id,
+      //       content: commentContent,
+      //     },
+      //   },
+      // });
     } catch (err) {
       console.log('error updating Comment:', err);
     }
@@ -127,12 +118,12 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const deleteSelectedComment = async (Id) => {
     try {
-      await API.graphql({
-        query: deleteCommentOnAnswer,
-        variables: {
-          input: { id: Id },
-        },
-      });
+      // await API.graphql({
+      //   query: deleteCommentOnAnswer,
+      //   variables: {
+      //     input: { id: Id },
+      //   },
+      // });
     } catch (err) {
       console.log('error updating Comment:', err);
     }

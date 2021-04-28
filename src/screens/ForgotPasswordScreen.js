@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify';
 import * as RootNavigation from '../navigation/RootNavigation';
 
 const SigninScreen = ({ navigation }) => {
@@ -12,21 +11,21 @@ const SigninScreen = ({ navigation }) => {
   const handler = () => {
     if (show) {
       try {
-        Auth.forgotPasswordSubmit(email, code, password)
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err));
-        RootNavigation.navigate('Signin');
+        // Auth.forgotPasswordSubmit(email, code, password)
+        //   .then((data) => console.log(data))
+        //   .catch((err) => console.log(err));
+        // RootNavigation.navigate('Signin');
       } catch (err) {
         console.log(err);
         setShow(false);
       }
       return;
     }
-    Auth.forgotPassword(email)
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-    setShow(true);
-    setTitle('Change Password');
+    // Auth.forgotPassword(email)
+    //   .then((data) => console.log(data))
+    //   .catch((err) => console.log(err));
+    // setShow(true);
+    // setTitle('Change Password');
   };
   return (
     <View style={styles.container}>

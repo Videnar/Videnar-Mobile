@@ -16,7 +16,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const AskQuestionScreen = ({ route, navigation }) => {
   const {
-    state: { uid },
+    state: { name, uid },
   } = useContext(AuthContext);
   const [webref, setWebref] = useState();
 
@@ -31,14 +31,15 @@ const AskQuestionScreen = ({ route, navigation }) => {
       updateSelectedQuestion(str);
     }
     try {
-      firestore
-        .collection('questions')
-        .then(() => {
-          console.log('Document successfully written!');
-        })
-        .catch((error) => {
-          console.error('Error writing document: ', error);
-        });
+      firestore().collection('Questions').add({
+        uid,
+        name,
+        content: str,
+        upvotes: 0,
+        view: 0,
+        tags: 'neet',
+        noOfAnswers: 0,
+      });
       navigation.goBack();
     } catch (err) {
       console.log('error creating Question:', err);

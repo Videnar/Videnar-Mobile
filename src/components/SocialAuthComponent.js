@@ -12,7 +12,7 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
-  const { changeScreen, restoreUser } = useContext(AuthContext);
+  const { changeScreen, signIn } = useContext(AuthContext);
 
   const onFacebookButtonPress = async () => {
     const result = await LoginManager.logInWithPermissions([
@@ -29,9 +29,9 @@ const SocialAuthComponent = () => {
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
-    auth().signInWithCredential(facebookCredential);
+    await auth().signInWithCredential(facebookCredential);
     const { displayName, email, photoURL, uid } = auth().currentUser;
-    restoreUser({
+    signIn({
       name: displayName,
       email,
       photoURL,
@@ -44,9 +44,9 @@ const SocialAuthComponent = () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      auth().signInWithCredential(googleCredential);
+      await auth().signInWithCredential(googleCredential);
       const { displayName, email, photoURL, uid } = auth().currentUser;
-      restoreUser({
+      signIn({
         name: displayName,
         email,
         photoURL,
