@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
@@ -13,11 +13,12 @@ const SigninScreen = ({ navigation }) => {
     <>
       <Header
         statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        placement="left"
+        centerComponent={{ text: 'Videnar', style: styles.headerText }}
         backgroundColor="white"
       />
       <View style={styles.container}>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <AuthComponent
           headerText="Hello there!"
           // errorMessage={state.errorMessage}
@@ -25,8 +26,7 @@ const SigninScreen = ({ navigation }) => {
           forgotPassword
           submitButtonText="Login"
         />
-        <NavLink text="Sign up here" routeName="Signup" />
-        <Text style={styles.textStyle}>or</Text>
+        <NavLink text="Sign Up Here" routeName="Signup" />
         <SocialAuth />
       </View>
     </>
@@ -37,6 +37,12 @@ SigninScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    color: '#A97CB0',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

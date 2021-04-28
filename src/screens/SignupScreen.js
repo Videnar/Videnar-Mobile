@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
@@ -12,6 +12,8 @@ const SignupScreen = ({ navigation }) => {
     <>
       <Header
         statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        placement="left"
+        centerComponent={{ text: 'Videnar', style: styles.headerText }}
         backgroundColor="white"
       />
       <View style={styles.container}>
@@ -23,8 +25,7 @@ const SignupScreen = ({ navigation }) => {
           nameInput
           onSubmit={signUp}
         />
-        <NavLink routeName="Signin" text="Sign in instead!" />
-        <Text style={styles.textStyle}>or</Text>
+        <NavLink routeName="Signin" text="Sign In Instead!" />
         <SocialAuth />
       </View>
     </>
@@ -38,6 +39,12 @@ SignupScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    color: '#A97CB0',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
