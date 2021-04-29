@@ -108,7 +108,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
     }
   };
 
-  const updateSelectedComment = async (Id, commentContent) => {
+  const updateSelectedComment = async (commentID, commentContent) => {
     try {
       firestore()
         .collection('questions')
@@ -116,7 +116,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
         .collection('answers')
         .doc(id)
         .collection('comments')
-        .doc(Id)
+        .doc(commentID)
         .update({
           content: commentContent,
         });
@@ -125,7 +125,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
     }
   };
 
-  const deleteSelectedComment = async (Id) => {
+  const deleteSelectedComment = async (commentID) => {
     try {
       firestore()
         .collection('questions')
@@ -133,7 +133,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
         .collection('answers')
         .doc(id)
         .collection('comments')
-        .doc(Id)
+        .doc(commentID)
         .delete();
     } catch (err) {
       console.log('error updating Comment:', err);
