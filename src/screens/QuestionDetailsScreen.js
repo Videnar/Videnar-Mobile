@@ -33,16 +33,17 @@ const QuestionDetailsScreen = (props) => {
   useEffect(() => {
     const qid = props.route.params.questionID;
     setQuestionId(qid);
-    props.question && setQuestion(props.question);
+    props.question && setQuestionId(props.question);
   }, [props.question, props.route.params.questionID]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const result = await firestore()
+        const { _data } = await firestore()
           .collection('questions')
-          .doc(questionId);
-        await setQuestion(result);
+          .doc(questionId)
+          .get();
+        await setQuestion(_data);
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -76,14 +77,14 @@ const QuestionDetailsScreen = (props) => {
           .doc(questionId)
           .collection('comments')
           .onSnapshot((querySnapshot) => {
-            const comnt = [];
+            const comnts = [];
             querySnapshot.forEach((documentSnapshot) => {
-              comnt.push({
+              comnts.push({
                 ...documentSnapshot.data(),
                 id: documentSnapshot.id,
               });
             });
-            setAnswers(comnt);
+            setCommentsOnQuestion(comnts);
           });
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);

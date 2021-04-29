@@ -52,27 +52,6 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
     fetchCommentsOnAnswer();
   }, [commentsOnAnswer, id, questionID]);
 
-  const submitCommentOnAnswer = async () => {
-    try {
-      await firestore()
-        .collection('questions')
-        .doc(questionID)
-        .collection('answers')
-        .doc(id)
-        .collection('comments')
-        .add({
-          userDisplayName,
-          content: commentsOnAnswerInput,
-          answerID: id,
-          questionID,
-        });
-      setCommentsOnAnswerInput('');
-      setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
-    } catch (err) {
-      console.log('error creating comment:', this.state.content);
-    }
-  };
-
   const updateUpvote = async (n) => {
     try {
       await firestore()
@@ -108,9 +87,30 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
     setPopupVisible(false);
   };
 
+  const submitCommentOnAnswer = async () => {
+    try {
+      firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .collection('comments')
+        .add({
+          userDisplayName,
+          content: commentsOnAnswerInput,
+          answerID: id,
+          questionID,
+        });
+      setCommentsOnAnswerInput('');
+      setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
+    } catch (err) {
+      console.log('error creating comment:', this.state.content);
+    }
+  };
+
   const updateSelectedComment = async (Id, commentContent) => {
     try {
-      await firestore()
+      firestore()
         .collection('questions')
         .doc(questionID)
         .collection('answers')
@@ -127,7 +127,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const deleteSelectedComment = async (Id) => {
     try {
-      await firestore()
+      firestore()
         .collection('questions')
         .doc(questionID)
         .collection('answers')

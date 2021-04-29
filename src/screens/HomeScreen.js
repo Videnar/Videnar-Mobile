@@ -1,38 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
+import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { Header } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const HomeScreen = ({ navigation }) => {
-  const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    const subscriber = firestore()
-      .collection('questions')
-      .onSnapshot((querySnapshot) => {
-        const q = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          q.push({
-            ...documentSnapshot.data(),
-            id: documentSnapshot.id,
-          });
-        });
-        setQuestions(q);
-        setLoading(false);
-      });
-
-    return () => subscriber();
-  }, [questions]);
+    fetchQuestions();
+  }, [fetchQuestions]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -42,6 +21,18 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchQuestions = useCallback(async () => {
     try {
+      firestore()
+        .collection('questions')
+        .onSnapshot((querySnapshot) => {
+          const q = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            q.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setQuestions(q);
+        });
     } catch (err) {
       console.log('error fetching questions', err);
     }
@@ -50,10 +41,6 @@ const HomeScreen = ({ navigation }) => {
   const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigation={navigation} />
   );
-
-  if (loading) {
-    return <ActivityIndicator />;
-  }
 
   return (
     <View style={styles.container}>

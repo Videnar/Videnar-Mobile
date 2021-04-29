@@ -19,16 +19,6 @@ const SearchScreen = ({ navigation }) => {
   const search = async (queryFunction, queryString, callback) => {
     let res = [];
     try {
-      // const list = await API.graphql({
-      //   query: queryFunction,
-      //   variables: {
-      //     filter: {
-      //       content: { matchPhrasePrefix: input },
-      //     },
-      //   },
-      // });
-      // res = list.data[queryString].items;
-      // setResults([...results, ...res]);
     } catch (err) {
       console.log('error fetching items', err);
     }
