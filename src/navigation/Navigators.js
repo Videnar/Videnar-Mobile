@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Icon } from 'react-native-elements';
+import { Header, Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import QuestionActivityScreen from '../screens/QuestionActivityScreen';
@@ -46,12 +46,28 @@ const Home = () => (
 
 const ActivityTabs = () => {
   return (
-    <TopTab.Navigator>
-      <TopTab.Screen name="Questions" component={QuestionActivityScreen} />
-      <TopTab.Screen name="Answers" component={AnswerActivityScreen} />
-      <TopTab.Screen name="Comments" component={CommentActivityScreen} />
-      {/* <TopTab.Screen name="BookMarks" component={ProfileScreen} /> */}
-    </TopTab.Navigator>
+    <>
+      <Header
+        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        placement="left"
+        centerComponent={{
+          text: 'Activity',
+          style: {
+            color: '#A97CB0',
+            fontSize: 20,
+            fontWeight: 'bold',
+            letterSpacing: 1.5,
+          },
+        }}
+        backgroundColor="white"
+      />
+      <TopTab.Navigator>
+        <TopTab.Screen name="Questions" component={QuestionActivityScreen} />
+        <TopTab.Screen name="Answers" component={AnswerActivityScreen} />
+        <TopTab.Screen name="Comments" component={CommentActivityScreen} />
+        {/* <TopTab.Screen name="BookMarks" component={ProfileScreen} /> */}
+      </TopTab.Navigator>
+    </>
   );
 };
 

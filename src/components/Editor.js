@@ -42,7 +42,7 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
                   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
-                 <body style="background-color:#fff8f8;">
+                 <body style="background-color:white;">
                   <div id="editor" >${oldContent || defaultContent}</div>
                  </body>
                  <script> 
