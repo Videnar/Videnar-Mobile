@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { v4 as uuid } from 'uuid';
@@ -7,6 +7,11 @@ const deviceWidth = Dimensions.get('window').width;
 
 const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
   const defaultContent = '<p><br></p>';
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    oldContent && setContent(oldContent);
+  }, [oldContent]);
 
   const uploadToStorage = async (imageData) => {
     const { uri, fileName, type } = imageData;
@@ -35,7 +40,7 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
                   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                  </head>
                  <body style="background-color:#fff8f8;">
-                  <div id="editor" >${oldContent || defaultContent}</div>
+                  <div id="editor" >${content}</div>
                  </body>
                  <script> 
                   var toolbarOptions = [[ 'bold', 'italic', { 'color': [] }, 'blockquote',  'code-block', 'image', 'video',{ header: 1 }, { header: 2 }, { 'list': 'ordered'}, { 'list': 'bullet' },{ 'script': 'sub'}, { 'script': 'super' }, 'link', 'formula', ],];
@@ -55,6 +60,7 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
           const { data } = event.nativeEvent;
           if (data !== defaultContent) {
             submit(data);
+            setContent(defaultContent);
           }
         }}
         containerStyle={styles.webview}
