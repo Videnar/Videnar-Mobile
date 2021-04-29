@@ -10,6 +10,7 @@ import {
 import { useRoute } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { Icon, Card, CardItem } from 'native-base';
+import firestore from '@react-native-firebase/firestore';
 import CommentComponent from './CommentComponent';
 import { AuthContext } from '../contexts/AuthContext';
 import { navigate } from '../navigation/RootNavigation.js';
@@ -18,7 +19,7 @@ import ActionDialog from './ActionDialog';
 const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   const route = useRoute();
   const {
-    state: { username },
+    state: { userDisplayName },
   } = useContext(AuthContext);
   const [showCommentBoxForAnswer, setShowCommentBoxForAnswer] = useState(false);
   const [commentsOnAnswerInput, setCommentsOnAnswerInput] = useState('');
@@ -28,37 +29,45 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
   useEffect(() => {
     const fetchCommentsOnAnswer = async () => {
       try {
-        // const list = await API.graphql({
-        //   query: listCommentOnAnswers,
-        //   variables: {
-        //     filter: {
-        //       answerID: { eq: id },
-        //     },
-        //   },
-        // });
-        // const comments = list.data.listCommentOnAnswers.items;
-        // setCommentsOnAnswer(comments);
+        await firestore()
+          .collection('questions')
+          .doc(questionID)
+          .collection('answers')
+          .doc(id)
+          .collection('comments')
+          .onSnapshot((querySnapshot) => {
+            const comnts = [];
+            querySnapshot.forEach((documentSnapshot) => {
+              comnts.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
+            });
+            setCommentsOnAnswer(comnts);
+          });
       } catch (err) {
         console.log('error fetching commentsOnAnswer', err);
       }
     };
     fetchCommentsOnAnswer();
-  }, [commentsOnAnswer, id]);
+  }, [commentsOnAnswer, id, questionID]);
 
   const submitCommentOnAnswer = async () => {
     try {
-      // await API.graphql(
-      //   graphqlOperation(createCommentOnAnswer, {
-      //     input: {
-      //       username,
-      //       content: commentsOnAnswerInput,
-      //       answerID: id,
-      //       questionID,
-      //     },
-      //   }),
-      // );
-      // setCommentsOnAnswerInput('');
-      // setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .collection('comments')
+        .add({
+          userDisplayName,
+          content: commentsOnAnswerInput,
+          answerID: id,
+          questionID,
+        });
+      setCommentsOnAnswerInput('');
+      setShowCommentBoxForAnswer(!showCommentBoxForAnswer);
     } catch (err) {
       console.log('error creating comment:', this.state.content);
     }
@@ -66,15 +75,14 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const updateUpvote = async (n) => {
     try {
-      // await API.graphql({
-      //   query: updateAnswer,
-      //   variables: {
-      //     input: {
-      //       id,
-      //       upvotes: upvotes + n,
-      //     },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .update({
+          upvotes: upvotes + n,
+        });
     } catch (err) {
       console.log('error updating Answer:', err);
     }
@@ -88,12 +96,12 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const deleteSelectedAnswer = async () => {
     try {
-      // await API.graphql({
-      //   query: deleteAnswer,
-      //   variables: {
-      //     input: { id },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .delete();
     } catch (err) {
       console.log('error deleting Answer:', err);
     }
@@ -102,15 +110,16 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const updateSelectedComment = async (Id, commentContent) => {
     try {
-      // await API.graphql({
-      //   query: updateCommentOnAnswer,
-      //   variables: {
-      //     input: {
-      //       id: Id,
-      //       content: commentContent,
-      //     },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .collection('comments')
+        .doc(Id)
+        .update({
+          content: commentContent,
+        });
     } catch (err) {
       console.log('error updating Comment:', err);
     }
@@ -118,12 +127,14 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
 
   const deleteSelectedComment = async (Id) => {
     try {
-      // await API.graphql({
-      //   query: deleteCommentOnAnswer,
-      //   variables: {
-      //     input: { id: Id },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(id)
+        .collection('comments')
+        .doc(Id)
+        .delete();
     } catch (err) {
       console.log('error updating Comment:', err);
     }
@@ -166,7 +177,7 @@ const AnswerComponent = ({ answer, setAnswer, setAnswerId }) => {
               updateUpvote(-1);
             }}
           />
-          {answer.username === username && (
+          {answer.userDisplayName === userDisplayName && (
             <Icon
               name="ellipsis-h"
               type="FontAwesome"

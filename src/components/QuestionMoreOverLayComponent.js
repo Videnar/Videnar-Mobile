@@ -2,6 +2,7 @@ import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import { Card, Overlay, Text } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -22,12 +23,13 @@ const QuestionMoreOverlayComponent = ({
 
   const deleteSelectedQuestion = async () => {
     try {
-      // await API.graphql({
-      //   query: deleteQuestion,
-      //   variables: {
-      //     input: { id },
-      //   },
-      // });
+      firestore()
+        .collection('questions')
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log('Question deleted!');
+        });
     } catch (err) {
       console.log('error deleting Question:', err);
     }

@@ -3,11 +3,6 @@ export const AuthReducer = (state, action) => {
     case 'add_error':
       return { ...state, errorMessage: action.payload };
     case 'signin': {
-      // const { username, attributes } = action.payload;
-      // const customPreferences = attributes['custom:preferences'];
-      // const preferences = customPreferences
-      //   ? JSON.parse(customPreferences)
-      //   : null;
       return {
         ...state,
         ...action.payload,
@@ -28,7 +23,7 @@ export const AuthReducer = (state, action) => {
 
 export const initialState = {
   screen: 'Main',
-  username: null,
+  userID: null,
   attributes: null,
   preferences: null,
 };

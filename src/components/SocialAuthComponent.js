@@ -32,12 +32,11 @@ const SocialAuthComponent = () => {
     await auth().signInWithCredential(facebookCredential);
     const { displayName, email, photoURL, uid } = auth().currentUser;
     signIn({
-      name: displayName,
+      userDisplayName: displayName,
       email,
       photoURL,
-      uid,
+      userID: uid,
     });
-    changeScreen('Main');
   };
 
   const onGoogleButtonPress = async () => {
@@ -47,12 +46,11 @@ const SocialAuthComponent = () => {
       await auth().signInWithCredential(googleCredential);
       const { displayName, email, photoURL, uid } = auth().currentUser;
       signIn({
-        name: displayName,
+        userDisplayName: displayName,
         email,
         photoURL,
-        uid,
+        userID: uid,
       });
-      changeScreen('Main');
     } catch (err) {
       console.log('Error ---> ' + err);
     }

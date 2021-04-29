@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
 
-const QuestionBottomComponent = ({ username, question, isPopupVisible }) => {
+const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
   const { tags, upvotes } = question;
 
   // Share the Question
@@ -32,7 +32,7 @@ const QuestionBottomComponent = ({ username, question, isPopupVisible }) => {
         onPress={shareQuestionHandler}
       />
       {/** more options Edit/Delete */}
-      {question.username === username && (
+      {question.userID === userID && (
         <Icon
           name="more-vert"
           type="material"

@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 
-const QuestionHeaderComponent = ({ name }) => {
+const QuestionHeaderComponent = ({ userDisplayName }) => {
   return (
     <View style={styles.header}>
       <View style={styles.Profile}>
         <Icon name="person" type="material" iconStyle={styles.image} />
-        <Text>{name}</Text>
+        <Text>{userDisplayName}</Text>
       </View>
       <Text h6>20 April 2021</Text>
     </View>

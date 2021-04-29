@@ -39,6 +39,7 @@ const App = () => {
         // Restoring token failed
       }
       if (user !== null) {
+        dispatch({ type: 'signin', payload: user });
         dispatch({ type: 'changeScreen', payload: 'Main' });
       } else {
         dispatch({ type: 'changeScreen', payload: 'Auth' });
@@ -57,8 +58,9 @@ const App = () => {
     () => ({
       signIn: async (user) => {
         dispatch({ type: 'signin', payload: user });
-        const jsonValue = JSON.stringify(user);
-        AsyncStorage.setItem('@user', jsonValue);
+        dispatch({ type: 'changeScreen', payload: 'Main' });
+        const str = JSON.stringify(user);
+        AsyncStorage.setItem('@user', str);
       },
       signOut: async () => {
         try {

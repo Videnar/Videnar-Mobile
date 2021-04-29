@@ -5,7 +5,7 @@ import QuestionComponent from '../components/QuestionComponent';
 
 const ActivityScreen = ({ navigation }) => {
   const {
-    state: { username },
+    state: { userDisplayName },
   } = useContext(AuthContext);
   const [items, setItems] = useState([]);
 
@@ -17,7 +17,7 @@ const ActivityScreen = ({ navigation }) => {
       }
     };
     fetchQuestions();
-  }, [username]);
+  }, [userDisplayName]);
 
   const RenderItem = (item) => (
     <QuestionComponent question={item} navigation={navigation} />

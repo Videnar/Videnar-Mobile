@@ -17,10 +17,22 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    const subscriber = fetchQuestions();
+    const subscriber = firestore()
+      .collection('questions')
+      .onSnapshot((querySnapshot) => {
+        const q = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          q.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setQuestions(q);
+        setLoading(false);
+      });
 
     return () => subscriber();
-  }, [fetchQuestions]);
+  }, [questions]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -30,22 +42,10 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchQuestions = useCallback(async () => {
     try {
-      firestore()
-        .collection('Questions')
-        .onSnapshot((querySnapshot) => {
-          querySnapshot.forEach((documentSnapshot) => {
-            questions.push({
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
-            });
-          });
-          setQuestions(questions);
-          setLoading(false);
-        });
     } catch (err) {
       console.log('error fetching questions', err);
     }
-  }, [questions]);
+  }, []);
 
   const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigation={navigation} />

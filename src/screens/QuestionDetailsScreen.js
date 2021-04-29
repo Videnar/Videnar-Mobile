@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import QuestionComponent from '../components/QuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import Editor from '../components/Editor';
@@ -15,7 +16,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const QuestionDetailsScreen = (props) => {
   const {
-    state: { username },
+    state: { userDisplayName, userID },
   } = useContext(AuthContext);
   const [webref, setWebref] = useState();
   const [question, setQuestion] = useState(null);
@@ -32,15 +33,16 @@ const QuestionDetailsScreen = (props) => {
   useEffect(() => {
     const qid = props.route.params.questionID;
     setQuestionId(qid);
-  }, [props.route.params.questionID]);
+    props.question && setQuestion(props.question);
+  }, [props.question, props.route.params.questionID]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        // const result = await API.graphql(
-        //   graphqlOperation(getQuestion, { id: questionId }),
-        // );
-        // await setQuestion(result.data.getQuestion);
+        const result = await firestore()
+          .collection('questions')
+          .doc(questionId);
+        await setQuestion(result);
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -48,14 +50,20 @@ const QuestionDetailsScreen = (props) => {
 
     const fetchAnswers = async () => {
       try {
-        // const list = await API.graphql({
-        //   query: listAnswers,
-        //   variables: {
-        //     filter: { questionID: { eq: questionId } },
-        //   },
-        // });
-        // const answerslist = list.data.listAnswers.items;
-        // setAnswers(answerslist);
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('answers')
+          .onSnapshot((querySnapshot) => {
+            const ans = [];
+            querySnapshot.forEach((documentSnapshot) => {
+              ans.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
+            });
+            setAnswers(ans);
+          });
       } catch (err) {
         console.log('error fetching answers', err);
       }
@@ -63,23 +71,29 @@ const QuestionDetailsScreen = (props) => {
 
     const fetchCommentOnQuestion = async () => {
       try {
-        // const list = await API.graphql({
-        //   query: listCommentOnQuestions,
-        //   variables: {
-        //     filter: { questionID: { eq: questionId } },
-        //   },
-        // });
-        // const commentsOnQuestionList = list.data.listCommentOnQuestions.items;
-        // setCommentsOnQuestion(commentsOnQuestionList);
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('comments')
+          .onSnapshot((querySnapshot) => {
+            const comnt = [];
+            querySnapshot.forEach((documentSnapshot) => {
+              comnt.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
+            });
+            setAnswers(comnt);
+          });
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
     };
 
-    fetchQuestion();
+    !question && fetchQuestion();
     fetchAnswers();
     fetchCommentOnQuestion();
-  }, [questionId]);
+  }, [question, questionId]);
 
   const submit = () => {
     const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
@@ -89,15 +103,14 @@ const QuestionDetailsScreen = (props) => {
   const submitAnswer = async (str) => {
     if (answerId) {
       try {
-        // await API.graphql({
-        //   query: updateAnswer,
-        //   variables: {
-        //     input: {
-        //       id: answerId,
-        //       content: str,
-        //     },
-        //   },
-        // });
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('answers')
+          .doc(answerId)
+          .update({
+            content: str,
+          });
       } catch (err) {
         console.log('error updating Answer:', err);
       }
@@ -105,16 +118,17 @@ const QuestionDetailsScreen = (props) => {
     }
 
     try {
-      // await API.graphql(
-      //   graphqlOperation(createAnswer, {
-      //     input: {
-      //       username,
-      //       questionID: questionId,
-      //       content: str,
-      //       upvotes: 0,
-      //     },
-      //   }),
-      // );
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .collection('answers')
+        .add({
+          content: str,
+          userDisplayName,
+          userID,
+          questionID: questionId,
+          upvotes: 0,
+        });
     } catch (err) {
       console.log('error creating Answer:', err);
     }
@@ -122,17 +136,18 @@ const QuestionDetailsScreen = (props) => {
 
   const submitCommentOnQuestion = async () => {
     try {
-      // await API.graphql(
-      //   graphqlOperation(createCommentOnQuestion, {
-      //     input: {
-      //       username,
-      //       questionID: questionId,
-      //       content: commentsOnQuestionInput,
-      //     },
-      //   }),
-      // );
-      // setCommentsOnQuestionInput('');
-      // setShowCommentBoxForQuestion(false);
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .collection('comments')
+        .add({
+          content: commentsOnQuestionInput,
+          userDisplayName,
+          userID,
+          questionID: questionId,
+        });
+      setCommentsOnQuestionInput('');
+      setShowCommentBoxForQuestion(false);
     } catch (err) {
       console.log('error creating comment:', contentToEdit);
     }
@@ -140,15 +155,14 @@ const QuestionDetailsScreen = (props) => {
 
   const updateSelectedComment = async (Id, commentContent) => {
     try {
-      // await API.graphql({
-      //   query: updateCommentOnQuestion,
-      //   variables: {
-      //     input: {
-      //       id: Id,
-      //       content: commentContent,
-      //     },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .collection('comments')
+        .doc(Id)
+        .update({
+          content: commentContent,
+        });
     } catch (err) {
       console.log('error updating Comment:', err);
     }
@@ -156,12 +170,12 @@ const QuestionDetailsScreen = (props) => {
 
   const deleteSelectedComment = async (Id) => {
     try {
-      // await API.graphql({
-      //   query: deleteCommentOnQuestion,
-      //   variables: {
-      //     input: { id: Id },
-      //   },
-      // });
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .collection('comments')
+        .doc(Id)
+        .delete();
     } catch (err) {
       console.log('error updating Comment:', err);
     }
