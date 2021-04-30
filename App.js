@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Auth } from 'aws-amplify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import SplashScreen from './src/screens/SplashScreen';
@@ -41,6 +40,7 @@ const App = () => {
       }
       if (user !== null) {
         dispatch({ type: 'signin', payload: user });
+        dispatch({ type: 'changeScreen', payload: 'Main' });
       } else {
         dispatch({ type: 'changeScreen', payload: 'Auth' });
       }
@@ -56,40 +56,24 @@ const App = () => {
 
   const AuthContextValue = useMemo(
     () => ({
-      signIn: async (email, password) => {
-        try {
-          await Auth.signIn({
-            username: email,
-            password,
-            attributes: { email },
-          });
-          Auth.currentAuthenticatedUser()
-            .then(({ username, attributes }) => {
-              dispatch({ type: 'signin', payload: { username, attributes } });
-              const jsonValue = JSON.stringify({ username, attributes });
-              AsyncStorage.setItem('@user', jsonValue);
-              if (attributes['custom:preferences']) {
-                dispatch({ type: 'changeScreen', payload: 'Main' });
-              } else {
-                dispatch({ type: 'changeScreen', payload: 'UserInfo' });
-              }
-            })
-            .catch((err) => console.log(err));
-        } catch (error) {
-          console.log('error signing in', error);
-        }
-      },
-      restoreUser: (data) => {
-        dispatch({ type: 'signin', payload: data });
+      signIn: async (user) => {
+        dispatch({ type: 'signin', payload: user });
+        dispatch({ type: 'changeScreen', payload: 'Main' });
+        const str = JSON.stringify(user);
+        AsyncStorage.setItem('@user', str);
       },
       signOut: async () => {
-        auth
-          .signOut()
-          .then(() => {
-            dispatch({ type: 'changeScreen', payload: 'Auth' });
-            AsyncStorage.removeItem('@user');
-          })
-          .catch((err) => console.log(err, 'err'));
+        try {
+          await auth()
+            .signOut()
+            .then(() => {
+              dispatch({ type: 'changeScreen', payload: 'Auth' });
+              AsyncStorage.removeItem('@user');
+            })
+            .catch((err) => console.log(err, 'err'));
+        } catch (err) {
+          console.log(err);
+        }
       },
 
       signUp: async (email, password, name) => {
@@ -110,42 +94,13 @@ const App = () => {
 
               console.error(error);
             });
-          Auth.currentAuthenticatedUser()
-            .then(({ username, attributes }) => {
-              dispatch({ type: 'signin', payload: { username, attributes } });
-              const jsonValue = JSON.stringify({ username, attributes });
-              AsyncStorage.setItem('@user', jsonValue);
-              dispatch({ type: 'changeScreen', payload: 'UserInfo' });
-            })
-            .catch((err) => console.log(err));
         } catch (error) {
           console.log('error signing up:', error);
         }
       },
-      updateUserPreferences: async (preferences) => {
-        let user = await Auth.currentAuthenticatedUser();
-        const { username, attributes } = user;
-        const stringifiedPref = JSON.stringify(preferences);
-        await Auth.updateUserAttributes(user, {
-          'custom:preferences': stringifiedPref,
-        })
-          .then((response) => console.log(response))
-          .catch((err) => console.log(err));
-        dispatch({ type: 'update_preferences', payload: preferences });
-        const jsonValue = JSON.stringify({
-          username,
-          attributes: { ...attributes, 'custom:preferences': stringifiedPref },
-        });
-        AsyncStorage.setItem('@user', jsonValue);
-      },
+      updateUserPreferences: async (preferences) => {},
       changePassword: (oldPassword, newPassword) => {
         try {
-          Auth.currentAuthenticatedUser()
-            .then((user) => {
-              return Auth.changePassword(user, oldPassword, newPassword);
-            })
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err));
         } catch (err) {
           console.log(err);
         }

@@ -12,47 +12,49 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
-  const { changeScreen, restoreUser } = useContext(AuthContext);
+  const { changeScreen, signIn } = useContext(AuthContext);
 
   const onFacebookButtonPress = async () => {
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+      if (result.isCancelled) {
+        throw 'User cancelled the login process';
+      }
+      const data = await AccessToken.getCurrentAccessToken();
+      if (!data) {
+        throw 'Something went wrong obtaining access token';
+      }
+      const facebookCredential = auth.FacebookAuthProvider.credential(
+        data.accessToken,
+      );
+      await auth().signInWithCredential(facebookCredential);
+      const { displayName, email, photoURL, uid } = auth().currentUser;
+      signIn({
+        userDisplayName: displayName,
+        email,
+        photoURL,
+        userID: uid,
+      });
+    } catch (err) {
+      console.log('Error ---> ' + err);
     }
-    const data = await AccessToken.getCurrentAccessToken();
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
-    const facebookCredential = auth.FacebookAuthProvider.credential(
-      data.accessToken,
-    );
-    auth().signInWithCredential(facebookCredential);
-    const { displayName, email, photoURL, uid } = auth().currentUser;
-    restoreUser({
-      name: displayName,
-      email,
-      photoURL,
-      uid,
-    });
-    changeScreen('Main');
   };
 
   const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      auth().signInWithCredential(googleCredential);
+      await auth().signInWithCredential(googleCredential);
       const { displayName, email, photoURL, uid } = auth().currentUser;
-      restoreUser({
-        name: displayName,
+      signIn({
+        userDisplayName: displayName,
         email,
         photoURL,
-        uid,
+        userID: uid,
       });
-      changeScreen('Main');
     } catch (err) {
       console.log('Error ---> ' + err);
     }

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { listQuestions } from '../graphql/queries';
-import QuestionComponent from '../components/QuestionComponent';
 import { Header } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
+import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const HomeScreen = ({ navigation }) => {
@@ -12,23 +11,32 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [fetchQuestions]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchQuestions();
     setRefreshing(false);
-  }, []);
+  }, [fetchQuestions]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     try {
-      const responseData = await API.graphql(graphqlOperation(listQuestions));
-      const questionsData = responseData.data.listQuestions.items;
-      setQuestions(questionsData);
+      firestore()
+        .collection('questions')
+        .onSnapshot((querySnapshot) => {
+          const q = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            q.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setQuestions(q);
+        });
     } catch (err) {
       console.log('error fetching questions', err);
     }
-  };
+  }, []);
 
   const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigation={navigation} />

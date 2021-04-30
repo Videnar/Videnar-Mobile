@@ -13,10 +13,10 @@ const WIDTH = Dimensions.get('window').width;
 const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const route = useRoute();
   const {
-    state: { username },
+    state: { userID },
   } = useContext(AuthContext);
   const [popupVisible, setPopupVisible] = useState(false);
-  const { content } = question;
+  const { content, userDisplayName } = question;
 
   return (
     <>
@@ -27,14 +27,14 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
               navigate('QuestionDetails', { questionID: question.id });
           }}>
           {/* Header Section */}
-          <QuestionHeaderComponent />
+          <QuestionHeaderComponent userDisplayName={userDisplayName} />
           {/* Question Asked */}
           <QuestionBodyComponent content={content} />
           {/* Interactivity Section */}
         </Pressable>
         <Card.Divider />
         <QuestionBottomComponent
-          username={username}
+          userID={userID}
           question={question}
           isPopupVisible={(event) => {
             setPopupVisible(event);

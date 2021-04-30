@@ -31,20 +31,5 @@
         </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
-    <service android:name="com.amazonaws.amplify.pushnotification.RNPushNotificationMessagingService">
-      <intent-filter>
-        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-      </intent-filter>
-    </service>
-    <service android:name="com.amazonaws.amplify.pushnotification.RNPushNotificationDeviceIDService">
-      <intent-filter>
-        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-      </intent-filter>
-    </service>
-    <receiver android:name="com.amazonaws.amplify.pushnotification.modules.RNPushNotificationBroadcastReceiver" android:exported="false">
-      <intent-filter>
-        <action android:name="com.amazonaws.amplify.pushnotification.NOTIFICATION_OPENED"/>
-      </intent-filter>
-    </receiver>
   </application>
 </manifest>

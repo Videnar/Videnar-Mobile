@@ -6,7 +6,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
   const {
-    state: { username },
+    state: { userDisplayName },
   } = useContext(AuthContext);
   const [popupVisible, setPopupVisible] = useState(false);
   const [enableEdit, setEnableEdit] = useState(false);
@@ -28,7 +28,7 @@ const CommentComponent = ({ id, comment, updateComment, deleteComment }) => {
           <Body>
             <Text>{input}</Text>
           </Body>
-          {comment.username === username && (
+          {comment.userDisplayName === userDisplayName && (
             <Icon
               name="ellipsis-h"
               type="FontAwesome"
