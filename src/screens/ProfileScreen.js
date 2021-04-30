@@ -10,7 +10,7 @@ const WIDTH = Dimensions.get('window').width;
 const ProfileScreen = ({ navigation }) => {
   const {
     signOut,
-    state: { name, photoURL },
+    state: { userDisplayName, photoURL },
   } = useContext(AuthContext);
 
   return (
@@ -33,7 +33,7 @@ const ProfileScreen = ({ navigation }) => {
           }
         />
         <View style={styles.details}>
-          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.nameText}>{userDisplayName}</Text>
           {/* <Text style={styles.educationText}>Education: {level}</Text>
           {branch && <Text h5>Branch : {branch}</Text>} */}
           <Text style={styles.educationText}>Exams:</Text>
