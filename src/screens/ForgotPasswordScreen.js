@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Input, Icon, Button, Header } from 'react-native-elements';
 import * as RootNavigation from '../navigation/RootNavigation';
 
 const SigninScreen = ({ navigation }) => {
@@ -28,42 +29,60 @@ const SigninScreen = ({ navigation }) => {
     // setTitle('Change Password');
   };
   return (
-    <View style={styles.container}>
-      {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
-      <Text h3>enter your email</Text>
-      <TextInput
-        label="Email"
-        value={email}
-        style={styles.textInput}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        autoCorrect={false}
+    <>
+      <Header
+        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        leftComponent={
+          <Icon name="arrow-back" onPress={() => navigation.goBack()} />
+        }
+        centerComponent={{ text: 'Reset Password', style: styles.headerText }}
+        backgroundColor="white"
       />
-      {show ? (
-        <>
-          <Text h3>enter verification code</Text>
-          <TextInput
-            secureTextEntry
-            value={code}
-            style={styles.textInput}
-            onChangeText={setCode}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Text h3>enter new password</Text>
-          <TextInput
-            secureTextEntry
-            label="Password"
-            value={password}
-            style={styles.textInput}
-            onChangeText={setPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </>
-      ) : null}
-      <Button title={tittle} onPress={handler} />
-    </View>
+      <View style={styles.container}>
+        {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
+        <Input
+          placeholder="youremail@address.com"
+          leftIcon={<Icon name="email" size={24} color="#666666" />}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          autoCorrect={false}
+          inputStyle={styles.textInput}
+        />
+        {show ? (
+          <>
+            <Input
+              secureTextEntry
+              placeholder="verification code"
+              leftIcon={<Icon name="vpn-key" size={24} color="#666666" />}
+              value={code}
+              style={styles.textInput}
+              onChangeText={setCode}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <Input
+              secureTextEntry
+              placeholder="new password"
+              leftIcon={<Icon name="lock" size={24} color="#666666" />}
+              value={password}
+              style={styles.textInput}
+              onChangeText={setPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </>
+        ) : null}
+        <Button
+          type="clear"
+          raised
+          title={tittle}
+          onPress={handler}
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+        />
+      </View>
+    </>
   );
 };
 SigninScreen.navigationOptions = {
@@ -71,12 +90,31 @@ SigninScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    paddingTop: 10,
+  headerText: {
+    color: '#A97CB0',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 1.5,
   },
-  textInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    marginTop: 10,
+    backgroundColor: '#F07D60',
+    borderRadius: 10,
+    width: 300,
+    height: 40,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 20,
+  },
 });
 
 export default SigninScreen;

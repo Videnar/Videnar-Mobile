@@ -1,17 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Editor from '../components/Editor';
-import {
-  Button,
-  Text,
-  Header,
-  Container,
-  Right,
-  Left,
-  Body,
-  Title,
-} from 'native-base';
+import { Button, Header, Icon } from 'react-native-elements';
 import { AuthContext } from '../contexts/AuthContext';
 
 const AskQuestionScreen = ({ route, navigation }) => {
@@ -65,46 +56,64 @@ const AskQuestionScreen = ({ route, navigation }) => {
   };
 
   return (
-    <Container style={styles.container}>
+    <>
       <Header
-        androidStatusBarColor="#fff8f5"
-        iosBarStyle="dark-content"
-        style={styles.header}
-        noLeft>
-        <Left />
-        <Body style={{ flex: 3 }}>
-          <Title>Ask Your Question</Title>
-        </Body>
-        <Right>
-          <Button style={styles.button} onPress={submit}>
-            <Text style={styles.buttonText}>Post</Text>
-          </Button>
-        </Right>
-      </Header>
-      <Editor
-        submit={submitQuestion}
-        oldContent={route.params === undefined ? null : route.params.content}
-        webref={webref}
-        setWebref={setWebref}
+        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        leftComponent={
+          <Icon
+            name="arrow-back"
+            type="material"
+            onPress={() => navigation.goBack()}
+          />
+        }
+        centerComponent={{ text: 'Ask a Question', style: styles.headerText }}
+        rightComponent={
+          // Submit Button
+          <Button
+            type="outline"
+            title="Submit"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={submit}
+          />
+        }
+        containerStyle={styles.header}
       />
-    </Container>
+      <View style={styles.container}>
+        <Editor
+          submit={submitQuestion}
+          oldContent={route.params === undefined ? null : route.params.content}
+          webref={webref}
+          setWebref={setWebref}
+        />
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff8f5',
+    flex: 1,
+    backgroundColor: 'white',
   },
   header: {
-    backgroundColor: '#f76f00',
+    backgroundColor: 'white',
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'purple',
+    letterSpacing: 0.5,
   },
   button: {
-    backgroundColor: '#fff8f5',
-    borderRadius: 8,
-    height: 36,
+    width: 75,
+    height: 35,
   },
   buttonText: {
-    color: 'black',
+    color: '#3DDC84',
+    fontWeight: 'bold',
+    fontSize: 16,
+    letterSpacing: 0.5,
   },
 });
 
