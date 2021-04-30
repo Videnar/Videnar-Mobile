@@ -56,9 +56,9 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
 const styles = StyleSheet.create({
   Card: {
     width: WIDTH,
-    elevation: 4,
-    start: -17,
-    marginVertical: 10,
+    elevation: 2,
+    marginHorizontal: 0,
+    marginVertical: 5,
   },
 });
 
