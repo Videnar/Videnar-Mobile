@@ -33,7 +33,7 @@ const QuestionDetailsScreen = (props) => {
   useEffect(() => {
     const qid = props.route.params.questionID;
     setQuestionId(qid);
-    props.question && setQuestionId(props.question);
+    props.question && setQuestion(props.question);
   }, [props.question, props.route.params.questionID]);
 
   useEffect(() => {
