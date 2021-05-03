@@ -21,8 +21,10 @@ const IndividualCommentComponent = ({ item, feedBack }) => {
 
   return (
     <>
+      {/** User Detail */}
       <Text style={styles.userName}>{item.userDisplayName}</Text>
       <Card containerStyle={styles.comment}>
+        {/**More Options Button */}
         <View style={styles.iconPress}>
           <Icon
             type="material"
@@ -30,8 +32,10 @@ const IndividualCommentComponent = ({ item, feedBack }) => {
             onPress={() => setIsVisible(true)}
           />
         </View>
+        {/** Comment content */}
         <Text style={styles.commentText}>{item.content}</Text>
       </Card>
+      {/** Edit and Delete Buttons */}
       <Overlay
         isVisible={isVisible}
         onBackdropPress={() => setIsVisible(false)}

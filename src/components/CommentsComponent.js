@@ -47,13 +47,14 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
               });
             });
             setCommentArray(comnts);
+            console.log(comnts);
           });
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
     };
     fetchComments();
-  });
+  }, [questionId]);
 
   // Posting New Comments
   const onNewCommentPostHandler = () => {
@@ -64,10 +65,11 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
         {
           id: Math.random() + '',
           userDisplayName: userName,
-          comment: newComment,
+          content: newComment,
         },
         ...commentArray,
       ]);
+      // Clearing the text Input
       setNewComment('');
     } else {
       setPlaceholder('Please write something!');
@@ -90,7 +92,7 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
         break;
       }
       default:
-        console.log('Something Wrong');
+        console.log('Something is Wrong!');
     }
   };
 
@@ -106,6 +108,7 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
 
   return (
     <>
+      {/** Pressable Comment Text with number of Comments populated */}
       <TouchableOpacity
         style={styles.container}
         onPress={() => setIsCommentsVisible(true)}>
