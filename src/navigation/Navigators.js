@@ -6,7 +6,7 @@ import { Header, Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ActivityScreen from '../screens/ActivityScreen';
-import QuestionDetailsScreen from '../screens/QuestionDetailsScreen';
+import QuestionDetailScreen from '../screens/QuestionDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AskQuestionScreen from '../screens/AskQuestionScreen';
 import SigninScreen from '../screens/SigninScreen';
@@ -34,7 +34,7 @@ const Home = () => (
     />
     <InnerStack.Screen
       name="QuestionDetails"
-      component={QuestionDetailsScreen}
+      component={QuestionDetailScreen}
     />
     <InnerStack.Screen name="AskQuestion" component={AskQuestionScreen} />
   </InnerStack.Navigator>
