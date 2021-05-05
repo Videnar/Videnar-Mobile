@@ -31,7 +31,11 @@ const AnswersComponent = ({ questionID }) => {
   }, [questionID]);
 
   const createAnswerComponent = answers.map((answer) => (
-    <IndividualAnswerComponent key={answer.id} answer={answer} />
+    <IndividualAnswerComponent
+      key={answer.id}
+      answer={answer}
+      questionId={questionID}
+    />
   ));
 
   return (

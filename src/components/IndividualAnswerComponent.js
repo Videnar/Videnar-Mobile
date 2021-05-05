@@ -3,9 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
+import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
-const IndividualAnswerComponent = ({ answer }) => {
+const IndividualAnswerComponent = ({ answer, questionId }) => {
   // Answer content
   const HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
@@ -42,6 +43,7 @@ const IndividualAnswerComponent = ({ answer }) => {
         <UpVoteDownVoteComponent upVotes={answer.upvotes} />
       </View>
       {/** Comments on Answers */}
+      <CommentsonAnswerComponent questionId={questionId} answerId={answer.id} />
     </Card>
   );
 };
