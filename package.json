@@ -29,9 +29,9 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "@reduxjs/toolkit": "^1.4.0",
+
     "lottie-ios": "^3.2.2",
     "lottie-react-native": "^4.0.2",
-    "native-base": "^2.15.0",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-autoheight-webview": "^1.5.8",
@@ -41,7 +41,6 @@
     "react-native-gesture-handler": "^1.9.0",
     "react-native-get-random-values": "^1.5.0",
     "react-native-material-design": "^0.3.7",
-    "react-native-popup-dialog": "^0.18.3",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
