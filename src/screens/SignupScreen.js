@@ -9,21 +9,18 @@ import { Header } from 'react-native-elements';
 
 const SignupScreen = ({ navigation }) => {
   const { setUser, changeScreen } = useContext(AuthContext);
-  const signUp = async (emailID, password, name) => {
+  const signUp = (emailID, password, name) => {
     try {
       auth()
         .createUserWithEmailAndPassword(emailID, password)
         .then(() => {
           let user = auth().currentUser;
-          console.log('[FIRST USER]', user);
           user
             .updateProfile({
               displayName: name,
             })
             .then(() => {
-              // Update successful.
               user = auth().currentUser;
-              console.log('[SECOND USER]', user);
               const { displayName, email, photoURL, uid } = user;
               setUser({
                 userDisplayName: displayName,
@@ -33,8 +30,8 @@ const SignupScreen = ({ navigation }) => {
               });
               changeScreen('Main');
             })
-            .catch(function (error) {
-              // An error happened.
+            .catch((error) => {
+              console.log('Error setting user', error);
             });
           console.log('User account created & signed in!', user);
         })

@@ -9,7 +9,7 @@ import { Header } from 'react-native-elements';
 
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser } = useContext(AuthContext);
-  const signIn = async (emailID, password) => {
+  const signIn = (emailID, password) => {
     try {
       auth()
         .signInWithEmailAndPassword(emailID, password)
