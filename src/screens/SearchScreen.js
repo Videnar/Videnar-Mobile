@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Header, SearchBar } from 'react-native-elements';
 import { View, StyleSheet, FlatList } from 'react-native';
-import QuestionComponent from '../components/QuestionComponent';
-import AnswerComponent from '../components/AnswerComponent';
+//import QuestionComponent from '../components/QuestionComponent';
+//import AnswerComponent from '../components/AnswerComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const SearchScreen = ({ navigation }) => {
@@ -24,12 +24,12 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
-  const RenderItem = ({ item }) =>
-    item.questionID ? (
-      <AnswerComponent answer={item} />
-    ) : (
-      <QuestionComponent question={item} navigation={navigation} />
-    );
+  //const RenderItem = ({ item }) =>
+  // item.questionID ? (
+  //   <AnswerComponent answer={item} />
+  // ) : (
+  //   <QuestionComponent question={item} navigation={navigation} />
+  // );
 
   return (
     <View style={styles.container}>
@@ -46,11 +46,11 @@ const SearchScreen = ({ navigation }) => {
         onChangeText={(text) => searchItems(text)}
         value={input}
       />
-      <FlatList
+      {/* <FlatList
         data={results}
         renderItem={RenderItem}
         keyExtractor={(item) => item.id}
-      />
+      /> */}
       {/** Floating Ask Question Button */}
       <FloatingAskQuestionButton navigation={navigation} />
     </View>
