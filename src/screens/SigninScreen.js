@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../contexts/AuthContext';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
@@ -7,7 +8,29 @@ import SocialAuth from '../components/SocialAuthComponent';
 import { Header } from 'react-native-elements';
 
 const SigninScreen = ({ navigation }) => {
-  const { signIn } = useContext(AuthContext);
+  const { changeScreen, setUser } = useContext(AuthContext);
+  const signIn = (emailID, password) => {
+    try {
+      auth()
+        .signInWithEmailAndPassword(emailID, password)
+        .then((userCredential) => {
+          const { displayName, email, photoURL, uid } = userCredential.user;
+          setUser({
+            userDisplayName: displayName,
+            email,
+            photoURL,
+            userID: uid,
+          });
+          changeScreen('Main');
+          console.log('User account created & signed in!');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } catch (error) {
+      console.log('error signing up:', error);
+    }
+  };
 
   return (
     <>

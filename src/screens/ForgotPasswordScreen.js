@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ToastAndroid,
+  Platform,
+  AlertIOS,
+} from 'react-native';
 import { Input, Icon, Button, Header } from 'react-native-elements';
-import * as RootNavigation from '../navigation/RootNavigation';
+import auth from '@react-native-firebase/auth';
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
-  const [tittle, setTitle] = useState('Get Verification Code');
-  const [show, setShow] = useState(false);
   const handler = () => {
-    if (show) {
-      try {
-        // Auth.forgotPasswordSubmit(email, code, password)
-        //   .then((data) => console.log(data))
-        //   .catch((err) => console.log(err));
-        // RootNavigation.navigate('Signin');
-      } catch (err) {
-        console.log(err);
-        setShow(false);
-      }
-      return;
-    }
-    // Auth.forgotPassword(email)
-    //   .then((data) => console.log(data))
-    //   .catch((err) => console.log(err));
-    // setShow(true);
-    // setTitle('Change Password');
+    const message = 'Check your email to reset Password.';
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(message, ToastAndroid.LONG);
+        } else {
+          AlertIOS.alert(message);
+        }
+        navigation.goBack();
+      })
+      .catch(function (error) {
+        // An error happened.
+      });
   };
   return (
     <>
@@ -49,34 +48,10 @@ const SigninScreen = ({ navigation }) => {
           autoCorrect={false}
           inputStyle={styles.textInput}
         />
-        {show ? (
-          <>
-            <Input
-              secureTextEntry
-              placeholder="verification code"
-              leftIcon={<Icon name="vpn-key" size={24} color="#666666" />}
-              value={code}
-              style={styles.textInput}
-              onChangeText={setCode}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Input
-              secureTextEntry
-              placeholder="new password"
-              leftIcon={<Icon name="lock" size={24} color="#666666" />}
-              value={password}
-              style={styles.textInput}
-              onChangeText={setPassword}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </>
-        ) : null}
         <Button
           type="clear"
           raised
-          title={tittle}
+          title="Continue"
           onPress={handler}
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}

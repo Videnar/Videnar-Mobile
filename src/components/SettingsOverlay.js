@@ -1,15 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
 
 const WIDTH = Dimensions.get('window').width;
 
 const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
-  const { changePassword } = useContext(AuthContext);
-
-  const [oldPassword, setOldPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
+
+  const changePassword = () => {};
 
   return (
     <Overlay
@@ -22,20 +21,20 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Change Password</Text>
         <Input
-          placeholder="Old Password"
-          value={oldPassword}
-          onChange={setOldPassword}
+          placeholder="Current Password"
+          value={currentPassword}
+          onChangeText={setCurrentPassword}
         />
         <Input
           placeholder="New Password"
           value={newPassword}
-          onChange={setNewPassword}
+          onChangeText={setNewPassword}
         />
         <Button
           type="solid"
-          title="Proceed"
+          title="Change Password"
           buttonStyle={styles.button}
-          onPress={changePassword(oldPassword, newPassword)}
+          onPress={changePassword}
         />
       </ScrollView>
       <Text>More Features Coming Soon...</Text>
