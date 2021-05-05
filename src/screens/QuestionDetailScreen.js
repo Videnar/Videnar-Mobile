@@ -84,7 +84,7 @@ const QuestionDetailScreen = (props) => {
         )}
         {/** Load Answers if Question fetch is completed or show Loading... */}
         {questionLoaded ? (
-          <AnswersComponent />
+          <AnswersComponent questionID={questionId} />
         ) : (
           <View style={styles.loadingContainer}>
             <Text> Loading... </Text>

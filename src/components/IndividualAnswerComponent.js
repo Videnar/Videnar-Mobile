@@ -6,13 +6,21 @@ import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsComponent from './CommentsComponent';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
-const IndividualAnswerComponent = ({ content }) => {
+const IndividualAnswerComponent = ({ answer }) => {
+  // Answer content
+  const HTML_ELEMENT = `<head>
+                          <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+                        </head>
+                        <body >
+                          <div>${answer.content}</div>
+                        </body>`;
+
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.header}>
         <View style={styles.user}>
           <Icon name="person" type="material" color="grey" />
-          <Text style={styles.userName}>Jyotiranjan Sahoo</Text>
+          <Text style={styles.userName}>{answer.userDisplayName}</Text>
         </View>
         {/** More Options component */}
         <AnswerMoreOptionComponent />
@@ -21,12 +29,7 @@ const IndividualAnswerComponent = ({ content }) => {
       <WebView
         originWhitelist={['*']}
         source={{
-          html: `<head>
-                <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-                 </head>
-                 <body >
-                <div>${content}</div>
-                </body>`,
+          html: HTML_ELEMENT,
         }}
         style={styles.WebView}
       />
@@ -37,7 +40,7 @@ const IndividualAnswerComponent = ({ content }) => {
           <Icon type="material" name="history" size={16} />
           <Text style={styles.feedBackText}>Pending</Text>
         </View>
-        <UpVoteDownVoteComponent upVotes={0} />
+        <UpVoteDownVoteComponent upVotes={answer.upvotes} />
       </View>
       {/** Comments on Answers */}
       <CommentsComponent headerText="Comments" />
@@ -66,8 +69,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userName: {
-    fontSize: 15,
+    fontSize: 16,
     paddingHorizontal: 5,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    color: '#484848',
   },
   feedBackContainer: {
     flexDirection: 'row',
