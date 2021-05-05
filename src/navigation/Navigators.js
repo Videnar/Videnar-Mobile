@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Header, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ActivityScreen from '../screens/ActivityScreen';
@@ -12,32 +11,38 @@ import AskQuestionScreen from '../screens/AskQuestionScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import SelectBranchScreen from '../screens/SelectBranchScreen';
-import SelectExamsScreen from '../screens/SelectExamsScreen';
 import UserPreferenceScreen from '../screens/UserPreferenceScreen';
 
 const Stack = createStackNavigator();
-const InnerStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Home = () => (
-  <InnerStack.Navigator
+  <Stack.Navigator
     initialRouteName="Home"
     screenOptions={{
       headerShown: false,
       gestureEnabled: false,
     }}>
-    <InnerStack.Screen
+    <Stack.Screen
       name="Home"
       component={HomeScreen}
       options={{ title: 'Home' }}
     />
-    <InnerStack.Screen
-      name="QuestionDetails"
-      component={QuestionDetailsScreen}
-    />
-    <InnerStack.Screen name="AskQuestion" component={AskQuestionScreen} />
-  </InnerStack.Navigator>
+    <Stack.Screen name="QuestionDetails" component={QuestionDetailsScreen} />
+    <Stack.Screen name="AskQuestion" component={AskQuestionScreen} />
+  </Stack.Navigator>
+);
+
+const UserProfile = () => (
+  <Stack.Navigator
+    initialRouteName="userProfile"
+    screenOptions={{
+      headerShown: false,
+      gestureEnabled: false,
+    }}>
+    <Stack.Screen name="Profile" component={ProfileScreen} />
+    <Stack.Screen name="userPref" component={UserPreferenceScreen} />
+  </Stack.Navigator>
 );
 
 export const Main = () => (
@@ -88,7 +93,7 @@ export const Main = () => (
     <Tab.Screen name="Home" component={Home} />
     <Tab.Screen name="Search" component={SearchScreen} />
     <Tab.Screen name="Activity" component={ActivityScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} />
+    <Tab.Screen name="Profile" component={UserProfile} />
   </Tab.Navigator>
 );
 
@@ -102,18 +107,5 @@ export const Auth = () => (
     <Stack.Screen name="Signin" component={SigninScreen} />
     <Stack.Screen name="Signup" component={SignupScreen} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-  </Stack.Navigator>
-);
-
-export const UserInfo = () => (
-  <Stack.Navigator
-    initialRouteName="userPref"
-    screenOptions={{
-      headerShown: false,
-      gestureEnabled: false,
-    }}>
-    <Stack.Screen name="userPref" component={UserPreferenceScreen} />
-    <Stack.Screen name="SelectBranch" component={SelectBranchScreen} />
-    <Stack.Screen name="SelectExams" component={SelectExamsScreen} />
   </Stack.Navigator>
 );

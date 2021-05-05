@@ -12,7 +12,7 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
-  const { changeScreen, signIn } = useContext(AuthContext);
+  const { changeScreen, setUser } = useContext(AuthContext);
 
   const onFacebookButtonPress = async () => {
     try {
@@ -32,12 +32,13 @@ const SocialAuthComponent = () => {
       );
       await auth().signInWithCredential(facebookCredential);
       const { displayName, email, photoURL, uid } = auth().currentUser;
-      signIn({
+      setUser({
         userDisplayName: displayName,
         email,
         photoURL,
         userID: uid,
       });
+      changeScreen('Main');
     } catch (err) {
       console.log('Error ---> ' + err);
     }
@@ -49,12 +50,13 @@ const SocialAuthComponent = () => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
       const { displayName, email, photoURL, uid } = auth().currentUser;
-      signIn({
+      setUser({
         userDisplayName: displayName,
         email,
         photoURL,
         userID: uid,
       });
+      changeScreen('Main');
     } catch (err) {
       console.log('Error ---> ' + err);
     }
