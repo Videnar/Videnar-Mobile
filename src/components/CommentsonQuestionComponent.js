@@ -13,7 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const WIDTH = Dimensions.get('window').width;
 
-const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
+const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
   // OverLay Visible?
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 
@@ -21,14 +21,9 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
   const [newComment, setNewComment] = useState('');
   const [placeholder, setPlaceholder] = useState('Comment Here...');
 
-  const [commentArray, setCommentArray] = useState([
-    {
-      content: '',
-      userDisplayName: '',
-      userID: '',
-      questionID: questionId,
-    },
-  ]);
+  const [commentArray, setCommentArray] = useState([]);
+
+  const [isEdited, setIsEdited] = useState(false);
 
   // Fetching All Comments
   useEffect(() => {
@@ -47,7 +42,6 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
               });
             });
             setCommentArray(comnts);
-            console.log(comnts);
           });
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
@@ -57,38 +51,61 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
   }, [questionId]);
 
   // Posting New Comments
-  const onNewCommentPostHandler = () => {
+  const onNewCommentPostHandler = async () => {
     console.log(newComment);
-    if (newComment !== '') {
-      console.log('Passed');
-      setCommentArray([
-        {
-          id: Math.random() + '',
-          userDisplayName: userName,
-          content: newComment,
-        },
-        ...commentArray,
-      ]);
-      // Clearing the text Input
-      setNewComment('');
-    } else {
-      setPlaceholder('Please write something!');
+    try {
+      if (newComment !== '') {
+        console.log('Passed');
+        // Clearing the text Input
+        setNewComment('');
+        if (isEdited) {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('comments')
+            .doc(isEdited.id)
+            .update({ content: newComment });
+        } else {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('comments')
+            .add({
+              questionID: questionId,
+              userDisplayName: userName,
+              userID: userId,
+              content: newComment,
+            });
+        }
+      } else {
+        setPlaceholder('Please write something!');
+      }
+      setIsEdited(false);
+    } catch (err) {
+      console.log(err);
+      console.log('Error While Posting/Editing new Comments');
     }
   };
 
   // Delete and Edit Actions
-  const onModifyAction = (id, action) => {
+  const onModifyAction = async (id, action) => {
     switch (action) {
       case 'Edit': {
         const commentToModify = commentArray.filter((item) => item.id === id);
         const newCommentArray = commentArray.filter((item) => item.id !== id);
+
         setCommentArray(newCommentArray);
-        setNewComment(commentToModify[0].comment);
+        setNewComment(commentToModify[0].content);
+        setIsEdited({ id: id });
         break;
       }
       case 'Delete': {
-        const newCommentArray = commentArray.filter((item) => item.id !== id);
-        setCommentArray(newCommentArray);
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('comments')
+          .doc(id)
+          .delete();
         break;
       }
       default:
@@ -100,7 +117,7 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
   const commentItem = ({ item }) => {
     return (
       <IndividualCommentComponent
-        item={item}
+        comment={item}
         feedBack={(id, action) => onModifyAction(id, action)}
       />
     );
@@ -112,9 +129,9 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => setIsCommentsVisible(true)}>
-        <Icon type="maaterial" name="chat-bubble" color="#595654" />
+        <Icon type="material" name="chat-bubble" color="#595654" />
         <Text style={styles.text}>
-          {headerText} ({commentArray.length}){' '}
+          Comments on Question ({commentArray.length}){' '}
         </Text>
       </TouchableOpacity>
       {/**Comments Overlay */}
@@ -136,7 +153,7 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
               />
             }
             centerComponent={{
-              text: headerText,
+              text: 'Comments on Question',
               style: styles.headerText,
             }}
             backgroundColor="white"
@@ -154,10 +171,7 @@ const CommentsComponent = ({ headerText, userName, userId, questionId }) => {
               multiline
               style={styles.textInput}
               value={newComment}
-              onChangeText={(text) => {
-                console.log(text);
-                return setNewComment(text);
-              }}
+              onChangeText={(text) => setNewComment(text)}
             />
             {/** Send Button */}
             <Icon
@@ -211,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CommentsComponent;
+export default CommentsonQuestionComponent;

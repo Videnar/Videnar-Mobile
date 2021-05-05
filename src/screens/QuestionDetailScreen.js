@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
 import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
-import CommentsComponent from '../components/CommentsComponent';
+import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswersComponent from '../components/AnswersComponent';
 import ProceedToAnswerComponent from '../components/ProceedToAnswerComponent';
 
@@ -74,8 +74,7 @@ const QuestionDetailScreen = (props) => {
             {/** Interaction with Question: upvote, tag */}
             <QuestionDetailBottomComponent question={question} />
             {/** Comments on Question */}
-            <CommentsComponent
-              headerText="Comments on Question"
+            <CommentsonQuestionComponent
               userName={userDisplayName}
               userId={userID}
               questionId={questionId}

@@ -4,25 +4,25 @@ import { Card, Text, Icon, Overlay, Divider } from 'react-native-elements';
 
 const WIDTH = Dimensions.get('window').width;
 
-const IndividualCommentComponent = ({ item, feedBack }) => {
+const IndividualCommentComponent = ({ comment, feedBack }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onEditHandler = () => {
     console.log('Edit Clicked');
     setIsVisible(false);
-    feedBack(item.id, 'Edit');
+    feedBack(comment.id, 'Edit');
   };
 
   const onDeleteHandler = () => {
     console.log('Delete Clicked');
     setIsVisible(false);
-    feedBack(item.id, 'Delete');
+    feedBack(comment.id, 'Delete');
   };
 
   return (
     <>
       {/** User Detail */}
-      <Text style={styles.userName}>{item.userDisplayName}</Text>
+      <Text style={styles.userName}>{comment.userDisplayName}</Text>
       <Card containerStyle={styles.comment}>
         {/**More Options Button */}
         <View style={styles.iconPress}>
@@ -33,7 +33,7 @@ const IndividualCommentComponent = ({ item, feedBack }) => {
           />
         </View>
         {/** Comment content */}
-        <Text style={styles.commentText}>{item.content}</Text>
+        <Text style={styles.commentText}>{comment.content}</Text>
       </Card>
       {/** Edit and Delete Buttons */}
       <Overlay
@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.7,
     marginLeft: 12,
-    marginTop: 18,
+    marginTop: 8,
   },
   comment: {
-    width: WIDTH * 0.75,
-    backgroundColor: '#DFDFDF',
-    borderRadius: 10,
+    width: WIDTH * 0.77,
+    backgroundColor: '#E8E8E8',
+    borderRadius: 8,
     marginLeft: 30,
     marginTop: 5,
     elevation: 2,
