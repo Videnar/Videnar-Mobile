@@ -2,7 +2,7 @@ export const AuthReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return { ...state, errorMessage: action.payload };
-    case 'signin': {
+    case 'setUser': {
       return {
         ...state,
         ...action.payload,
@@ -10,8 +10,8 @@ export const AuthReducer = (state, action) => {
     }
     case 'clear_error_message':
       return { ...state, errorMessage: '' };
-    case 'signout':
-      return { ...state };
+    case 'removeUser':
+      return { ...state, ...initialState };
     case 'update_preferences':
       return { ...state, preferences: action.payload };
     case 'changeScreen':
