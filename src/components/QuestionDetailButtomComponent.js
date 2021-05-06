@@ -1,15 +1,27 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
-const QuestionDetailBottomComponent = ({ question }) => {
-  const { tags, upvotes } = question;
+const QuestionDetailBottomComponent = ({ question, questionId }) => {
+  const updateUpvoteHandler = async (count) => {
+    await firestore()
+      .collection('questions')
+      .doc(questionId)
+      .update({
+        ...question,
+        upvotes: count,
+      });
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.tags}>#{tags}</Text>
-      <UpVoteDownVoteComponent upVotes={upvotes} />
+      <Text style={styles.tags}>#{question.tags}</Text>
+      <UpVoteDownVoteComponent
+        upVotes={question.upvotes}
+        updateUpvote={(count) => updateUpvoteHandler(count)}
+      />
     </View>
   );
 };

@@ -1,9 +1,21 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
 const AnswerBottomComponent = ({ answer, questionId }) => {
+  const updateUpvoteHandler = async (count) => {
+    await firestore()
+      .collection('questions')
+      .doc(questionId)
+      .collection('answers')
+      .doc(answer.id)
+      .update({
+        ...answer,
+        upvotes: count,
+      });
+  };
   return (
     <View style={styles.bottomContainer}>
       {/** Answer Approval */}
@@ -11,7 +23,10 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         <Icon type="material" name="history" size={16} />
         <Text style={styles.feedBackText}>Pending</Text>
       </View>
-      <UpVoteDownVoteComponent upVotes={answer.upvotes} />
+      <UpVoteDownVoteComponent
+        upVotes={answer.upvotes}
+        updateUpvote={(count) => updateUpvoteHandler(count)}
+      />
     </View>
   );
 };
