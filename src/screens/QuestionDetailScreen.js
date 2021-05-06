@@ -20,8 +20,10 @@ const QuestionDetailScreen = (props) => {
 
   const [question, setQuestion] = useState(null);
   const [questionId, setQuestionId] = useState(null);
-
+  const [answerIdToEdit, setAnswerIdToEdit] = useState(null);
+  const [answerContentToEdit, setAnswerContentToEdit] = useState(null);
   const [questionLoaded, setQuestionLoaded] = useState(false);
+  const [isAnswerEditorVisible, setIsAnswerEditorVisible] = useState(false);
 
   useEffect(() => {
     const questionIdfromProps = props.route.params.questionID;
@@ -77,20 +79,31 @@ const QuestionDetailScreen = (props) => {
             <CommentsonQuestionComponent
               userName={userDisplayName}
               userId={userID}
-              questionId={questionId}
+              questionID={questionId}
             />
           </Card>
         )}
         {/** Load Answers if Question fetch is completed or show Loading... */}
         {questionLoaded ? (
-          <AnswersComponent questionID={questionId} />
+          <AnswersComponent
+            questionID={questionId}
+            setAnswerIdToEdit={setAnswerIdToEdit}
+            setAnswerContentToEdit={setAnswerContentToEdit}
+            setIsAnswerEditorVisible={setIsAnswerEditorVisible}
+          />
         ) : (
           <View style={styles.loadingContainer}>
             <Text> Loading... </Text>
           </View>
         )}
       </ScrollView>
-      <ProceedToAnswerComponent />
+      <ProceedToAnswerComponent
+        isAnswerEditorVisible={isAnswerEditorVisible}
+        setIsAnswerEditorVisible={setIsAnswerEditorVisible}
+        answerIdToEdit={answerIdToEdit}
+        contentToEdit={answerContentToEdit}
+        questionID={questionId}
+      />
     </>
   );
 };

@@ -28,7 +28,7 @@ const Home = () => (
       component={HomeScreen}
       options={{ title: 'Home' }}
     />
-    <Stack.Screen name="QuestionDetails" component={QuestionDetailsScreen} />
+    <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} />
     <Stack.Screen name="AskQuestion" component={AskQuestionScreen} />
   </Stack.Navigator>
 );

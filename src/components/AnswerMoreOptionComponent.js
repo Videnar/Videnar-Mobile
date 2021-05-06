@@ -1,20 +1,39 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 
-const AnswerMoreOptionComponent = () => {
+const AnswerMoreOptionComponent = ({
+  answerId,
+  questionId,
+  setAnswerIdToEdit,
+  setAnswerContentToEdit,
+  answerContent,
+  setIsAnswerEditorVisible,
+}) => {
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
 
   // Answer Edit Action
-  const onEditHandler = () => {
-    console.log('Edit Clicked');
+  const onEditHandler = async () => {
     setMoreOptionVisible(false);
+    setAnswerContentToEdit(answerContent);
+    setIsAnswerEditorVisible(true);
+    setAnswerIdToEdit(answerId);
   };
 
   // Answer Delete Action
-  const onDeleteHandler = () => {
-    console.log('Delete Clicked');
+  const onDeleteHandler = async () => {
     setMoreOptionVisible(false);
+    try {
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .collection('answers')
+        .doc(answerId)
+        .delete();
+    } catch (err) {
+      console.log('error deleting answer:', err);
+    }
   };
 
   return (

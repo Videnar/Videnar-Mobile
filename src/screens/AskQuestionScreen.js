@@ -9,7 +9,7 @@ const AskQuestionScreen = ({ route, navigation }) => {
   const {
     state: { userDisplayName, userID },
   } = useContext(AuthContext);
-  const [webref, setWebref] = useState();
+  const [webref, setWebref] = useState(null);
 
   const submit = () => {
     const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
