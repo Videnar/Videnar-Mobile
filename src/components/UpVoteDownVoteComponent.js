@@ -1,8 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 
-const UpVoteDownVoteComponent = ({ upVotes, updateUpvote }) => {
+const UpVoteDownVoteComponent = ({
+  upVotes,
+  updateUpvote,
+  addUpvoteData,
+  userVoteValue,
+}) => {
   const voteCountRef = useRef(upVotes);
 
   const [isVoteClicked, setIsVoteClicked] = useState({
@@ -14,8 +19,22 @@ const UpVoteDownVoteComponent = ({ upVotes, updateUpvote }) => {
     downVote: '#AAABAD',
   });
 
+  useEffect(() => {
+    if (userVoteValue) {
+      setIsVoteClicked({
+        upVote: userVoteValue.upVote,
+        downVote: userVoteValue.downVote,
+      });
+      setVoteColor({
+        upVote: userVoteValue.upVote ? '#F07D60' : '#AAABAD',
+        downVote: userVoteValue.downVote ? '#F07D60' : '#AAABAD',
+      });
+    }
+  }, [userVoteValue]);
+
   const onVotePressHandler = (actionType) => {
-    console.log('Ref Count Top --> ' + voteCountRef.current);
+    let voteType = '';
+
     switch (actionType) {
       case 'upVote': {
         const prevUpVoteValue = isVoteClicked.upVote;
@@ -24,9 +43,11 @@ const UpVoteDownVoteComponent = ({ upVotes, updateUpvote }) => {
         if (!prevUpVoteValue && prevDownVoteValue) {
           voteCountRef.current = upVotes + 2;
           setVoteColor({ upVote: '#F07D60', downVote: '#AAABAD' });
+          voteType = 'Up';
         } else if (!prevUpVoteValue && !prevDownVoteValue) {
           voteCountRef.current = upVotes + 1;
           setVoteColor({ upVote: '#F07D60', downVote: '#AAABAD' });
+          voteType = 'Up';
         } else {
           voteCountRef.current = upVotes - 1;
           setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
@@ -43,9 +64,11 @@ const UpVoteDownVoteComponent = ({ upVotes, updateUpvote }) => {
         if (!prevDownVoteValue && prevUpVoteValue) {
           voteCountRef.current = upVotes - 2;
           setVoteColor({ upVote: '#AAABAD', downVote: '#F07D60' });
+          voteType = 'Down';
         } else if (!prevDownVoteValue && !prevUpVoteValue) {
           voteCountRef.current = upVotes - 1;
           setVoteColor({ upVote: '#AAABAD', downVote: '#F07D60' });
+          voteType = 'Down';
         } else {
           voteCountRef.current = upVotes + 1;
           setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
@@ -58,8 +81,9 @@ const UpVoteDownVoteComponent = ({ upVotes, updateUpvote }) => {
         setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
       }
     }
-    console.log('Ref Count --> ' + voteCountRef.current);
+
     updateUpvote(voteCountRef.current);
+    addUpvoteData(voteType);
   };
 
   return (
