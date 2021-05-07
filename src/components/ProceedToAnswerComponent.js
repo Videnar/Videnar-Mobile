@@ -30,21 +30,22 @@ const ProceedToAnswerComponent = ({ questionID }) => {
   const submitAnswer = async (str) => {
     if (answerIdToEdit) {
       updateAnswer(str);
-    }
-    try {
-      await firestore()
-        .collection('questions')
-        .doc(questionID)
-        .collection('answers')
-        .add({
-          content: str,
-          userDisplayName,
-          userID,
-          questionID,
-          upvotes: 0,
-        });
-    } catch (err) {
-      console.log('error creating Answer:', err);
+    } else {
+      try {
+        await firestore()
+          .collection('questions')
+          .doc(questionID)
+          .collection('answers')
+          .add({
+            content: str,
+            userDisplayName,
+            userID,
+            questionID,
+            upvotes: 0,
+          });
+      } catch (err) {
+        console.log('error creating Answer:', err);
+      }
     }
     clearAnswerEditorData();
   };
