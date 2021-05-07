@@ -2,13 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
 import WebView from 'react-native-webview';
+import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
-import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
 const IndividualAnswerComponent = ({ answer, questionId }) => {
-  // Answer content
-  const HTML_ELEMENT = `<head>
+  const ANSWER_HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                         </head>
                         <body >
@@ -29,24 +28,16 @@ const IndividualAnswerComponent = ({ answer, questionId }) => {
           questionId={questionId}
         />
       </View>
-      {/** Description of the Answer */}
+      {/**Answer Description */}
       <WebView
         originWhitelist={['*']}
         source={{
-          html: HTML_ELEMENT,
+          html: ANSWER_HTML_ELEMENT,
         }}
         style={styles.WebView}
       />
       <Divider />
-      {/** Bottom Component for Answer - Upvote, Answer Approval */}
-      <View style={styles.bottomContainer}>
-        <View style={styles.feedBackContainer}>
-          <Icon type="material" name="history" size={16} />
-          <Text style={styles.feedBackText}>Pending</Text>
-        </View>
-        <UpVoteDownVoteComponent upVotes={answer.upvotes} />
-      </View>
-      {/** Comments on Answers */}
+      <AnswerBottomComponent answer={answer} questionId={questionId} />
       <CommentsonAnswerComponent questionId={questionId} answerId={answer.id} />
     </Card>
   );
@@ -78,19 +69,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.5,
     color: '#484848',
-  },
-  feedBackContainer: {
-    flexDirection: 'row',
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  feedBackText: {
-    paddingLeft: 3,
-  },
-  bottomContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
   },
 });
 
