@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 import { AuthContext } from '../contexts/AuthContext';
 
-const QuestionDetailBottomComponent = ({ question, questionId }) => {
+const AnswerBottomComponent = ({ answer, questionId }) => {
   const {
     state: { userID },
   } = useContext(AuthContext);
@@ -25,6 +25,8 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
       const upvotesRef = await firestore()
         .collection('questions')
         .doc(questionId)
+        .collection('answers')
+        .doc(answer.id)
         .collection('upvotes');
 
       const upVoteSnapshot = await upvotesRef
@@ -48,20 +50,22 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
         }
       });
     };
-    if (question.userID === userID) {
+    if (answer.userID === userID) {
       setUpVoteEditable(false);
     } else {
       checkuserExistsInUpVote();
       setUpVoteEditable(true);
     }
-  }, [questionId, userID, question.userID]);
+  }, [questionId, answer.id, userID, answer.userID]);
 
   const updateUpvoteCountHandler = async (count) => {
     await firestore()
       .collection('questions')
       .doc(questionId)
+      .collection('answers')
+      .doc(answer.id)
       .update({
-        ...question,
+        ...answer,
         upvotes: count,
       });
   };
@@ -71,6 +75,8 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
       await firestore()
         .collection('questions')
         .doc(questionId)
+        .collection('answers')
+        .doc(answer.id)
         .collection('upvotes')
         .doc(userUpVoteId)
         .update({
@@ -81,6 +87,8 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
       await firestore()
         .collection('questions')
         .doc(questionId)
+        .collection('answers')
+        .doc(answer.id)
         .collection('upvotes')
         .add({
           userId: userID,
@@ -90,12 +98,16 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.tags}>#{question.tags}</Text>
+    <View style={styles.bottomContainer}>
+      {/** Answer Approval */}
+      <View style={styles.feedBackContainer}>
+        <Icon type="material" name="history" size={16} />
+        <Text style={styles.feedBackText}>Pending</Text>
+      </View>
       <UpVoteDownVoteComponent
-        upVotes={question.upvotes}
-        userVoteValue={userVoteValue}
+        upVotes={answer.upvotes}
         upVoteEditable={upVoteEditable}
+        userVoteValue={userVoteValue}
         updateUpvote={(count) => updateUpvoteCountHandler(count)}
         addUpvoteData={(voteType) => addUpvoteData(voteType)}
       />
@@ -104,11 +116,20 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  bottomContainer: {
     flexDirection: 'row',
-    height: 20,
+    alignItems: 'center',
     justifyContent: 'space-around',
+    marginTop: 5,
+  },
+  feedBackContainer: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  feedBackText: {
+    paddingLeft: 3,
   },
 });
 
-export default QuestionDetailBottomComponent;
+export default AnswerBottomComponent;
