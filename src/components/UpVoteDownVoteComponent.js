@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
+import { Icon, Text, Tooltip } from 'react-native-elements';
 
 const UpVoteDownVoteComponent = ({
   upVotes,
@@ -94,30 +94,53 @@ const UpVoteDownVoteComponent = ({
   return (
     <>
       <Text style={styles.upVotes}>Upvotes: {voteCountRef.current}</Text>
-      <View style={styles.vote}>
-        {/**UpVote */}
-        <Icon
-          name="forward"
-          type="material"
-          size={28}
-          disabled={!isVoteEditable}
-          disabledStyle={styles.disabled}
-          color={voteColor.upVote}
-          onPress={() => onVotePressHandler('upVote')}
-          containerStyle={styles.upVote}
-        />
-        {/**DownVote */}
-        <Icon
-          name="forward"
-          type="material"
-          size={28}
-          disabled={!isVoteEditable}
-          disabledStyle={styles.disabled}
-          color={voteColor.downVote}
-          onPress={() => onVotePressHandler('downVote')}
-          containerStyle={styles.downVote}
-        />
-      </View>
+      {isVoteEditable ? (
+        <View style={styles.vote}>
+          {/**UpVote */}
+          <Icon
+            name="forward"
+            type="material"
+            size={28}
+            color={voteColor.upVote}
+            onPress={() => onVotePressHandler('upVote')}
+            containerStyle={styles.upVote}
+          />
+          {/**DownVote */}
+          <Icon
+            name="forward"
+            type="material"
+            size={28}
+            color={voteColor.downVote}
+            onPress={() => onVotePressHandler('downVote')}
+            containerStyle={styles.downVote}
+          />
+        </View>
+      ) : (
+        // Disabled vote
+        <Tooltip
+          popover={<Text>Can't Vote Your Question / Answer</Text>}
+          containerStyle={styles.disabled}
+          backgroundColor="white"
+          overlayColor="transparent"
+          width={270}>
+          <View style={styles.vote}>
+            <Icon
+              name="forward"
+              type="material"
+              size={28}
+              color={voteColor.upVote}
+              containerStyle={styles.upVote}
+            />
+            <Icon
+              name="forward"
+              type="material"
+              size={28}
+              color={voteColor.downVote}
+              containerStyle={styles.downVote}
+            />
+          </View>
+        </Tooltip>
+      )}
     </>
   );
 };
@@ -138,6 +161,7 @@ const styles = StyleSheet.create({
   },
   disabled: {
     backgroundColor: 'white',
+    elevation: 3,
   },
 });
 
