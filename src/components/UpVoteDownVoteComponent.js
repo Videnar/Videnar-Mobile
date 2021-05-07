@@ -5,6 +5,7 @@ import { Icon, Text } from 'react-native-elements';
 const UpVoteDownVoteComponent = ({
   upVotes,
   updateUpvote,
+  upVoteEditable,
   addUpvoteData,
   userVoteValue,
 }) => {
@@ -19,6 +20,8 @@ const UpVoteDownVoteComponent = ({
     downVote: '#AAABAD',
   });
 
+  const [isVoteEditable, setIsVoteEditable] = useState(false);
+
   useEffect(() => {
     if (userVoteValue) {
       setIsVoteClicked({
@@ -30,7 +33,9 @@ const UpVoteDownVoteComponent = ({
         downVote: userVoteValue.downVote ? '#F07D60' : '#AAABAD',
       });
     }
-  }, [userVoteValue]);
+
+    upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
+  }, [userVoteValue, upVoteEditable]);
 
   const onVotePressHandler = (actionType) => {
     let voteType = '';
@@ -95,6 +100,8 @@ const UpVoteDownVoteComponent = ({
           name="forward"
           type="material"
           size={28}
+          disabled={!isVoteEditable}
+          disabledStyle={styles.disabled}
           color={voteColor.upVote}
           onPress={() => onVotePressHandler('upVote')}
           containerStyle={styles.upVote}
@@ -104,6 +111,8 @@ const UpVoteDownVoteComponent = ({
           name="forward"
           type="material"
           size={28}
+          disabled={!isVoteEditable}
+          disabledStyle={styles.disabled}
           color={voteColor.downVote}
           onPress={() => onVotePressHandler('downVote')}
           containerStyle={styles.downVote}
@@ -126,6 +135,9 @@ const styles = StyleSheet.create({
   },
   downVote: {
     transform: [{ rotate: '90deg' }],
+  },
+  disabled: {
+    backgroundColor: 'white',
   },
 });
 

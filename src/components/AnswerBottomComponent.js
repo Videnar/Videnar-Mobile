@@ -16,6 +16,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
     upVote: false,
     downVote: false,
   });
+  const [upVoteEditable, setUpVoteEditable] = useState(false);
 
   const [userExistsInUpVote, setUserExistsInUpVote] = useState(false);
 
@@ -49,8 +50,13 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         }
       });
     };
-    checkuserExistsInUpVote();
-  }, [questionId, answer.id, userID, answer.upvotes]);
+    if (answer.userID === userID) {
+      setUpVoteEditable(false);
+    } else {
+      checkuserExistsInUpVote();
+      setUpVoteEditable(true);
+    }
+  }, [questionId, answer.id, userID, answer.userID]);
 
   const updateUpvoteCountHandler = async (count) => {
     await firestore()
@@ -100,6 +106,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
       </View>
       <UpVoteDownVoteComponent
         upVotes={answer.upvotes}
+        upVoteEditable={upVoteEditable}
         userVoteValue={userVoteValue}
         updateUpvote={(count) => updateUpvoteCountHandler(count)}
         addUpvoteData={(voteType) => addUpvoteData(voteType)}
