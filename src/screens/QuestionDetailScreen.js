@@ -26,7 +26,6 @@ const QuestionDetailScreen = (props) => {
     const questionIdfromProps = props.route.params.questionID;
     setQuestionId(questionIdfromProps);
 
-    //Fetching Question from DB by question ID
     const fetchQuestion = async () => {
       try {
         const { _data } = await firestore()
