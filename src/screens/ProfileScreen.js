@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Text, Card, Header, Button } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import ProfileMoreComponent from '../components/ProfileMoreComponent';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
 
@@ -13,7 +13,7 @@ const ProfileScreen = ({ navigation }) => {
     changeScreen,
     removeUser,
     state: { userDisplayName, photoURL },
-  } = useContext(AuthContext);
+  } = useContext(Context);
 
   const signOut = async () => {
     try {

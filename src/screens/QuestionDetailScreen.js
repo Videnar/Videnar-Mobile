@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Header, Icon, Text } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
 import QuestionBodyComponent from '../components/QuestionBodyComponent';
@@ -16,14 +16,11 @@ const HEIGHT = Dimensions.get('window').height;
 const QuestionDetailScreen = (props) => {
   const {
     state: { userDisplayName, userID },
-  } = useContext(AuthContext);
+  } = useContext(Context);
 
   const [question, setQuestion] = useState(null);
   const [questionId, setQuestionId] = useState(null);
-  const [answerIdToEdit, setAnswerIdToEdit] = useState(null);
-  const [answerContentToEdit, setAnswerContentToEdit] = useState(null);
   const [questionLoaded, setQuestionLoaded] = useState(false);
-  const [isAnswerEditorVisible, setIsAnswerEditorVisible] = useState(false);
 
   useEffect(() => {
     const questionIdfromProps = props.route.params.questionID;
@@ -85,25 +82,14 @@ const QuestionDetailScreen = (props) => {
         )}
         {/** Load Answers if Question fetch is completed or show Loading... */}
         {questionLoaded ? (
-          <AnswersComponent
-            questionID={questionId}
-            setAnswerIdToEdit={setAnswerIdToEdit}
-            setAnswerContentToEdit={setAnswerContentToEdit}
-            setIsAnswerEditorVisible={setIsAnswerEditorVisible}
-          />
+          <AnswersComponent questionID={questionId} />
         ) : (
           <View style={styles.loadingContainer}>
             <Text> Loading... </Text>
           </View>
         )}
       </ScrollView>
-      <ProceedToAnswerComponent
-        isAnswerEditorVisible={isAnswerEditorVisible}
-        setIsAnswerEditorVisible={setIsAnswerEditorVisible}
-        answerIdToEdit={answerIdToEdit}
-        contentToEdit={answerContentToEdit}
-        questionID={questionId}
-      />
+      <ProceedToAnswerComponent questionID={questionId} />
     </>
   );
 };

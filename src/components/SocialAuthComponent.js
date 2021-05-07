@@ -4,7 +4,7 @@ import { SocialIcon, Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 GoogleSignin.configure({
   webClientId:
@@ -12,7 +12,7 @@ GoogleSignin.configure({
 });
 
 const SocialAuthComponent = () => {
-  const { changeScreen, setUser } = useContext(AuthContext);
+  const { changeScreen, setUser } = useContext(Context);
 
   const onFacebookButtonPress = async () => {
     try {

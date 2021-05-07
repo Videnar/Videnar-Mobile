@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 const AskQuestionScreen = ({ route, navigation }) => {
   const {
     state: { userDisplayName, userID },
-  } = useContext(AuthContext);
+  } = useContext(Context);
   const [webref, setWebref] = useState(null);
 
   const submit = () => {

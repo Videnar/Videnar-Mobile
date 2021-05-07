@@ -2,10 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 const SplashScreen = ({ navigation }) => {
-  const { restoreUser } = useContext(AuthContext);
+  const { restoreUser } = useContext(Context);
   useEffect(() => {
     const bootstrapAsync = async () => {
       let user;

@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 
 const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
   const {
     state: { email },
-  } = useContext(AuthContext);
+  } = useContext(Context);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 

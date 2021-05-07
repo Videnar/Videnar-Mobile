@@ -1,27 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import { Context } from '../contexts';
 
-const AnswerMoreOptionComponent = ({
-  answerId,
-  questionId,
-  setAnswerIdToEdit,
-  setAnswerContentToEdit,
-  answerContent,
-  setIsAnswerEditorVisible,
-}) => {
+const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
+  const { setAnswerEditorData, toggleAnswerEditor } = useContext(Context);
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
 
-  // Answer Edit Action
   const onEditHandler = async () => {
     setMoreOptionVisible(false);
-    setAnswerContentToEdit(answerContent);
-    setIsAnswerEditorVisible(true);
-    setAnswerIdToEdit(answerId);
+    toggleAnswerEditor();
+    setAnswerEditorData({
+      answerIdToEdit: answerId,
+      answerContentToEdit: answerContent,
+    });
   };
 
-  // Answer Delete Action
   const onDeleteHandler = async () => {
     setMoreOptionVisible(false);
     try {

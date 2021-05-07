@@ -4,9 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
-import { AuthContext } from './src/contexts/AuthContext';
+import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
-import { AuthReducer, initialState } from './src/contexts/AuthReducer';
+import { Reducer, initialState } from './src/contexts/Reducer';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +22,7 @@ const linking = {
 };
 
 const App = () => {
-  const [state, dispatch] = useReducer(AuthReducer, initialState);
+  const [state, dispatch] = useReducer(Reducer, initialState);
 
   useEffect(() => {
     const bootstrapAsync = async () => {
@@ -49,7 +49,7 @@ const App = () => {
     };
   }, []);
 
-  const AuthContextValue = useMemo(
+  const ContextValue = useMemo(
     () => ({
       setUser: async (user) => {
         dispatch({ type: 'setUser', payload: user });
@@ -64,13 +64,22 @@ const App = () => {
       changeScreen: (screen) => {
         dispatch({ type: 'changeScreen', payload: screen });
       },
+      toggleAnswerEditor: () => {
+        dispatch({ type: 'toggleAnswerEditor' });
+      },
+      setAnswerEditorData: (data) => {
+        dispatch({ type: 'setAnswerEditorData', payload: data });
+      },
+      clearAnswerEditorData: () => {
+        dispatch({ type: 'clearAnswerEditorData' });
+      },
     }),
     [],
   );
 
   return (
-    <AuthContext.Provider
-      value={{ state, ...AuthContextValue }}
+    <Context.Provider
+      value={{ state, ...ContextValue }}
       linking={linking}
       fallback={SplashScreen}>
       <NavigationContainer
@@ -91,7 +100,7 @@ const App = () => {
           }
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </Context.Provider>
   );
 };
 

@@ -6,13 +6,7 @@ import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 
-const IndividualAnswerComponent = ({
-  answer,
-  questionId,
-  setAnswerIdToEdit,
-  setAnswerContentToEdit,
-  setIsAnswerEditorVisible,
-}) => {
+const IndividualAnswerComponent = ({ answer, questionId }) => {
   // Answer content
   const HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
@@ -33,9 +27,6 @@ const IndividualAnswerComponent = ({
           answerId={answer.id}
           answerContent={answer.content}
           questionId={questionId}
-          setAnswerIdToEdit={setAnswerIdToEdit}
-          setAnswerContentToEdit={setAnswerContentToEdit}
-          setIsAnswerEditorVisible={setIsAnswerEditorVisible}
         />
       </View>
       {/** Description of the Answer */}

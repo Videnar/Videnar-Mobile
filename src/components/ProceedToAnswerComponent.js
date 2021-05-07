@@ -1,34 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Button, FAB, Header, Icon, Overlay } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import Editor from './Editor';
-import { AuthContext } from '../contexts/AuthContext';
-import { navigate } from '../navigation/RootNavigation.js';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 
-const ProceedToAnswerComponent = ({
-  answer,
-  questionID,
-  isAnswerEditorVisible,
-  setIsAnswerEditorVisible,
-}) => {
+const ProceedToAnswerComponent = ({ questionID }) => {
   const {
-    state: { userDisplayName, userID },
-  } = useContext(AuthContext);
+    state: {
+      userDisplayName,
+      userID,
+      answerIdToEdit,
+      answerContentToEdit,
+      showAnswerEditor,
+    },
+    toggleAnswerEditor,
+    clearAnswerEditorData,
+  } = useContext(Context);
   const [webref, setWebref] = useState(null);
-  const [answerIdToEdit, setAnswerIdToEdit] = useState(null);
-  const [contentToEdit, setContentToEdit] = useState(null);
-
-  useEffect(() => {
-    if (answer) {
-      const { content, id } = answer;
-      setAnswerIdToEdit(content);
-      setContentToEdit(id);
-    }
-  }, [answer]);
 
   const submit = () => {
     const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
@@ -37,19 +29,7 @@ const ProceedToAnswerComponent = ({
 
   const submitAnswer = async (str) => {
     if (answerIdToEdit) {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionID)
-          .collection('answers')
-          .doc(answerIdToEdit)
-          .update({
-            content: str,
-          });
-      } catch (err) {
-        console.log('error updating Answer:', err);
-      }
-      return;
+      updateAnswer(str);
     }
     try {
       await firestore()
@@ -66,7 +46,22 @@ const ProceedToAnswerComponent = ({
     } catch (err) {
       console.log('error creating Answer:', err);
     }
-    setIsAnswerEditorVisible(false);
+    clearAnswerEditorData();
+  };
+
+  const updateAnswer = async (str) => {
+    try {
+      await firestore()
+        .collection('questions')
+        .doc(questionID)
+        .collection('answers')
+        .doc(answerIdToEdit)
+        .update({
+          content: str,
+        });
+    } catch (err) {
+      console.log('error updating Answer:', err);
+    }
   };
 
   return (
@@ -76,13 +71,13 @@ const ProceedToAnswerComponent = ({
         iconRight
         icon={<Icon type="material" name="add" color="white" />}
         placement="right"
-        onPress={() => setIsAnswerEditorVisible(true)}
+        onPress={toggleAnswerEditor}
         color="#3DDC84"
       />
       {/** Editor is Passed Here */}
       <Overlay
-        isVisible={isAnswerEditorVisible}
-        onBackdropPress={() => setIsAnswerEditorVisible(false)}
+        isVisible={showAnswerEditor}
+        onBackdropPress={toggleAnswerEditor}
         overlayStyle={styles.overlay}>
         <Header
           statusBarProps={{
@@ -93,7 +88,7 @@ const ProceedToAnswerComponent = ({
             <Icon
               name="arrow-back"
               type="material"
-              onPress={() => setIsAnswerEditorVisible(false)}
+              onPress={toggleAnswerEditor}
             />
           }
           centerComponent={{
@@ -113,7 +108,7 @@ const ProceedToAnswerComponent = ({
           backgroundColor="white"
         />
         <Editor
-          oldContent={contentToEdit}
+          oldContent={answerContentToEdit}
           submit={submitAnswer}
           webref={webref}
           setWebref={setWebref}

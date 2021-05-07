@@ -3,12 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import IndividualAnswerComponent from './IndividualAnswerComponent';
 import firestore from '@react-native-firebase/firestore';
 
-const AnswersComponent = ({
-  questionID,
-  setAnswerIdToEdit,
-  setAnswerContentToEdit,
-  setIsAnswerEditorVisible,
-}) => {
+const AnswersComponent = ({ questionID }) => {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
@@ -40,9 +35,6 @@ const AnswersComponent = ({
       key={answer.id}
       answer={answer}
       questionId={questionID}
-      setAnswerIdToEdit={setAnswerIdToEdit}
-      setAnswerContentToEdit={setAnswerContentToEdit}
-      setIsAnswerEditorVisible={setIsAnswerEditorVisible}
     />
   ));
 

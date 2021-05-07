@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import { Header } from 'react-native-elements';
 
 const SignupScreen = ({ navigation }) => {
-  const { setUser, changeScreen } = useContext(AuthContext);
+  const { setUser, changeScreen } = useContext(Context);
   const signUp = (emailID, password, name) => {
     try {
       auth()
