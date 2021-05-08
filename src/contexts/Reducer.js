@@ -1,4 +1,4 @@
-export const AuthReducer = (state, action) => {
+export const Reducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return { ...state, errorMessage: action.payload };

@@ -3,12 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 const QuestionDetailBottomComponent = ({ question, questionId }) => {
   const {
     state: { userID },
-  } = useContext(AuthContext);
+  } = useContext(Context);
 
   const [userUpVoteData, setUserUpVoteData] = useState();
   const [userUpVoteId, setUserUpVoteId] = useState();

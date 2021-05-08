@@ -7,7 +7,7 @@ const FloatingAskQuestionButton = ({ navigation }) => {
       placement="right"
       size="large"
       onPress={() => {
-        navigation.navigate('AskQuestion');
+        navigation.navigate('EditorScreen', { functionName: 'submitQuestion' });
       }}
       icon={
         <Icon

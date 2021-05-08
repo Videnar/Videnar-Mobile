@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import QuestionComponent from '../components/QuestionComponent';
 
 const ActivityScreen = ({ navigation }) => {
   const {
     state: { userDisplayName },
-  } = useContext(AuthContext);
+  } = useContext(Context);
   const [items, setItems] = useState([]);
 
   useEffect(() => {

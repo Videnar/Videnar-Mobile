@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Pressable, StyleSheet, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Card } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import QuestionHeaderComponent from './QuestionHeaderComponent';
 import QuestionBodyComponent from './QuestionBodyComponent';
 import QuestionBottomComponent from './QuestionBottomComponent';
@@ -14,7 +14,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const route = useRoute();
   const {
     state: { userID },
-  } = useContext(AuthContext);
+  } = useContext(Context);
   const [popupVisible, setPopupVisible] = useState(false);
   const { content, userDisplayName } = question;
 

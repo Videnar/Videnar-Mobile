@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useContext, useState } from 'react';
+import {
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  ToastAndroid,
+  Platform,
+  AlertIOS,
+} from 'react-native';
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 
 const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
-  const [currentPassword, setCurrentPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState(false);
+  const {
+    state: { email },
+  } = useContext(Context);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const changePassword = () => {};
+  const changePassword = () => {
+    auth()
+      .signInWithEmailAndPassword(email, currentPassword)
+      .then(() => {
+        auth()
+          .currentUser.updatePassword(newPassword)
+          .then(() => {
+            const message = 'Password Changed.';
+            if (Platform.OS === 'android') {
+              ToastAndroid.show(message, ToastAndroid.LONG);
+            } else {
+              AlertIOS.alert(message);
+            }
+            toggleVisible();
+            setNewPassword('');
+            setCurrentPassword('');
+          });
+      })
+      .catch((error) => {
+        console.log('Error updating password:', error);
+      });
+  };
 
   return (
     <Overlay

@@ -21,7 +21,12 @@ const IndividualAnswerComponent = ({ answer, questionId }) => {
           <Icon name="person" type="material" color="grey" />
           <Text style={styles.userName}>{answer.userDisplayName}</Text>
         </View>
-        <AnswerMoreOptionComponent />
+        {/** More Options component */}
+        <AnswerMoreOptionComponent
+          answerId={answer.id}
+          answerContent={answer.content}
+          questionId={questionId}
+        />
       </View>
       {/**Answer Description */}
       <WebView

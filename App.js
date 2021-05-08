@@ -4,25 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
-import { AuthContext } from './src/contexts/AuthContext';
+import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
-import { AuthReducer, initialState } from './src/contexts/AuthReducer';
+import { Reducer, initialState } from './src/contexts/Reducer';
 
 const Stack = createStackNavigator();
 
-const linking = {
-  prefixes: [
-    /* your linking prefixes */
-    'https://videnar.com',
-    'videnar://',
-  ],
-  config: {
-    /* configuration for matching screens with paths */
-  },
-};
-
 const App = () => {
-  const [state, dispatch] = useReducer(AuthReducer, initialState);
+  const [state, dispatch] = useReducer(Reducer, initialState);
 
   useEffect(() => {
     const bootstrapAsync = async () => {
@@ -49,7 +38,7 @@ const App = () => {
     };
   }, []);
 
-  const AuthContextValue = useMemo(
+  const ContextValue = useMemo(
     () => ({
       setUser: async (user) => {
         dispatch({ type: 'setUser', payload: user });
@@ -69,9 +58,8 @@ const App = () => {
   );
 
   return (
-    <AuthContext.Provider
-      value={{ state, ...AuthContextValue }}
-      linking={linking}
+    <Context.Provider
+      value={{ state, ...ContextValue }}
       fallback={SplashScreen}>
       <NavigationContainer
         ref={navigationRef}
@@ -91,7 +79,7 @@ const App = () => {
           }
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </Context.Provider>
   );
 };
 

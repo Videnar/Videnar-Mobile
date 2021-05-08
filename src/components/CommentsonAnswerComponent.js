@@ -10,14 +10,14 @@ import {
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 
 const CommentsonAnswerComponent = ({ questionId, answerId }) => {
   const {
     state: { userDisplayName, userID },
-  } = useContext(AuthContext);
+  } = useContext(Context);
 
   // OverLay Visible?
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);

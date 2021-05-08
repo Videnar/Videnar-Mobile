@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Icon, Text, Card } from 'react-native-elements';
-import { AuthContext } from '../contexts/AuthContext';
+import { Context } from '../contexts';
 import SettingsOverlay from './SettingsOverlay';
 
 const ProfileEditableComponent = ({ navigation }) => {
-  const { changeScreen } = useContext(AuthContext);
+  const { changeScreen } = useContext(Context);
 
   const [settingsOverlay, setSettingsOverlay] = useState(false);
 

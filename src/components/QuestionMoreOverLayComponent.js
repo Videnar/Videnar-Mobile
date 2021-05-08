@@ -18,7 +18,12 @@ const QuestionMoreOverlayComponent = ({
 
   const editQuestion = () => {
     isPopupVisible(false);
-    navigate('AskQuestion', { id, content, tags });
+    navigate('EditorScreen', {
+      content,
+      tags,
+      questionId: id,
+      functionName: 'updateQuestion',
+    });
   };
 
   const deleteSelectedQuestion = async () => {
