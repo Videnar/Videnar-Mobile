@@ -7,7 +7,7 @@ import SearchScreen from '../screens/SearchScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import QuestionDetailScreen from '../screens/QuestionDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import AskQuestionScreen from '../screens/AskQuestionScreen';
+import EditorScreen from '../screens/EditorScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
@@ -29,7 +29,7 @@ const Home = () => (
       options={{ title: 'Home' }}
     />
     <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} />
-    <Stack.Screen name="AskQuestion" component={AskQuestionScreen} />
+    <Stack.Screen name="EditorScreen" component={EditorScreen} />
   </Stack.Navigator>
 );
 

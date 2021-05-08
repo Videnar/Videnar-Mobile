@@ -16,17 +16,6 @@ export const Reducer = (state, action) => {
       return { ...state, preferences: action.payload };
     case 'changeScreen':
       return { ...state, screen: action.payload };
-    case 'toggleAnswerEditor':
-      return { ...state, showAnswerEditor: !state.showAnswerEditor };
-    case 'setAnswerEditorData':
-      return { ...state, ...action.payload };
-    case 'clearAnswerEditorData':
-      return {
-        ...state,
-        answerIdToEdit: null,
-        answerContentToEdit: null,
-        showAnswerEditor: false,
-      };
     default:
       return state;
   }
@@ -37,7 +26,4 @@ export const initialState = {
   userID: null,
   attributes: null,
   preferences: null,
-  answerIdToEdit: null,
-  answerContentToEdit: null,
-  showAnswerEditor: false,
 };

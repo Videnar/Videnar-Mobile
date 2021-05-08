@@ -1,19 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
-import { Context } from '../contexts';
+import { navigate } from '../navigation/RootNavigation';
 
 const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
-  const { setAnswerEditorData, toggleAnswerEditor } = useContext(Context);
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
 
   const onEditHandler = async () => {
     setMoreOptionVisible(false);
-    toggleAnswerEditor();
-    setAnswerEditorData({
-      answerIdToEdit: answerId,
-      answerContentToEdit: answerContent,
+    navigate('EditorScreen', {
+      content: answerContent,
+      questionId,
+      answerId,
+      functionName: 'updateAnswer',
     });
   };
 

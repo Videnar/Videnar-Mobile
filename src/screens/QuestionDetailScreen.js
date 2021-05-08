@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
-import { Card, Header, Icon, Text } from 'react-native-elements';
+import { Card, FAB, Header, Icon, Text } from 'react-native-elements';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
@@ -8,13 +8,12 @@ import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswersComponent from '../components/AnswersComponent';
-import ProceedToAnswerComponent from '../components/ProceedToAnswerComponent';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 
-const QuestionDetailScreen = (props) => {
-  const questionIdfromProps = props.route.params.questionID;
+const QuestionDetailScreen = ({ navigation, route }) => {
+  const questionIdfromProps = route.params.questionID;
   const {
     state: { userDisplayName, userID },
   } = useContext(Context);
@@ -49,7 +48,7 @@ const QuestionDetailScreen = (props) => {
           <Icon
             type="material"
             name="arrow-back"
-            onPress={() => props.navigation.goBack()}
+            onPress={() => navigation.goBack()}
           />
         }
         rightComponent={
@@ -90,7 +89,19 @@ const QuestionDetailScreen = (props) => {
           </View>
         )}
       </ScrollView>
-      <ProceedToAnswerComponent questionID={questionIdfromProps} />
+      <FAB
+        title="Answer"
+        iconRight
+        icon={<Icon type="material" name="add" color="white" />}
+        placement="right"
+        onPress={() =>
+          navigation.navigate('EditorScreen', {
+            questionId: questionIdfromProps,
+            functionName: 'submitAnswer',
+          })
+        }
+        color="#3DDC84"
+      />
     </>
   );
 };

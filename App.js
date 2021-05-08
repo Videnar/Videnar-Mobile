@@ -10,17 +10,6 @@ import { Reducer, initialState } from './src/contexts/Reducer';
 
 const Stack = createStackNavigator();
 
-const linking = {
-  prefixes: [
-    /* your linking prefixes */
-    'https://videnar.com',
-    'videnar://',
-  ],
-  config: {
-    /* configuration for matching screens with paths */
-  },
-};
-
 const App = () => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
@@ -64,15 +53,6 @@ const App = () => {
       changeScreen: (screen) => {
         dispatch({ type: 'changeScreen', payload: screen });
       },
-      toggleAnswerEditor: () => {
-        dispatch({ type: 'toggleAnswerEditor' });
-      },
-      setAnswerEditorData: (data) => {
-        dispatch({ type: 'setAnswerEditorData', payload: data });
-      },
-      clearAnswerEditorData: () => {
-        dispatch({ type: 'clearAnswerEditorData' });
-      },
     }),
     [],
   );
@@ -80,7 +60,6 @@ const App = () => {
   return (
     <Context.Provider
       value={{ state, ...ContextValue }}
-      linking={linking}
       fallback={SplashScreen}>
       <NavigationContainer
         ref={navigationRef}

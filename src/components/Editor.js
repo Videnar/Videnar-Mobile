@@ -4,10 +4,9 @@ import { WebView } from 'react-native-webview';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
+const Editor = ({ goBack, webref, setWebref, oldContent, submit }) => {
   const defaultContent = '<p><br></p>';
   const [content, setContent] = useState(defaultContent);
-
   return (
     <KeyboardAvoidingView style={styles.container} scrollEnabled={false}>
       <WebView
@@ -41,8 +40,13 @@ const Editor = ({ navigation, webref, setWebref, oldContent, submit }) => {
         onMessage={async (event) => {
           const { data } = event.nativeEvent;
           if (data !== defaultContent) {
-            submit(data);
-            setContent(defaultContent);
+            try {
+              await submit(data);
+              setContent(defaultContent);
+              goBack();
+            } catch (e) {
+              console.log(e);
+            }
           }
         }}
         containerStyle={styles.webview}
