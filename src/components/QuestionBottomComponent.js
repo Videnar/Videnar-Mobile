@@ -4,12 +4,11 @@ import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
 
 const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
-  const { tags, upvotes } = question;
+  const { id, tags, upvotes } = question;
 
-  // Share the Question
   const shareQuestionHandler = () => {
     const options = {
-      message: 'Can you answer this Question',
+      message: `Can you answer this question on Videnar https://videnar.com/${id}`,
     };
     Share.open(options)
       .then((res) => {
