@@ -7,6 +7,8 @@ import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
 import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
 import { Reducer, initialState } from './src/contexts/Reducer';
+import messaging from '@react-native-firebase/messaging';
+import { Alert } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +38,55 @@ const App = () => {
     return () => {
       isReadyRef.current = false;
     };
+  }, []);
+
+  useEffect(() => {
+    const addDeviceToken = async () => {
+      const authStatusNoti = await messaging().requestPermission();
+      const enabled =
+        authStatusNoti === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatusNoti === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        console.log('Authorization status: ' + authStatusNoti);
+        const deviceToken = await AsyncStorage.getItem('@deviceToken');
+        if (deviceToken !== null) {
+          console.log('Token ---> ', deviceToken);
+        } else {
+          const token = await messaging().getToken();
+          await AsyncStorage.setItem('@deviceToken', token);
+        }
+        messaging().onTokenRefresh(async (newToken) => {
+          console.log('New Token --> ', newToken);
+          await AsyncStorage.setItem('@deviceToken', newToken);
+        });
+      }
+    };
+    addDeviceToken();
+
+    messaging().onMessage(async (remoteMessage) => {
+      console.log('A new Message arrived --> ', remoteMessage);
+      Alert.alert(
+        remoteMessage.notification.title,
+        remoteMessage.notification.body,
+      );
+    });
+
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    });
+
+    messaging().getInitialNotification(async (remoteMessage) => {
+      if (remoteMessage) {
+        console.log(
+          'Notification caused app to open from quit state:',
+          remoteMessage.notification,
+        );
+      }
+    });
   }, []);
 
   const ContextValue = useMemo(
