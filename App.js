@@ -77,6 +77,8 @@ const App = () => {
         'Notification caused app to open from background state:',
         remoteMessage.notification,
       );
+      const questionId = remoteMessage.data.questionId;
+      console.log('Question Id ', questionId);
     });
 
     messaging().getInitialNotification(async (remoteMessage) => {
@@ -85,6 +87,8 @@ const App = () => {
           'Notification caused app to open from quit state:',
           remoteMessage.notification,
         );
+        const questionId = remoteMessage.data.questionId;
+        console.log('Question Id ', questionId);
       }
     });
   }, []);
