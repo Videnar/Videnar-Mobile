@@ -91,6 +91,9 @@ const QuestionDetailScreen = ({ navigation, route }) => {
             <Text> Loading... </Text>
           </View>
         )}
+        <View style={styles.lastItem}>
+          <Text>No More Answers to Show</Text>
+        </View>
       </ScrollView>
       <FAB
         title="Answer"
@@ -122,6 +125,12 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     backgroundColor: 'white',
     alignItems: 'center',
+  },
+  lastItem: {
+    height: 130,
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 30,
   },
 });
 
