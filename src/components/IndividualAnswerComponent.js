@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
   },
   WebView: {
     width: 'auto',
+    marginVertical: 5,
+    marginHorizontal: 10,
   },
   header: {
     marginHorizontal: 5,
