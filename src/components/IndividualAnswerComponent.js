@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
+import { Context } from '../contexts';
 import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 
 const IndividualAnswerComponent = ({ answer, questionId }) => {
+  const {
+    state: { userID },
+  } = useContext(Context);
+
   const ANSWER_HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                         </head>
@@ -22,11 +27,15 @@ const IndividualAnswerComponent = ({ answer, questionId }) => {
           <Text style={styles.userName}>{answer.userDisplayName}</Text>
         </View>
         {/** More Options component */}
-        <AnswerMoreOptionComponent
-          answerId={answer.id}
-          answerContent={answer.content}
-          questionId={questionId}
-        />
+        {userID === answer.userID ? (
+          <AnswerMoreOptionComponent
+            answerId={answer.id}
+            answerContent={answer.content}
+            questionId={questionId}
+          />
+        ) : (
+          <></>
+        )}
       </View>
       {/**Answer Description */}
       <AutoHeightWebView
