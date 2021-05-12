@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
-import WebView from 'react-native-webview';
 import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
@@ -29,7 +29,7 @@ const IndividualAnswerComponent = ({ answer, questionId }) => {
         />
       </View>
       {/**Answer Description */}
-      <WebView
+      <AutoHeightWebView
         originWhitelist={['*']}
         source={{
           html: ANSWER_HTML_ELEMENT,
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   },
   WebView: {
     width: 'auto',
-    height: 50,
   },
   header: {
     marginHorizontal: 5,
