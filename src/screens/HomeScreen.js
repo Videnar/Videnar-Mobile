@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { Header } from 'react-native-elements';
+import { Header, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
@@ -42,6 +42,12 @@ const HomeScreen = ({ navigation }) => {
     <QuestionComponent question={item} navigation={navigation} />
   );
 
+  const lastItem = (
+    <View style={styles.lastItem}>
+      <Text>No More Questions to Show</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Header
@@ -64,6 +70,7 @@ const HomeScreen = ({ navigation }) => {
         }
         data={questions}
         renderItem={RenderItem}
+        ListFooterComponent={lastItem}
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
       />
@@ -76,6 +83,12 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   FlatList: { marginHorizontal: 2 },
   container: { flex: 1 },
+  lastItem: {
+    height: 100,
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
 });
 
 export default HomeScreen;
