@@ -65,7 +65,10 @@ const QuestionDetailScreen = ({ navigation, route }) => {
         {question && (
           <Card containerStyle={styles.card}>
             <QuestionHeaderComponent userDisplayName={userDisplayName} />
-            <QuestionBodyComponent content={question.content} />
+            <QuestionBodyComponent
+              content={question.content}
+              param="questiondetails"
+            />
             <Card.Divider />
             {/** Interaction with Question: upvote, tag */}
             <QuestionDetailBottomComponent

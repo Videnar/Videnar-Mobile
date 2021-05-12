@@ -5,7 +5,7 @@ import { Text } from 'react-native-elements';
 
 const DEFAULT_HEIGHT = 49;
 
-const QuestionBodyComponent = ({ content }) => {
+const QuestionBodyComponent = ({ content, param }) => {
   // html contents to show
   const HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
@@ -17,12 +17,16 @@ const QuestionBodyComponent = ({ content }) => {
   const [isMoreClicked, setIsMoreClicked] = useState(false);
 
   const updateAutoViewHeight = (height) => {
-    if (height < DEFAULT_HEIGHT) {
-      setIsMoreButtonVisible(false);
-    } else if (height > DEFAULT_HEIGHT && isMoreClicked) {
-      setIsMoreButtonVisible(false);
+    if (param !== 'questiondetails') {
+      if (height < DEFAULT_HEIGHT) {
+        setIsMoreButtonVisible(false);
+      } else if (height > DEFAULT_HEIGHT && isMoreClicked) {
+        setIsMoreButtonVisible(false);
+      } else {
+        setIsMoreButtonVisible(true);
+      }
     } else {
-      setIsMoreButtonVisible(true);
+      setIsMoreClicked(true);
     }
   };
 
