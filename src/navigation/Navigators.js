@@ -16,17 +16,17 @@ import UserPreferenceScreen from '../screens/UserPreferenceScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const Home = () => (
+export const Main = () => (
   <Stack.Navigator
-    initialRouteName="Home"
+    initialRouteName="Main"
     screenOptions={{
       headerShown: false,
       gestureEnabled: false,
     }}>
     <Stack.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{ title: 'Home' }}
+      name="Main"
+      component={MainTabs}
+      options={{ title: 'Main' }}
     />
     <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} />
     <Stack.Screen name="EditorScreen" component={EditorScreen} />
@@ -45,7 +45,7 @@ const UserProfile = () => (
   </Stack.Navigator>
 );
 
-export const Main = () => (
+const MainTabs = () => (
   <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
@@ -90,7 +90,7 @@ export const Main = () => (
         );
       },
     })}>
-    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
     <Tab.Screen name="Activity" component={ActivityScreen} />
     <Tab.Screen name="Profile" component={UserProfile} />
