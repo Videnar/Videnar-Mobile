@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
+import { Alert } from 'react-native';
 
 const EditorScreen = ({
   navigation: { goBack },
@@ -14,103 +15,105 @@ const EditorScreen = ({
   const {
     state: { userDisplayName, userID },
   } = useContext(Context);
-  const [webref, setWebref] = useState(null);
-
-  const submit = () => {
-    const code = 'window.ReactNativeWebView.postMessage(quill.root.innerHTML);';
-    webref.injectJavaScript(code);
-  };
+  const defaultContent = '<p><br></p>';
+  const [newContent, setNewContent] = useState(defaultContent);
 
   const saveToCloud = async (str) => {
-    if (functionName === 'submitQuestion') {
-      try {
-        firestore().collection('questions').add({
-          userID,
-          userDisplayName,
-          content: str,
-          upvotes: 0,
-          view: 0,
-          tags: 'neet',
-          noOfAnswers: 0,
-        });
-      } catch (err) {
-        console.log('error creating Question:', err);
-      }
-    } else if (functionName === 'updateQuestion') {
-      try {
-        firestore()
-          .collection('questions')
-          .doc(questionId)
-          .update({
-            content: str,
-          })
-          .then(() => {
-            console.log('document updated');
-          });
-      } catch (err) {
-        console.log('error updating Question:', err);
-      }
-    } else if (functionName === 'submitAnswer') {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionId)
-          .collection('answers')
-          .add({
-            content: str,
-            userDisplayName,
+    if (str === defaultContent) {
+      Alert.alert('Please Write something');
+    } else {
+      if (functionName === 'submitQuestion') {
+        try {
+          firestore().collection('questions').add({
             userID,
-            questionID: questionId,
-            upvotes: 0,
-          });
-      } catch (err) {
-        console.log('error creating Answer:', err);
-      }
-    } else if (functionName === 'updateAnswer') {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionId)
-          .collection('answers')
-          .doc(answerId)
-          .update({
+            userDisplayName,
             content: str,
+            upvotes: 0,
+            view: 0,
+            tags: 'neet',
+            noOfAnswers: 0,
           });
-      } catch (err) {
-        console.log('error updating Answer:', err);
+        } catch (err) {
+          console.log('error creating Question:', err);
+        }
+      } else if (functionName === 'updateQuestion') {
+        try {
+          firestore()
+            .collection('questions')
+            .doc(questionId)
+            .update({
+              content: str,
+            })
+            .then(() => {
+              console.log('document updated');
+            });
+        } catch (err) {
+          console.log('error updating Question:', err);
+        }
+      } else if (functionName === 'submitAnswer') {
+        try {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('answers')
+            .add({
+              content: str,
+              userDisplayName,
+              userID,
+              questionID: questionId,
+              upvotes: 0,
+            });
+        } catch (err) {
+          console.log('error creating Answer:', err);
+        }
+      } else if (functionName === 'updateAnswer') {
+        try {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('answers')
+            .doc(answerId)
+            .update({
+              content: str,
+            });
+        } catch (err) {
+          console.log('error updating Answer:', err);
+        }
       }
+      goBack();
     }
   };
 
   return (
     <>
       <Header
-        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
+        statusBarProps={{
+          backgroundColor: 'white',
+          barStyle: 'dark-content',
+        }}
         leftComponent={
-          <Icon name="arrow-back" type="material" onPress={goBack} />
+          <Icon
+            name="arrow-back"
+            type="material"
+            onPress={goBack}
+            color="#EE5A5A"
+            size={35}
+          />
         }
         centerComponent={{ text: 'Ask a Question', style: styles.headerText }}
         rightComponent={
           // Submit Button
           <Button
-            type="outline"
+            type="clear"
             title="Submit"
             buttonStyle={styles.button}
             titleStyle={styles.buttonText}
-            onPress={submit}
+            onPress={() => saveToCloud(newContent)}
           />
         }
         containerStyle={styles.header}
       />
-      <View style={styles.container}>
-        <Editor
-          submit={saveToCloud}
-          oldContent={content}
-          webref={webref}
-          setWebref={setWebref}
-          goBack={goBack}
-        />
-      </View>
+      <Editor oldContent={content} loadContent={(str) => setNewContent(str)} />
     </>
   );
 };
@@ -119,25 +122,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    alignItems: 'center',
   },
   header: {
     backgroundColor: 'white',
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'purple',
+    color: '#EE5A5A',
     letterSpacing: 0.5,
+    right: 30,
   },
   button: {
-    width: 75,
+    width: 85,
     height: 35,
+    borderRadius: 7,
   },
   buttonText: {
-    color: '#3DDC84',
+    color: '#FFB174',
     fontWeight: 'bold',
-    fontSize: 16,
     letterSpacing: 0.5,
+    textAlign: 'center',
   },
 });
 
