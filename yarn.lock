@@ -7477,6 +7477,11 @@ react-native-bundle-visualizer@^2.2.1:
     rimraf "^3.0.2"
     source-map-explorer "^2.4.2"
 
+react-native-cn-quill@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-cn-quill/-/react-native-cn-quill-0.7.0.tgz#bc4813025c0e8064892c9b457907183f0ed39877"
+  integrity sha512-rqBtS+xYKHmIgx1/IBRMWhDcL2B/D0BdbWJK5nDOkE8uypvYTX0PAk+N8ANoCvcb5PE9I9viaFvnz/Qo2nHvRg==
+
 react-native-elements@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.4.0.tgz#6717a9de89fc037b9cb3b0ff1dc45f1fd0526276"
