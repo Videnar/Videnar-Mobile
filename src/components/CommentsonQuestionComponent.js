@@ -27,7 +27,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
 
   // Fetching All Comments
   useEffect(() => {
-    const fetchComments = async () => {
+    (async () => {
       try {
         await firestore()
           .collection('questions')
@@ -46,8 +46,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       } catch (err) {
         console.log('error fetching commentsOnQuestion', err);
       }
-    };
-    fetchComments();
+    })();
   }, [questionId]);
 
   // Posting New Comments

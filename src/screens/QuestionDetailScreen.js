@@ -23,7 +23,7 @@ const QuestionDetailScreen = ({ navigation, route }) => {
   const [questionLoaded, setQuestionLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchQuestion = async () => {
+    (async () => {
       try {
         await firestore()
           .collection('questions')
@@ -35,9 +35,7 @@ const QuestionDetailScreen = ({ navigation, route }) => {
       } catch (err) {
         console.log('error fetching answers', err);
       }
-    };
-
-    fetchQuestion();
+    })();
   }, [questionIdfromProps]);
 
   return (

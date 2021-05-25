@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import IndividualAnswerComponent from './IndividualAnswerComponent';
 import firestore from '@react-native-firebase/firestore';
 
@@ -7,7 +7,7 @@ const AnswersComponent = ({ questionID }) => {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    const fetchAnswers = async () => {
+    (async () => {
       try {
         await firestore()
           .collection('questions')
@@ -26,24 +26,25 @@ const AnswersComponent = ({ questionID }) => {
       } catch (err) {
         console.log('error fetching answers', err);
       }
-    };
-    fetchAnswers();
+    })();
+    console.log('AnswersComponent.js useEffect');
   }, [questionID]);
 
-  const createAnswerComponent = answers.map((answer) => (
-    <IndividualAnswerComponent
-      key={answer.id}
-      answer={answer}
-      questionId={questionID}
-    />
-  ));
-
+  const answerComponent = ({ item }) => {
+    return <IndividualAnswerComponent answer={item} questionId={questionID} />;
+  };
   return (
     <>
       <View>
         <Text style={styles.headerText}>Answers</Text>
       </View>
-      {createAnswerComponent}
+      <FlatList
+        data={answers}
+        renderItem={answerComponent}
+        keyExtractor={(answer) => answer.id}
+        maxToRenderPerBatch={4}
+        initialNumToRender={3}
+      />
     </>
   );
 };

@@ -14,7 +14,7 @@ const App = () => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
   useEffect(() => {
-    const bootstrapAsync = async () => {
+    (async () => {
       let user;
       try {
         const stringifiedValue = await AsyncStorage.getItem('@user');
@@ -28,8 +28,7 @@ const App = () => {
       } else {
         dispatch({ type: 'changeScreen', payload: 'Auth' });
       }
-    };
-    bootstrapAsync();
+    })();
   }, []);
 
   useEffect(() => {
