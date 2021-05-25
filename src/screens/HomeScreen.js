@@ -73,6 +73,8 @@ const HomeScreen = ({ navigation }) => {
         ListFooterComponent={lastItem}
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
+        maxToRenderPerBatch={8}
+        initialNumToRender={5}
       />
       {/* FAB */}
       <FloatingAskQuestionButton navigation={navigation} />

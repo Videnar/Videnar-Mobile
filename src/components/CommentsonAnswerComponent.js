@@ -175,6 +175,8 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
             data={commentArray}
             renderItem={commentItem}
             keyExtractor={(item) => item.id}
+            maxToRenderPerBatch={8}
+            initialNumToRender={6}
           />
           {/** Input Text for new Comment */}
           <View style={styles.textInputContainer}>
