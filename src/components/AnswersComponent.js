@@ -27,7 +27,6 @@ const AnswersComponent = ({ questionID }) => {
         console.log('error fetching answers', err);
       }
     })();
-    console.log('AnswersComponent.js useEffect');
   }, [questionID]);
 
   const answerComponent = ({ item }) => {
