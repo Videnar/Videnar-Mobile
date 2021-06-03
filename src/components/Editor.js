@@ -8,8 +8,6 @@ import {
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
 import { launchImageLibrary } from 'react-native-image-picker';
 
-const WIDTH = Dimensions.get('window').width;
-
 const Editor = ({ oldContent, loadContent }) => {
   const _editor = React.createRef();
 
@@ -34,23 +32,21 @@ const Editor = ({ oldContent, loadContent }) => {
         storageOptions: {
           skipBackup: true,
           path: 'images',
+          mediaType: 'photo',
         },
+        includeBase64: true,
       };
-      launchImageLibrary(options, (res) => {
-        if (res.didCancel) {
+      launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
           console.log('User cancelled image picker');
-        } else if (res.error) {
-          console.log('ImagePicker Error: ', res.error);
-        } else if (res.customButton) {
-          console.log('User tapped custom button: ', res.customButton);
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
         } else {
           console.log('Gallery Pick Successful');
-          console.log(res.uri);
-          _editor.current?.insertEmbed(
-            500,
-            'image',
-            `https://picsum.photos/${WIDTH}/300`,
-          );
+          const source = { uri: 'data:image/jpeg;base64,' + response.base64 };
+          _editor.current?.insertEmbed(500, 'image', source.uri);
         }
       });
     }
