@@ -1,0 +1,100 @@
+import React from 'react';
+import { StyleSheet, Dimensions } from 'react-native';
+import { Overlay, Button } from 'react-native-elements';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+const WIDTH = Dimensions.get('window').width;
+
+const ImagePickerOverlay = ({
+  isOverlayVisible,
+  setIsOverlayVisible,
+  editorRef,
+}) => {
+  const options = {
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+      mediaType: 'photo',
+    },
+    includeBase64: true,
+    maxWidth: 640,
+    maxHeight: 480,
+  };
+
+  const openGallery = () => {
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log('Gallery Pick Successful');
+        const source = { uri: 'data:image/jpeg;base64,' + response.base64 };
+        editorRef.current?.insertEmbed(500, 'image', source.uri);
+      }
+      setIsOverlayVisible(false);
+    });
+  };
+
+  const openCamera = () => {
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log('Image Captured and Inserted');
+        const source = { uri: 'data:image/jpeg;base64,' + response.base64 };
+        editorRef.current?.insertEmbed(500, 'image', source.uri);
+      }
+      setIsOverlayVisible(false);
+    });
+  };
+  return (
+    <Overlay
+      isVisible={isOverlayVisible}
+      onBackdropPress={() => setIsOverlayVisible(false)}
+      overlayStyle={styles.overlay}
+      backdropStyle={styles.backdropOverlay}>
+      <Button
+        type="solid"
+        title="Upload From Gallery"
+        buttonStyle={styles.button}
+        containerStyle={styles.buttonContainer}
+        onPress={openGallery}
+      />
+      <Button
+        type="solid"
+        title="Open Camera"
+        buttonStyle={styles.button}
+        containerStyle={styles.buttonContainer}
+        onPress={openCamera}
+      />
+    </Overlay>
+  );
+};
+
+const styles = StyleSheet.create({
+  overlay: {
+    width: WIDTH * 0.7,
+    borderRadius: 10,
+  },
+  backdropOverlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  button: {
+    backgroundColor: '#29BB89',
+    width: WIDTH * 0.6,
+    alignSelf: 'center',
+    alignContent: 'center',
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    paddingVertical: 10,
+  },
+});
+export default ImagePickerOverlay;

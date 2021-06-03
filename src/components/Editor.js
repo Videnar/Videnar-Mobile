@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
-import { launchImageLibrary } from 'react-native-image-picker';
+import ImagePickerOverlay from './ImagePickerOverlay';
 
 const Editor = ({ oldContent, loadContent }) => {
   const _editor = React.createRef();
+  const [isImagePickVisible, setIsImagePickVisible] = useState(false);
 
   const toolOptions = [
     ['bold', 'italic', 'underline'],
@@ -23,29 +24,7 @@ const Editor = ({ oldContent, loadContent }) => {
 
   const customHandler = (name) => {
     if (name === 'image') {
-      let options = {
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-          mediaType: 'photo',
-        },
-        includeBase64: true,
-        maxWidth: 640,
-        maxHeight: 480,
-      };
-      launchImageLibrary(options, (response) => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-        } else {
-          console.log('Gallery Pick Successful');
-          const source = { uri: 'data:image/jpeg;base64,' + response.base64 };
-          _editor.current?.insertEmbed(500, 'image', source.uri);
-        }
-      });
+      setIsImagePickVisible(true);
     }
   };
 
@@ -72,6 +51,11 @@ const Editor = ({ oldContent, loadContent }) => {
           }}
         />
       </KeyboardAvoidingView>
+      <ImagePickerOverlay
+        isOverlayVisible={isImagePickVisible}
+        setIsOverlayVisible={(value) => setIsImagePickVisible(value)}
+        editorRef={_editor}
+      />
     </>
   );
 };
