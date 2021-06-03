@@ -15,6 +15,7 @@ const ImagePickerOverlay = ({
       skipBackup: true,
       path: 'images',
       mediaType: 'photo',
+      cameraRoll: false,
     },
     includeBase64: true,
     maxWidth: 640,
@@ -60,18 +61,26 @@ const ImagePickerOverlay = ({
       onBackdropPress={() => setIsOverlayVisible(false)}
       overlayStyle={styles.overlay}
       backdropStyle={styles.backdropOverlay}>
+      {/* Gallery Upload Button */}
       <Button
         type="solid"
         title="Upload From Gallery"
+        iconRight
+        icon={{ type: 'material', name: 'image', color: 'white' }}
         buttonStyle={styles.button}
         containerStyle={styles.buttonContainer}
+        titleStyle={styles.title}
         onPress={openGallery}
       />
+      {/* Camera Upload Button */}
       <Button
         type="solid"
         title="Open Camera"
+        iconRight
+        icon={{ type: 'material', name: 'photo-camera', color: 'white' }}
         buttonStyle={styles.button}
         containerStyle={styles.buttonContainer}
+        titleStyle={styles.title}
         onPress={openCamera}
       />
     </Overlay>
@@ -95,6 +104,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingVertical: 10,
+  },
+  title: {
+    paddingRight: 10,
   },
 });
 export default ImagePickerOverlay;
