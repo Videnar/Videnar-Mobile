@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, createRef, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
@@ -16,7 +16,7 @@ const EditorScreen = ({
     state: { userDisplayName, userID },
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
-  const [newContent, setNewContent] = useState(defaultContent);
+  const editorContentRef = useRef(content ? content : defaultContent);
 
   const saveToCloud = async (str) => {
     if (str === defaultContent) {
@@ -108,12 +108,12 @@ const EditorScreen = ({
             title="Submit"
             buttonStyle={styles.button}
             titleStyle={styles.buttonText}
-            onPress={() => saveToCloud(newContent)}
+            onPress={() => saveToCloud(editorContentRef.current)}
           />
         }
         containerStyle={styles.header}
       />
-      <Editor oldContent={content} loadContent={(str) => setNewContent(str)} />
+      <Editor contentRef={editorContentRef} />
     </>
   );
 };

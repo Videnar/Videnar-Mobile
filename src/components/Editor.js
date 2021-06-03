@@ -3,7 +3,7 @@ import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
 import ImagePickerOverlay from './ImagePickerOverlay';
 
-const Editor = ({ oldContent, loadContent }) => {
+const Editor = ({ contentRef }) => {
   const _editor = React.createRef();
   const [isImagePickVisible, setIsImagePickVisible] = useState(false);
 
@@ -36,8 +36,8 @@ const Editor = ({ oldContent, loadContent }) => {
         <QuillEditor
           style={styles.editor}
           ref={_editor}
-          initialHtml={oldContent}
-          onHtmlChange={({ html }) => loadContent(html)}
+          initialHtml={contentRef.current}
+          onHtmlChange={({ html }) => (contentRef.current = html)}
           loading="Editor Loading"
         />
         <QuillToolbar
@@ -51,6 +51,7 @@ const Editor = ({ oldContent, loadContent }) => {
           }}
         />
       </KeyboardAvoidingView>
+      {/* Image Picker Overlay */}
       <ImagePickerOverlay
         isOverlayVisible={isImagePickVisible}
         setIsOverlayVisible={(value) => setIsImagePickVisible(value)}
