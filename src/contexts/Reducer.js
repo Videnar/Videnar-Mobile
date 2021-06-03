@@ -11,7 +11,7 @@ export const Reducer = (state, action) => {
     case 'clear_error_message':
       return { ...state, errorMessage: '' };
     case 'removeUser':
-      return { ...state, ...initialState };
+      return initialState;
     case 'update_preferences':
       return { ...state, preferences: action.payload };
     case 'changeScreen':
@@ -22,7 +22,7 @@ export const Reducer = (state, action) => {
 };
 
 export const initialState = {
-  screen: 'Main',
+  screen: 'Auth',
   userID: null,
   attributes: null,
   preferences: null,

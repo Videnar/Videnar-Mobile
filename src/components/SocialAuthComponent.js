@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SocialIcon, Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from '../contexts';
@@ -31,14 +32,30 @@ const SocialAuthComponent = () => {
         data.accessToken,
       );
       await auth().signInWithCredential(facebookCredential);
-      const { displayName, email, photoURL, uid } = auth().currentUser;
+      const {
+        displayName,
+        email,
+        photoURL,
+        uid,
+        metadata: { creationTime, lastSignInTime },
+      } = auth().currentUser;
       setUser({
         userDisplayName: displayName,
         email,
         photoURL,
         userID: uid,
       });
-      changeScreen('Main');
+      if (creationTime === lastSignInTime) {
+        changeScreen('UserPref');
+      } else {
+        const doc = firestore().collection('users').doc(uid).get();
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          console.log('Document data:', doc.data());
+        }
+        changeScreen('Main');
+      }
     } catch (err) {
       console.log('Error ---> ' + err);
     }
@@ -49,14 +66,30 @@ const SocialAuthComponent = () => {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
-      const { displayName, email, photoURL, uid } = auth().currentUser;
+      const {
+        displayName,
+        email,
+        photoURL,
+        uid,
+        metadata: { creationTime, lastSignInTime },
+      } = auth().currentUser;
       setUser({
         userDisplayName: displayName,
         email,
         photoURL,
         userID: uid,
       });
-      changeScreen('Main');
+      if (creationTime === lastSignInTime) {
+        changeScreen('UserPref');
+      } else {
+        const doc = firestore().collection('users').doc(uid).get();
+        if (!doc.exists) {
+          changeScreen('UserPref');
+        } else {
+          console.log('Document data:', doc.data());
+        }
+        changeScreen('Main');
+      }
     } catch (err) {
       console.log('Error ---> ' + err);
     }
@@ -64,13 +97,12 @@ const SocialAuthComponent = () => {
 
   return (
     <View style={styles.container}>
-      {/* Google button*/}
       <Button
         type="clear"
         icon={<SocialIcon light raised type="google" />}
         onPress={onGoogleButtonPress}
       />
-      {/* Facebook button*/}
+
       <Button
         type="clear"
         icon={<SocialIcon raised type="facebook" />}

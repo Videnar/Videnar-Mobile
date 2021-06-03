@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
+import UserPreferenceScreen from './src/screens/UserPreferenceScreen';
 import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
 import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
@@ -16,15 +17,26 @@ const App = () => {
   useEffect(() => {
     (async () => {
       let user;
+      let preferences;
       try {
-        const stringifiedValue = await AsyncStorage.getItem('@user');
-        user = stringifiedValue != null ? JSON.parse(stringifiedValue) : null;
+        const stringifiedUser = await AsyncStorage.getItem('@user');
+        const stringifiedPreferences = await AsyncStorage.getItem(
+          '@preferences',
+        );
+        user = stringifiedUser != null ? JSON.parse(stringifiedUser) : null;
+        preferences =
+          stringifiedPreferences != null
+            ? JSON.parse(stringifiedPreferences)
+            : null;
       } catch (e) {
         // Restoring token failed
       }
-      if (user !== null) {
+      if (user !== null && preferences !== null) {
         dispatch({ type: 'setUser', payload: user });
+        dispatch({ type: 'update_preferences', payload: preferences });
         dispatch({ type: 'changeScreen', payload: 'Main' });
+      } else if (user !== null && preferences === null) {
+        dispatch({ type: 'changeScreen', payload: 'UserPref' });
       } else {
         dispatch({ type: 'changeScreen', payload: 'Auth' });
       }
@@ -45,10 +57,12 @@ const App = () => {
         AsyncStorage.setItem('@user', str);
       },
       removeUser: async (user) => {
-        dispatch({ type: 'removeUser' });
         AsyncStorage.removeItem('@user');
+        AsyncStorage.removeItem('@preferences');
       },
-      updateUserPreferences: async (preferences) => {},
+      updateUserPreferences: async (preferences) => {
+        dispatch({ type: 'update_preferences', payload: preferences });
+      },
       changeScreen: (screen) => {
         dispatch({ type: 'changeScreen', payload: screen });
       },
@@ -74,6 +88,12 @@ const App = () => {
             {
               Main: <Stack.Screen name="Main" component={Main} />,
               Auth: <Stack.Screen name="Auth" component={AuthComponent} />,
+              UserPref: (
+                <Stack.Screen
+                  name="UserPref"
+                  component={UserPreferenceScreen}
+                />
+              ),
             }[state.screen]
           }
         </Stack.Navigator>

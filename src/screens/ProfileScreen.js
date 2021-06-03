@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { Text, Card, Header, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileMoreComponent from '../components/ProfileMoreComponent';
@@ -11,21 +12,42 @@ const WIDTH = Dimensions.get('window').width;
 const ProfileScreen = ({ navigation }) => {
   const {
     changeScreen,
-    removeUser,
-    state: { userDisplayName, photoURL },
+    state: { userID, userDisplayName, photoURL, preferences },
   } = useContext(Context);
 
-  const signOut = async () => {
+  const { education, branch, exams } = preferences;
+
+  const saveUserPreference = async () => {
+    const snapShot = await firestore().collection('users').doc(userID).get();
     try {
-      await auth()
-        .signOut()
-        .then(() => {
-          removeUser();
-          changeScreen('Auth');
-        })
-        .catch((err) => console.log(err, 'err'));
+      if (snapShot == null || !snapShot.exists) {
+        await firestore()
+          .collection('users')
+          .doc(userID)
+          .set({
+            userID,
+            userDisplayName,
+            country: 'India',
+            ...preferences,
+          });
+      } else {
+        await firestore()
+          .collection('users')
+          .doc(userID)
+          .update({ ...preferences });
+      }
     } catch (err) {
-      console.log(err);
+      console.log('err', err);
+    }
+  };
+
+  const signOut = async () => {
+    await saveUserPreference();
+    changeScreen('Auth');
+    try {
+      await auth().signOut();
+    } catch (err) {
+      console.log('er', err);
     }
   };
 
@@ -50,14 +72,14 @@ const ProfileScreen = ({ navigation }) => {
         />
         <View style={styles.details}>
           <Text style={styles.nameText}>{userDisplayName}</Text>
-          {/* <Text style={styles.educationText}>Education: {level}</Text>
-          {branch && <Text h5>Branch : {branch}</Text>} */}
+          <Text style={styles.educationText}>Education: {education}</Text>
+          {branch && <Text h5>Branch : {branch}</Text>}
           <Text style={styles.educationText}>Exams:</Text>
-          {/* {exams.map((exam, index) => (
+          {exams.map((exam, index) => (
             <Text key={index} style={styles.examtags}>
-              {exam}
+              {exam.key}
             </Text>
-          ))} */}
+          ))}
         </View>
       </View>
       <Card.Divider />

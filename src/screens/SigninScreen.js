@@ -22,7 +22,6 @@ const SigninScreen = ({ navigation }) => {
             userID: uid,
           });
           changeScreen('Main');
-          console.log('User account created & signed in!');
         })
         .catch((error) => {
           console.error(error);

@@ -11,7 +11,6 @@ import EditorScreen from '../screens/EditorScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import UserPreferenceScreen from '../screens/UserPreferenceScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,18 +29,6 @@ export const Main = () => (
     />
     <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} />
     <Stack.Screen name="EditorScreen" component={EditorScreen} />
-  </Stack.Navigator>
-);
-
-const UserProfile = () => (
-  <Stack.Navigator
-    initialRouteName="userProfile"
-    screenOptions={{
-      headerShown: false,
-      gestureEnabled: false,
-    }}>
-    <Stack.Screen name="Profile" component={ProfileScreen} />
-    <Stack.Screen name="userPref" component={UserPreferenceScreen} />
   </Stack.Navigator>
 );
 
@@ -93,7 +80,7 @@ const MainTabs = () => (
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
     <Tab.Screen name="Activity" component={ActivityScreen} />
-    <Tab.Screen name="Profile" component={UserProfile} />
+    <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
 

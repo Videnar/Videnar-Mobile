@@ -42,9 +42,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
   const continueHandler = () => {
     exams.length > 0 ? saveEnable(true) : saveEnable(false);
     userPref({ exams: exams });
-    //console.log('Exam' + exams[0].key);
     let populateExam = '';
-    console.log(exams.length);
     exams.forEach((exam) => {
       populateExam = populateExam.concat(exam.key + ', ');
     });

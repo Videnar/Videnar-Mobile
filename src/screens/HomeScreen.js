@@ -25,13 +25,15 @@ const HomeScreen = ({ navigation }) => {
         .collection('questions')
         .onSnapshot((querySnapshot) => {
           const q = [];
-          querySnapshot.forEach((documentSnapshot) => {
-            q.push({
-              ...documentSnapshot.data(),
-              id: documentSnapshot.id,
+          if (querySnapshot !== null) {
+            querySnapshot.forEach((documentSnapshot) => {
+              q.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
             });
-          });
-          setQuestions(q);
+            setQuestions(q);
+          }
         });
     } catch (err) {
       console.log('error fetching questions', err);
