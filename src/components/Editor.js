@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Platform,
-  KeyboardAvoidingView,
-  Dimensions,
-} from 'react-native';
+import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -35,6 +30,8 @@ const Editor = ({ oldContent, loadContent }) => {
           mediaType: 'photo',
         },
         includeBase64: true,
+        maxWidth: 640,
+        maxHeight: 480,
       };
       launchImageLibrary(options, (response) => {
         if (response.didCancel) {
