@@ -23,6 +23,7 @@
     "@react-native-firebase/crashlytics": "^11.4.1",
     "@react-native-firebase/dynamic-links": "^11.4.1",
     "@react-native-firebase/firestore": "^11.4.1",
+    "@react-native-firebase/messaging": "^11.4.1",
     "@react-native-google-signin/google-signin": "^6.0.0",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/material-top-tabs": "^5.3.11",

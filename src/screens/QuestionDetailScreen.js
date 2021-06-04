@@ -62,7 +62,9 @@ const QuestionDetailScreen = ({ navigation, route }) => {
         {/** Question is Displayed */}
         {question && (
           <Card containerStyle={styles.card}>
-            <QuestionHeaderComponent userDisplayName={userDisplayName} />
+            <QuestionHeaderComponent
+              userDisplayName={question.userDisplayName}
+            />
             <QuestionBodyComponent
               content={question.content}
               param="questiondetails"
