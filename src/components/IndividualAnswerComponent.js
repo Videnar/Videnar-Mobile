@@ -1,35 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
-import WebView from 'react-native-webview';
+import { Context } from '../contexts';
 import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 
 const IndividualAnswerComponent = ({ answer, questionId }) => {
+  const {
+    state: { userID },
+  } = useContext(Context);
+
   const ANSWER_HTML_ELEMENT = `<head>
-                          <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-                        </head>
-                        <body >
-                          <div>${answer.content}</div>
-                        </body>`;
+                                <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+                              </head>
+                              <body >
+                                <div>${answer.content}</div>
+                              </body>`;
 
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.header}>
         <View style={styles.user}>
-          <Icon name="person" type="material" color="grey" />
+          <Icon name="person" type="material" color="grey" size={22} />
           <Text style={styles.userName}>{answer.userDisplayName}</Text>
         </View>
         {/** More Options component */}
-        <AnswerMoreOptionComponent
-          answerId={answer.id}
-          answerContent={answer.content}
-          questionId={questionId}
-        />
+        {userID === answer.userID ? (
+          <AnswerMoreOptionComponent
+            answerId={answer.id}
+            answerContent={answer.content}
+            questionId={questionId}
+          />
+        ) : (
+          <></>
+        )}
       </View>
       {/**Answer Description */}
-      <WebView
+      <AutoHeightWebView
         originWhitelist={['*']}
         source={{
           html: ANSWER_HTML_ELEMENT,
@@ -50,8 +59,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   WebView: {
-    width: 'auto',
-    height: 50,
+    marginTop: 5,
+    marginHorizontal: 10,
+    marginBottom: 15,
   },
   header: {
     marginHorizontal: 5,
@@ -64,11 +74,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userName: {
-    fontSize: 16,
+    fontSize: 14,
     paddingHorizontal: 5,
-    fontWeight: 'bold',
     letterSpacing: 0.5,
-    color: '#484848',
   },
 });
 

@@ -23,7 +23,7 @@ const QuestionDetailScreen = ({ navigation, route }) => {
   const [questionLoaded, setQuestionLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchQuestion = async () => {
+    (async () => {
       try {
         await firestore()
           .collection('questions')
@@ -35,9 +35,7 @@ const QuestionDetailScreen = ({ navigation, route }) => {
       } catch (err) {
         console.log('error fetching answers', err);
       }
-    };
-
-    fetchQuestion();
+    })();
   }, [questionIdfromProps]);
 
   return (
@@ -67,7 +65,10 @@ const QuestionDetailScreen = ({ navigation, route }) => {
             <QuestionHeaderComponent
               userDisplayName={question.userDisplayName}
             />
-            <QuestionBodyComponent content={question.content} />
+            <QuestionBodyComponent
+              content={question.content}
+              param="questiondetails"
+            />
             <Card.Divider />
             {/** Interaction with Question: upvote, tag */}
             <QuestionDetailBottomComponent
@@ -90,6 +91,9 @@ const QuestionDetailScreen = ({ navigation, route }) => {
             <Text> Loading... </Text>
           </View>
         )}
+        <View style={styles.lastItem}>
+          <Text>No More Answers to Show</Text>
+        </View>
       </ScrollView>
       <FAB
         title="Answer"
@@ -121,6 +125,12 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     backgroundColor: 'white',
     alignItems: 'center',
+  },
+  lastItem: {
+    height: 130,
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 30,
   },
 });
 
