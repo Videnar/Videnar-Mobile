@@ -65,9 +65,7 @@ const App = () => {
       if (enabled) {
         console.log('Authorization status: ' + authStatusNoti);
         const deviceToken = await AsyncStorage.getItem('@deviceToken');
-        if (deviceToken !== null) {
-          console.log('Token ---> ', deviceToken);
-        } else {
+        if (deviceToken) {
           const token = await messaging().getToken();
           await AsyncStorage.setItem('@deviceToken', token);
         }

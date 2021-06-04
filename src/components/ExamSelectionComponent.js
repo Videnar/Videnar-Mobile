@@ -25,17 +25,17 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
 
   const allExams = educations.filter((item) => item.level === education)[0]
     .exams;
-  console.log(typeof allExams);
 
-  const onPressHandler = (item) => {
+  const onPressHandler = (exam) => {
+    console.log(exams);
     const dataArray = [...exams];
-    const index = dataArray.indexOf(item);
-    console.log(index);
+    const index = dataArray.indexOf(exam);
     if (index > -1) {
       dataArray.splice(index, 1);
     } else {
-      dataArray.push(item);
+      dataArray.push(exam);
     }
+    console.log(dataArray);
     setExams(dataArray);
   };
 
@@ -44,7 +44,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
     userPref({ exams: exams });
     let populateExam = '';
     exams.forEach((exam) => {
-      populateExam = populateExam.concat(exam.key + ', ');
+      populateExam = populateExam.concat(exam + ', ');
     });
     console.log(populateExam.length);
     if (populateExam.length > 20) {
@@ -68,9 +68,9 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
   };
 
   const RenderItem = allExams.map((item) =>
-    [...exams].includes(item) ? (
+    [...exams].includes(item.key) ? (
       //Item Selected
-      <ListItem onPress={() => onPressHandler(item)} key={item.key}>
+      <ListItem onPress={() => onPressHandler(item.key)} key={item.key}>
         <ListItem.Content>
           <ListItem.Title style={styles.itemSelected}>
             {item.key}
@@ -81,7 +81,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
       </ListItem>
     ) : (
       // Item not Selected
-      <ListItem onPress={() => onPressHandler(item)} key={item.key}>
+      <ListItem onPress={() => onPressHandler(item.key)} key={item.key}>
         <ListItem.Content>
           <ListItem.Title>{item.key}</ListItem.Title>
           <ListItem.Subtitle>{item.description}</ListItem.Subtitle>

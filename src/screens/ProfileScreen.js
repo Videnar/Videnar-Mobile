@@ -12,6 +12,7 @@ const WIDTH = Dimensions.get('window').width;
 const ProfileScreen = ({ navigation }) => {
   const {
     changeScreen,
+    removeUser,
     state: { userID, userDisplayName, photoURL, preferences },
   } = useContext(Context);
 
@@ -42,10 +43,15 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const signOut = async () => {
-    await saveUserPreference();
-    changeScreen('Auth');
+    saveUserPreference();
     try {
-      await auth().signOut();
+      await auth()
+        .signOut()
+        .then(() => {
+          changeScreen('Auth');
+          removeUser();
+        })
+        .catch((err) => console.log(err, 'err'));
     } catch (err) {
       console.log('er', err);
     }
@@ -77,7 +83,7 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.educationText}>Exams:</Text>
           {exams.map((exam, index) => (
             <Text key={index} style={styles.examtags}>
-              {exam.key}
+              {exam}
             </Text>
           ))}
         </View>
