@@ -1,9 +1,13 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useEffect, useReducer, useMemo, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
-import { navigationRef, isReadyRef } from './src/navigation/RootNavigation';
+import {
+  navigate,
+  navigationRef,
+  isReadyRef,
+} from './src/navigation/RootNavigation';
 import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
 import { Reducer, initialState } from './src/contexts/Reducer';
@@ -73,24 +77,18 @@ const App = () => {
     });
 
     messaging().onNotificationOpenedApp(async (remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
       const questionId = remoteMessage.data.questionId;
-      console.log('Question Id ', questionId);
+      navigate('QuestionDetails', { questionID: questionId });
     });
 
-    messaging().getInitialNotification(async (remoteMessage) => {
-      if (remoteMessage) {
-        console.log(
-          'Notification caused app to open from quit state:',
-          remoteMessage.notification,
-        );
-        const questionId = remoteMessage.data.questionId;
-        console.log('Question Id ', questionId);
-      }
-    });
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          const questionId = remoteMessage.data.questionId;
+          navigate('QuestionDetails', { questionID: questionId });
+        }
+      });
   }, []);
 
   const ContextValue = useMemo(
