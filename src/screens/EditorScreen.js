@@ -1,9 +1,10 @@
-import React, { useContext, createRef, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
 const EditorScreen = ({
@@ -24,6 +25,7 @@ const EditorScreen = ({
     } else {
       if (functionName === 'submitQuestion') {
         try {
+          const deviceToken = await AsyncStorage.getItem('@deviceToken');
           firestore().collection('questions').add({
             userID,
             userDisplayName,
@@ -32,6 +34,7 @@ const EditorScreen = ({
             view: 0,
             tags: 'neet',
             noOfAnswers: 0,
+            deviceToken: deviceToken,
           });
         } catch (err) {
           console.log('error creating Question:', err);
