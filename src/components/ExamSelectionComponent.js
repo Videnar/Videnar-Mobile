@@ -27,7 +27,6 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
     .exams;
 
   const onPressHandler = (exam) => {
-    console.log(exams);
     const dataArray = [...exams];
     const index = dataArray.indexOf(exam);
     if (index > -1) {
@@ -35,7 +34,6 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
     } else {
       dataArray.push(exam);
     }
-    console.log(dataArray);
     setExams(dataArray);
   };
 
@@ -46,7 +44,6 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
     exams.forEach((exam) => {
       populateExam = populateExam.concat(exam + ', ');
     });
-    console.log(populateExam.length);
     if (populateExam.length > 20) {
       populateExam = populateExam.substring(0, 19);
       populateExam = populateExam.concat('...');

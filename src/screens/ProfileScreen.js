@@ -43,7 +43,7 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const signOut = async () => {
-    saveUserPreference();
+    await saveUserPreference();
     try {
       await auth()
         .signOut()

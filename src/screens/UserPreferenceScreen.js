@@ -25,10 +25,10 @@ const UserPreferenceScreen = () => {
     return userPref.education === 'B.Tech';
   };
 
-  const onPressHandler = () => {
+  const onPressHandler = async () => {
     updateUserPreferences(userPref);
     const str = JSON.stringify(userPref);
-    AsyncStorage.setItem('@preferences', str);
+    await AsyncStorage.setItem('@preferences', str);
     changeScreen('Main');
   };
 
