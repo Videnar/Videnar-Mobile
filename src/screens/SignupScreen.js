@@ -28,7 +28,7 @@ const SignupScreen = ({ navigation }) => {
                 photoURL,
                 userID: uid,
               });
-              changeScreen('Main');
+              changeScreen('UserPref');
             })
             .catch((error) => {
               console.log('Error setting user', error);

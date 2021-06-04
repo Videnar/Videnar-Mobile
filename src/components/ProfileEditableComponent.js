@@ -10,7 +10,7 @@ const ProfileEditableComponent = ({ navigation }) => {
   const [settingsOverlay, setSettingsOverlay] = useState(false);
 
   const onEditExamPreferences = () => {
-    changeScreen('UserInfo');
+    changeScreen('UserPref');
   };
   const toggleOverlay = () => {
     setSettingsOverlay(!settingsOverlay);

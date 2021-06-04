@@ -1,26 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Header, Button } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
 import EducationSelectionComponent from '../components/EducationSelectionComponent';
 import ExamSelectionComponent from '../components/ExamSelectionComponent';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 
 const UserPreferenceScreen = () => {
+  const { changeScreen, updateUserPreferences } = useContext(Context);
   const [userPref, setUserPref] = useState({});
   const [buttonEnable, setButtonEnable] = useState(false);
 
   // Populating UserPreference details from child components
-  const updateUserPrefHandler = (userRef) => {
+  const updateUserPrefHandler = (pref) => {
     const oldUserPref = userPref;
-    const newUserPref = { ...oldUserPref, ...userRef };
+    const newUserPref = { ...oldUserPref, ...pref };
     setUserPref(newUserPref);
   };
 
   const isBranchComponentVisible = () => {
-    console.log(userPref.education);
     return userPref.education === 'B.Tech';
+  };
+
+  const onPressHandler = async () => {
+    updateUserPreferences(userPref);
+    const str = JSON.stringify(userPref);
+    await AsyncStorage.setItem('@preferences', str);
+    changeScreen('Main');
   };
 
   return (
@@ -66,6 +75,7 @@ const UserPreferenceScreen = () => {
       </View>
       <View style={styles.buttonContainer}>
         <Button
+          onPress={onPressHandler}
           type="solid"
           title="Save"
           buttonStyle={styles.buttonStyle}
