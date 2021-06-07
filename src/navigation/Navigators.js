@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ActivityScreen from '../screens/ActivityScreen';
-import QuestionDetailScreen from '../screens/QuestionDetailScreen';
+import QuestionDetailsScreen from '../screens/QuestionDetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditorScreen from '../screens/EditorScreen';
 import SigninScreen from '../screens/SigninScreen';
@@ -28,7 +28,7 @@ export const Main = () => (
       component={MainTabs}
       options={{ title: 'Main' }}
     />
-    <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} />
+    <Stack.Screen name="QuestionDetails" component={QuestionDetailsScreen} />
     <Stack.Screen name="EditorScreen" component={EditorScreen} />
   </Stack.Navigator>
 );

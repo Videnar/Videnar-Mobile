@@ -12,7 +12,7 @@ import AnswerComponent from '../components/AnswerComponent';
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 
-const QuestionDetailScreen = ({ navigation, route }) => {
+const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
   const {
     state: { userDisplayName, userID },
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionDetailScreen;
+export default QuestionDetailsScreen;
