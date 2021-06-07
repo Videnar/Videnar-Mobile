@@ -7,7 +7,7 @@ import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 
-const IndividualAnswerComponent = ({ answer, questionId }) => {
+const AnswerComponent = ({ answer, questionId }) => {
   const {
     state: { userID },
   } = useContext(Context);
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IndividualAnswerComponent;
+export default AnswerComponent;
