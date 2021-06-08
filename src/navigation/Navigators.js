@@ -11,6 +11,7 @@ import EditorScreen from '../screens/EditorScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,28 +43,28 @@ const MainTabs = () => (
       showLabel: false,
     }}
     screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
+      tabBarIcon: ({ focused }) => {
         let iconName;
         let fontsize;
         let colorName;
         let style;
         if (route.name === 'Home') {
           iconName = 'home';
-          fontsize = focused ? 36 : 32;
-          colorName = focused ? '#8000FF' : '#857683';
+          fontsize = focused ? 40 : 34;
+          colorName = focused ? DEEP_GREEN : GREY;
         } else if (route.name === 'Activity') {
           iconName = 'done-all';
-          fontsize = focused ? 36 : 32;
-          colorName = focused ? '#8000FF' : '#857683';
+          fontsize = focused ? 40 : 34;
+          colorName = focused ? DEEP_GREEN : GREY;
         } else if (route.name === 'Search') {
           iconName = 'search';
-          fontsize = focused ? 36 : 32;
-          colorName = focused ? '#8000FF' : '#857683';
+          fontsize = focused ? 40 : 34;
+          colorName = focused ? DEEP_GREEN : GREY;
           style = { transform: [{ rotateY: '180deg' }] };
         } else {
           iconName = 'person';
-          fontsize = focused ? 36 : 32;
-          colorName = focused ? '#8000FF' : '#857683';
+          fontsize = focused ? 40 : 34;
+          colorName = focused ? DEEP_GREEN : GREY;
         }
 
         return (
