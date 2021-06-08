@@ -1,5 +1,6 @@
 import React from 'react';
 import { FAB, Icon } from 'react-native-elements';
+import { ORANGE } from '../assets/colors/colors';
 
 const FloatingAskQuestionButton = ({ navigation }) => {
   return (
@@ -13,7 +14,7 @@ const FloatingAskQuestionButton = ({ navigation }) => {
         <Icon
           type="material"
           name="live-help"
-          color="#F07D60"
+          color={ORANGE}
           size={28}
           reverse
           raised

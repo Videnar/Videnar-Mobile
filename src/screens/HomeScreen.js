@@ -4,6 +4,7 @@ import { Header, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
+import { DEEP_GREEN } from '../assets/colors/colors';
 
 const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
@@ -58,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
         centerComponent={{
           text: 'Videnar',
           style: {
-            color: '#A97CB0',
+            color: DEEP_GREEN,
             fontSize: 20,
             fontWeight: 'bold',
             letterSpacing: 1.5,

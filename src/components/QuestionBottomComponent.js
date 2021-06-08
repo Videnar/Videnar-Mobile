@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
+import { LIGHT_GREEN, YELLOW } from '../assets/colors/colors';
+
+const WIDTH = Dimensions.get('window').width;
 
 const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
   const { id, tags, upvotes } = question;
@@ -21,12 +24,13 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
 
   return (
     <View style={styles.Options}>
-      <Text style={styles.tags}>#{tags}</Text>
-      <Text style={styles.upvotes}>Upvotes: {upvotes}</Text>
+      <View style={styles.upvoteContainer}>
+        <Text style={styles.upvoteText}>Upvotes: {upvotes}</Text>
+      </View>
       <Icon
         name="share"
         type="material"
-        color="grey"
+        color={LIGHT_GREEN}
         size={20}
         onPress={shareQuestionHandler}
       />
@@ -35,7 +39,7 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
         <Icon
           name="more-vert"
           type="material"
-          color="grey"
+          color={YELLOW}
           size={22}
           onPress={() => isPopupVisible(true)}
         />
@@ -52,12 +56,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 15,
   },
-  upvotes: {
-    color: 'orange',
-    textAlign: 'right',
+  upvoteContainer: {
+    width: WIDTH * 0.35,
+    alignItems: 'center',
   },
-  tags: {
-    color: '#FF303A',
+  upvoteText: {
+    color: YELLOW,
   },
 });
 
