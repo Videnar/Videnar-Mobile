@@ -8,6 +8,7 @@ import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
 import { Header } from 'react-native-elements';
+import { DEEP_GREEN } from '../assets/colors/colors';
 
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
@@ -61,7 +62,7 @@ const SigninScreen = ({ navigation }) => {
       <View style={styles.container}>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
         <AuthComponent
-          headerText="Hello there!"
+          headerText="Sign In"
           // errorMessage={state.errorMessage}
           onSubmit={signIn}
           forgotPassword
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     letterSpacing: 2,
-    color: '#A97CB0',
+    color: DEEP_GREEN,
   },
   container: {
     flex: 1,
