@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
-import { LIGHT_GREEN, YELLOW } from '../assets/colors/colors';
+import { GREY, YELLOW } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -30,7 +30,7 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
       <Icon
         name="share"
         type="material"
-        color={LIGHT_GREEN}
+        color={GREY}
         size={20}
         onPress={shareQuestionHandler}
       />
@@ -39,7 +39,7 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
         <Icon
           name="more-vert"
           type="material"
-          color={YELLOW}
+          color={GREY}
           size={22}
           onPress={() => isPopupVisible(true)}
         />
