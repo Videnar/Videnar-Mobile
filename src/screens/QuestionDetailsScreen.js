@@ -8,6 +8,7 @@ import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
+import { WHITE } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -122,6 +123,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
             <Text>No More Answers to Show</Text>
           </View>
         }
+        style={styles.container}
       />
       <FAB
         title="Answer"
@@ -147,6 +149,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     marginVertical: 5,
     padding: 10,
+  },
+  container: {
+    backgroundColor: WHITE,
   },
   loadingContainer: {
     flex: 1,
