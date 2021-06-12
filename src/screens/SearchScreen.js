@@ -1,35 +1,50 @@
 import React, { useState } from 'react';
-import { Header, SearchBar } from 'react-native-elements';
-import { View, StyleSheet, FlatList } from 'react-native';
-//import QuestionComponent from '../components/QuestionComponent';
-//import AnswerComponent from '../components/AnswerComponent';
+import { Button, Header, SearchBar } from 'react-native-elements';
+import WebView from 'react-native-webview';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
+
+const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
+const index = client.initIndex('questions');
 
 const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
 
-  const searchItems = async (val) => {
-    setInput(val);
-    setResults([]);
-    // search(searchQuestions, 'searchQuestions');
-    // search(searchAnswers, 'searchAnswers');
-  };
-
-  const search = async (queryFunction, queryString, callback) => {
-    let res = [];
+  const search = () => {
     try {
+      index.search(input).then(({ hits }) => {
+        setResults(hits);
+      });
     } catch (err) {
       console.log('error fetching items', err);
     }
   };
 
-  //const RenderItem = ({ item }) =>
-  // item.questionID ? (
-  //   <AnswerComponent answer={item} />
-  // ) : (
-  //   <QuestionComponent question={item} navigation={navigation} />
-  // );
+  const RenderItem = ({ item }) => {
+    return (
+      <Pressable
+        onPress={() => {
+          navigation.navigate('QuestionDetails', {
+            questionID: item.objectID,
+          });
+        }}>
+        <WebView
+          originWhitelist={['*']}
+          source={{
+            html: `<head>
+                   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+                 </head>
+                 <body >
+                   <div>${item._highlightResult.content.value}</div>
+                 </body>`,
+          }}
+          style={styles.WebView}
+        />
+      </Pressable>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -43,15 +58,15 @@ const SearchScreen = ({ navigation }) => {
         lightTheme
         containerStyle={styles.Search}
         inputContainerStyle={styles.SearchInput}
-        onChangeText={(text) => searchItems(text)}
+        onChangeText={(text) => setInput(text)}
         value={input}
       />
-      {/* <FlatList
+      <Button title="Search" onPress={search} />
+      <FlatList
         data={results}
         renderItem={RenderItem}
-        keyExtractor={(item) => item.id}
-      /> */}
-      {/** Floating Ask Question Button */}
+        keyExtractor={(item) => item._highlightResult.objectID}
+      />
       <FloatingAskQuestionButton navigation={navigation} />
     </View>
   );
@@ -67,6 +82,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 10,
     borderRadius: 7,
+  },
+  WebView: {
+    width: 'auto',
+    height: 50,
   },
   Search: {
     backgroundColor: 'white',
