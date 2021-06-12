@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { Context } from '../contexts';
 import QuestionComponent from '../components/QuestionComponent';
+import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -31,6 +32,7 @@ const ActivityScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
       />
+      <FloatingAskQuestionButton navigation={navigation} />
     </View>
   );
 };
