@@ -50,12 +50,14 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         }
       });
     };
-    if (answer.userID === userID) {
-      setUpVoteEditable(false);
-    } else {
-      checkuserExistsInUpVote();
-      setUpVoteEditable(true);
-    }
+    return () => {
+      if (answer.userID === userID) {
+        setUpVoteEditable(false);
+      } else {
+        checkuserExistsInUpVote();
+        setUpVoteEditable(true);
+      }
+    };
   }, [questionId, answer.id, userID, answer.userID]);
 
   const updateUpvoteCountHandler = async (count) => {
