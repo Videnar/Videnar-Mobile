@@ -19,42 +19,38 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
     state: { userDisplayName, userID },
   } = useContext(Context);
 
-  const [question, setQuestion] = useState(null);
+  const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionIdfromProps)
-          .onSnapshot((querySnapshot) => {
-            setQuestion(querySnapshot._data);
-          });
-      } catch (err) {
-        console.log('error fetching answers', err);
-      }
-    })();
-    (async () => {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionIdfromProps)
-          .collection('answers')
-          .onSnapshot((querySnapshot) => {
-            const ans = [];
-            querySnapshot.forEach((documentSnapshot) => {
-              ans.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
+    const fetchQuestion = firestore()
+      .collection('questions')
+      .doc(questionIdfromProps)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot) {
+          setQuestion(querySnapshot._data);
+        }
+      });
+    const fetchAnswers = firestore()
+      .collection('questions')
+      .doc(questionIdfromProps)
+      .collection('answers')
+      .onSnapshot((querySnapshot) => {
+        const ans = [];
+        querySnapshot &&
+          querySnapshot.forEach((documentSnapshot) => {
+            ans.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
             });
-            setAnswers(ans);
           });
-      } catch (err) {
-        console.log('error fetching answers', err);
-      }
-    })();
+        setAnswers(ans);
+      });
+    // clean up
+    return () => {
+      fetchQuestion();
+      fetchAnswers();
+    };
   }, [questionIdfromProps]);
 
   const renderItems = ({ item }) => {
@@ -118,6 +114,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         keyExtractor={(answer) => answer.id}
         maxToRenderPerBatch={4}
         initialNumToRender={3}
+        updateCellsBatchingPeriod={100}
         ListFooterComponent={
           <View style={styles.footerText}>
             <Text>No More Answers to Show</Text>

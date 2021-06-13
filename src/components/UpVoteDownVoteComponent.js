@@ -34,7 +34,9 @@ const UpVoteDownVoteComponent = ({
       });
     }
 
-    upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
+    return () => {
+      upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
+    };
   }, [userVoteValue, upVoteEditable]);
 
   const onVotePressHandler = (actionType) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   TouchableOpacity,
   Dimensions,
@@ -25,28 +25,23 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
 
   const [isEdited, setIsEdited] = useState(false);
 
-  // Fetching All Comments
-  useEffect(() => {
-    (async () => {
-      try {
-        await firestore()
-          .collection('questions')
-          .doc(questionId)
-          .collection('comments')
-          .onSnapshot((querySnapshot) => {
-            const comnts = [];
-            querySnapshot.forEach((documentSnapshot) => {
-              comnts.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
+  const onOpenedCommentHandler = useCallback(() => {
+    firestore()
+      .collection('questions')
+      .doc(questionId)
+      .collection('comments')
+      .onSnapshot((querySnapshot) => {
+        const comnts = [];
+        querySnapshot &&
+          querySnapshot.forEach((documentSnapshot) => {
+            comnts.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
             });
-            setCommentArray(comnts);
           });
-      } catch (err) {
-        console.log('error fetching commentsOnQuestion', err);
-      }
-    })();
+        setCommentArray(comnts);
+        setIsCommentsVisible(true);
+      });
   }, [questionId]);
 
   // Posting New Comments
@@ -127,11 +122,9 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       {/** Pressable Comment Text with number of Comments populated */}
       <TouchableOpacity
         style={styles.container}
-        onPress={() => setIsCommentsVisible(true)}>
+        onPress={onOpenedCommentHandler}>
         <Icon type="material" name="chat-bubble" color="#595654" />
-        <Text style={styles.text}>
-          Comments on Question ({commentArray.length}){' '}
-        </Text>
+        <Text style={styles.text}>Comments on Question</Text>
       </TouchableOpacity>
       {/**Comments Overlay */}
       <Overlay
@@ -162,8 +155,9 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
             data={commentArray}
             renderItem={commentItem}
             keyExtractor={(item) => item.id}
-            maxToRenderPerBatch={8}
-            initialNumToRender={6}
+            maxToRenderPerBatch={4}
+            initialNumToRender={3}
+            updateCellsBatchingPeriod={100}
           />
           {/** Input Text for new Comment */}
           <View style={styles.textInputContainer}>

@@ -8,16 +8,33 @@ import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 
 const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    fetchQuestions();
-  }, [fetchQuestions]);
+    const fetchQuestions = firestore()
+      .collection('questions')
+      .onSnapshot((querySnapshot) => {
+        const q = [];
+        querySnapshot &&
+          querySnapshot.forEach((documentSnapshot) => {
+            q.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+        setQuestions(q);
+      });
+    return () => {
+      fetchQuestions();
+    };
+  }, []);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchQuestions();
-    setRefreshing(false);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, [fetchQuestions]);
 
   const fetchQuestions = useCallback(async () => {
@@ -76,8 +93,9 @@ const HomeScreen = ({ navigation }) => {
         ListFooterComponent={lastItem}
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
-        maxToRenderPerBatch={8}
-        initialNumToRender={5}
+        maxToRenderPerBatch={4}
+        initialNumToRender={3}
+        updateCellsBatchingPeriod={100}
       />
       {/* FAB */}
       <FloatingAskQuestionButton navigation={navigation} />
