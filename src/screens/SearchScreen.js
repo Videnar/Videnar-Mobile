@@ -59,13 +59,17 @@ const SearchScreen = ({ navigation }) => {
         containerStyle={styles.Search}
         inputContainerStyle={styles.SearchInput}
         onChangeText={(text) => setInput(text)}
+        onClear={() => setResults([])}
         value={input}
       />
       <Button title="Search" onPress={search} />
       <FlatList
         data={results}
         renderItem={RenderItem}
-        keyExtractor={(item) => item._highlightResult.objectID}
+        keyExtractor={(item) => item.objectID}
+        maxToRenderPerBatch={4}
+        initialNumToRender={3}
+        updateCellsBatchingPeriod={100}
       />
       <FloatingAskQuestionButton navigation={navigation} />
     </View>
