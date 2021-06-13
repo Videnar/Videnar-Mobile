@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
+import { Dimensions } from 'react-native';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Text } from 'react-native-elements';
+import { GREY } from '../assets/colors/colors';
 
-const DEFAULT_HEIGHT = 49;
+const DEFAULT_HEIGHT = Dimensions.get('window').width * 0.1;
 
 const QuestionBodyComponent = ({ content, param }) => {
   // html contents to show
   const HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                         </head>
-                        <body style="text-align:auto; letter-spacing:0.4; font-size: 15px" >
+                        <body 
+                          style="
+                            text-align:auto; 
+                            letter-spacing:0.5; 
+                            font-size: 1.075rem;
+                            color: black" >
                           <div>${content}</div>
                         </body>`;
   const [isMoreButtonVisible, setIsMoreButtonVisible] = useState(false);
@@ -67,10 +74,14 @@ const styles = StyleSheet.create({
   moreContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    height: 20,
   },
   moreText: {
-    color: 'grey',
+    color: GREY,
     fontWeight: 'bold',
+    letterSpacing: 0.7,
+    paddingRight: 10,
+    fontSize: 16,
   },
 });
 

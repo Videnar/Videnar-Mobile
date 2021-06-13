@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation.js';
+import { YELLOW } from '../assets/colors/colors';
 
 const NavLink = ({ text, routeName }) => {
   return (
@@ -15,7 +16,7 @@ const NavLink = ({ text, routeName }) => {
 
 const styles = StyleSheet.create({
   link: {
-    color: '#85898f',
+    color: YELLOW,
     fontSize: 19,
     fontWeight: 'bold',
     textAlign: 'center',

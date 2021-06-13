@@ -4,6 +4,7 @@ import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button, Input } from 'react-native-elements';
+import { DEEP_GREEN, LIGHT_GREEN, YELLOW } from '../assets/colors/colors';
 
 const AuthForm = ({
   headerText,
@@ -16,6 +17,10 @@ const AuthForm = ({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [nameFocus, setNameFocus] = useState(false);
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [pwdFocus, setPwdFocus] = useState(false);
 
   const forgotPasswordHandler = () => {
     RootNavigation.navigate('ForgotPassword');
@@ -35,33 +40,44 @@ const AuthForm = ({
           <>
             <Input
               placeholder="your name"
-              leftIcon={<Icon name="person" size={24} color="#666666" />}
+              leftIcon={<Icon name="person" size={24} color="#5A5A5A" />}
               value={name}
               onChangeText={setName}
               autoCapitalize="none"
               autoCorrect={false}
               style={styles.textInput}
+              inputContainerStyle={
+                nameFocus ? styles.focused : styles.notFocused
+              }
+              onFocus={() => setNameFocus(true)}
+              onBlur={() => setNameFocus(false)}
             />
           </>
         ) : null}
         <Input
           placeholder="email@address.com"
-          leftIcon={<Icon name="email" size={24} color="#666666" />}
+          leftIcon={<Icon name="email" size={24} color="#5A5A5A" />}
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
           autoCorrect={false}
           inputStyle={styles.textInput}
+          inputContainerStyle={emailFocus ? styles.focused : styles.notFocused}
+          onFocus={() => setEmailFocus(true)}
+          onBlur={() => setEmailFocus(false)}
         />
         <Input
           secureTextEntry={true}
           placeholder="password"
-          leftIcon={<Icon name="lock" size={24} color="#666666" />}
+          leftIcon={<Icon name="lock" size={24} color="#5A5A5A" />}
           value={password}
           onChangeText={setPassword}
           autoCapitalize="none"
           autoCorrect={false}
           inputStyle={styles.textInput}
+          inputContainerStyle={pwdFocus ? styles.focused : styles.notFocused}
+          onFocus={() => setPwdFocus(true)}
+          onBlur={() => setPwdFocus(false)}
         />
         {forgotPassword ? (
           <Text
@@ -89,6 +105,11 @@ const AuthForm = ({
 };
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: YELLOW,
+  },
   errorMessage: {
     fontSize: 16,
     color: 'red',
@@ -119,16 +140,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   buttonLogin: {
-    backgroundColor: '#F07D60',
+    backgroundColor: DEEP_GREEN,
     borderRadius: 10,
   },
   buttonSignup: {
-    backgroundColor: '#825399',
+    backgroundColor: DEEP_GREEN,
     borderRadius: 10,
   },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 22,
+  notFocused: {
+    borderColor: 'grey',
+  },
+  focused: {
+    borderColor: LIGHT_GREEN,
   },
 });
 

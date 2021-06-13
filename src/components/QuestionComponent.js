@@ -7,6 +7,7 @@ import QuestionHeaderComponent from './QuestionHeaderComponent';
 import QuestionBodyComponent from './QuestionBodyComponent';
 import QuestionBottomComponent from './QuestionBottomComponent';
 import QuestionMoreOverlayComponent from './QuestionMoreOverLayComponent';
+import { WHITE } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginHorizontal: 0,
     marginVertical: 5,
+    borderColor: WHITE,
   },
 });
 
