@@ -37,7 +37,7 @@ const MainTabs = () => (
   <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
-      activeTintColor: '#e91e63',
+      activeTintColor: DEEP_GREEN,
       showIcon: true,
       style: { backgroundColor: 'white' },
       showLabel: false,

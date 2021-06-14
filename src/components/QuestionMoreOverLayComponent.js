@@ -25,6 +25,7 @@ const QuestionMoreOverlayComponent = ({
       tags,
       questionId: id,
       functionName: 'updateQuestion',
+      headerText: 'Update Your Question',
     });
   };
 

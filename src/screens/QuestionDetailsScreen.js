@@ -133,6 +133,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           navigation.navigate('EditorScreen', {
             questionId: questionIdfromProps,
             functionName: 'submitAnswer',
+            headerText: 'Write an Answer',
           })
         }
         color="#3DDC84"

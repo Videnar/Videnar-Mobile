@@ -14,6 +14,7 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
       questionId,
       answerId,
       functionName: 'updateAnswer',
+      headerText: 'Update Your Answer',
     });
   };
 
