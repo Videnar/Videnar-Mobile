@@ -102,10 +102,10 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
   return (
     <View style={styles.bottomContainer}>
       {/** Answer Approval */}
-      <View style={styles.feedBackContainer}>
+      {/* <View style={styles.feedBackContainer}>
         <Icon type="material" name="history" size={16} />
         <Text style={styles.feedBackText}>Pending</Text>
-      </View>
+      </View> */}
       <UpVoteDownVoteComponent
         upVotes={answer.upvotes}
         upVoteEditable={upVoteEditable}

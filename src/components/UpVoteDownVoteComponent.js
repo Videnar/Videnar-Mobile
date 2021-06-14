@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { Icon, Text, Tooltip } from 'react-native-elements';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+
+const WIDTH = Dimensions.get('window').width;
 
 const UpVoteDownVoteComponent = ({
   upVotes,
@@ -17,8 +20,8 @@ const UpVoteDownVoteComponent = ({
     downVote: false,
   });
   const [voteColor, setVoteColor] = useState({
-    upVote: '#AAABAD',
-    downVote: '#AAABAD',
+    upVote: GREY,
+    downVote: GREY,
   });
 
   const [isVoteEditable, setIsVoteEditable] = useState(false);
@@ -30,8 +33,8 @@ const UpVoteDownVoteComponent = ({
         downVote: userVoteValue.downVote,
       });
       setVoteColor({
-        upVote: userVoteValue.upVote ? '#F07D60' : '#AAABAD',
-        downVote: userVoteValue.downVote ? '#F07D60' : '#AAABAD',
+        upVote: userVoteValue.upVote ? DEEP_GREEN : GREY,
+        downVote: userVoteValue.downVote ? DEEP_GREEN : GREY,
       });
     }
 
@@ -48,15 +51,15 @@ const UpVoteDownVoteComponent = ({
 
         if (!prevUpVoteValue && prevDownVoteValue) {
           voteCountRef.current = upVotes + 2;
-          setVoteColor({ upVote: '#F07D60', downVote: '#AAABAD' });
+          setVoteColor({ upVote: DEEP_GREEN, downVote: GREY });
           voteType = 'Up';
         } else if (!prevUpVoteValue && !prevDownVoteValue) {
           voteCountRef.current = upVotes + 1;
-          setVoteColor({ upVote: '#F07D60', downVote: '#AAABAD' });
+          setVoteColor({ upVote: DEEP_GREEN, downVote: GREY });
           voteType = 'Up';
         } else {
           voteCountRef.current = upVotes - 1;
-          setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
+          setVoteColor({ upVote: GREY, downVote: GREY });
         }
 
         setIsVoteClicked({ upVote: !isVoteClicked.upVote, downVote: false });
@@ -69,22 +72,22 @@ const UpVoteDownVoteComponent = ({
 
         if (!prevDownVoteValue && prevUpVoteValue) {
           voteCountRef.current = upVotes - 2;
-          setVoteColor({ upVote: '#AAABAD', downVote: '#F07D60' });
+          setVoteColor({ upVote: GREY, downVote: DEEP_GREEN });
           voteType = 'Down';
         } else if (!prevDownVoteValue && !prevUpVoteValue) {
           voteCountRef.current = upVotes - 1;
-          setVoteColor({ upVote: '#AAABAD', downVote: '#F07D60' });
+          setVoteColor({ upVote: GREY, downVote: DEEP_GREEN });
           voteType = 'Down';
         } else {
           voteCountRef.current = upVotes + 1;
-          setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
+          setVoteColor({ upVote: GREY, downVote: GREY });
         }
 
         setIsVoteClicked({ upVote: false, downVote: !isVoteClicked.downVote });
         break;
       }
       default: {
-        setVoteColor({ upVote: '#AAABAD', downVote: '#AAABAD' });
+        setVoteColor({ upVote: GREY, downVote: GREY });
       }
     }
 
@@ -94,7 +97,9 @@ const UpVoteDownVoteComponent = ({
 
   return (
     <>
-      <Text style={styles.upVotes}>Upvotes: {voteCountRef.current}</Text>
+      <View style={styles.upvoteContainer}>
+        <Text style={styles.upVotes}>Upvotes: {voteCountRef.current}</Text>
+      </View>
       {isVoteEditable ? (
         <View style={styles.vote}>
           {/**UpVote */}
@@ -163,6 +168,15 @@ const styles = StyleSheet.create({
   disabled: {
     backgroundColor: 'white',
     elevation: 3,
+  },
+  upvoteContainer: {
+    width: WIDTH * 0.35,
+    alignItems: 'center',
+  },
+  upVotes: {
+    color: GREY,
+    letterSpacing: 1,
+    fontWeight: '700',
   },
 });
 

@@ -102,7 +102,7 @@ const EditorScreen = ({
             type="material"
             onPress={goBack}
             color={GREY}
-            size={35}
+            size={30}
           />
         }
         centerComponent={{ text: headerText, style: styles.headerText }}

@@ -10,6 +10,7 @@ import {
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
+import { GREY } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -123,7 +124,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       <TouchableOpacity
         style={styles.container}
         onPress={onOpenedCommentHandler}>
-        <Icon type="material" name="chat-bubble" color="#595654" />
+        <Icon type="material" name="chat-bubble" color={GREY} />
         <Text style={styles.text}>Comments on Question</Text>
       </TouchableOpacity>
       {/**Comments Overlay */}
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1,
     paddingLeft: 5,
+    color: GREY,
   },
   headerText: {
     fontSize: 18,

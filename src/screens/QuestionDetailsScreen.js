@@ -8,7 +8,7 @@ import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
-import { WHITE } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -67,14 +67,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           <Icon
             type="material"
             name="arrow-back"
+            size={30}
+            color={GREY}
             onPress={() => navigation.goBack()}
-          />
-        }
-        rightComponent={
-          <Icon
-            type="material"
-            name="more-vert"
-            onPress={() => console.log('Clicked')}
           />
         }
         backgroundColor="white"
@@ -136,7 +131,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
             headerText: 'Write an Answer',
           })
         }
-        color="#3DDC84"
+        color={DEEP_GREEN}
       />
     </>
   );
@@ -166,11 +161,12 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#2E2E2E',
+    color: GREY,
     marginVertical: 5,
     marginHorizontal: 10,
+    letterSpacing: 1.2,
   },
   footerText: {
     height: 100,
