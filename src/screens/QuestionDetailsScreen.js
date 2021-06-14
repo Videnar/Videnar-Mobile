@@ -19,7 +19,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
     state: { userDisplayName, userID },
   } = useContext(Context);
 
-  const [question, setQuestion] = useState({});
+  const [question, setQuestion] = useState({
+    content: '',
+  });
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {

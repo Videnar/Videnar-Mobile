@@ -9,7 +9,8 @@ const UpVoteDownVoteComponent = ({
   addUpvoteData,
   userVoteValue,
 }) => {
-  const voteCountRef = useRef(upVotes);
+  const voteCountRef = useRef();
+  voteCountRef.current = upVotes;
 
   const [isVoteClicked, setIsVoteClicked] = useState({
     upVote: false,
@@ -34,9 +35,7 @@ const UpVoteDownVoteComponent = ({
       });
     }
 
-    return () => {
-      upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
-    };
+    upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
   }, [userVoteValue, upVoteEditable]);
 
   const onVotePressHandler = (actionType) => {
