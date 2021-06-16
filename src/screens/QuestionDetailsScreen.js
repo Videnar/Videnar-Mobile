@@ -8,7 +8,7 @@ import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
-import { WHITE } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -19,10 +19,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
     state: { userDisplayName, userID },
   } = useContext(Context);
 
-  const [question, setQuestion] = useState({
-    content: '',
-  });
+  const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
+  const [loadingQuestion, setLoadingQuestion] = useState(true);
 
   useEffect(() => {
     const fetchQuestion = firestore()
@@ -31,8 +30,16 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           setQuestion(querySnapshot._data);
+          setLoadingQuestion(false);
         }
       });
+    // clean up
+    return () => {
+      fetchQuestion();
+    };
+  }, [questionIdfromProps]);
+
+  useEffect(() => {
     const fetchAnswers = firestore()
       .collection('questions')
       .doc(questionIdfromProps)
@@ -48,9 +55,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           });
         setAnswers(ans);
       });
-    // clean up
     return () => {
-      fetchQuestion();
       fetchAnswers();
     };
   }, [questionIdfromProps]);
@@ -67,14 +72,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           <Icon
             type="material"
             name="arrow-back"
+            size={30}
+            color={GREY}
             onPress={() => navigation.goBack()}
-          />
-        }
-        rightComponent={
-          <Icon
-            type="material"
-            name="more-vert"
-            onPress={() => console.log('Clicked')}
           />
         }
         backgroundColor="white"
@@ -83,7 +83,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         ListHeaderComponent={
           <>
             {/** Question is Displayed */}
-            {question && (
+            {loadingQuestion ? (
+              <Text>Loading</Text>
+            ) : (
               <Card containerStyle={styles.card}>
                 <QuestionHeaderComponent
                   userDisplayName={question.userDisplayName}
@@ -133,9 +135,10 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           navigation.navigate('EditorScreen', {
             questionId: questionIdfromProps,
             functionName: 'submitAnswer',
+            headerText: 'Write an Answer',
           })
         }
-        color="#3DDC84"
+        color={DEEP_GREEN}
       />
     </>
   );
@@ -165,11 +168,12 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#2E2E2E',
+    color: GREY,
     marginVertical: 5,
     marginHorizontal: 10,
+    letterSpacing: 1.2,
   },
   footerText: {
     height: 100,

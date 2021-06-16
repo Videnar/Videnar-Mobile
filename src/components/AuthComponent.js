@@ -4,7 +4,7 @@ import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button, Input } from 'react-native-elements';
-import { DEEP_GREEN, LIGHT_GREEN, YELLOW } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, LIGHT_GREEN, YELLOW } from '../assets/colors/colors';
 
 const AuthForm = ({
   headerText,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 22,
-    color: YELLOW,
+    color: GREY,
   },
   errorMessage: {
     fontSize: 16,

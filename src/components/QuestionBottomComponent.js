@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
-import { GREY, YELLOW } from '../assets/colors/colors';
+import { GREY } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upvoteText: {
-    color: YELLOW,
+    color: GREY,
+    letterSpacing: 1,
+    fontWeight: '700',
   },
 });
 

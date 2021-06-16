@@ -1,6 +1,6 @@
 import React from 'react';
 import { FAB, Icon } from 'react-native-elements';
-import { ORANGE } from '../assets/colors/colors';
+import { DEEP_GREEN } from '../assets/colors/colors';
 
 const FloatingAskQuestionButton = ({ navigation }) => {
   return (
@@ -8,13 +8,16 @@ const FloatingAskQuestionButton = ({ navigation }) => {
       placement="right"
       size="large"
       onPress={() => {
-        navigation.navigate('EditorScreen', { functionName: 'submitQuestion' });
+        navigation.navigate('EditorScreen', {
+          functionName: 'submitQuestion',
+          headerText: 'Ask a Question',
+        });
       }}
       icon={
         <Icon
           type="material"
           name="live-help"
-          color={ORANGE}
+          color={DEEP_GREEN}
           size={28}
           reverse
           raised

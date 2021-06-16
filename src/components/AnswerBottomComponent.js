@@ -1,6 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 import { Context } from '../contexts';
@@ -10,8 +15,8 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
     state: { userID },
   } = useContext(Context);
 
-  const [userUpVoteData, setUserUpVoteData] = useState();
-  const [userUpVoteId, setUserUpVoteId] = useState();
+  const [userUpVoteData, setUserUpVoteData] = useState({});
+  const upVoteIdRef = useRef('');
   const [userVoteValue, setUserVoteValue] = useState({
     upVote: false,
     downVote: false,
@@ -21,7 +26,19 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
   const [userExistsInUpVote, setUserExistsInUpVote] = useState(false);
 
   useEffect(() => {
-    const checkuserExistsInUpVote = async () => {
+    if (answer.userID === userID) {
+      setUpVoteEditable(false);
+    } else {
+      checkuserExistsInUpVote();
+      setUpVoteEditable(true);
+    }
+    return () => {
+      setUserUpVoteData({});
+    };
+  }, [userID, answer.userID, checkuserExistsInUpVote]);
+
+  const checkuserExistsInUpVote = useCallback(async () => {
+    try {
       const upvotesRef = await firestore()
         .collection('questions')
         .doc(questionId)
@@ -34,7 +51,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         .get();
       await upVoteSnapshot.forEach((doc) => {
         setUserUpVoteData(doc.data());
-        setUserUpVoteId(doc.id);
+        upVoteIdRef.current = doc.id;
         setUserExistsInUpVote(true);
 
         if (doc.data().voteType === 'Up') {
@@ -49,16 +66,10 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
           });
         }
       });
-    };
-    return () => {
-      if (answer.userID === userID) {
-        setUpVoteEditable(false);
-      } else {
-        checkuserExistsInUpVote();
-        setUpVoteEditable(true);
-      }
-    };
-  }, [questionId, answer.id, userID, answer.userID]);
+    } catch {
+      console.log("Can't find from Database");
+    }
+  }, [questionId, answer.id, userID]);
 
   const updateUpvoteCountHandler = async (count) => {
     await firestore()
@@ -74,38 +85,65 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
 
   const addUpvoteData = async (voteType) => {
     if (userExistsInUpVote) {
-      await firestore()
-        .collection('questions')
-        .doc(questionId)
-        .collection('answers')
-        .doc(answer.id)
-        .collection('upvotes')
-        .doc(userUpVoteId)
-        .update({
-          ...userUpVoteData,
-          voteType: voteType,
-        });
+      if (voteType === '') {
+        try {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('answers')
+            .doc(answer.id)
+            .collection('upvotes')
+            .doc(upVoteIdRef.current)
+            .delete();
+          setUserExistsInUpVote(false);
+          setUserUpVoteData({});
+          upVoteIdRef.current = '';
+        } catch {
+          console.log('Error while Deleting from upvotes');
+        }
+      } else {
+        try {
+          await firestore()
+            .collection('questions')
+            .doc(questionId)
+            .collection('answers')
+            .doc(answer.id)
+            .collection('upvotes')
+            .doc(upVoteIdRef.current)
+            .update({
+              ...userUpVoteData,
+              voteType: voteType,
+            });
+        } catch {
+          console.log('Error while Updating in upvotes');
+        }
+      }
     } else {
-      await firestore()
-        .collection('questions')
-        .doc(questionId)
-        .collection('answers')
-        .doc(answer.id)
-        .collection('upvotes')
-        .add({
-          userId: userID,
-          voteType: voteType,
-        });
+      try {
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('answers')
+          .doc(answer.id)
+          .collection('upvotes')
+          .add({
+            userId: userID,
+            voteType: voteType,
+          });
+      } catch {
+        console.log('Error while adding to upvotes');
+      }
     }
+    checkuserExistsInUpVote();
   };
 
   return (
     <View style={styles.bottomContainer}>
       {/** Answer Approval */}
-      <View style={styles.feedBackContainer}>
+      {/* <View style={styles.feedBackContainer}>
         <Icon type="material" name="history" size={16} />
         <Text style={styles.feedBackText}>Pending</Text>
-      </View>
+      </View> */}
       <UpVoteDownVoteComponent
         upVotes={answer.upvotes}
         upVoteEditable={upVoteEditable}

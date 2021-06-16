@@ -6,11 +6,12 @@ import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const EditorScreen = ({
   navigation: { goBack },
   route: {
-    params: { content, questionId, answerId, functionName },
+    params: { content, questionId, answerId, functionName, headerText },
   },
 }) => {
   const {
@@ -18,6 +19,7 @@ const EditorScreen = ({
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
   const editorContentRef = useRef(content ? content : defaultContent);
+  console.log('Header ->', headerText);
 
   const saveToCloud = async (str) => {
     if (str === defaultContent) {
@@ -99,11 +101,11 @@ const EditorScreen = ({
             name="arrow-back"
             type="material"
             onPress={goBack}
-            color="#EE5A5A"
-            size={35}
+            color={GREY}
+            size={30}
           />
         }
-        centerComponent={{ text: 'Ask a Question', style: styles.headerText }}
+        centerComponent={{ text: headerText, style: styles.headerText }}
         rightComponent={
           // Submit Button
           <Button
@@ -131,9 +133,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#EE5A5A',
+    color: DEEP_GREEN,
     letterSpacing: 0.5,
     right: 30,
   },
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   buttonText: {
-    color: '#FFB174',
+    color: GREY,
     fontWeight: 'bold',
     letterSpacing: 0.5,
     textAlign: 'center',

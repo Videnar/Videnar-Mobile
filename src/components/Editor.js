@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
+import { GREY, WHITE } from '../assets/colors/colors';
 import ImagePickerOverlay from './ImagePickerOverlay';
 
 const Editor = ({ contentRef }) => {
@@ -17,9 +18,9 @@ const Editor = ({ contentRef }) => {
 
   const toolTheme = {
     size: 30,
-    color: '#615353',
-    background: '#FFB174',
-    overlay: 'rgba(0,0,0,.1)',
+    color: GREY,
+    background: WHITE,
+    overlay: 'rgba(92,92,92,.1)',
   };
 
   const customHandler = (name) => {
