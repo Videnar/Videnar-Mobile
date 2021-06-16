@@ -37,7 +37,6 @@ const UpVoteDownVoteComponent = ({
         downVote: userVoteValue.downVote ? DEEP_GREEN : GREY,
       });
     }
-
     upVoteEditable ? setIsVoteEditable(true) : setIsVoteEditable(false);
   }, [userVoteValue, upVoteEditable]);
 

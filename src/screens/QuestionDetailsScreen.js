@@ -19,10 +19,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
     state: { userDisplayName, userID },
   } = useContext(Context);
 
-  const [question, setQuestion] = useState({
-    content: '',
-  });
+  const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
+  const [loadingQuestion, setLoadingQuestion] = useState(true);
 
   useEffect(() => {
     const fetchQuestion = firestore()
@@ -31,8 +30,16 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           setQuestion(querySnapshot._data);
+          setLoadingQuestion(false);
         }
       });
+    // clean up
+    return () => {
+      fetchQuestion();
+    };
+  }, [questionIdfromProps]);
+
+  useEffect(() => {
     const fetchAnswers = firestore()
       .collection('questions')
       .doc(questionIdfromProps)
@@ -48,9 +55,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           });
         setAnswers(ans);
       });
-    // clean up
     return () => {
-      fetchQuestion();
       fetchAnswers();
     };
   }, [questionIdfromProps]);
@@ -78,7 +83,9 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         ListHeaderComponent={
           <>
             {/** Question is Displayed */}
-            {question && (
+            {loadingQuestion ? (
+              <Text>Loading</Text>
+            ) : (
               <Card containerStyle={styles.card}>
                 <QuestionHeaderComponent
                   userDisplayName={question.userDisplayName}

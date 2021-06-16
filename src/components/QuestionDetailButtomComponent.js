@@ -1,6 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 import { Context } from '../contexts';
@@ -10,8 +15,8 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
     state: { userID },
   } = useContext(Context);
 
-  const [userUpVoteData, setUserUpVoteData] = useState();
-  const [userUpVoteId, setUserUpVoteId] = useState();
+  const [userUpVoteData, setUserUpVoteData] = useState('');
+  const upVoteIdRef = useRef('');
   const [userVoteValue, setUserVoteValue] = useState({
     upVote: false,
     downVote: false,
@@ -21,40 +26,42 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
   const [userExistsInUpVote, setUserExistsInUpVote] = useState(false);
 
   useEffect(() => {
-    const checkuserExistsInUpVote = async () => {
-      const upvotesRef = await firestore()
-        .collection('questions')
-        .doc(questionId)
-        .collection('upvotes');
-
-      const upVoteSnapshot = await upvotesRef
-        .where('userId', '==', userID)
-        .get();
-      await upVoteSnapshot.forEach((doc) => {
-        setUserUpVoteData(doc.data());
-        setUserUpVoteId(doc.id);
-        setUserExistsInUpVote(true);
-
-        if (doc.data().voteType === 'Up') {
-          setUserVoteValue({
-            upVote: true,
-            downVote: false,
-          });
-        } else if (doc.data().voteType === 'Down') {
-          setUserVoteValue({
-            upVote: false,
-            downVote: true,
-          });
-        }
-      });
-    };
     if (question.userID === userID) {
       setUpVoteEditable(false);
     } else {
       checkuserExistsInUpVote();
       setUpVoteEditable(true);
     }
-  }, [questionId, userID, question.userID]);
+    return () => {
+      setUserUpVoteData({});
+    };
+  }, [userID, question.userID, checkuserExistsInUpVote]);
+
+  const checkuserExistsInUpVote = useCallback(async () => {
+    const upvotesRef = await firestore()
+      .collection('questions')
+      .doc(questionId)
+      .collection('upvotes');
+
+    const upVoteSnapshot = await upvotesRef.where('userId', '==', userID).get();
+    await upVoteSnapshot.forEach((doc) => {
+      setUserUpVoteData(doc.data());
+      upVoteIdRef.current = doc.id;
+      setUserExistsInUpVote(true);
+
+      if (doc.data().voteType === 'Up') {
+        setUserVoteValue({
+          upVote: true,
+          downVote: false,
+        });
+      } else if (doc.data().voteType === 'Down') {
+        setUserVoteValue({
+          upVote: false,
+          downVote: true,
+        });
+      }
+    });
+  }, [questionId, userID]);
 
   const updateUpvoteCountHandler = async (count) => {
     await firestore()
@@ -68,15 +75,25 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
 
   const addUpvoteData = async (voteType) => {
     if (userExistsInUpVote) {
-      await firestore()
-        .collection('questions')
-        .doc(questionId)
-        .collection('upvotes')
-        .doc(userUpVoteId)
-        .update({
-          ...userUpVoteData,
-          voteType: voteType,
-        });
+      if (voteType === '') {
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('upvotes')
+          .doc(upVoteIdRef.current)
+          .delete();
+        setUserExistsInUpVote(false);
+      } else {
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .collection('upvotes')
+          .doc(upVoteIdRef.current)
+          .update({
+            ...userUpVoteData,
+            voteType: voteType,
+          });
+      }
     } else {
       await firestore()
         .collection('questions')
@@ -87,6 +104,7 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
           voteType: voteType,
         });
     }
+    checkuserExistsInUpVote();
   };
 
   return (
