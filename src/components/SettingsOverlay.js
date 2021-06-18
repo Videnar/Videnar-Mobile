@@ -11,6 +11,7 @@ import {
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -95,14 +96,14 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     paddingLeft: 10,
-    fontWeight: '200',
+    fontWeight: 'bold',
+    color: GREY,
   },
   button: {
-    position: 'relative',
-    backgroundColor: 'orange',
+    alignSelf: 'center',
+    backgroundColor: DEEP_GREEN,
     borderRadius: 10,
-    width: 100,
-    marginLeft: 10,
+    width: '80%',
   },
 });
 

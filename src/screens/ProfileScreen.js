@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { Text, Card, Header, Button } from 'react-native-elements';
+import { Text, Header, Button, Divider } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileMoreComponent from '../components/ProfileMoreComponent';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -80,21 +81,23 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.nameText}>{userDisplayName}</Text>
           <Text style={styles.educationText}>Education: {education}</Text>
           {branch && <Text h5>Branch : {branch}</Text>}
-          <Text style={styles.educationText}>Exams:</Text>
-          {exams.map((exam, index) => (
-            <Text key={index} style={styles.examtags}>
-              {exam}
-            </Text>
-          ))}
+          <Text style={styles.examText}>
+            Exams:{' '}
+            {exams.map((exam, index) => (
+              <Text key={index} style={styles.examtags}>
+                {exam}
+              </Text>
+            ))}
+          </Text>
         </View>
       </View>
-      <Card.Divider />
-      <Card containerStyle={styles.activityCard}>
+      <Divider />
+      {/* <Card containerStyle={styles.activityCard}>
         <View style={styles.activity}>
           <Text>5 Questions Asked</Text>
           <Text>12 Questions Answered</Text>
         </View>
-      </Card>
+      </Card> */}
       <ProfileEditableComponent navigation={navigation} />
       <Button
         type="clear"
@@ -114,47 +117,53 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
+  profile: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
   picture: {
     width: 100,
     height: 100,
     borderRadius: 100,
-    marginLeft: 20,
-    marginVertical: 10,
     borderWidth: 1,
     borderColor: 'grey',
   },
-  profile: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   details: {
-    paddingLeft: 40,
-    paddingTop: 5,
+    justifyContent: 'space-around',
   },
   nameText: {
     fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: 1.4,
-    color: '#474949',
+    color: GREY,
   },
   educationText: {
     fontSize: 16,
-    letterSpacing: 1.6,
-    color: 'black',
+    letterSpacing: 1,
+    color: GREY,
+  },
+  examText: {
+    fontSize: 16,
+    letterSpacing: 1,
+    color: GREY,
   },
   examtags: {
-    color: 'red',
+    color: DEEP_GREEN,
+    letterSpacing: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  activity: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
-  activityCard: {
-    flex: 1,
-    borderRadius: 10,
-    elevation: 2,
-  },
+  // activityCard: {
+  //   flex: 1,
+  //   borderRadius: 10,
+  //   elevation: 2,
+  // },
+  // activity: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-around',
+  //   padding: 10,
+  // },
   signOutButton: {
     marginTop: 10,
     width: WIDTH * 0.5,
