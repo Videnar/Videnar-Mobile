@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  ScrollView,
-  View,
-  Dimensions,
-} from 'react-native';
+import { Pressable, StyleSheet, ScrollView, View } from 'react-native';
 import {
   Overlay,
   Button,
@@ -14,9 +8,8 @@ import {
   Header,
   Icon,
 } from 'react-native-elements';
+import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
-
-const WIDTH = Dimensions.get('window').width;
 
 const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
   const [visibleExamSelection, setVisibleExamSelection] = useState('false');
@@ -74,7 +67,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
           </ListItem.Title>
           <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
         </ListItem.Content>
-        <Icon type="material" name="check-circle" color="#3DDC84" />
+        <Icon type="material" name="check-circle" color={LIGHT_GREEN} />
       </ListItem>
     ) : (
       // Item not Selected
@@ -83,7 +76,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
           <ListItem.Title>{item.key}</ListItem.Title>
           <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
         </ListItem.Content>
-        <Icon type="material" name="radio-button-unchecked" color="black" />
+        <Icon type="material" name="radio-button-unchecked" color={GREY} />
       </ListItem>
     ),
   );
@@ -95,7 +88,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
         onPress={() => setVisibleExamSelection(true)}
         style={styles.selector}>
         <Text style={styles.innerText}>{selectText}</Text>
-        <Icon name="library-add" type="material" />
+        <Icon name="library-add" type="material" color={GREY} />
       </Pressable>
       <Overlay
         isVisible={visibleExamSelection}
@@ -108,7 +101,8 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
           leftComponent={{
             icon: 'arrow-back',
             onPress: continueHandler,
-            color: 'purple',
+            color: GREY,
+            size: 30,
           }}
           centerComponent={{
             text: 'Select Exams',
@@ -121,6 +115,7 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
           title="Continue"
           onPress={continueHandler}
           buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
         />
       </Overlay>
     </View>
@@ -137,37 +132,38 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 8,
     letterSpacing: 1,
+    color: GREY,
   },
   selector: {
-    width: WIDTH * 0.9,
+    width: '100%',
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderWidth: 1,
     borderRadius: 8,
-    elevation: 3,
-    paddingHorizontal: 20,
+    elevation: 7,
+    alignSelf: 'center',
   },
   innerText: {
     fontSize: 15,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'purple',
+    color: DEEP_GREEN,
     letterSpacing: 1,
   },
   itemSelected: {
-    color: '#3DDC84',
-  },
-  itemNotSelected: {
-    color: 'black',
+    color: DEEP_GREEN,
   },
   button: {
-    backgroundColor: '#3DDC84',
+    backgroundColor: DEEP_GREEN,
+    width: '95%',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
   },
 });
 

@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  View,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { Pressable, StyleSheet, View, ScrollView } from 'react-native';
 import { Text, Overlay, ListItem, Header, Icon } from 'react-native-elements';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { Branches } from '../utilities/constants/education';
-
-const WIDTH = Dimensions.get('window').width;
 
 const BranchSelectionComponent = ({ userPref }) => {
   const [showBranchOverlay, setShowBranchOverlay] = useState(false);
@@ -38,7 +31,7 @@ const BranchSelectionComponent = ({ userPref }) => {
         onPress={() => setShowBranchOverlay(true)}
         style={styles.selector}>
         <Text style={styles.innerText}>{selectText}</Text>
-        <Icon name="arrow-drop-down" type="material" />
+        <Icon name="arrow-drop-down" type="material" color={GREY} />
       </Pressable>
       <Overlay
         isVisible={showBranchOverlay}
@@ -51,7 +44,8 @@ const BranchSelectionComponent = ({ userPref }) => {
           leftComponent={{
             icon: 'arrow-back',
             onPress: () => setShowBranchOverlay(false),
-            color: 'orange',
+            color: GREY,
+            size: 30,
           }}
           centerComponent={{
             text: 'Select Your Branch',
@@ -75,19 +69,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 8,
     letterSpacing: 1,
+    color: GREY,
   },
   selector: {
-    width: WIDTH * 0.9,
+    width: '100%',
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderWidth: 1,
     borderRadius: 8,
-    elevation: 3,
-    paddingHorizontal: 20,
+    elevation: 7,
   },
   list: {
     justifyContent: 'space-between',
@@ -97,10 +89,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'orange',
-    letterSpacing: 0.5,
+    color: DEEP_GREEN,
+    letterSpacing: 1,
   },
 });
 

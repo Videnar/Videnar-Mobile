@@ -46,11 +46,11 @@ const ProfileMoreComponent = () => {
         <TouchableOpacity
           onPress={contactSupportHandler}
           style={styles.pressable}>
-          <Text>Contact Us</Text>
+          <Text style={styles.text}>Contact Us</Text>
           <Icon type="material" name="info" color="blue" size={22} />
         </TouchableOpacity>
         <TouchableOpacity onPress={shareAppHandler} style={styles.pressable}>
-          <Text>Share Our App</Text>
+          <Text style={styles.text}>Share Our App</Text>
           <Icon type="material" name="share" color="green" size={22} />
         </TouchableOpacity>
       </Overlay>
@@ -70,8 +70,9 @@ const styles = StyleSheet.create({
     top: 35,
     elevation: 20,
     borderRadius: 8,
-    width: 140,
-    padding: 10,
+    width: 150,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
   },
   backdrop: {
     backgroundColor: 'transparent',
@@ -80,6 +81,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  text: {
+    letterSpacing: 1,
   },
 });
 

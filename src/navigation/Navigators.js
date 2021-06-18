@@ -48,22 +48,24 @@ const MainTabs = () => (
         let fontsize;
         let colorName;
         let style;
+        const SELECTED_ICON_SIZE = 40;
+        const NOT_SELECTED_ICON_SIZE = 34;
         if (route.name === 'Home') {
           iconName = 'home';
-          fontsize = focused ? 40 : 34;
+          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
           colorName = focused ? DEEP_GREEN : GREY;
         } else if (route.name === 'Activity') {
           iconName = 'done-all';
-          fontsize = focused ? 40 : 34;
+          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
           colorName = focused ? DEEP_GREEN : GREY;
         } else if (route.name === 'Search') {
           iconName = 'search';
-          fontsize = focused ? 40 : 34;
+          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
           colorName = focused ? DEEP_GREEN : GREY;
           style = { transform: [{ rotateY: '180deg' }] };
         } else {
           iconName = 'person';
-          fontsize = focused ? 40 : 34;
+          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
           colorName = focused ? DEEP_GREEN : GREY;
         }
 
@@ -74,6 +76,7 @@ const MainTabs = () => (
             color={colorName}
             size={fontsize}
             iconStyle={style}
+            containerStyle={{ width: 45 }}
           />
         );
       },

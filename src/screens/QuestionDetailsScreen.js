@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Card, FAB, Header, Icon, Text } from 'react-native-elements';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
@@ -9,9 +9,6 @@ import QuestionDetailBottomComponent from '../components/QuestionDetailButtomCom
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT = Dimensions.get('window').height;
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
@@ -146,7 +143,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: WIDTH,
+    width: '100%',
     elevation: 2,
     marginHorizontal: 0,
     marginVertical: 5,
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    height: HEIGHT,
+    height: '100%',
     backgroundColor: 'white',
     alignItems: 'center',
   },

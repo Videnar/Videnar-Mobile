@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-  Dimensions,
-} from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Overlay, Header, ListItem, Icon } from 'react-native-elements';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
-
-const WIDTH = Dimensions.get('window').width;
 
 const EducationSelectionComponent = ({ userPref }) => {
   const [showEduOverlay, setShowEduOverlay] = useState(false);
@@ -37,7 +30,7 @@ const EducationSelectionComponent = ({ userPref }) => {
         onPress={() => setShowEduOverlay(true)}
         style={styles.selector}>
         <Text style={styles.innerText}>{selectText}</Text>
-        <Icon name="arrow-drop-down" type="material" />
+        <Icon name="arrow-drop-down" type="material" color={GREY} />
       </Pressable>
       <Overlay
         isVisible={showEduOverlay}
@@ -50,7 +43,8 @@ const EducationSelectionComponent = ({ userPref }) => {
           leftComponent={{
             icon: 'arrow-back',
             onPress: () => setShowEduOverlay(false),
-            color: 'purple',
+            color: GREY,
+            size: 30,
           }}
           centerComponent={{
             text: 'Select Your Education',
@@ -73,19 +67,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 8,
     letterSpacing: 2,
+    color: GREY,
   },
   selector: {
-    width: WIDTH * 0.9,
+    width: '100%',
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderWidth: 1,
     borderRadius: 8,
-    elevation: 3,
-    paddingEnd: 5,
+    elevation: 8,
+    alignSelf: 'center',
   },
   list: {
     justifyContent: 'space-between',
@@ -93,7 +86,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'purple',
+    color: DEEP_GREEN,
     letterSpacing: 1,
   },
   innerText: {
