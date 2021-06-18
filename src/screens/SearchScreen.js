@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Header, SearchBar } from 'react-native-elements';
 import WebView from 'react-native-webview';
-import {
-  View,
-  Pressable,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-} from 'react-native';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN } from '../assets/colors/colors';
@@ -15,8 +9,6 @@ import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
 const index = client.initIndex('questions');
-
-const WIDTH = Dimensions.get('window').width;
 
 const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
@@ -133,12 +125,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-    marginHorizontal: WIDTH * 0.03,
+    marginHorizontal: '04%',
   },
   search: {
     backgroundColor: 'white',
     height: 65,
-    width: WIDTH * 0.8,
+    width: '80%',
   },
   searchInput: {
     backgroundColor: 'white',
@@ -146,11 +138,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonStyle: {
-    width: WIDTH * 0.15,
+    width: 60,
     height: 60,
   },
   resultsContainer: {
-    marginHorizontal: WIDTH * 0.03,
+    marginHorizontal: '03%',
   },
   WebView: {
     width: 'auto',

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, StyleSheet, Dimensions } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Card } from 'react-native-elements';
 import { Context } from '../contexts';
@@ -8,8 +8,6 @@ import QuestionBodyComponent from './QuestionBodyComponent';
 import QuestionBottomComponent from './QuestionBottomComponent';
 import QuestionMoreOverlayComponent from './QuestionMoreOverLayComponent';
 import { WHITE } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
   const route = useRoute();
@@ -56,7 +54,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
 
 const styles = StyleSheet.create({
   Card: {
-    width: WIDTH,
+    width: '100%',
     elevation: 2,
     marginHorizontal: 0,
     marginVertical: 5,
