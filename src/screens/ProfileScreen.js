@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Image, ScrollView, View, Dimensions } from 'react-native';
+import { StyleSheet, Image, ScrollView, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { Text, Header, Button, Divider } from 'react-native-elements';
+import { Text, Header, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileMoreComponent from '../components/ProfileMoreComponent';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
+import Spacer from '../components/Spacer';
 
 const ProfileScreen = ({ navigation }) => {
   const {
@@ -42,6 +41,12 @@ const ProfileScreen = ({ navigation }) => {
       console.log('err', err);
     }
   };
+
+  const listExams = exams.map((exam, index) => (
+    <Text key={index} style={styles.examtags}>
+      {index === exams.length - 1 ? exam : exam + ', '}
+    </Text>
+  ));
 
   const signOut = async () => {
     await saveUserPreference();
@@ -80,25 +85,15 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.details}>
           <Text style={styles.nameText}>{userDisplayName}</Text>
           <Text style={styles.educationText}>Education: {education}</Text>
-          {branch && <Text h5>Branch : {branch}</Text>}
-          <Text style={styles.examText}>
-            Exams:{' '}
-            {exams.map((exam, index) => (
-              <Text key={index} style={styles.examtags}>
-                {exam}
-              </Text>
-            ))}
-          </Text>
+          {branch && (
+            <Text style={styles.educationText}>Branch : {branch}</Text>
+          )}
+          <Text style={styles.examText}>Exams: {listExams}</Text>
         </View>
       </View>
-      <Divider />
-      {/* <Card containerStyle={styles.activityCard}>
-        <View style={styles.activity}>
-          <Text>5 Questions Asked</Text>
-          <Text>12 Questions Answered</Text>
-        </View>
-      </Card> */}
+      <Spacer />
       <ProfileEditableComponent navigation={navigation} />
+      {/* SignOut Button */}
       <Button
         type="clear"
         raised
@@ -121,16 +116,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
   },
   picture: {
     width: 100,
     height: 100,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'grey',
+    borderRadius: 20,
   },
   details: {
     justifyContent: 'space-around',
+    flexDirection: 'column',
+    width: '60%',
   },
   nameText: {
     fontSize: 20,
@@ -154,22 +150,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  // activityCard: {
-  //   flex: 1,
-  //   borderRadius: 10,
-  //   elevation: 2,
-  // },
-  // activity: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   padding: 10,
-  // },
   signOutButton: {
     marginTop: 10,
-    width: WIDTH * 0.5,
+    width: '50%',
     alignItems: 'center',
-    left: WIDTH * 0.25,
     borderRadius: 8,
+    alignSelf: 'center',
   },
   signOutText: {
     color: 'grey',
