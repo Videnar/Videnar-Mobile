@@ -34,17 +34,22 @@ const App = () => {
           stringifiedPreferences != null
             ? JSON.parse(stringifiedPreferences)
             : null;
+
+        if (user !== null && preferences !== null) {
+          dispatch({ type: 'setUser', payload: user });
+          dispatch({ type: 'update_preferences', payload: preferences });
+          dispatch({ type: 'changeScreen', payload: 'Main' });
+        } else if (user !== null && preferences === null) {
+          dispatch({
+            type: 'changeScreen',
+            payload: { screen: 'UserPref', previousScreen: 'Main' },
+          });
+          dispatch({ type: 'changeScreen', payload: 'UserPref' });
+        } else {
+          dispatch({ type: 'changeScreen', payload: { screen: 'Auth' } });
+        }
       } catch (e) {
         // Restoring token failed
-      }
-      if (user !== null && preferences !== null) {
-        dispatch({ type: 'setUser', payload: user });
-        dispatch({ type: 'update_preferences', payload: preferences });
-        dispatch({ type: 'changeScreen', payload: 'Main' });
-      } else if (user !== null && preferences === null) {
-        dispatch({ type: 'changeScreen', payload: 'UserPref' });
-      } else {
-        dispatch({ type: 'changeScreen', payload: 'Auth' });
       }
     })();
   }, []);
@@ -63,14 +68,12 @@ const App = () => {
         authStatusNoti === messaging.AuthorizationStatus.PROVISIONAL;
 
       if (enabled) {
-        console.log('Authorization status: ' + authStatusNoti);
         const deviceToken = await AsyncStorage.getItem('@deviceToken');
         if (deviceToken) {
           const token = await messaging().getToken();
           await AsyncStorage.setItem('@deviceToken', token);
         }
         messaging().onTokenRefresh(async (newToken) => {
-          console.log('New Token --> ', newToken);
           await AsyncStorage.setItem('@deviceToken', newToken);
         });
       }
@@ -78,7 +81,6 @@ const App = () => {
     addDeviceToken();
 
     messaging().onMessage(async (remoteMessage) => {
-      console.log('A new Message arrived --> ', remoteMessage);
       Alert.alert(
         remoteMessage.notification.title,
         remoteMessage.notification.body,
@@ -114,8 +116,8 @@ const App = () => {
       updateUserPreferences: async (preferences) => {
         dispatch({ type: 'update_preferences', payload: preferences });
       },
-      changeScreen: (screen) => {
-        dispatch({ type: 'changeScreen', payload: screen });
+      changeScreen: (screen, previousScreen) => {
+        dispatch({ type: 'changeScreen', payload: { screen, previousScreen } });
       },
     }),
     [],

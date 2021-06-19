@@ -79,6 +79,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
       .doc(answer.id)
       .update({
         ...answer,
+        updatedAt: firestore.Timestamp.now(),
         upvotes: count,
       });
   };
@@ -112,6 +113,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
             .doc(upVoteIdRef.current)
             .update({
               ...userUpVoteData,
+              updatedAt: firestore.Timestamp.now(),
               voteType: voteType,
             });
         } catch {
@@ -128,6 +130,7 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
           .collection('upvotes')
           .add({
             userId: userID,
+            createdAt: firestore.Timestamp.now(),
             voteType: voteType,
           });
       } catch {

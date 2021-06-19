@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 
 const ActivityScreen = ({ navigation }) => {
   const {
-    state: { userDisplayName },
+    state: { userDisplayName, userID },
   } = useContext(Context);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
+        const ref = firestore().collectionGroup('comments');
+        const allCommentsRes = await ref.where('userID', '==', userID).get();
+        console.log('allCommentsRes', allCommentsRes._docs);
       } catch (err) {
         console.log('error fetching questions', err);
       }
     };
     fetchQuestions();
-  }, [userDisplayName]);
+  }, [userDisplayName, userID]);
 
   const RenderItem = (item) => (
     <QuestionComponent question={item} navigation={navigation} />
