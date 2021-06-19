@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import { Text } from 'react-native-elements';
 import QuestionComponent from '../components/QuestionComponent';
+import { WHITE } from '../assets/colors/colors';
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -64,7 +65,17 @@ const ActivityScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
+  FlatList: { marginHorizontal: 2 },
+  lastItem: {
+    height: 100,
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
 });
 
 export default React.memo(ActivityScreen);
