@@ -4,7 +4,6 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Text, Header, Button } from 'react-native-elements';
 import { Context } from '../contexts';
-import ProfileMoreComponent from '../components/ProfileMoreComponent';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import Spacer from '../components/Spacer';
@@ -71,7 +70,6 @@ const ProfileScreen = ({ navigation }) => {
           backgroundColor: 'transparent',
         }}
         backgroundColor="transparent"
-        rightComponent={<ProfileMoreComponent />} //More Options ...
       />
       <View style={styles.profile}>
         <Image
@@ -84,9 +82,13 @@ const ProfileScreen = ({ navigation }) => {
         />
         <View style={styles.details}>
           <Text style={styles.nameText}>{userDisplayName}</Text>
-          <Text style={styles.educationText}>Education: {education}</Text>
+          <Text style={styles.educationText}>
+            Education: {<Text style={styles.userData}>{education}</Text>}
+          </Text>
           {branch && (
-            <Text style={styles.educationText}>Branch : {branch}</Text>
+            <Text style={styles.educationText}>
+              Branch: {<Text style={styles.userData}>{branch}</Text>}
+            </Text>
           )}
           <Text style={styles.examText}>Exams: {listExams}</Text>
         </View>
@@ -134,6 +136,10 @@ const styles = StyleSheet.create({
     letterSpacing: 1.4,
     color: GREY,
   },
+  userData: {
+    fontWeight: 'bold',
+    color: GREY,
+  },
   educationText: {
     fontSize: 16,
     letterSpacing: 1,
@@ -158,7 +164,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   signOutText: {
-    color: 'grey',
+    color: GREY,
+    letterSpacing: 0.5,
   },
 });
 
