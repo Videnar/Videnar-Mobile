@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from './src/screens/SplashScreen';
 import UserPreferenceScreen from './src/screens/UserPreferenceScreen';
 import {
   navigate,
@@ -123,7 +124,9 @@ const App = () => {
   );
 
   return (
-    <Context.Provider value={{ state, ...ContextValue }}>
+    <Context.Provider
+      value={{ state, ...ContextValue }}
+      fallback={SplashScreen}>
       <NavigationContainer
         ref={navigationRef}
         onReady={() => {

@@ -1,14 +1,42 @@
 import React, { useContext, useState } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Icon, Text, Card } from 'react-native-elements';
+import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
+import ContactUsOverlay from './ContactUsOverlay';
 import SettingsOverlay from './SettingsOverlay';
 
 const ProfileEditableComponent = ({ navigation }) => {
   const { changeScreen } = useContext(Context);
 
   const [settingsOverlay, setSettingsOverlay] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [visibleContact, setVisibleContact] = useState(false);
+
+  const toggleOverlayContact = () => {
+    setVisibleContact(!visibleContact);
+  };
+
+  const shareAppHandler = () => {
+    const options = {
+      message:
+        'Hey There! Join Vedenar and continue with your studies without any distraction',
+    };
+    Share.open(options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
+      });
+    setVisible(!visible);
+  };
+
+  const contactSupportHandler = () => {
+    setVisibleContact(true); // Visible Contact us
+    setVisible(!visible); // Close More Options
+  };
 
   const onEditExamPreferences = () => {
     changeScreen('UserPref', 'Main');
@@ -34,12 +62,30 @@ const ProfileEditableComponent = ({ navigation }) => {
             <Icon name="settings" type="material" color={GREY} />
             <Text style={styles.cardItemText}>Change Password</Text>
           </TouchableOpacity>
+          <Card.Divider style={styles.divider} />
+          <TouchableOpacity
+            onPress={contactSupportHandler}
+            style={styles.cardItem}>
+            <Icon type="material" name="info" color={GREY} />
+            <Text style={styles.cardItemText}>Contact Us</Text>
+          </TouchableOpacity>
+          <Card.Divider style={styles.divider} />
+          <TouchableOpacity onPress={shareAppHandler} style={styles.cardItem}>
+            <Icon type="material" name="share" color={GREY} />
+            <Text style={styles.cardItemText}>Invite Friends</Text>
+          </TouchableOpacity>
         </View>
       </Card>
+      {/* Change Password */}
       <SettingsOverlay
         visible={settingsOverlay}
         toggleVisible={toggleOverlay}
         navigation={navigation}
+      />
+      {/* Contact us */}
+      <ContactUsOverlay
+        visible={visibleContact}
+        toggleVisible={toggleOverlayContact}
       />
     </>
   );

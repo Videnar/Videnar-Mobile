@@ -5,8 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Header, Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import QuestionActivityScreen from '../screens/QuestionActivityScreen';
-import AnswerActivityScreen from '../screens/AnswerActivityScreen';
+import ActivityScreen from '../screens/ActivityScreen';
 import QuestionDetailsScreen from '../screens/QuestionDetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditorScreen from '../screens/EditorScreen';
@@ -17,7 +16,6 @@ import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const TopTab = createMaterialTopTabNavigator();
 
 export const Main = () => (
   <Stack.Navigator
@@ -86,7 +84,7 @@ const MainTabs = () => (
     })}>
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Activity" component={ActivityTopTab} />
+    <Tab.Screen name="Activity" component={ActivityScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
