@@ -12,9 +12,6 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
       case 't':
         Linking.openURL('https://twitter.com');
         break;
-      case 'i':
-        Linking.openURL('https://instagram.com');
-        break;
       default:
         Linking.openURL('https://videnar.com');
     }
@@ -23,7 +20,7 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
   const emailHandler = () => {
     const to = ['info@videnar.com'];
     email(to, {
-      subject: 'Ticket No - 10020',
+      subject: 'Ticket No - 10',
     }).catch(console.error);
   };
 
@@ -41,14 +38,6 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
         type="facebook"
         style={styles.social}
         onPress={() => socialLinkOpenHandler('f')}
-      />
-      <SocialIcon
-        title="instagram"
-        button
-        raised
-        type="instagram"
-        style={styles.social}
-        onPress={() => socialLinkOpenHandler('i')}
       />
       <SocialIcon
         title="twitter"
@@ -86,12 +75,13 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   button: {
-    backgroundColor: '#E40D0D',
+    backgroundColor: '#CD3C30',
     width: 210,
     height: 50,
     borderRadius: 30,
     marginTop: 7,
     justifyContent: 'space-evenly',
+    paddingHorizontal: 35,
   },
   social: {
     width: 210,

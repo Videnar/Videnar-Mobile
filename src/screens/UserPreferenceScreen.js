@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Dimensions, BackHandler } from 'react-native';
+import { StyleSheet, View, Dimensions, BackHandler, StyleSheet, ScrollView } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
 import EducationSelectionComponent from '../components/EducationSelectionComponent';
 import ExamSelectionComponent from '../components/ExamSelectionComponent';
 import { Context } from '../contexts';
-
-const WIDTH = Dimensions.get('window').width;
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const UserPreferenceScreen = () => {
   const {
@@ -60,15 +59,16 @@ const UserPreferenceScreen = () => {
         leftComponent={{
           icon: 'arrow-back',
           onPress: () => changeScreen(previousScreen, 'UserPref'),
-          color: 'purple',
+          color: GREY,
+          size: 30,
         }}
         centerComponent={{
-          text: 'Select Your Preference',
+          text: 'Select Preferences',
           style: styles.headerText,
         }}
         backgroundColor="white"
       />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/** Education level Selection */}
         <EducationSelectionComponent
           userPref={(input) => updateUserPrefHandler(input)}
@@ -91,8 +91,6 @@ const UserPreferenceScreen = () => {
         ) : (
           <></>
         )}
-      </View>
-      <View style={styles.buttonContainer}>
         <Button
           onPress={onPressHandler}
           type="solid"
@@ -101,34 +99,34 @@ const UserPreferenceScreen = () => {
           titleStyle={styles.buttonText}
           disabled={!buttonEnable}
         />
-      </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 4,
+    flex: 1,
     alignContent: 'center',
     backgroundColor: 'white',
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'purple',
-    letterSpacing: 0.2,
+    color: DEEP_GREEN,
+    letterSpacing: 1,
   },
   buttonStyle: {
-    backgroundColor: '#3DDC84',
-    width: WIDTH * 0.7,
+    backgroundColor: DEEP_GREEN,
+    width: '80%',
     height: 40,
-    marginTop: 20,
+    marginVertical: 70,
     alignSelf: 'center',
     alignContent: 'center',
     borderRadius: 10,
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 22,
   },
   buttonContainer: {
     flex: 1,

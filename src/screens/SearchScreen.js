@@ -4,6 +4,8 @@ import WebView from 'react-native-webview';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
+import { DEEP_GREEN } from '../assets/colors/colors';
+import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
 const index = client.initIndex('questions');
@@ -11,14 +13,31 @@ const index = client.initIndex('questions');
 const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
+  const [disabled, setDisabled] = useState(true);
 
   const search = () => {
     try {
-      index.search(input).then(({ hits }) => {
-        setResults(hits);
-      });
+      if (input.trim() !== '') {
+        index.search(input.trim()).then(({ hits }) => {
+          setResults(hits);
+        });
+      }
     } catch (err) {
       console.log('error fetching items', err);
+    }
+  };
+
+  const onChangeTextHandler = (text) => {
+    setInput(text);
+    if (text.trim() === '') {
+      setResults([]);
+      setDisabled(true);
+    } else {
+      setDisabled((prevState) => {
+        if (prevState === true) {
+          return false;
+        }
+      });
     }
   };
 
@@ -41,6 +60,7 @@ const SearchScreen = ({ navigation }) => {
                  </body>`,
           }}
           style={styles.WebView}
+          scrollEnabled={false}
         />
       </Pressable>
     );
@@ -53,24 +73,43 @@ const SearchScreen = ({ navigation }) => {
         style={styles.header}
         backgroundColor="white"
       />
-      <SearchBar
-        placeholder="Try 'How a ...'"
-        lightTheme
-        containerStyle={styles.Search}
-        inputContainerStyle={styles.SearchInput}
-        onChangeText={(text) => setInput(text)}
-        onClear={() => setResults([])}
-        value={input}
-      />
-      <Button title="Search" onPress={search} />
-      <FlatList
-        data={results}
-        renderItem={RenderItem}
-        keyExtractor={(item) => item.objectID}
-        maxToRenderPerBatch={4}
-        initialNumToRender={3}
-        updateCellsBatchingPeriod={100}
-      />
+      <View style={styles.searchContainer}>
+        <SearchBar
+          placeholder="Search here ..."
+          platform="android"
+          containerStyle={styles.search}
+          inputContainerStyle={styles.searchInput}
+          onChangeText={(text) => onChangeTextHandler(text)}
+          onClear={() => setResults([])}
+          value={input}
+          searchIcon={false}
+          returnKeyType="search"
+          onSubmitEditing={search}
+        />
+        <Button
+          type="clear"
+          icon={{
+            type: 'material',
+            name: 'search',
+            size: 32,
+            color: disabled ? 'grey' : DEEP_GREEN,
+          }}
+          onPress={search}
+          buttonStyle={styles.buttonStyle}
+          disabled={disabled}
+        />
+      </View>
+      <View style={styles.resultsContainer}>
+        <FlatList
+          data={results}
+          renderItem={RenderItem}
+          keyExtractor={(item) => item.objectID}
+          ItemSeparatorComponent={Divider}
+          maxToRenderPerBatch={4}
+          initialNumToRender={3}
+          updateCellsBatchingPeriod={100}
+        />
+      </View>
       <FloatingAskQuestionButton navigation={navigation} />
     </View>
   );
@@ -81,24 +120,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  item: {
-    backgroundColor: '#faf4f2',
-    borderColor: 'black',
-    borderWidth: 10,
-    borderRadius: 7,
+  searchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: '04%',
+  },
+  search: {
+    backgroundColor: 'white',
+    height: 65,
+    width: '80%',
+  },
+  searchInput: {
+    backgroundColor: 'white',
+    elevation: 5,
+    borderRadius: 10,
+  },
+  buttonStyle: {
+    width: 60,
+    height: 60,
+  },
+  resultsContainer: {
+    marginHorizontal: '03%',
   },
   WebView: {
     width: 'auto',
     height: 50,
-  },
-  Search: {
-    backgroundColor: 'white',
-    borderRadius: 40,
-  },
-  SearchInput: {
-    backgroundColor: 'white',
-    elevation: 5,
-    borderRadius: 10,
   },
 });
 
