@@ -7,7 +7,7 @@ import { GREY } from '../assets/colors/colors';
 const WIDTH = Dimensions.get('window').width;
 
 const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
-  const { id, upvotes } = question;
+  const { id, tags, upvotes } = question;
 
   const shareQuestionHandler = () => {
     const options = {

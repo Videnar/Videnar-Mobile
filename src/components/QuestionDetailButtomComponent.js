@@ -112,6 +112,7 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
 
   return (
     <View style={styles.container}>
+      {/* <Text style={styles.tags}>#{question.tags}</Text> */}
       <UpVoteDownVoteComponent
         upVotes={question.upvotes}
         userVoteValue={userVoteValue}
