@@ -2,6 +2,7 @@ import React from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Overlay, SocialIcon, Text, Icon, Button } from 'react-native-elements';
 import email from 'react-native-email';
+import { GREY } from '../assets/colors/colors';
 
 const ContactUsOverlay = ({ visible, toggleVisible }) => {
   const socialLinkOpenHandler = (social) => {
@@ -73,6 +74,9 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 18,
     paddingBottom: 15,
+    color: GREY,
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   button: {
     backgroundColor: '#CD3C30',
