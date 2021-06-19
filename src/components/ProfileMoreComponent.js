@@ -17,8 +17,7 @@ const ProfileMoreComponent = () => {
 
   const shareAppHandler = () => {
     const options = {
-      message:
-        'Hey There! Join Vedenar and start your career journey without any distraction',
+      message: 'Hey There! Join Vedenar and start your career journey today!',
     };
     Share.open(options)
       .then((res) => {

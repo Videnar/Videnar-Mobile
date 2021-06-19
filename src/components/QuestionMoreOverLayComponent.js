@@ -16,13 +16,12 @@ const QuestionMoreOverlayComponent = ({
   goBack,
 }) => {
   const route = useRoute();
-  const { id, content, tags } = question;
+  const { id, content } = question;
 
   const editQuestion = () => {
     isPopupVisible(false);
     navigate('EditorScreen', {
       content,
-      tags,
       questionId: id,
       functionName: 'updateQuestion',
       headerText: 'Update Your Question',

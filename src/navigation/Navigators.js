@@ -1,10 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import ActivityScreen from '../screens/ActivityScreen';
+import QuestionActivityScreen from '../screens/QuestionActivityScreen';
+import AnswerActivityScreen from '../screens/AnswerActivityScreen';
 import QuestionDetailsScreen from '../screens/QuestionDetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditorScreen from '../screens/EditorScreen';
@@ -15,6 +17,7 @@ import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const TopTab = createMaterialTopTabNavigator();
 
 export const Main = () => (
   <Stack.Navigator
@@ -83,7 +86,7 @@ const MainTabs = () => (
     })}>
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Activity" component={ActivityScreen} />
+    <Tab.Screen name="Activity" component={ActivityTopTab} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
@@ -99,4 +102,22 @@ export const Auth = () => (
     <Stack.Screen name="Signup" component={SignupScreen} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
   </Stack.Navigator>
+);
+
+export const ActivityTopTab = () => (
+  <TopTab.Navigator
+    initialRouteName="Questions"
+    // tabBarOptions={{
+    //   activeTintColor: DEEP_GREEN,
+    //   showIcon: true,
+    //   style: { backgroundColor: 'white' },
+    //   showLabel: false,
+    // }}
+    screenOptions={{
+      headerShown: true,
+      gestureEnabled: false,
+    }}>
+    <Stack.Screen name="Questions" component={QuestionActivityScreen} />
+    <Stack.Screen name="Answers" component={AnswerActivityScreen} />
+  </TopTab.Navigator>
 );

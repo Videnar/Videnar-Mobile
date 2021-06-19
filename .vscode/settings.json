@@ -1,4 +1,5 @@
 {
     "prettier.trailingComma": "none",
-    "eslint.packageManager": "yarn"
+    "eslint.packageManager": "yarn",
+    "prettier.arrowParens": "avoid"
 }
