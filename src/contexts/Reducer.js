@@ -15,7 +15,7 @@ export const Reducer = (state, action) => {
     case 'update_preferences':
       return { ...state, preferences: action.payload };
     case 'changeScreen':
-      return { ...state, screen: action.payload };
+      return { ...state, ...action.payload };
     default:
       return state;
   }
@@ -23,6 +23,7 @@ export const Reducer = (state, action) => {
 
 export const initialState = {
   screen: 'Main',
+  previousScreen: null,
   userID: null,
   attributes: null,
   preferences: null,

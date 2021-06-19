@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View, Dimensions, BackHandler } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
@@ -10,7 +10,11 @@ import { Context } from '../contexts';
 const WIDTH = Dimensions.get('window').width;
 
 const UserPreferenceScreen = () => {
-  const { changeScreen, updateUserPreferences } = useContext(Context);
+  const {
+    changeScreen,
+    updateUserPreferences,
+    state: { previousScreen },
+  } = useContext(Context);
   const [userPref, setUserPref] = useState({});
   const [buttonEnable, setButtonEnable] = useState(false);
 
@@ -29,8 +33,22 @@ const UserPreferenceScreen = () => {
     updateUserPreferences(userPref);
     const str = JSON.stringify(userPref);
     await AsyncStorage.setItem('@preferences', str);
-    changeScreen('Main');
+    changeScreen('Main', 'UserPref');
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      changeScreen(previousScreen, 'UserPref');
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [changeScreen, previousScreen]);
 
   return (
     <>
@@ -41,6 +59,7 @@ const UserPreferenceScreen = () => {
         }}
         leftComponent={{
           icon: 'arrow-back',
+          onPress: () => changeScreen(previousScreen, 'UserPref'),
           color: 'purple',
         }}
         centerComponent={{

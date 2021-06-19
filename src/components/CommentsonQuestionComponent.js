@@ -59,7 +59,10 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
             .doc(questionId)
             .collection('comments')
             .doc(isEdited.id)
-            .update({ content: newComment });
+            .update({
+              content: newComment,
+              updatedAt: firestore.Timestamp.now(),
+            });
         } else {
           await firestore()
             .collection('questions')
@@ -70,6 +73,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
               userDisplayName: userName,
               userID: userId,
               content: newComment,
+              createdAt: firestore.Timestamp.now(),
             });
         }
       } else {

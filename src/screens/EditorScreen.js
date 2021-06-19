@@ -19,7 +19,6 @@ const EditorScreen = ({
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
   const editorContentRef = useRef(content ? content : defaultContent);
-  console.log('Header ->', headerText);
 
   const saveToCloud = async (str) => {
     if (str === defaultContent) {
@@ -37,6 +36,7 @@ const EditorScreen = ({
             tags: 'neet',
             noOfAnswers: 0,
             deviceToken: deviceToken,
+            createdAt: firestore.Timestamp.now(),
           });
         } catch (err) {
           console.log('error creating Question:', err);
@@ -48,6 +48,7 @@ const EditorScreen = ({
             .doc(questionId)
             .update({
               content: str,
+              updatedAt: firestore.Timestamp.now(),
             })
             .then(() => {
               console.log('document updated');
@@ -67,6 +68,7 @@ const EditorScreen = ({
               userID,
               questionID: questionId,
               upvotes: 0,
+              createdAt: firestore.Timestamp.now(),
             });
         } catch (err) {
           console.log('error creating Answer:', err);
@@ -80,6 +82,7 @@ const EditorScreen = ({
             .doc(answerId)
             .update({
               content: str,
+              updatedAt: firestore.Timestamp.now(),
             });
         } catch (err) {
           console.log('error updating Answer:', err);

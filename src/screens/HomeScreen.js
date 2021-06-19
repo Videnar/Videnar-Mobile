@@ -13,6 +13,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchQuestions = firestore()
       .collection('questions')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
         const q = [];
         querySnapshot &&

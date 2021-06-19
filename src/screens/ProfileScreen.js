@@ -48,7 +48,7 @@ const ProfileScreen = ({ navigation }) => {
       await auth()
         .signOut()
         .then(() => {
-          changeScreen('Auth');
+          changeScreen('Auth', 'Main');
           removeUser();
         })
         .catch((err) => console.log(err, 'err'));

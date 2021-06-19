@@ -34,9 +34,9 @@ const SigninScreen = ({ navigation }) => {
                 updateUserPreferences(userPref);
                 const str = JSON.stringify(userPref);
                 await AsyncStorage.setItem('@preferences', str);
-                changeScreen('Main');
+                changeScreen('Main', 'Auth');
               } else {
-                changeScreen('UserPref');
+                changeScreen('UserPref', 'Auth');
               }
             })
             .catch((error) => {
