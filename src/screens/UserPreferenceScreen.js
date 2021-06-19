@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Dimensions, BackHandler, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, BackHandler, ScrollView } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
