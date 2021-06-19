@@ -15,7 +15,7 @@ const EditorScreen = ({
   },
 }) => {
   const {
-    state: { userDisplayName, userID, preferences },
+    state: { userDisplayName, userID },
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
   const editorContentRef = useRef(content ? content : defaultContent);
@@ -27,19 +27,17 @@ const EditorScreen = ({
       if (functionName === 'submitQuestion') {
         try {
           const deviceToken = await AsyncStorage.getItem('@deviceToken');
-          firestore()
-            .collection('questions')
-            .add({
-              userID,
-              userDisplayName,
-              content: str,
-              upvotes: 0,
-              view: 0,
-              noOfAnswers: 0,
-              deviceToken: deviceToken,
-              createdAt: firestore.Timestamp.now(),
-              ...preferences,
-            });
+          firestore().collection('questions').add({
+            userID,
+            userDisplayName,
+            content: str,
+            upvotes: 0,
+            view: 0,
+            tags: 'neet',
+            noOfAnswers: 0,
+            deviceToken: deviceToken,
+            createdAt: firestore.Timestamp.now(),
+          });
         } catch (err) {
           console.log('error creating Question:', err);
         }
