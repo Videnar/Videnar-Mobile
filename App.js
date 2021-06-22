@@ -33,7 +33,8 @@ const App = () => {
           stringifiedPreferences != null
             ? JSON.parse(stringifiedPreferences)
             : null;
-
+        const token = await AsyncStorage.getItem('@deviceToken');
+        dispatch({ type: 'setDeviceToken', payload: token });
         if (user !== null && preferences !== null) {
           dispatch({ type: 'setUser', payload: user });
           dispatch({ type: 'update_preferences', payload: preferences });
@@ -68,12 +69,16 @@ const App = () => {
 
       if (enabled) {
         const deviceToken = await AsyncStorage.getItem('@deviceToken');
-        if (deviceToken) {
+        if (!deviceToken) {
           const token = await messaging().getToken();
           await AsyncStorage.setItem('@deviceToken', token);
+          dispatch({ type: 'setDeviceToken', payload: token });
+        } else {
+          dispatch({ type: 'setDeviceToken', payload: deviceToken });
         }
         messaging().onTokenRefresh(async (newToken) => {
           await AsyncStorage.setItem('@deviceToken', newToken);
+          dispatch({ type: 'setDeviceTOken', payload: newToken });
         });
       }
     };
@@ -121,6 +126,9 @@ const App = () => {
     }),
     [],
   );
+  if (!state.preferences) {
+    return null;
+  }
 
   return (
     <Context.Provider value={{ state, ...ContextValue }}>

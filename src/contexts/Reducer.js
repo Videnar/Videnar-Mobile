@@ -16,6 +16,8 @@ export const Reducer = (state, action) => {
       return { ...state, preferences: action.payload };
     case 'changeScreen':
       return { ...state, ...action.payload };
+    case 'setDeviceToken':
+      return { ...state, setDeviceToken: action.payload };
     default:
       return state;
   }
@@ -27,4 +29,5 @@ export const initialState = {
   userID: null,
   attributes: null,
   preferences: null,
+  setDeviceToken: null,
 };

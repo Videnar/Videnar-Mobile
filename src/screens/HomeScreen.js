@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { Header, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import { Context } from '../contexts';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
@@ -9,39 +10,52 @@ import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [lastDocument, setLastDocument] = useState(null);
+  const {
+    state: {
+      preferences: { branch, exams },
+    },
+  } = useContext(Context);
 
   useEffect(() => {
     const fetchQuestions = firestore()
       .collection('questions')
+      // .where('exams', 'array-contains-any', exams)
       .orderBy('createdAt', 'desc')
+      .limit(16)
       .onSnapshot((querySnapshot) => {
         const q = [];
-        querySnapshot &&
+        if (querySnapshot !== null) {
           querySnapshot.forEach((documentSnapshot) => {
             q.push({
               ...documentSnapshot.data(),
               id: documentSnapshot.id,
             });
           });
-        setQuestions(q);
+          setQuestions(q);
+          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        }
       });
     return () => {
       fetchQuestions();
     };
-  }, []);
+  }, [branch, exams]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchQuestions();
+    refreshQuestions();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
-  }, [fetchQuestions]);
+  }, [refreshQuestions]);
 
-  const fetchQuestions = useCallback(async () => {
+  const refreshQuestions = useCallback(async () => {
     try {
       firestore()
         .collection('questions')
+        // .where('exams', 'array-contains-any', exams)
+        .orderBy('createdAt', 'desc')
+        .limit(16)
         .onSnapshot((querySnapshot) => {
           const q = [];
           if (querySnapshot !== null) {
@@ -51,13 +65,40 @@ const HomeScreen = ({ navigation }) => {
                 id: documentSnapshot.id,
               });
             });
-            setQuestions(q);
+            setQuestions([...q]);
+            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
           }
         });
     } catch (err) {
       console.log('error fetching questions', err);
     }
   }, []);
+
+  const loadMoreQuestions = async () => {
+    try {
+      firestore()
+        .collection('questions')
+        // .where('exams', 'array-contains-any', exams)
+        .orderBy('createdAt', 'desc')
+        .startAfter(lastDocument)
+        .limit(16)
+        .onSnapshot((querySnapshot) => {
+          const q = [];
+          if (querySnapshot !== null) {
+            querySnapshot.forEach((documentSnapshot) => {
+              q.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
+            });
+            setQuestions([...questions, ...q]);
+            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          }
+        });
+    } catch (err) {
+      console.log('error fetching questions', err);
+    }
+  };
 
   const RenderItem = ({ item }) => (
     <QuestionComponent question={item} navigation={navigation} />
@@ -94,9 +135,10 @@ const HomeScreen = ({ navigation }) => {
         ListFooterComponent={lastItem}
         keyExtractor={(item) => item.id}
         style={styles.FlatList}
-        maxToRenderPerBatch={4}
-        initialNumToRender={3}
-        updateCellsBatchingPeriod={100}
+        maxToRenderPerBatch={8}
+        initialNumToRender={8}
+        onEndReachedThreshold={0.5}
+        onEndReached={loadMoreQuestions}
       />
       {/* FAB */}
       <FloatingAskQuestionButton navigation={navigation} />
