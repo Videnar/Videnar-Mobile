@@ -11,14 +11,16 @@ const ActivityScreen = ({ navigation }) => {
     state: { userDisplayName, userID },
   } = useContext(Context);
   const [answers, setAnswers] = useState([]);
+  const [lastDocument, setLastDocument] = useState(null);
 
   useEffect(() => {
     const fetchAnswers = async () => {
       try {
-        const ref = firestore().collectionGroup('answers');
-        await ref
+        firestore()
+          .collectionGroup('answers')
           .where('userID', '==', userID)
           .orderBy('createdAt', 'desc')
+          .limit(16)
           .onSnapshot((querySnapshot) => {
             const ans = [];
             querySnapshot &&
@@ -29,6 +31,7 @@ const ActivityScreen = ({ navigation }) => {
                 });
               });
             setAnswers(ans);
+            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
           });
       } catch (err) {
         console.log('error fetching answers', err);
@@ -38,13 +41,39 @@ const ActivityScreen = ({ navigation }) => {
     fetchAnswers();
   }, [userDisplayName, userID]);
 
+  const loadMoreAnswers = async () => {
+    try {
+      firestore()
+        .collectionGroup('answers')
+        .where('userID', '==', userID)
+        .orderBy('createdAt', 'desc')
+        .startAfter(lastDocument)
+        .limit(16)
+        .onSnapshot((querySnapshot) => {
+          const q = [];
+          if (querySnapshot !== null) {
+            querySnapshot.forEach((documentSnapshot) => {
+              q.push({
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id,
+              });
+            });
+            setAnswers([...answers, ...q]);
+            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          }
+        });
+    } catch (err) {
+      console.log('error fetching questions', err);
+    }
+  };
+
   const RenderItem = ({ item }) => {
     return <AnswerComponent answer={item} questionId={item.questionID} />;
   };
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>No More Answers to Show</Text>
+      <Text>You have reached the end.</Text>
     </View>
   );
 
@@ -59,6 +88,8 @@ const ActivityScreen = ({ navigation }) => {
         maxToRenderPerBatch={4}
         initialNumToRender={3}
         updateCellsBatchingPeriod={100}
+        onEndReachedThreshold={0.5}
+        onEndReached={loadMoreAnswers}
       />
     </View>
   );

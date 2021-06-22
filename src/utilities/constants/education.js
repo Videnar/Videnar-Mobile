@@ -71,6 +71,12 @@ const GATE = {
   key: 'GATE',
   description: 'Graduate Aptitude Test in Engineering',
 };
+
+const CIP = {
+  key: 'Coding Inteview',
+  description: 'Coding Inteview Preparation for Tech jobs',
+};
+
 const SBI = {
   key: 'SBI',
   description: 'SBI PO & Clerk',
@@ -151,10 +157,6 @@ export const Branches = [
 ];
 
 export const educations = [
-  // { level: 'Class 5' },
-  // { level: 'Class 6' },
-  // { level: 'Class 7' },
-  // { level: 'Class 8' },
   {
     level: 'Class 9',
     exams: [CBSE, ICSE, HSCE, KVPY, JEE, NEET],
@@ -174,7 +176,7 @@ export const educations = [
   {
     level: 'B.Tech',
     branches: Branches,
-    exams: [GATE, IES, ...MBA, CSE, ...Banking, SSCCGL],
+    exams: [CIP, GATE, IES, ...MBA, CSE, ...Banking, SSCCGL],
   },
   {
     level: 'MBBS',

@@ -4,7 +4,6 @@ import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
@@ -15,7 +14,7 @@ const EditorScreen = ({
   },
 }) => {
   const {
-    state: { userDisplayName, userID, preferences },
+    state: { userDisplayName, userID, preferences, setDeviceToken },
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
   const editorContentRef = useRef(content ? content : defaultContent);
@@ -26,7 +25,6 @@ const EditorScreen = ({
     } else {
       if (functionName === 'submitQuestion') {
         try {
-          const deviceToken = await AsyncStorage.getItem('@deviceToken');
           firestore()
             .collection('questions')
             .add({
@@ -36,7 +34,7 @@ const EditorScreen = ({
               upvotes: 0,
               view: 0,
               noOfAnswers: 0,
-              deviceToken: deviceToken,
+              deviceToken: setDeviceToken,
               createdAt: firestore.Timestamp.now(),
               ...preferences,
             });
