@@ -14,9 +14,9 @@ const ActivityScreen = ({ navigation }) => {
   const [lastDocument, setLastDocument] = useState(null);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchQuestions = () => {
       try {
-        const results = await firestore()
+        firestore()
           .collection('questions')
           .where('userID', '==', userID)
           .orderBy('createdAt', 'desc')
@@ -36,17 +36,18 @@ const ActivityScreen = ({ navigation }) => {
               );
             }
           });
-        setQuestions([...results._docs]);
       } catch (err) {
-        console.log('error fetching questions 4', err);
+        console.log('Error fetching questions in QuestionActivity', err);
       }
     };
-    fetchQuestions();
+    return () => {
+      fetchQuestions();
+    };
   }, [questions, userDisplayName, userID]);
 
   const loadMoreQuestions = async () => {
     try {
-      firestore()
+      await firestore()
         .collection('questions')
         .where('userID', '==', userID)
         .orderBy('createdAt', 'desc')
@@ -66,7 +67,7 @@ const ActivityScreen = ({ navigation }) => {
           }
         });
     } catch (err) {
-      console.log('error fetching questions', err);
+      console.log('Error fetching questions loadMore in QuestionActivity', err);
     }
   };
 
