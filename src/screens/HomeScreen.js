@@ -18,24 +18,32 @@ const HomeScreen = ({ navigation }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    const fetchQuestions = firestore()
-      .collection('questions')
-      // .where('exams', 'array-contains-any', exams)
-      .orderBy('createdAt', 'desc')
-      .limit(16)
-      .onSnapshot((querySnapshot) => {
-        const q = [];
-        if (querySnapshot !== null) {
-          querySnapshot.forEach((documentSnapshot) => {
-            q.push({
-              ...documentSnapshot.data(),
-              id: documentSnapshot.id,
-            });
+    const fetchQuestions = () => {
+      try {
+        firestore()
+          .collection('questions')
+          // .where('exams', 'array-contains-any', exams)
+          .orderBy('createdAt', 'desc')
+          .limit(5)
+          .onSnapshot((querySnapshot) => {
+            const q = [];
+            if (querySnapshot !== null) {
+              querySnapshot.forEach((documentSnapshot) => {
+                q.push({
+                  ...documentSnapshot.data(),
+                  id: documentSnapshot.id,
+                });
+              });
+              setQuestions(q);
+              setLastDocument(
+                querySnapshot.docs[querySnapshot.docs.length - 1],
+              );
+            }
           });
-          setQuestions(q);
-          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-        }
-      });
+      } catch (err) {
+        console.log('Error fetching questions useEffect', err);
+      }
+    };
     return () => {
       fetchQuestions();
     };
@@ -55,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
         .collection('questions')
         // .where('exams', 'array-contains-any', exams)
         .orderBy('createdAt', 'desc')
-        .limit(16)
+        .limit(5)
         .onSnapshot((querySnapshot) => {
           const q = [];
           if (querySnapshot !== null) {
@@ -70,18 +78,18 @@ const HomeScreen = ({ navigation }) => {
           }
         });
     } catch (err) {
-      console.log('error fetching questions', err);
+      console.log('Error fetching questions refreshed', err);
     }
   }, []);
 
   const loadMoreQuestions = async () => {
     try {
-      firestore()
+      await firestore()
         .collection('questions')
         // .where('exams', 'array-contains-any', exams)
         .orderBy('createdAt', 'desc')
         .startAfter(lastDocument)
-        .limit(16)
+        .limit(5)
         .onSnapshot((querySnapshot) => {
           const q = [];
           if (querySnapshot !== null) {
@@ -96,7 +104,7 @@ const HomeScreen = ({ navigation }) => {
           }
         });
     } catch (err) {
-      console.log('error fetching questions', err);
+      console.log('Error fetching questions loadMore', err);
     }
   };
 
