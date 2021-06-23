@@ -14,34 +14,30 @@ const ActivityScreen = ({ navigation }) => {
   const [lastDocument, setLastDocument] = useState(null);
 
   useEffect(() => {
-    const fetchQuestions = () => {
-      try {
-        firestore()
-          .collection('questions')
-          .where('userID', '==', userID)
-          .orderBy('createdAt', 'desc')
-          .limit(16)
-          .onSnapshot((querySnapshot) => {
-            const q = [];
-            if (querySnapshot !== null) {
-              querySnapshot.forEach((documentSnapshot) => {
-                q.push({
-                  ...documentSnapshot.data(),
-                  id: documentSnapshot.id,
-                });
-              });
-              setQuestions(q);
-              setLastDocument(
-                querySnapshot.docs[querySnapshot.docs.length - 1],
-              );
-            }
+    const fetchQuestions = firestore()
+      .collection('questions')
+      .where('userID', '==', userID)
+      .orderBy('createdAt', 'desc')
+      .limit(16)
+      .onSnapshot((querySnapshot) => {
+        const q = [];
+        if (querySnapshot !== null) {
+          querySnapshot.forEach((documentSnapshot) => {
+            q.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
           });
-      } catch (err) {
-        console.log('Error fetching questions in QuestionActivity', err);
-      }
-    };
+          setQuestions(q);
+          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        }
+      });
     return () => {
-      fetchQuestions();
+      try {
+        fetchQuestions();
+      } catch (err) {
+        console.log('Error fetchQuestion in ActivityScreen useEffect');
+      }
     };
   }, [questions, userDisplayName, userID]);
 
