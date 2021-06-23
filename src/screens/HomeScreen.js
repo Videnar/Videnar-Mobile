@@ -18,34 +18,30 @@ const HomeScreen = ({ navigation }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    const fetchQuestions = () => {
-      try {
-        firestore()
-          .collection('questions')
-          // .where('exams', 'array-contains-any', exams)
-          .orderBy('createdAt', 'desc')
-          .limit(5)
-          .onSnapshot((querySnapshot) => {
-            const q = [];
-            if (querySnapshot !== null) {
-              querySnapshot.forEach((documentSnapshot) => {
-                q.push({
-                  ...documentSnapshot.data(),
-                  id: documentSnapshot.id,
-                });
-              });
-              setQuestions(q);
-              setLastDocument(
-                querySnapshot.docs[querySnapshot.docs.length - 1],
-              );
-            }
+    const fetchQuestions = firestore()
+      .collection('questions')
+      // .where('exams', 'array-contains-any', exams)
+      .orderBy('createdAt', 'desc')
+      .limit(5)
+      .onSnapshot((querySnapshot) => {
+        const q = [];
+        if (querySnapshot !== null) {
+          querySnapshot.forEach((documentSnapshot) => {
+            q.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
           });
-      } catch (err) {
-        console.log('Error fetching questions useEffect', err);
-      }
-    };
+          setQuestions(q);
+          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        }
+      });
     return () => {
-      fetchQuestions();
+      try {
+        fetchQuestions();
+      } catch (err) {
+        console.log('Error fetching questions in HomeScreen useEffect', err);
+      }
     };
   }, [branch, exams]);
 
