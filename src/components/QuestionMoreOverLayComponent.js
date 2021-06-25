@@ -1,4 +1,3 @@
-import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
@@ -11,18 +10,17 @@ const WIDTH = Dimensions.get('window').width;
 const QuestionMoreOverlayComponent = ({
   popupVisible,
   isPopupVisible,
-  question,
+  questionId,
+  content,
   navigate,
   goBack,
+  route,
 }) => {
-  const route = useRoute();
-  const { id, content } = question;
-
   const editQuestion = () => {
     isPopupVisible(false);
     navigate('EditorScreen', {
       content,
-      questionId: id,
+      questionId: questionId,
       functionName: 'updateQuestion',
       headerText: 'Update Your Question',
     });
@@ -32,7 +30,7 @@ const QuestionMoreOverlayComponent = ({
     try {
       firestore()
         .collection('questions')
-        .doc(id)
+        .doc(questionId)
         .delete()
         .then(() => {
           console.log('Question deleted!');
@@ -96,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionMoreOverlayComponent;
+export default React.memo(QuestionMoreOverlayComponent);

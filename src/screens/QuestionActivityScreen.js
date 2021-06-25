@@ -18,7 +18,7 @@ const ActivityScreen = ({ navigation }) => {
       .collection('questions')
       .where('userID', '==', userID)
       .orderBy('createdAt', 'desc')
-      .limit(16)
+      .limit(5)
       .onSnapshot((querySnapshot) => {
         const q = [];
         if (querySnapshot !== null) {
@@ -48,7 +48,7 @@ const ActivityScreen = ({ navigation }) => {
         .where('userID', '==', userID)
         .orderBy('createdAt', 'desc')
         .startAfter(lastDocument)
-        .limit(16)
+        .limit(5)
         .onSnapshot((querySnapshot) => {
           const q = [];
           if (querySnapshot !== null) {

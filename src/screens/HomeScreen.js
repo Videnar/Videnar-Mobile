@@ -1,112 +1,124 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  Dimensions,
+} from 'react-native';
 import { Header, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
-import { Context } from '../contexts';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
+import { useRoute } from '@react-navigation/native';
+
+const HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
-  const {
-    state: {
-      preferences: { branch, exams },
-    },
-  } = useContext(Context);
+  const route = useRoute();
 
   useEffect(() => {
-    const fetchQuestions = firestore()
-      .collection('questions')
-      // .where('exams', 'array-contains-any', exams)
-      .orderBy('createdAt', 'desc')
-      .limit(5)
-      .onSnapshot((querySnapshot) => {
-        const q = [];
-        if (querySnapshot !== null) {
-          querySnapshot.forEach((documentSnapshot) => {
-            q.push({
-              ...documentSnapshot.data(),
-              id: documentSnapshot.id,
-            });
-          });
-          setQuestions(q);
-          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-        }
-      });
-    return () => {
-      try {
-        fetchQuestions();
-      } catch (err) {
-        console.log('Error fetching questions in HomeScreen useEffect', err);
-      }
-    };
-  }, [branch, exams]);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    refreshQuestions();
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [refreshQuestions]);
-
-  const refreshQuestions = useCallback(async () => {
-    try {
-      firestore()
-        .collection('questions')
-        // .where('exams', 'array-contains-any', exams)
-        .orderBy('createdAt', 'desc')
-        .limit(5)
-        .onSnapshot((querySnapshot) => {
-          const q = [];
-          if (querySnapshot !== null) {
-            querySnapshot.forEach((documentSnapshot) => {
-              q.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
-            });
-            setQuestions([...q]);
-            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          }
-        });
-    } catch (err) {
-      console.log('Error fetching questions refreshed', err);
-    }
+    fetchQuestions();
   }, []);
 
-  const loadMoreQuestions = async () => {
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchQuestions();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  };
+
+  const fetchQuestions = async () => {
     try {
-      await firestore()
+      const snapShot = await firestore()
         .collection('questions')
         // .where('exams', 'array-contains-any', exams)
         .orderBy('createdAt', 'desc')
-        .startAfter(lastDocument)
-        .limit(5)
-        .onSnapshot((querySnapshot) => {
-          const q = [];
-          if (querySnapshot !== null) {
-            querySnapshot.forEach((documentSnapshot) => {
-              q.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
-            });
-            setQuestions([...questions, ...q]);
-            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          }
-        });
+        .limit(6)
+        .get();
+
+      if (!snapShot.empty) {
+        let newQuestions = [];
+        setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+        for (let q = 0; q < snapShot.docs.length; q++) {
+          newQuestions.push({
+            ...snapShot.docs[q].data(),
+            id: snapShot.docs[q].id,
+          });
+        }
+        setQuestions(newQuestions);
+      } else {
+        setLastDocument(null);
+      }
     } catch (err) {
-      console.log('Error fetching questions loadMore', err);
+      console.log('Error fetching questions', err);
     }
   };
 
-  const RenderItem = ({ item }) => (
-    <QuestionComponent question={item} navigation={navigation} />
-  );
+  const loadMoreQuestions = async () => {
+    try {
+      if (lastDocument) {
+        const snapShot = await firestore()
+          .collection('questions')
+          // .where('exams', 'array-contains-any', exams)
+          .orderBy('createdAt', 'desc')
+          .startAfter(lastDocument)
+          .limit(6)
+          .get();
+
+        if (!snapShot.empty) {
+          let newQuestions = [];
+          setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+          for (let q = 0; q < snapShot.docs.length; q++) {
+            newQuestions.push({
+              ...snapShot.docs[q].data(),
+              id: snapShot.docs[q].id,
+            });
+          }
+          setQuestions(questions.concat(newQuestions));
+
+          if (snapShot.docs.length < 5) {
+            setLastDocument(null);
+          }
+        } else {
+          setLastDocument(null);
+        }
+      }
+    } catch (err) {
+      console.log('Error fetching more Questions', err);
+    }
+  };
+
+  const countRef = useRef(0);
+  const RenderItem = ({ item }) => {
+    countRef.current += 1;
+    console.log('Count --->', item.id, ' --- ', countRef.current);
+    return (
+      <QuestionComponent
+        key={item.id}
+        questionId={item.id}
+        questionerUId={item.userID}
+        upVotesCount={item.upvotes}
+        content={item.content}
+        userDisplayName={item.userDisplayName}
+        route={route}
+        navigation={navigation}
+      />
+    );
+  };
+
+  const getItemLayOut = (data, index) => ({
+    length: HEIGHT * 0.25,
+    offset: 5 * index,
+    index,
+  });
 
   const lastItem = (
     <View style={styles.lastItem}>
@@ -137,12 +149,12 @@ const HomeScreen = ({ navigation }) => {
         data={questions}
         renderItem={RenderItem}
         ListFooterComponent={lastItem}
-        keyExtractor={(item) => item.id}
         style={styles.FlatList}
-        maxToRenderPerBatch={8}
-        initialNumToRender={8}
-        onEndReachedThreshold={0.5}
+        maxToRenderPerBatch={5}
+        initialNumToRender={5}
+        onEndReachedThreshold={0.4}
         onEndReached={loadMoreQuestions}
+        getItemLayout={getItemLayOut}
       />
       {/* FAB */}
       <FloatingAskQuestionButton navigation={navigation} />
