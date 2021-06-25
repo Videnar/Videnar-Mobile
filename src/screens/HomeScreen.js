@@ -11,11 +11,6 @@ const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
-  const {
-    state: {
-      preferences: { branch, exams },
-    },
-  } = useContext(Context);
 
   useEffect(() => {
     const fetchQuestions = firestore()
@@ -43,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
         console.log('Error fetching questions in HomeScreen useEffect', err);
       }
     };
-  }, [branch, exams]);
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
