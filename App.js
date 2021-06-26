@@ -126,9 +126,6 @@ const App = () => {
     }),
     [],
   );
-  if (!state.preferences) {
-    return null;
-  }
 
   return (
     <Context.Provider value={{ state, ...ContextValue }}>
