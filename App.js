@@ -12,6 +12,7 @@ import { Context } from './src/contexts';
 import { Main, Auth as AuthComponent } from './src/navigation/Navigators';
 import { Reducer, initialState } from './src/contexts/Reducer';
 import messaging from '@react-native-firebase/messaging';
+import InAppUpdate from './src/utilities/InAppUpdate';
 import { Alert } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -104,6 +105,12 @@ const App = () => {
           navigate('QuestionDetails', { questionID: questionId });
         }
       });
+  }, []);
+
+  useEffect(() => {
+    // In App Update
+    console.log('Checking Update...');
+    InAppUpdate.checkUpdate();
   }, []);
 
   const ContextValue = useMemo(
