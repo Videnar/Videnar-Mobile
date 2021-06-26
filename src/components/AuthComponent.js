@@ -89,16 +89,14 @@ const AuthForm = ({
         {errorMessage ? (
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         ) : null}
-        <Spacer>
-          <Button
-            title={submitButtonText}
-            titleStyle={styles.buttonText}
-            type="clear"
-            raised={true}
-            onPress={() => onSubmit(email, password, name)}
-            buttonStyle={nameInput ? styles.buttonSignup : styles.buttonLogin}
-          />
-        </Spacer>
+        <Button
+          title={submitButtonText}
+          titleStyle={styles.buttonText}
+          type="clear"
+          raised={true}
+          onPress={() => onSubmit(email, password, name)}
+          buttonStyle={nameInput ? styles.buttonSignup : styles.buttonLogin}
+        />
       </View>
     </View>
   );
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     color: GREY,
+    alignSelf: 'center',
   },
   errorMessage: {
     fontSize: 16,
@@ -127,9 +126,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'right',
-    paddingRight: 15,
+    paddingRight: '4.5%',
     color: 'grey',
     letterSpacing: 0.5,
+    marginBottom: 10,
   },
   inputStyle: {
     paddingLeft: 20,
@@ -142,10 +142,14 @@ const styles = StyleSheet.create({
   buttonLogin: {
     backgroundColor: DEEP_GREEN,
     borderRadius: 10,
+    width: '90%',
+    alignSelf: 'center',
   },
   buttonSignup: {
     backgroundColor: DEEP_GREEN,
     borderRadius: 10,
+    width: '90%',
+    alignSelf: 'center',
   },
   notFocused: {
     borderColor: 'grey',
