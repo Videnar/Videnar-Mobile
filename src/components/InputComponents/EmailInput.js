@@ -3,8 +3,15 @@ import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
 
-const EmailInput = ({ hasError, email, setEmail }) => {
+const EmailInput = ({ email, setEmail, hasError, setHasError }) => {
   const [emailFocus, setEmailFocus] = useState(false);
+
+  const onEditMail = (text) => {
+    if (hasError) {
+      setHasError((prevState) => ({ ...prevState, email: false }));
+    }
+    setEmail(text);
+  };
 
   return (
     <>
@@ -13,14 +20,15 @@ const EmailInput = ({ hasError, email, setEmail }) => {
           placeholder="email@address.com"
           leftIcon={<Icon name="email" size={24} color={GREY} />}
           value={email}
-          onChangeText={setEmail}
+          onChangeText={onEditMail}
           autoCapitalize="none"
           autoCorrect={false}
           inputStyle={styles.textInput}
           inputContainerStyle={emailFocus ? styles.focused : styles.notFocused}
           onFocus={() => setEmailFocus(true)}
           onBlur={() => setEmailFocus(false)}
-          errorMessage="Enter a Valid Email"
+          errorMessage="Enter a valid email address"
+          errorStyle={styles.errorText}
         />
       ) : (
         <Input
@@ -49,6 +57,9 @@ const styles = StyleSheet.create({
   },
   focused: {
     borderColor: LIGHT_GREEN,
+  },
+  errorText: {
+    letterSpacing: 0.5,
   },
 });
 

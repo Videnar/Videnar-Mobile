@@ -3,8 +3,15 @@ import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
 
-const PasswordInput = ({ hasError, password, setPassword }) => {
+const PasswordInput = ({ password, setPassword, hasError, setHasError }) => {
   const [pwdFocus, setPwdFocus] = useState(false);
+
+  const onEditPassword = (text) => {
+    if (hasError) {
+      setHasError((prevState) => ({ ...prevState, password: false }));
+    }
+    setPassword(text);
+  };
 
   return (
     <>
@@ -14,14 +21,15 @@ const PasswordInput = ({ hasError, password, setPassword }) => {
           placeholder="password"
           leftIcon={<Icon name="lock" size={24} color={GREY} />}
           value={password}
-          onChangeText={setPassword}
+          onChangeText={onEditPassword}
           autoCapitalize="none"
           autoCorrect={false}
           inputStyle={styles.textInput}
           inputContainerStyle={pwdFocus ? styles.focused : styles.notFocused}
           onFocus={() => setPwdFocus(true)}
           onBlur={() => setPwdFocus(false)}
-          errorMessage="Password Can't be Empty"
+          errorMessage="Password field is required"
+          errorStyle={styles.errorText}
         />
       ) : (
         <Input
@@ -51,6 +59,9 @@ const styles = StyleSheet.create({
   },
   focused: {
     borderColor: LIGHT_GREEN,
+  },
+  errorText: {
+    letterSpacing: 0.5,
   },
 });
 

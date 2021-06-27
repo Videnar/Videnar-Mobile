@@ -19,6 +19,38 @@ const AuthForm = ({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [hasError, setHasError] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
+
+  const onSubmitForm = () => {
+    let { nameError, emailError, pwdError } = {
+      nameError: false,
+      emailError: false,
+      pwdError: false,
+    };
+    const emailFormat =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (name === '') {
+      nameError = true;
+    }
+    if (!email.match(emailFormat)) {
+      emailError = true;
+    }
+    if (password === '') {
+      pwdError = true;
+    }
+    setHasError({
+      name: nameError,
+      email: emailError,
+      password: pwdError,
+    });
+    if (nameError === false && emailError === false && pwdError === false) {
+      onSubmit(email, password, name);
+    }
+  };
 
   const forgotPasswordHandler = () => {
     RootNavigation.navigate('ForgotPassword');
@@ -34,13 +66,29 @@ const AuthForm = ({
         </Spacer>
       </View>
       <View>
+        {/** Name */}
         {nameInput ? (
-          <>
-            <NameInput name={name} setName={setName} />
-          </>
+          <NameInput
+            name={name}
+            setName={setName}
+            hasError={hasError.name}
+            setHasError={setHasError}
+          />
         ) : null}
-        <EmailInput email={email} setEmail={setEmail} />
-        <PasswordInput password={password} setPassword={setPassword} />
+        {/** Email */}
+        <EmailInput
+          email={email}
+          setEmail={setEmail}
+          hasError={hasError.email}
+          setHasError={setHasError}
+        />
+        {/** Password */}
+        <PasswordInput
+          password={password}
+          setPassword={setPassword}
+          hasError={hasError.password}
+          setHasError={setHasError}
+        />
         {forgotPassword ? (
           <Text
             onPress={() => forgotPasswordHandler()}
@@ -56,7 +104,7 @@ const AuthForm = ({
           titleStyle={styles.buttonText}
           type="clear"
           raised={true}
-          onPress={() => onSubmit(email, password, name)}
+          onPress={onSubmitForm}
           buttonStyle={nameInput ? styles.buttonSignup : styles.buttonLogin}
         />
       </View>

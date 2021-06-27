@@ -3,8 +3,15 @@ import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
 
-const NameInput = ({ hasError, name, setName }) => {
+const NameInput = ({ name, setName, hasError, setHasError }) => {
   const [nameFocus, setNameFocus] = useState(false);
+
+  const onEditName = (text) => {
+    if (hasError) {
+      setHasError((prevState) => ({ ...prevState, name: false }));
+    }
+    setName(text);
+  };
 
   return (
     <>
@@ -13,14 +20,15 @@ const NameInput = ({ hasError, name, setName }) => {
           placeholder="your name"
           leftIcon={<Icon name="person" size={24} color={GREY} />}
           value={name}
-          onChangeText={setName}
+          onChangeText={onEditName}
           autoCapitalize="none"
           autoCorrect={false}
           style={styles.textInput}
           inputContainerStyle={nameFocus ? styles.focused : styles.notFocused}
           onFocus={() => setNameFocus(true)}
           onBlur={() => setNameFocus(false)}
-          errorMessage="Name can't be Empty"
+          errorMessage="Name field is required"
+          errorStyle={styles.errorText}
         />
       ) : (
         <Input
@@ -49,6 +57,9 @@ const styles = StyleSheet.create({
   },
   focused: {
     borderColor: LIGHT_GREEN,
+  },
+  errorText: {
+    letterSpacing: 0.5,
   },
 });
 
