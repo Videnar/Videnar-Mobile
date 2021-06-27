@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SocialIcon, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from '../contexts';
+import Google from '../utilities/Icons/Google';
+import Facebook from '../utilities/Icons/Facebook';
 
 GoogleSignin.configure({
   webClientId:
@@ -89,15 +91,11 @@ const SocialAuthComponent = () => {
 
   return (
     <View style={styles.container}>
-      <Button
-        type="clear"
-        icon={<SocialIcon light raised type="google" />}
-        onPress={onGoogleButtonPress}
-      />
+      <Button type="clear" icon={<Google />} onPress={onGoogleButtonPress} />
 
       <Button
         type="clear"
-        icon={<SocialIcon raised type="facebook" />}
+        icon={<Facebook />}
         onPress={onFacebookButtonPress}
       />
     </View>

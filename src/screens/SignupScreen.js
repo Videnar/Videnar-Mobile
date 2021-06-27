@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
-import { Header } from 'react-native-elements';
+import { Header, Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
+import Logo from '../utilities/Icons/Logo';
 
 const SignupScreen = ({ navigation }) => {
   const { setUser, changeScreen } = useContext(Context);
@@ -48,11 +49,13 @@ const SignupScreen = ({ navigation }) => {
     <>
       <Header
         statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
-        placement="left"
-        centerComponent={{ text: 'Videnar', style: styles.headerText }}
         backgroundColor="white"
       />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Logo width={60} height={60} color={DEEP_GREEN} />
+          <Text style={styles.logoTextStyle}>Videnar</Text>
+        </View>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> COMPONENT WILL UNMOUNT*/}
         <AuthComponent
           headerText="Sign Up"
@@ -63,7 +66,7 @@ const SignupScreen = ({ navigation }) => {
         />
         <NavLink routeName="Signin" text="Sign In Instead!" />
         <SocialAuth />
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -83,13 +86,18 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: 'white',
   },
-  textStyle: {
+  logoContainer: {
+    alignSelf: 'center',
+  },
+  logoTextStyle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 'bold',
     textAlign: 'center',
+    letterSpacing: 1,
+    color: DEEP_GREEN,
+    marginTop: 5,
   },
 });
 
