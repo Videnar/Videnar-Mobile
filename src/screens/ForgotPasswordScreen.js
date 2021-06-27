@@ -7,29 +7,38 @@ import {
   Platform,
   AlertIOS,
 } from 'react-native';
-import { Input, Icon, Button, Header, Text } from 'react-native-elements';
+import { Icon, Button, Header, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import Spacer from '../components/Spacer';
+import EmailInput from '../components/InputComponents/EmailInput';
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const handler = () => {
-    const message = 'Check your email to reset Password.';
-    auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        if (Platform.OS === 'android') {
-          ToastAndroid.show(message, ToastAndroid.LONG);
-        } else {
-          AlertIOS.alert(message);
-        }
-        navigation.goBack();
-      })
-      .catch(function (error) {
-        // An error happened.
-      });
+  const [hasError, setHasError] = useState({ email: false });
+
+  const onSubmitHandler = () => {
+    const emailFormat =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!email.match(emailFormat)) {
+      setHasError({ email: true });
+    } else {
+      const message = 'Check your email to reset Password.';
+      auth()
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          if (Platform.OS === 'android') {
+            ToastAndroid.show(message, ToastAndroid.LONG);
+          } else {
+            AlertIOS.alert(message);
+          }
+          navigation.goBack();
+        })
+        .catch(function (error) {
+          // An error happened.
+        });
+    }
   };
   return (
     <>
@@ -55,20 +64,17 @@ const SigninScreen = ({ navigation }) => {
             <Text style={styles.headerText}>Reset Password</Text>
           </Spacer>
           <Spacer />
-          <Input
-            placeholder="youremail@address.com"
-            leftIcon={<Icon name="email" size={24} color="#666666" />}
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            autoCorrect={false}
-            inputStyle={styles.textInput}
+          <EmailInput
+            email={email}
+            setEmail={setEmail}
+            hasError={hasError.email}
+            setHasError={setHasError}
           />
           <Button
             type="clear"
             raised
             title="Continue"
-            onPress={handler}
+            onPress={onSubmitHandler}
             buttonStyle={styles.button}
             titleStyle={styles.buttonText}
           />
