@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
@@ -18,6 +18,7 @@ const EditorScreen = ({
   } = useContext(Context);
   const defaultContent = '<p><br></p>';
   const editorContentRef = useRef(content ? content : defaultContent);
+  const [buttonDisable, setButtonDisable] = useState(true);
 
   const saveToCloud = async (str) => {
     if (str === defaultContent) {
@@ -116,12 +117,17 @@ const EditorScreen = ({
             title="Submit"
             buttonStyle={styles.button}
             titleStyle={styles.buttonText}
+            disabled={buttonDisable}
             onPress={() => saveToCloud(editorContentRef.current)}
           />
         }
         containerStyle={styles.header}
       />
-      <Editor contentRef={editorContentRef} />
+      <Editor
+        contentRef={editorContentRef}
+        setButtonDisable={setButtonDisable}
+        buttonDisable={buttonDisable}
+      />
     </>
   );
 };
