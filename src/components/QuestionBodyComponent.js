@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionBodyComponent;
+export default React.memo(QuestionBodyComponent);

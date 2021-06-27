@@ -1,21 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { Card } from 'react-native-elements';
-import { Context } from '../contexts';
 import QuestionHeaderComponent from './QuestionHeaderComponent';
 import QuestionBodyComponent from './QuestionBodyComponent';
 import QuestionBottomComponent from './QuestionBottomComponent';
 import QuestionMoreOverlayComponent from './QuestionMoreOverLayComponent';
 import { WHITE } from '../assets/colors/colors';
 
-const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
-  const route = useRoute();
-  const {
-    state: { userID },
-  } = useContext(Context);
+const QuestionComponent = ({
+  questionId,
+  questionerUId,
+  upVotesCount,
+  content,
+  userDisplayName,
+  route,
+  navigation: { navigate, goBack },
+}) => {
   const [popupVisible, setPopupVisible] = useState(false);
-  const { content, userDisplayName } = question;
 
   return (
     <>
@@ -23,7 +24,7 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
         <Pressable
           onPress={() => {
             route.name !== 'QuestionDetails' &&
-              navigate('QuestionDetails', { questionID: question.id });
+              navigate('QuestionDetails', { questionID: questionId });
           }}>
           {/* Header Section */}
           <QuestionHeaderComponent userDisplayName={userDisplayName} />
@@ -33,8 +34,9 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
         </Pressable>
         <Card.Divider />
         <QuestionBottomComponent
-          userID={userID}
-          question={question}
+          questionerUId={questionerUId}
+          questionId={questionId}
+          upVotes={upVotesCount}
           isPopupVisible={(event) => {
             setPopupVisible(event);
           }}
@@ -44,9 +46,11 @@ const QuestionComponent = ({ question, navigation: { navigate, goBack } }) => {
       <QuestionMoreOverlayComponent
         popupVisible={popupVisible}
         isPopupVisible={(event) => setPopupVisible(event)}
-        question={question}
+        questionId={questionId}
+        content={content}
         navigate={navigate}
         goBack={goBack}
+        route={route}
       />
     </>
   );
@@ -62,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionComponent;
+export default React.memo(QuestionComponent);
