@@ -96,10 +96,7 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const countRef = useRef(0);
   const RenderItem = ({ item }) => {
-    countRef.current += 1;
-    console.log('Count --->', item.id, ' --- ', countRef.current);
     return (
       <QuestionComponent
         key={item.id}
