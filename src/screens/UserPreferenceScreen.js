@@ -37,7 +37,7 @@ const UserPreferenceScreen = () => {
     Toast.show({
       type: 'success',
       position: 'bottom',
-      text1: 'Your changes are saved',
+      text1: 'Your info are saved',
       text2: 'Awesome ✌️',
       visibilityTime: 1000,
       autoHide: true,
