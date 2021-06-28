@@ -1,6 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Card, FAB, Header, Icon, Text } from 'react-native-elements';
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  View,
+  StatusBar,
+} from 'react-native';
+import { Card, FAB, Icon, Text } from 'react-native-elements';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
@@ -62,20 +68,17 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
   };
 
   return (
-    <>
-      <Header
-        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
-        leftComponent={
-          <Icon
-            type="material"
-            name="arrow-back"
-            size={30}
-            color={GREY}
-            onPress={() => navigation.goBack()}
-          />
-        }
-        backgroundColor="white"
-      />
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+      <View style={styles.headerContainer}>
+        <Icon
+          type="material"
+          name="arrow-back"
+          containerStyle={styles.iconContainer}
+          onPress={() => navigation.goBack()}
+          size={30}
+        />
+      </View>
       <FlatList
         ListHeaderComponent={
           <>
@@ -121,7 +124,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
             <Text>You have reached the end.</Text>
           </View>
         }
-        style={styles.container}
+        style={styles.flatListCcontainer}
       />
       <FAB
         title="Answer"
@@ -137,11 +140,24 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         }
         color={DEEP_GREEN}
       />
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
+  headerContainer: {
+    height: '6%',
+  },
+  iconContainer: {
+    height: 30,
+    width: 30,
+    marginVertical: 2,
+    marginHorizontal: 10,
+  },
   card: {
     width: '100%',
     elevation: 2,
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
   },
-  container: {
+  flatListcontainer: {
     backgroundColor: WHITE,
   },
   loadingContainer: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Header, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import QuestionActivityScreen from '../screens/QuestionActivityScreen';
@@ -106,13 +106,6 @@ export const Auth = () => (
 
 export const ActivityTopTab = () => (
   <>
-    <Header
-      statusBarProps={{
-        barStyle: 'dark-content',
-        backgroundColor: 'white',
-      }}
-      backgroundColor="white"
-    />
     <TopTab.Navigator
       initialRouteName="Questions"
       tabBarOptions={{

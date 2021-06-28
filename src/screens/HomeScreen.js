@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
+  SafeAreaView,
   View,
+  StatusBar,
   StyleSheet,
   FlatList,
   RefreshControl,
   Dimensions,
 } from 'react-native';
-import { Header, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
@@ -127,43 +129,42 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <Header
-        statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white' }}
-        placement="left"
-        centerComponent={{
-          text: 'Videnar',
-          style: {
-            color: DEEP_GREEN,
-            fontSize: 20,
-            fontWeight: 'bold',
-            letterSpacing: 1.5,
-          },
-        }}
-        backgroundColor="white"
-      />
-      <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        data={questions}
-        renderItem={RenderItem}
-        ListFooterComponent={lastItem}
-        style={styles.FlatList}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        onEndReachedThreshold={0.4}
-        onEndReached={loadMoreQuestions}
-        getItemLayout={getItemLayOut}
-      />
-      <FloatingAskQuestionButton navigation={navigation} />
-    </View>
+    <>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+        <View>
+          <Text style={styles.headerText}>Videnar</Text>
+        </View>
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          data={questions}
+          renderItem={RenderItem}
+          ListFooterComponent={lastItem}
+          style={styles.FlatList}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          onEndReachedThreshold={0.4}
+          onEndReached={loadMoreQuestions}
+          getItemLayout={getItemLayOut}
+        />
+        <FloatingAskQuestionButton navigation={navigation} />
+      </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  FlatList: { marginHorizontal: 2 },
   container: { flex: 1, backgroundColor: WHITE },
+  headerText: {
+    color: DEEP_GREEN,
+    fontSize: 22,
+    fontWeight: 'bold',
+    letterSpacing: 1.5,
+    paddingLeft: '5%',
+  },
+  FlatList: { marginHorizontal: 2 },
   lastItem: {
     height: 100,
     alignContent: 'center',

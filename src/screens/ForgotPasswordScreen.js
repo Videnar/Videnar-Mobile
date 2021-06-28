@@ -6,6 +6,8 @@ import {
   ToastAndroid,
   Platform,
   AlertIOS,
+  StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import { Icon, Button, Header, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
@@ -41,19 +43,18 @@ const SigninScreen = ({ navigation }) => {
     }
   };
   return (
-    <>
-      <Header
-        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
-        leftComponent={
-          <Icon
-            name="arrow-back"
-            onPress={() => navigation.goBack()}
-            size={30}
-          />
-        }
-        backgroundColor="white"
-      />
-      <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <View style={styles.headerContainer}>
+        <Icon
+          type="material"
+          name="arrow-back"
+          containerStyle={styles.iconContainer}
+          onPress={() => navigation.goBack()}
+          size={30}
+        />
+      </View>
+      <ScrollView>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
         <View style={styles.logoContainer}>
           <Logo width={60} height={60} color={DEEP_GREEN} />
@@ -82,7 +83,7 @@ const SigninScreen = ({ navigation }) => {
         <Spacer />
         <Spacer />
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 SigninScreen.navigationOptions = {
@@ -90,16 +91,19 @@ SigninScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 22,
-    color: GREY,
-    alignSelf: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
     alignContent: 'center',
+  },
+  headerContainer: {
+    height: '7%',
+  },
+  iconContainer: {
+    height: 30,
+    width: 30,
+    marginVertical: 5,
+    marginHorizontal: 10,
   },
   logoContainer: {
     alignSelf: 'center',
@@ -111,6 +115,12 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: DEEP_GREEN,
     marginTop: 5,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: GREY,
+    alignSelf: 'center',
   },
   inputContainer: {
     height: '40%',

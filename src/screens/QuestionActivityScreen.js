@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Text } from 'react-native-elements';
 import QuestionComponent from '../components/QuestionComponent';
@@ -20,7 +27,7 @@ const ActivityScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions]);
+  }, [fetchQuestions, questions]);
 
   const fetchQuestions = useCallback(async () => {
     try {
@@ -111,7 +118,8 @@ const ActivityScreen = ({ navigation }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       <FlatList
         data={questions}
         renderItem={RenderItem}
@@ -123,7 +131,7 @@ const ActivityScreen = ({ navigation }) => {
         onEndReached={loadMoreQuestions}
         getItemLayout={getItemLayOut}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
