@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
 import { GREY, WHITE } from '../assets/colors/colors';
 import ImagePickerOverlay from './ImagePickerOverlay';
 
-const Editor = ({ contentRef }) => {
+const Editor = ({ contentRef, buttonDisable, setButtonDisable }) => {
   const _editor = React.createRef();
   const [isImagePickVisible, setIsImagePickVisible] = useState(false);
 
@@ -23,6 +23,20 @@ const Editor = ({ contentRef }) => {
     overlay: 'rgba(92,92,92,.1)',
   };
 
+  const onEditTextHandler = useCallback(
+    (html) => {
+      contentRef.current = html;
+      var regex = /(<([^>]+)>)/gi;
+      let hasText = html.replace(regex, '');
+      if (hasText !== '') {
+        setButtonDisable(false);
+      } else {
+        setButtonDisable(true);
+      }
+    },
+    [contentRef, setButtonDisable],
+  );
+
   const customHandler = (name) => {
     if (name === 'image') {
       setIsImagePickVisible(true);
@@ -38,7 +52,7 @@ const Editor = ({ contentRef }) => {
           style={styles.editor}
           ref={_editor}
           initialHtml={contentRef.current}
-          onHtmlChange={({ html }) => (contentRef.current = html)}
+          onHtmlChange={({ html }) => onEditTextHandler(html)}
           loading="Editor Loading"
         />
         <QuillToolbar

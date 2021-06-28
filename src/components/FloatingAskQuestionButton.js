@@ -1,5 +1,5 @@
 import React from 'react';
-import { FAB, Icon } from 'react-native-elements';
+import { FAB } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 
 const FloatingAskQuestionButton = ({ navigation }) => {
@@ -13,16 +13,8 @@ const FloatingAskQuestionButton = ({ navigation }) => {
           headerText: 'Ask a Question',
         });
       }}
-      icon={
-        <Icon
-          type="material"
-          name="live-help"
-          color={DEEP_GREEN}
-          size={28}
-          reverse
-          raised
-        />
-      }
+      title="Ask 🦉"
+      color={DEEP_GREEN}
     />
   );
 };

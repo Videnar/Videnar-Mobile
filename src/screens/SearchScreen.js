@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { Button, Header, SearchBar } from 'react-native-elements';
+import { Button, SearchBar } from 'react-native-elements';
 import WebView from 'react-native-webview';
+import {
+  SafeAreaView,
+  View,
+  Pressable,
+  StyleSheet,
+  FlatList,
+  StatusBar,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
-import { DEEP_GREEN } from '../assets/colors/colors';
-import { Divider } from 'react-native-elements/dist/divider/Divider';
+import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
+import Algolia from '../utilities/Icons/Algolia';
+import SearchLottie from '../components/UI/SearchLottie';
 
 const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
 const index = client.initIndex('questions');
@@ -15,14 +23,18 @@ const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const search = () => {
     try {
       if (input.trim() !== '') {
+        setLoading(true);
         index.search(input.trim()).then(({ hits }) => {
           if (typeof hits !== 'undefined' && hits.length > 0) {
             setResults(hits);
+            setLoading(false);
           } else {
+            setLoading(false);
             Toast.show({
               type: 'info',
               position: 'top',
@@ -81,12 +93,8 @@ const SearchScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white' }}
-        style={styles.header}
-        backgroundColor="white"
-      />
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       <View style={styles.searchContainer}>
         <SearchBar
           placeholder="Search here ..."
@@ -113,19 +121,25 @@ const SearchScreen = ({ navigation }) => {
           disabled={disabled}
         />
       </View>
+      <View style={styles.algoliaContainer}>
+        <Algolia />
+      </View>
       <View style={styles.resultsContainer}>
-        <FlatList
-          data={results}
-          renderItem={RenderItem}
-          keyExtractor={(item) => item.objectID}
-          ItemSeparatorComponent={Divider}
-          maxToRenderPerBatch={4}
-          initialNumToRender={3}
-          updateCellsBatchingPeriod={100}
-        />
+        {loading ? (
+          <SearchLottie />
+        ) : (
+          <FlatList
+            data={results}
+            renderItem={RenderItem}
+            keyExtractor={(item) => item.objectID}
+            maxToRenderPerBatch={4}
+            initialNumToRender={3}
+            updateCellsBatchingPeriod={100}
+          />
+        )}
       </View>
       <FloatingAskQuestionButton navigation={navigation} />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -154,6 +168,11 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: 60,
     height: 60,
+  },
+  algoliaContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: '23%',
   },
   resultsContainer: {
     marginHorizontal: '03%',

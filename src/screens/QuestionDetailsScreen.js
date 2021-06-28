@@ -1,6 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Card, FAB, Header, Icon, Text } from 'react-native-elements';
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  View,
+  StatusBar,
+} from 'react-native';
+import { Card, FAB, Icon, Text } from 'react-native-elements';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
@@ -9,6 +15,7 @@ import QuestionDetailBottomComponent from '../components/QuestionDetailButtomCom
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
 import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
+import DotsLottie from '../components/UI/DotsLottie';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
@@ -18,7 +25,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
 
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
-  const [loadingQuestion, setLoadingQuestion] = useState(true);
+  const [loadingAnswers, setLoadingAnswers] = useState(true);
 
   useEffect(() => {
     const fetchQuestion = firestore()
@@ -27,7 +34,6 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           setQuestion(querySnapshot._data);
-          setLoadingQuestion(false);
         }
       });
     // clean up
@@ -51,6 +57,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
             });
           });
         setAnswers(ans);
+        setLoadingAnswers(false);
       });
     return () => {
       fetchAnswers();
@@ -62,27 +69,26 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
   };
 
   return (
-    <>
-      <Header
-        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
-        leftComponent={
-          <Icon
-            type="material"
-            name="arrow-back"
-            size={30}
-            color={GREY}
-            onPress={() => navigation.goBack()}
-          />
-        }
-        backgroundColor="white"
-      />
-      <FlatList
-        ListHeaderComponent={
-          <>
-            {/** Question is Displayed */}
-            {loadingQuestion ? (
-              <Text>Loading</Text>
-            ) : (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+      <View style={styles.headerContainer}>
+        <Icon
+          type="material"
+          name="arrow-back"
+          containerStyle={styles.iconContainer}
+          onPress={() => navigation.goBack()}
+          size={30}
+        />
+      </View>
+      {loadingAnswers ? (
+        <View style={styles.loadingContainer}>
+          <DotsLottie text="Loading Knowledge 📚" />
+        </View>
+      ) : (
+        <FlatList
+          ListHeaderComponent={
+            <>
+              {/** Question is Displayed */}
               <Card containerStyle={styles.card}>
                 <QuestionHeaderComponent
                   userDisplayName={question.userDisplayName}
@@ -104,29 +110,27 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
                   questionId={questionIdfromProps}
                 />
               </Card>
-            )}
-            <View>
-              <Text style={styles.headerText}>Answers</Text>
+              <View>
+                <Text style={styles.headerText}>Answers</Text>
+              </View>
+            </>
+          }
+          renderItem={renderItems}
+          data={answers}
+          keyExtractor={(answer) => answer.id}
+          maxToRenderPerBatch={4}
+          initialNumToRender={3}
+          updateCellsBatchingPeriod={100}
+          ListFooterComponent={
+            <View style={styles.footerText}>
+              <Text>You have reached the end 👽</Text>
             </View>
-          </>
-        }
-        renderItem={renderItems}
-        data={answers}
-        keyExtractor={(answer) => answer.id}
-        maxToRenderPerBatch={4}
-        initialNumToRender={3}
-        updateCellsBatchingPeriod={100}
-        ListFooterComponent={
-          <View style={styles.footerText}>
-            <Text>You have reached the end 👽</Text>
-          </View>
-        }
-        style={styles.container}
-      />
+          }
+          style={styles.flatListContainer}
+        />
+      )}
       <FAB
-        title="Answer"
-        iconRight
-        icon={<Icon type="material" name="add" color="white" />}
+        title="Answer 🎯"
         placement="right"
         onPress={() =>
           navigation.navigate('EditorScreen', {
@@ -137,11 +141,24 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         }
         color={DEEP_GREEN}
       />
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
+  headerContainer: {
+    height: '6%',
+  },
+  iconContainer: {
+    height: 30,
+    width: 30,
+    marginVertical: 2,
+    marginHorizontal: 10,
+  },
   card: {
     width: '100%',
     elevation: 2,
@@ -149,14 +166,16 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
   },
-  container: {
+  flatListContainer: {
     backgroundColor: WHITE,
   },
   loadingContainer: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: 'white',
+    height: '40%',
+    flexDirection: 'row',
+    marginLeft: '25%',
     alignItems: 'center',
+    alignContent: 'center',
+    top: '20%',
   },
   lastItem: {
     height: 130,
@@ -173,7 +192,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   footerText: {
-    height: 100,
+    height: 120,
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,

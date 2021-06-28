@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Image, ScrollView, View } from 'react-native';
+import { StyleSheet, Image, ScrollView, View, StatusBar } from 'react-native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { Text, Header, Button } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
-import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
 import Spacer from '../components/Spacer';
 
 const ProfileScreen = ({ navigation }) => {
@@ -85,13 +85,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Header
-        statusBarProps={{
-          barStyle: 'dark-content',
-          backgroundColor: 'transparent',
-        }}
-        backgroundColor="transparent"
-      />
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       <View style={styles.profile}>
         <Image
           style={styles.picture}
@@ -140,6 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop: '5%',
   },
   picture: {
     width: 100,

@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+  RefreshControl,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { Text } from 'react-native-elements';
 import QuestionComponent from '../components/QuestionComponent';
 import { WHITE } from '../assets/colors/colors';
 import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
+import DotsLottie from '../components/UI/DotsLottie';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -15,12 +24,22 @@ const ActivityScreen = ({ navigation }) => {
   } = useContext(Context);
 
   const [questions, setQuestions] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
   const route = useRoute();
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions]);
+  }, [fetchQuestions, questions]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchQuestions();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  };
 
   const fetchQuestions = useCallback(async () => {
     try {
@@ -42,6 +61,7 @@ const ActivityScreen = ({ navigation }) => {
           });
         }
         setQuestions(newQuestions);
+        setLoadingQuestions(false);
       } else {
         setLastDocument(null);
       }
@@ -111,19 +131,29 @@ const ActivityScreen = ({ navigation }) => {
   });
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={questions}
-        renderItem={RenderItem}
-        ListFooterComponent={lastItem}
-        style={styles.FlatList}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        onEndReachedThreshold={0.4}
-        onEndReached={loadMoreQuestions}
-        getItemLayout={getItemLayOut}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+      {loadingQuestions ? (
+        <View style={styles.loadingContainer}>
+          <DotsLottie text="Loading Questions ❓" />
+        </View>
+      ) : (
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          data={questions}
+          renderItem={RenderItem}
+          ListFooterComponent={lastItem}
+          style={styles.FlatList}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          onEndReachedThreshold={0.4}
+          onEndReached={loadMoreQuestions}
+          getItemLayout={getItemLayOut}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -138,6 +168,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,
+  },
+  loadingContainer: {
+    height: '50%',
+    flexDirection: 'row',
+    marginLeft: '25%',
+    alignItems: 'center',
+    alignContent: 'center',
+    top: '20%',
   },
 });
 

@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
-import { Header, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignupScreen = ({ navigation }) => {
   const { setUser, changeScreen } = useContext(Context);
@@ -46,12 +47,9 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    <>
-      <Header
-        statusBarProps={{ backgroundColor: 'white', barStyle: 'dark-content' }}
-        backgroundColor="white"
-      />
-      <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <ScrollView>
         <View style={styles.logoContainer}>
           <Logo width={60} height={60} color={DEEP_GREEN} />
           <Text style={styles.logoTextStyle}>Videnar</Text>
@@ -67,7 +65,7 @@ const SignupScreen = ({ navigation }) => {
         <NavLink routeName="Signin" text="Sign In Instead!" />
         <SocialAuth />
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
