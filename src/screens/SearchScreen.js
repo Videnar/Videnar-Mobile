@@ -13,6 +13,7 @@ import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import Algolia from '../utilities/Icons/Algolia';
+import SearchLottie from '../components/UI/SearchLottie';
 
 const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
 const index = client.initIndex('questions');
@@ -21,12 +22,15 @@ const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const search = () => {
     try {
       if (input.trim() !== '') {
+        setLoading(true);
         index.search(input.trim()).then(({ hits }) => {
           setResults(hits);
+          setLoading(false);
         });
       }
     } catch (err) {
@@ -106,14 +110,18 @@ const SearchScreen = ({ navigation }) => {
         <Algolia />
       </View>
       <View style={styles.resultsContainer}>
-        <FlatList
-          data={results}
-          renderItem={RenderItem}
-          keyExtractor={(item) => item.objectID}
-          maxToRenderPerBatch={4}
-          initialNumToRender={3}
-          updateCellsBatchingPeriod={100}
-        />
+        {loading ? (
+          <SearchLottie />
+        ) : (
+          <FlatList
+            data={results}
+            renderItem={RenderItem}
+            keyExtractor={(item) => item.objectID}
+            maxToRenderPerBatch={4}
+            initialNumToRender={3}
+            updateCellsBatchingPeriod={100}
+          />
+        )}
       </View>
       <FloatingAskQuestionButton navigation={navigation} />
     </SafeAreaView>

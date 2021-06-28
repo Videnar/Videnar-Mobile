@@ -8,7 +8,7 @@ const LoadingAnimation = () => {
     <View style={styles.loadingContainer}>
       <ClockLottie />
       <View style={styles.loadingTextContainer}>
-        <DotsLottie text="Loading Questions 🦉" />
+        <DotsLottie text="Loading Questions 🌏" />
       </View>
     </View>
   );
@@ -16,9 +16,9 @@ const LoadingAnimation = () => {
 
 const styles = StyleSheet.create({
   loadingContainer: {
-    flex: 1,
+    height: '115%',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignContent: 'center',
     alignItems: 'center',
   },
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     height: '10%',
     flexDirection: 'row',
     marginLeft: '5%',
-    bottom: 80,
+    bottom: 70,
   },
   loadingText: {
     fontSize: 17,

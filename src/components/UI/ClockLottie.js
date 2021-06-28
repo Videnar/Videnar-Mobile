@@ -15,8 +15,8 @@ const ClockLottie = () => {
 
 const styles = StyleSheet.create({
   loadingClock: {
-    height: '80%',
-    width: '80%',
+    height: '70%',
+    width: '70%',
     alignSelf: 'center',
   },
 });

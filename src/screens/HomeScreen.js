@@ -15,6 +15,7 @@ import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
+import LoadingAnimation from '../components/UI/LoadingAnimation';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -23,6 +24,8 @@ const HomeScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const route = useRoute();
 
   useEffect(() => {
@@ -58,6 +61,7 @@ const HomeScreen = ({ navigation }) => {
           });
         }
         setQuestions(newQuestions);
+        setLoading(false);
       } else {
         setLastDocument(null);
       }
@@ -135,20 +139,24 @@ const HomeScreen = ({ navigation }) => {
         <View>
           <Text style={styles.headerText}>Videnar</Text>
         </View>
-        <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          data={questions}
-          renderItem={RenderItem}
-          ListFooterComponent={lastItem}
-          style={styles.FlatList}
-          maxToRenderPerBatch={5}
-          initialNumToRender={5}
-          onEndReachedThreshold={0.4}
-          onEndReached={loadMoreQuestions}
-          getItemLayout={getItemLayOut}
-        />
+        {loading ? (
+          <LoadingAnimation autoplay={loading} />
+        ) : (
+          <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            data={questions}
+            renderItem={RenderItem}
+            ListFooterComponent={lastItem}
+            style={styles.FlatList}
+            maxToRenderPerBatch={5}
+            initialNumToRender={5}
+            onEndReachedThreshold={0.4}
+            onEndReached={loadMoreQuestions}
+            getItemLayout={getItemLayOut}
+          />
+        )}
         <FloatingAskQuestionButton navigation={navigation} />
       </SafeAreaView>
     </>
@@ -170,6 +178,33 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,
+  },
+  loadingContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  loadingClock: {
+    height: '80%',
+    width: '80%',
+    alignSelf: 'center',
+  },
+  loadingTextContainer: {
+    height: '10%',
+    flexDirection: 'row',
+    marginLeft: '5%',
+    bottom: 40,
+  },
+  loadingText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    paddingTop: '3%',
+  },
+  loadingDots: {
+    height: 50,
   },
 });
 

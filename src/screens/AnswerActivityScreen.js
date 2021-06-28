@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import AnswerComponent from '../components/AnswerComponent';
 import { WHITE } from '../assets/colors/colors';
+import DotsLottie from '../components/UI/DotsLottie';
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -20,6 +21,7 @@ const ActivityScreen = ({ navigation }) => {
   const [answers, setAnswers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
+  const [loadingAnswers, setLoadingAnswers] = useState(true);
 
   useEffect(() => {
     fetchAnswers();
@@ -54,6 +56,7 @@ const ActivityScreen = ({ navigation }) => {
         }
 
         setAnswers(newAnswers);
+        setLoadingAnswers(false);
       } else {
         setLastDocument(null);
       }
@@ -107,21 +110,27 @@ const ActivityScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-      <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        data={answers}
-        renderItem={RenderItem}
-        ListFooterComponent={lastItem}
-        keyExtractor={(item) => item.id}
-        style={styles.FlatList}
-        maxToRenderPerBatch={4}
-        initialNumToRender={3}
-        updateCellsBatchingPeriod={100}
-        onEndReachedThreshold={0.5}
-        onEndReached={loadMoreAnswers}
-      />
+      {loadingAnswers ? (
+        <View style={styles.loadingContainer}>
+          <DotsLottie text="Loading your answers 📝" />
+        </View>
+      ) : (
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          data={answers}
+          renderItem={RenderItem}
+          ListFooterComponent={lastItem}
+          keyExtractor={(item) => item.id}
+          style={styles.FlatList}
+          maxToRenderPerBatch={4}
+          initialNumToRender={3}
+          updateCellsBatchingPeriod={100}
+          onEndReachedThreshold={0.5}
+          onEndReached={loadMoreAnswers}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -136,6 +145,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,
+  },
+  loadingContainer: {
+    height: '50%',
+    flexDirection: 'row',
+    marginLeft: '25%',
+    alignItems: 'center',
+    alignContent: 'center',
+    top: '20%',
   },
 });
 
