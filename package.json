@@ -31,7 +31,7 @@
     "react-native": "0.63.4",
     "react-native-autoheight-webview": "^1.5.8",
     "react-native-cn-quill": "^0.7.0",
-    "react-native-elements": "^3.4.2",
+    "react-native-elements": "^3.4.0",
     "react-native-email": "^1.1.0",
     "react-native-fbsdk": "^3.0.0",
     "react-native-gesture-handler": "^1.10.3",

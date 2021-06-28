@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions, state.exams, state.preferences]);
+  }, [fetchQuestions, state.exams, state.preferences, questions]);
 
   const onRefresh = () => {
     setRefreshing(true);
