@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  RefreshControl,
 } from 'react-native';
 import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
@@ -17,11 +18,20 @@ const ActivityScreen = ({ navigation }) => {
     state: { userID },
   } = useContext(Context);
   const [answers, setAnswers] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
 
   useEffect(() => {
     fetchAnswers();
   }, [fetchAnswers, answers]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchAnswers();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  };
 
   const fetchAnswers = useCallback(async () => {
     try {
@@ -98,6 +108,9 @@ const ActivityScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={answers}
         renderItem={RenderItem}
         ListFooterComponent={lastItem}

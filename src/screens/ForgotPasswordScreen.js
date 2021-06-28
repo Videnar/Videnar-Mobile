@@ -9,7 +9,7 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
-import { Icon, Button, Header, Text } from 'react-native-elements';
+import { Icon, Button, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';

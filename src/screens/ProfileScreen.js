@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Image, ScrollView, View, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { Text, Header, Button } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
 import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';

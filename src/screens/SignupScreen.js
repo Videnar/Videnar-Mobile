@@ -5,7 +5,7 @@ import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
-import { Header, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import { SafeAreaView } from 'react-native-safe-area-context';
