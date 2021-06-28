@@ -20,8 +20,7 @@ const ProfileEditableComponent = ({ navigation }) => {
 
   const shareAppHandler = () => {
     const options = {
-      message:
-        'Hey There! Join Vedenar and continue with your studies without any distraction',
+      message: 'Hey There! Join Videnar!',
     };
     Share.open(options)
       .then((res) => {

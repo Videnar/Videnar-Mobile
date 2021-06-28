@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,10 +12,12 @@ import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import { useRoute } from '@react-navigation/native';
+import { Context } from '../contexts';
 
 const HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({ navigation }) => {
+  const { state } = useContext(Context);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
@@ -23,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [fetchQuestions, state.exams, state.preferences]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -33,11 +35,12 @@ const HomeScreen = ({ navigation }) => {
     }, 1500);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchQuestions = async () => {
     try {
       const snapShot = await firestore()
         .collection('questions')
-        // .where('exams', 'array-contains-any', exams)
+        .where('exams', 'array-contains-any', state.preferences.exams)
         .orderBy('createdAt', 'desc')
         .limit(6)
         .get();
@@ -66,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
       if (lastDocument) {
         const snapShot = await firestore()
           .collection('questions')
-          // .where('exams', 'array-contains-any', exams)
+          .where('exams', 'array-contains-any', state.preferences.exams)
           .orderBy('createdAt', 'desc')
           .startAfter(lastDocument)
           .limit(6)
@@ -99,7 +102,6 @@ const HomeScreen = ({ navigation }) => {
   const countRef = useRef(0);
   const RenderItem = ({ item }) => {
     countRef.current += 1;
-    console.log('Count --->', item.id, ' --- ', countRef.current);
     return (
       <QuestionComponent
         key={item.id}
@@ -156,7 +158,6 @@ const HomeScreen = ({ navigation }) => {
         onEndReached={loadMoreQuestions}
         getItemLayout={getItemLayOut}
       />
-      {/* FAB */}
       <FloatingAskQuestionButton navigation={navigation} />
     </View>
   );

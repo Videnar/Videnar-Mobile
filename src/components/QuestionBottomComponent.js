@@ -19,7 +19,7 @@ const QuestionBottomComponent = ({
 
   const shareQuestionHandler = () => {
     const options = {
-      message: `Can you answer this question on Videnar https://videnar.com/${questionId}`,
+      message: `Can you answer this question on Videnar https://videnar.com/question?id=${questionId}`,
     };
     Share.open(options)
       .then((res) => {
