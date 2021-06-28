@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Image, ScrollView, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Text, Header, Button } from 'react-native-elements';
@@ -55,10 +56,30 @@ const ProfileScreen = ({ navigation }) => {
         .then(() => {
           changeScreen('Auth', 'Main');
           removeUser();
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Your have signed out.',
+            text2: 'See Ya 👋',
+            visibilityTime: 500,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         })
         .catch((err) => console.log(err, 'err'));
     } catch (err) {
       console.log('er', err);
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Opps! Something went wrong.',
+        text2: 'Please, try signing out again 🤕',
+        visibilityTime: 500,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     }
   };
 

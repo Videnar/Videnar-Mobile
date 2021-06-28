@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  ToastAndroid,
-  Platform,
-  AlertIOS,
-} from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Icon, Button, Header, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
@@ -24,19 +18,32 @@ const SigninScreen = ({ navigation }) => {
     if (!email.match(emailFormat)) {
       setHasError({ email: true });
     } else {
-      const message = 'Check your email to reset Password.';
       auth()
         .sendPasswordResetEmail(email)
         .then(() => {
-          if (Platform.OS === 'android') {
-            ToastAndroid.show(message, ToastAndroid.LONG);
-          } else {
-            AlertIOS.alert(message);
-          }
           navigation.goBack();
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Please, check your email to reset Password.',
+            text2: '🙂🙂🙂',
+            visibilityTime: 500,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         })
         .catch(function (error) {
-          // An error happened.
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 😶',
+            visibilityTime: 500,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         });
     }
   };

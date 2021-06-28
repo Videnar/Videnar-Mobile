@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import AnswerComponent from '../components/AnswerComponent';
 import { WHITE } from '../assets/colors/colors';
+import { useRoute } from '@react-navigation/native';
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -12,6 +13,7 @@ const ActivityScreen = ({ navigation }) => {
   } = useContext(Context);
   const [answers, setAnswers] = useState([]);
   const [lastDocument, setLastDocument] = useState(null);
+  const route = useRoute();
 
   useEffect(() => {
     const fetchAnswers = async () => {
@@ -68,7 +70,14 @@ const ActivityScreen = ({ navigation }) => {
   };
 
   const RenderItem = ({ item }) => {
-    return <AnswerComponent answer={item} questionId={item.questionID} />;
+    return (
+      <AnswerComponent
+        answer={item}
+        questionId={item.questionID}
+        route={route}
+        navigation={navigation}
+      />
+    );
   };
 
   const lastItem = (

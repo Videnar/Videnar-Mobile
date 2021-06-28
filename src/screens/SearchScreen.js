@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Header, SearchBar } from 'react-native-elements';
 import WebView from 'react-native-webview';
+import Toast from 'react-native-toast-message';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
@@ -19,7 +20,20 @@ const SearchScreen = ({ navigation }) => {
     try {
       if (input.trim() !== '') {
         index.search(input.trim()).then(({ hits }) => {
-          setResults(hits);
+          if (typeof hits !== 'undefined' && hits.length > 0) {
+            setResults(hits);
+          } else {
+            Toast.show({
+              type: 'info',
+              position: 'top',
+              text1: 'No results found.',
+              text2: 'Please, try something different 🧐',
+              visibilityTime: 2000,
+              autoHide: true,
+              topOffset: 200,
+              bottomOffset: 40,
+            });
+          }
         });
       }
     } catch (err) {
