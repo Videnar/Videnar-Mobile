@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
@@ -8,60 +14,71 @@ import { WHITE } from '../assets/colors/colors';
 
 const ActivityScreen = ({ navigation }) => {
   const {
-    state: { userDisplayName, userID },
+    state: { userID },
   } = useContext(Context);
   const [answers, setAnswers] = useState([]);
   const [lastDocument, setLastDocument] = useState(null);
 
   useEffect(() => {
-    const fetchAnswers = async () => {
-      try {
-        firestore()
-          .collectionGroup('answers')
-          .where('userID', '==', userID)
-          .orderBy('createdAt', 'desc')
-          .limit(16)
-          .onSnapshot((querySnapshot) => {
-            const ans = [];
-            querySnapshot &&
-              querySnapshot.forEach((documentSnapshot) => {
-                ans.push({
-                  ...documentSnapshot.data(),
-                  id: documentSnapshot.id,
-                });
-              });
-            setAnswers(ans);
-            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          });
-      } catch (err) {
-        console.log('error fetching answers', err);
-      }
-    };
-
     fetchAnswers();
-  }, [userDisplayName, userID]);
+  }, [fetchAnswers, answers]);
 
-  const loadMoreAnswers = async () => {
+  const fetchAnswers = useCallback(async () => {
     try {
-      firestore()
+      const snapShot = await firestore()
         .collectionGroup('answers')
         .where('userID', '==', userID)
         .orderBy('createdAt', 'desc')
-        .startAfter(lastDocument)
-        .limit(16)
-        .onSnapshot((querySnapshot) => {
-          const q = [];
-          if (querySnapshot !== null) {
-            querySnapshot.forEach((documentSnapshot) => {
-              q.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
+        .limit(6)
+        .get();
+
+      if (!snapShot.empty) {
+        let newAnswers = [];
+        setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+        for (let q = 0; q < snapShot.docs.length; q++) {
+          newAnswers.push({
+            ...snapShot.docs[q].data(),
+            id: snapShot.docs[q].id,
+          });
+        }
+
+        setAnswers(newAnswers);
+      } else {
+        setLastDocument(null);
+      }
+    } catch (err) {
+      console.log('error fetching answers', err);
+    }
+  }, [userID]);
+
+  const loadMoreAnswers = async () => {
+    try {
+      if (lastDocument) {
+        const snapShot = await firestore()
+          .collectionGroup('answers')
+          .where('userID', '==', userID)
+          .orderBy('createdAt', 'desc')
+          .startAfter(lastDocument)
+          .limit(16)
+          .get();
+
+        if (!snapShot.empty) {
+          let newAnswers = [];
+          setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+          for (let q = 0; q < snapShot.docs.length; q++) {
+            newAnswers.push({
+              ...snapShot.docs[q].data(),
+              id: snapShot.docs[q].id,
             });
-            setAnswers([...answers, ...q]);
-            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
           }
-        });
+
+          setAnswers(newAnswers);
+        } else {
+          setLastDocument(null);
+        }
+      }
     } catch (err) {
       console.log('error fetching questions', err);
     }
@@ -78,7 +95,8 @@ const ActivityScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       <FlatList
         data={answers}
         renderItem={RenderItem}
@@ -91,7 +109,7 @@ const ActivityScreen = ({ navigation }) => {
         onEndReachedThreshold={0.5}
         onEndReached={loadMoreAnswers}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
