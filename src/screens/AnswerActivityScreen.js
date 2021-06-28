@@ -82,7 +82,7 @@ const ActivityScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>You have reached the end.</Text>
+      <Text>You have reached the end 💀</Text>
     </View>
   );
 
