@@ -72,7 +72,7 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
           onPress={changePassword}
         />
       </ScrollView>
-      <Text>More Features Coming Soon...</Text>
+      {/* <Text>More Features Coming Soon...</Text> */}
     </Overlay>
   );
 };

@@ -50,7 +50,7 @@ const App = () => {
           dispatch({ type: 'changeScreen', payload: { screen: 'Auth' } });
         }
       } catch (e) {
-        // Restoring token failed
+        console.log(e);
       }
     })();
   }, []);
@@ -108,8 +108,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // In App Update
-    console.log('Checking Update...');
+    console.log('Checking for an Update...');
     InAppUpdate.checkUpdate();
   }, []);
 

@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
+import { Context } from '../contexts';
 
 const WIDTH = Dimensions.get('window').width;
 
-const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
-  const { id, upvotes } = question;
+const QuestionBottomComponent = ({
+  questionerUId,
+  questionId,
+  upVotes,
+  isPopupVisible,
+}) => {
+  const {
+    state: { userID },
+  } = useContext(Context);
 
   const shareQuestionHandler = () => {
     const options = {
-      message: `Can you answer this question on Videnar https://videnar.com/${id}`,
+      message: `Can you answer this question on Videnar https://videnar.com/question?id=${questionId}`,
     };
     Share.open(options)
       .then((res) => {
@@ -25,7 +33,7 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
   return (
     <View style={styles.Options}>
       <View style={styles.upvoteContainer}>
-        <Text style={styles.upvoteText}>Upvotes: {upvotes}</Text>
+        <Text style={styles.upvoteText}>Upvotes: {upVotes}</Text>
       </View>
       <Icon
         name="share"
@@ -35,7 +43,7 @@ const QuestionBottomComponent = ({ userID, question, isPopupVisible }) => {
         onPress={shareQuestionHandler}
       />
       {/** more options Edit/Delete */}
-      {question.userID === userID && (
+      {questionerUId === userID && (
         <Icon
           name="more-vert"
           type="material"
@@ -67,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionBottomComponent;
+export default React.memo(QuestionBottomComponent);
