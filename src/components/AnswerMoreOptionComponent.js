@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import { navigate } from '../navigation/RootNavigation';
@@ -30,8 +31,28 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
         .collection('answers')
         .doc(answerId)
         .delete();
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Answer deleted.',
+        text2: 'Shush 🤫',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     } catch (err) {
       console.log('error deleting answer:', err);
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Opps! Something went wrong.',
+        text2: 'Please, try again 🤕',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     }
   };
 

@@ -128,7 +128,7 @@ const HomeScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>No More Questions to Show</Text>
+      <Text>No more questions to show 🐹</Text>
     </View>
   );
 
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
   FlatList: { marginHorizontal: 2 },
   lastItem: {
-    height: 100,
+    height: 150,
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,

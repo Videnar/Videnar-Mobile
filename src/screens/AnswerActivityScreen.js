@@ -13,6 +13,7 @@ import { Context } from '../contexts';
 import AnswerComponent from '../components/AnswerComponent';
 import { WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
+import { useRoute } from '@react-navigation/native';
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -22,6 +23,7 @@ const ActivityScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
+  const route = useRoute();
 
   useEffect(() => {
     fetchAnswers();
@@ -98,12 +100,19 @@ const ActivityScreen = ({ navigation }) => {
   };
 
   const RenderItem = ({ item }) => {
-    return <AnswerComponent answer={item} questionId={item.questionID} />;
+    return (
+      <AnswerComponent
+        answer={item}
+        questionId={item.questionID}
+        route={route}
+        navigation={navigation}
+      />
+    );
   };
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>You have reached the end.</Text>
+      <Text>You have reached the end 💀</Text>
     </View>
   );
 

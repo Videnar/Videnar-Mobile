@@ -31,6 +31,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       .collection('questions')
       .doc(questionId)
       .collection('comments')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
         const comnts = [];
         querySnapshot &&

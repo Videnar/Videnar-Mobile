@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, BackHandler, ScrollView } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 import BranchSelectionComponent from '../components/BranchSelectionComponent';
 import EducationSelectionComponent from '../components/EducationSelectionComponent';
 import ExamSelectionComponent from '../components/ExamSelectionComponent';
@@ -33,6 +34,16 @@ const UserPreferenceScreen = () => {
     const str = JSON.stringify(userPref);
     await AsyncStorage.setItem('@preferences', str);
     changeScreen('Main', 'UserPref');
+    Toast.show({
+      type: 'success',
+      position: 'bottom',
+      text1: 'Your info are saved',
+      text2: 'Awesome ✌️',
+      visibilityTime: 1000,
+      autoHide: true,
+      topOffset: 30,
+      bottomOffset: 40,
+    });
   };
 
   useEffect(() => {

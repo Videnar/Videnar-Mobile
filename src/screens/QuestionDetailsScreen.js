@@ -123,13 +123,12 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           updateCellsBatchingPeriod={100}
           ListFooterComponent={
             <View style={styles.footerText}>
-              <Text>You have reached the end.</Text>
+              <Text>You have reached the end 👽</Text>
             </View>
           }
-          style={styles.flatListCcontainer}
+          style={styles.flatListContainer}
         />
       )}
-
       <FAB
         title="Answer 🎯"
         placement="right"
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
   },
-  flatListcontainer: {
+  flatListContainer: {
     backgroundColor: WHITE,
   },
   loadingContainer: {
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   footerText: {
-    height: 100,
+    height: 120,
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,

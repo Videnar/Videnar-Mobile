@@ -9,6 +9,7 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import algoliasearch from 'algoliasearch/lite';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
@@ -29,8 +30,22 @@ const SearchScreen = ({ navigation }) => {
       if (input.trim() !== '') {
         setLoading(true);
         index.search(input.trim()).then(({ hits }) => {
-          setResults(hits);
-          setLoading(false);
+          if (typeof hits !== 'undefined' && hits.length > 0) {
+            setResults(hits);
+            setLoading(false);
+          } else {
+            setLoading(false);
+            Toast.show({
+              type: 'info',
+              position: 'top',
+              text1: 'No results found.',
+              text2: 'Please, try something different 🧐',
+              visibilityTime: 2000,
+              autoHide: true,
+              topOffset: 200,
+              bottomOffset: 40,
+            });
+          }
         });
       }
     } catch (err) {

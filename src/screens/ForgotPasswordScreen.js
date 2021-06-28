@@ -3,13 +3,11 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  ToastAndroid,
-  Platform,
-  AlertIOS,
   StatusBar,
   SafeAreaView,
 } from 'react-native';
 import { Icon, Button, Text } from 'react-native-elements';
+import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
@@ -26,19 +24,32 @@ const SigninScreen = ({ navigation }) => {
     if (!email.match(emailFormat)) {
       setHasError({ email: true });
     } else {
-      const message = 'Check your email to reset Password.';
       auth()
         .sendPasswordResetEmail(email)
         .then(() => {
-          if (Platform.OS === 'android') {
-            ToastAndroid.show(message, ToastAndroid.LONG);
-          } else {
-            AlertIOS.alert(message);
-          }
           navigation.goBack();
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Please, check your email to reset Password.',
+            text2: '🙂🙂🙂',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         })
         .catch(function (error) {
-          // An error happened.
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 😶',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         });
     }
   };
