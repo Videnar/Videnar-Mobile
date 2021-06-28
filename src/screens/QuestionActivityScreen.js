@@ -1,74 +1,101 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import { Context } from '../contexts';
 import { Text } from 'react-native-elements';
 import QuestionComponent from '../components/QuestionComponent';
 import { WHITE } from '../assets/colors/colors';
+import { useRoute } from '@react-navigation/native';
+import { Context } from '../contexts';
+
+const HEIGHT = Dimensions.get('window').height;
 
 const ActivityScreen = ({ navigation }) => {
   const {
-    state: { userDisplayName, userID },
+    state: { userID },
   } = useContext(Context);
+
   const [questions, setQuestions] = useState([]);
   const [lastDocument, setLastDocument] = useState(null);
+  const route = useRoute();
 
   useEffect(() => {
-    const fetchQuestions = firestore()
-      .collection('questions')
-      .where('userID', '==', userID)
-      .orderBy('createdAt', 'desc')
-      .limit(5)
-      .onSnapshot((querySnapshot) => {
-        const q = [];
-        if (querySnapshot !== null) {
-          querySnapshot.forEach((documentSnapshot) => {
-            q.push({
-              ...documentSnapshot.data(),
-              id: documentSnapshot.id,
-            });
-          });
-          setQuestions(q);
-          setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-        }
-      });
-    return () => {
-      try {
-        fetchQuestions();
-      } catch (err) {
-        console.log('Error fetchQuestion in ActivityScreen useEffect');
-      }
-    };
-  }, [questions, userDisplayName, userID]);
+    fetchQuestions();
+  }, [fetchQuestions]);
 
-  const loadMoreQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     try {
-      await firestore()
+      const snapShot = await firestore()
         .collection('questions')
         .where('userID', '==', userID)
         .orderBy('createdAt', 'desc')
-        .startAfter(lastDocument)
-        .limit(5)
-        .onSnapshot((querySnapshot) => {
-          const q = [];
-          if (querySnapshot !== null) {
-            querySnapshot.forEach((documentSnapshot) => {
-              q.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
-            });
-            setQuestions([...questions, ...q]);
-            setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          }
-        });
+        .limit(6)
+        .get();
+
+      if (!snapShot.empty) {
+        let newQuestions = [];
+        setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+        for (let q = 0; q < snapShot.docs.length; q++) {
+          newQuestions.push({
+            ...snapShot.docs[q].data(),
+            id: snapShot.docs[q].id,
+          });
+        }
+        setQuestions(newQuestions);
+      } else {
+        setLastDocument(null);
+      }
     } catch (err) {
-      console.log('Error fetching questions loadMore in QuestionActivity', err);
+      console.log('Error fetching questions', err);
+    }
+  }, [userID]);
+
+  const loadMoreQuestions = async () => {
+    try {
+      if (lastDocument) {
+        const snapShot = await firestore()
+          .collection('questions')
+          .where('userID', '==', userID)
+          .orderBy('createdAt', 'desc')
+          .startAfter(lastDocument)
+          .limit(6)
+          .get();
+
+        if (!snapShot.empty) {
+          let newQuestions = [];
+          setLastDocument(snapShot.docs[snapShot.docs.length - 1]);
+
+          for (let q = 0; q < snapShot.docs.length; q++) {
+            newQuestions.push({
+              ...snapShot.docs[q].data(),
+              id: snapShot.docs[q].id,
+            });
+          }
+          setQuestions(questions.concat(newQuestions));
+
+          if (snapShot.docs.length < 5) {
+            setLastDocument(null);
+          }
+        } else {
+          setLastDocument(null);
+        }
+      }
+    } catch (err) {
+      console.log('Error fetching more Questions', err);
     }
   };
 
   const RenderItem = ({ item }) => (
-    <QuestionComponent question={item} navigation={navigation} />
+    <QuestionComponent
+      key={item.id}
+      questionId={item.id}
+      questionerUId={item.userID}
+      upVotesCount={item.upvotes}
+      content={item.content}
+      userDisplayName={item.userDisplayName}
+      route={route}
+      navigation={navigation}
+    />
   );
 
   const lastItem = (
@@ -77,19 +104,24 @@ const ActivityScreen = ({ navigation }) => {
     </View>
   );
 
+  const getItemLayOut = (data, index) => ({
+    length: HEIGHT * 0.25,
+    offset: 5 * index,
+    index,
+  });
+
   return (
     <View style={styles.container}>
       <FlatList
         data={questions}
         renderItem={RenderItem}
         ListFooterComponent={lastItem}
-        keyExtractor={(item) => item.id}
         style={styles.FlatList}
-        maxToRenderPerBatch={4}
-        initialNumToRender={8}
-        updateCellsBatchingPeriod={100}
-        onEndReachedThreshold={0.5}
+        maxToRenderPerBatch={5}
+        initialNumToRender={5}
+        onEndReachedThreshold={0.4}
         onEndReached={loadMoreQuestions}
+        getItemLayout={getItemLayOut}
       />
     </View>
   );

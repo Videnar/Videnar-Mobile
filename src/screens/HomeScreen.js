@@ -99,9 +99,7 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const countRef = useRef(0);
   const RenderItem = ({ item }) => {
-    countRef.current += 1;
     return (
       <QuestionComponent
         key={item.id}
