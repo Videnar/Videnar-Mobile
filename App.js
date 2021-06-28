@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserPreferenceScreen from './src/screens/UserPreferenceScreen';
 import {
@@ -158,6 +159,7 @@ const App = () => {
             }[state.screen]
           }
         </Stack.Navigator>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </NavigationContainer>
     </Context.Provider>
   );

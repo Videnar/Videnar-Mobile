@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
@@ -38,8 +39,28 @@ const EditorScreen = ({
               createdAt: firestore.Timestamp.now(),
               ...preferences,
             });
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Question created.',
+            text2: 'Hurrah 😃',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         } catch (err) {
           console.log('error creating Question:', err);
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 🙁',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }
       } else if (functionName === 'updateQuestion') {
         try {
@@ -53,8 +74,28 @@ const EditorScreen = ({
             .then(() => {
               console.log('document updated');
             });
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Question updated.',
+            text2: 'Hurrah 😃',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         } catch (err) {
           console.log('error updating Question:', err);
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 🙁',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }
       } else if (functionName === 'submitAnswer') {
         try {
@@ -70,8 +111,28 @@ const EditorScreen = ({
               upvotes: 0,
               createdAt: firestore.Timestamp.now(),
             });
+          Toast.show({
+            type: 's',
+            position: 'bottom',
+            text1: 'Answer submitted.',
+            text2: 'Hurrah 😎',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         } catch (err) {
           console.log('error creating Answer:', err);
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 🤕',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }
       } else if (functionName === 'updateAnswer') {
         try {
@@ -84,8 +145,28 @@ const EditorScreen = ({
               content: str,
               updatedAt: firestore.Timestamp.now(),
             });
+          Toast.show({
+            type: 'success',
+            position: 'bottom',
+            text1: 'Answer updated.',
+            text2: 'Hurrah 😎',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         } catch (err) {
           console.log('error updating Answer:', err);
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Opps! Something went wrong.',
+            text2: 'Please, try again 🤕',
+            visibilityTime: 1000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }
       }
       goBack();

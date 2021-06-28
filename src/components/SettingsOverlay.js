@@ -1,13 +1,6 @@
 import React, { useContext, useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  ToastAndroid,
-  Platform,
-  AlertIOS,
-} from 'react-native';
+import { Pressable, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
@@ -29,19 +22,33 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
         auth()
           .currentUser.updatePassword(newPassword)
           .then(() => {
-            const message = 'Password Changed.';
-            if (Platform.OS === 'android') {
-              ToastAndroid.show(message, ToastAndroid.LONG);
-            } else {
-              AlertIOS.alert(message);
-            }
             toggleVisible();
             setNewPassword('');
             setCurrentPassword('');
           });
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Password changed.',
+          text2: 'Peace 😇',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       })
       .catch((error) => {
         console.log('Error updating password:', error);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Opps! Something went wrong.',
+          text2: 'Please, try again 🤕',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       });
   };
 

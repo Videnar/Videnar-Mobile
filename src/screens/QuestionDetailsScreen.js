@@ -118,7 +118,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         updateCellsBatchingPeriod={100}
         ListFooterComponent={
           <View style={styles.footerText}>
-            <Text>You have reached the end.</Text>
+            <Text>You have reached the end 👽</Text>
           </View>
         }
         style={styles.container}

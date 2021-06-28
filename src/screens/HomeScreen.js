@@ -122,7 +122,7 @@ const HomeScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>No More Questions to Show</Text>
+      <Text>No more questions to show 🐹</Text>
     </View>
   );
 

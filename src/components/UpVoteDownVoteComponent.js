@@ -123,7 +123,7 @@ const UpVoteDownVoteComponent = ({
       ) : (
         // Disabled vote
         <Tooltip
-          popover={<Text>Can't Vote Your Question / Answer</Text>}
+          popover={<Text>Can't Vote Your Question / Answer 🤐</Text>}
           containerStyle={styles.disabled}
           backgroundColor="white"
           overlayColor="transparent"
