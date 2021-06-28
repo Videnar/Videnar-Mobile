@@ -27,7 +27,6 @@ export const initialState = {
   screen: 'Main',
   previousScreen: null,
   userID: null,
-  attributes: null,
   preferences: null,
   setDeviceToken: null,
 };
