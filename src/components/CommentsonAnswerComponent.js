@@ -11,7 +11,7 @@ import { Header, Icon, Overlay, Text } from 'react-native-elements';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
-import { GREY } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -162,6 +162,8 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
                 type="material"
                 name="arrow-back"
                 onPress={() => setIsCommentsVisible(false)}
+                color={GREY}
+                size={30}
               />
             }
             centerComponent={{
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 0.5,
-    color: '#825399',
+    color: DEEP_GREEN,
   },
   overLayContainer: {
     flex: 1,
