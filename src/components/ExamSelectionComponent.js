@@ -24,11 +24,8 @@ const ExamSelectionComponent = ({
   const allExams = educations.filter((item) => item.level === education)[0]
     .exams;
   const onPressHandler = (exam) => {
-    let newExam = exam;
     const dataArray = [...exams];
-    if (exam === 'GATE' || exam === 'IES') {
-      newExam = exam + ' (' + branch + ')';
-    }
+    let newExam = getRightExamName(exam);
     const index = dataArray.indexOf(newExam);
     if (index > -1) {
       dataArray.splice(index, 1);
@@ -65,8 +62,16 @@ const ExamSelectionComponent = ({
     setVisibleExamSelection(false);
   };
 
+  const getRightExamName = (exam) => {
+    let newExam = exam;
+    if (exam === 'GATE' || exam === 'IES') {
+      newExam = exam + ' (' + branch + ')';
+    }
+    return newExam;
+  };
+
   const RenderItem = allExams.map((item) =>
-    [...exams].includes(item.key) ? (
+    [...exams].includes(getRightExamName(item.key)) ? (
       //Item Selected
       <ListItem onPress={() => onPressHandler(item.key)} key={item.key}>
         <ListItem.Content>

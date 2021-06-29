@@ -162,19 +162,19 @@ export const Branches = [
 export const educations = [
   {
     level: 'Class 9',
-    exams: [JEE, NEET, CBSE, ICSE, HSCE, KVPY],
+    exams: [CBSE, ICSE, HSCE, JEE, NEET],
   },
   {
     level: 'Class 10',
-    exams: [JEE, NEET, CBSE, ICSE, HSCE, KVPY],
+    exams: [CBSE, ICSE, HSCE, JEE, NEET],
   },
   {
     level: 'Class 11',
-    exams: [NEET, JEE, CBSE, ICSE, CHSE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
   },
   {
     level: 'Class 12',
-    exams: [NEET, JEE, CBSE, ICSE, CHSE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
   },
   {
     level: 'B.Tech',
