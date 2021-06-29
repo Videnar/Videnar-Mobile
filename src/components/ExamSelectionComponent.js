@@ -11,21 +11,29 @@ import {
 import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
 
-const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
+const ExamSelectionComponent = ({
+  userPref,
+  education,
+  branch,
+  saveEnable,
+}) => {
   const [visibleExamSelection, setVisibleExamSelection] = useState('false');
   const [exams, setExams] = useState([]);
   const [selectText, setSelectText] = useState('Select');
 
   const allExams = educations.filter((item) => item.level === education)[0]
     .exams;
-
   const onPressHandler = (exam) => {
+    let newExam = exam;
     const dataArray = [...exams];
-    const index = dataArray.indexOf(exam);
+    if (exam === 'GATE' || exam === 'IES') {
+      newExam = exam + ' (' + branch + ')';
+    }
+    const index = dataArray.indexOf(newExam);
     if (index > -1) {
       dataArray.splice(index, 1);
     } else {
-      dataArray.push(exam);
+      dataArray.push(newExam);
     }
     setExams(dataArray);
   };

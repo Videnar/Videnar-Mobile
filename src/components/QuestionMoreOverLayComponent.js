@@ -43,7 +43,7 @@ const QuestionMoreOverlayComponent = ({
         text2: 'Shush 🤫',
         visibilityTime: 1000,
         autoHide: true,
-        topOffset: 30,
+        topOffset: 40,
         bottomOffset: 40,
       });
     } catch (err) {
@@ -55,7 +55,7 @@ const QuestionMoreOverlayComponent = ({
         text2: 'Please, try again.😒',
         visibilityTime: 1000,
         autoHide: true,
-        topOffset: 30,
+        topOffset: 40,
         bottomOffset: 40,
       });
     }

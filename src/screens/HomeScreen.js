@@ -61,12 +61,13 @@ const HomeScreen = ({ navigation }) => {
           });
         }
         setQuestions(newQuestions);
-        setLoading(false);
       } else {
         setLastDocument(null);
       }
     } catch (err) {
       console.log('Error fetching questions', err);
+    } finally {
+      setLoading(false);
     }
   };
 

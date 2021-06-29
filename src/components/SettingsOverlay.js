@@ -33,7 +33,7 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
           text2: 'Peace 😇',
           visibilityTime: 1000,
           autoHide: true,
-          topOffset: 30,
+          topOffset: 40,
           bottomOffset: 40,
         });
       })
@@ -46,7 +46,7 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
           text2: 'Please, try again 🤕',
           visibilityTime: 1000,
           autoHide: true,
-          topOffset: 30,
+          topOffset: 40,
           bottomOffset: 40,
         });
       });

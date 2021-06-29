@@ -36,12 +36,12 @@ const UserPreferenceScreen = () => {
     changeScreen('Main', 'UserPref');
     Toast.show({
       type: 'success',
-      position: 'bottom',
+      position: 'top',
       text1: 'Your info are saved',
       text2: 'Awesome ✌️',
       visibilityTime: 1000,
       autoHide: true,
-      topOffset: 30,
+      topOffset: 40,
       bottomOffset: 40,
     });
   };
@@ -97,6 +97,7 @@ const UserPreferenceScreen = () => {
           <ExamSelectionComponent
             userPref={(input) => updateUserPrefHandler(input)}
             education={userPref.education}
+            branch={userPref.branch}
             saveEnable={(input) => setButtonEnable(input)}
           />
         ) : (

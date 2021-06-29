@@ -35,7 +35,7 @@ const SigninScreen = ({ navigation }) => {
             text2: '🙂🙂🙂',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         })
@@ -47,7 +47,7 @@ const SigninScreen = ({ navigation }) => {
             text2: 'Please, try again 😶',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         });
