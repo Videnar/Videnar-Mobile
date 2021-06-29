@@ -113,7 +113,7 @@ const EditorScreen = ({
               createdAt: firestore.Timestamp.now(),
             });
           Toast.show({
-            type: 's',
+            type: 'success',
             position: 'bottom',
             text1: 'Answer submitted.',
             text2: 'Hurrah 😎',
