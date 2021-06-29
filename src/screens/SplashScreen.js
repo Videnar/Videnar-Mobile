@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context } from '../contexts';
@@ -40,22 +40,26 @@ const SplashScreen = ({ navigation }) => {
   }, [changeScreen, setDeviceToken, setUser, updateUserPreferences]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.container}>
       <LottieView
         source={require('../assets/startIcon.json')}
         autoPlay
         loop
-        style={{
-          height: 300,
-        }}
+        style={styles.LottieView}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  LottieView: {
+    height: 300,
+  },
+});
 
 export default SplashScreen;
