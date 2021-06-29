@@ -32,7 +32,9 @@ const ImagePickerOverlay = ({
         console.log('User tapped custom button: ', response.customButton);
       } else {
         console.log('Gallery Pick Successful');
-        const source = { uri: 'data:image/jpeg;base64,' + response.base64 };
+        const source = {
+          uri: 'data:image/jpeg;base64,' + response.assets[0].base64,
+        };
         editorRef.current?.insertEmbed(500, 'image', source.uri);
       }
       setIsOverlayVisible(false);
