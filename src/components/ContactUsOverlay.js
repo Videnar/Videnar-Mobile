@@ -8,10 +8,13 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
   const socialLinkOpenHandler = (social) => {
     switch (social) {
       case 'f':
-        Linking.openURL('https://fb.com');
+        Linking.openURL('https://www.facebook.com/Videnar');
+        break;
+      case 'i':
+        Linking.openURL('https://www.instagram.com/videnar_hq');
         break;
       case 't':
-        Linking.openURL('https://twitter.com');
+        Linking.openURL('https://twitter.com/videnar_hq');
         break;
       default:
         Linking.openURL('https://videnar.com');
@@ -37,15 +40,23 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
         button
         raised
         type="facebook"
-        style={styles.social}
+        style={styles.facebook}
         onPress={() => socialLinkOpenHandler('f')}
+      />
+      <SocialIcon
+        title="instagram"
+        button
+        raised
+        type="instagram"
+        style={styles.insta}
+        onPress={() => socialLinkOpenHandler('i')}
       />
       <SocialIcon
         title="twitter"
         button
         raised
         type="twitter"
-        style={styles.social}
+        style={styles.twitter}
         onPress={() => socialLinkOpenHandler('t')}
       />
       <Button
@@ -54,7 +65,7 @@ const ContactUsOverlay = ({ visible, toggleVisible }) => {
           <Icon name="mail-outline" type="material" color="white" size={25} />
         }
         title="mail"
-        buttonStyle={styles.button}
+        buttonStyle={styles.mail}
         titleStyle={styles.title}
         onPress={() => emailHandler()}
       />
@@ -78,18 +89,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1,
   },
-  button: {
-    backgroundColor: '#CD3C30',
+  facebook: {
+    width: 210,
+    borderRadius: 30,
+    backgroundColor: '#0570E6',
+  },
+  insta: {
+    width: 210,
+    borderRadius: 30,
+    backgroundColor: '#E13EAD',
+  },
+  twitter: {
+    width: 210,
+    borderRadius: 30,
+    backgroundColor: '#1DA1F2',
+  },
+  mail: {
+    backgroundColor: '#F34738',
     width: 210,
     height: 50,
     borderRadius: 30,
     marginTop: 7,
     justifyContent: 'space-evenly',
     paddingHorizontal: 35,
-  },
-  social: {
-    width: 210,
-    borderRadius: 30,
   },
 });
 

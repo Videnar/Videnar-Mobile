@@ -82,7 +82,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
       </View>
       {loadingAnswers ? (
         <View style={styles.loadingContainer}>
-          <DotsLottie text="Loading Knowledge 📚" />
+          <DotsLottie text="Loading Answers 📚" />
         </View>
       ) : (
         <FlatList
