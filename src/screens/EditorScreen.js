@@ -32,7 +32,7 @@ const EditorScreen = ({
             .add({
               userID,
               userDisplayName,
-              content: str + firestore.Timestamp.now(),
+              content: str,
               upvotes: 0,
               view: 0,
               noOfAnswers: 0,
