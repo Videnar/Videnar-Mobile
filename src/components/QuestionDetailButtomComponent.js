@@ -70,7 +70,6 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
       .update({
         ...question,
         upvotes: count,
-        updatedAt: firestore.Timestamp.now(),
       });
   };
 
@@ -93,7 +92,6 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
           .update({
             ...userUpVoteData,
             voteType: voteType,
-            updatedAt: firestore.Timestamp.now(),
           });
       }
     } else {
@@ -104,7 +102,6 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
         .add({
           userId: userID,
           voteType: voteType,
-          createdAt: firestore.Timestamp.now(),
         });
     }
     checkuserExistsInUpVote();
