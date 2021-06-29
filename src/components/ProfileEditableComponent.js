@@ -20,7 +20,8 @@ const ProfileEditableComponent = ({ navigation }) => {
 
   const shareAppHandler = () => {
     const options = {
-      message: 'Hey There! Join Videnar!',
+      message:
+        'Hello! Join Videnar by downloading the app in the link below and get help in your studies!  https://play.google.com/store/apps/details?id=com.videnar',
     };
     Share.open(options)
       .then((res) => {
