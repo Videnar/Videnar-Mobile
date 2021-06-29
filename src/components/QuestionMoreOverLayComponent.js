@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
+import Toast from 'react-native-toast-message';
 import firestore from '@react-native-firebase/firestore';
 import { GREY } from '../assets/colors/colors';
 import { View } from 'react-native';
@@ -35,8 +36,28 @@ const QuestionMoreOverlayComponent = ({
         .then(() => {
           console.log('Question deleted!');
         });
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Question deleted.',
+        text2: 'Shush 🤫',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     } catch (err) {
       console.log('error deleting Question:', err);
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Oops! Something went wrong.',
+        text2: 'Please, try again.😒',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     }
     isPopupVisible(false);
     route.name === 'QuestionDetails' && goBack();

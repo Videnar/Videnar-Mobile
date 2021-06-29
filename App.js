@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserPreferenceScreen from './src/screens/UserPreferenceScreen';
+import SplashScreen from './src/screens/SplashScreen';
 import {
   navigate,
   navigationRef,
@@ -20,41 +21,6 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [state, dispatch] = useReducer(Reducer, initialState);
-
-  useEffect(() => {
-    (async () => {
-      let user;
-      let preferences;
-      try {
-        const stringifiedUser = await AsyncStorage.getItem('@user');
-        const stringifiedPreferences = await AsyncStorage.getItem(
-          '@preferences',
-        );
-        user = stringifiedUser != null ? JSON.parse(stringifiedUser) : null;
-        preferences =
-          stringifiedPreferences != null
-            ? JSON.parse(stringifiedPreferences)
-            : null;
-        const token = await AsyncStorage.getItem('@deviceToken');
-        dispatch({ type: 'setDeviceToken', payload: token });
-        if (user !== null && preferences !== null) {
-          dispatch({ type: 'setUser', payload: user });
-          dispatch({ type: 'update_preferences', payload: preferences });
-          dispatch({ type: 'changeScreen', payload: 'Main' });
-        } else if (user !== null && preferences === null) {
-          dispatch({
-            type: 'changeScreen',
-            payload: { screen: 'UserPref', previousScreen: 'Main' },
-          });
-          dispatch({ type: 'changeScreen', payload: 'UserPref' });
-        } else {
-          dispatch({ type: 'changeScreen', payload: { screen: 'Auth' } });
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -115,6 +81,9 @@ const App = () => {
 
   const ContextValue = useMemo(
     () => ({
+      setDeviceToken: async (token) => {
+        dispatch({ type: 'setDeviceToken', payload: token });
+      },
       setUser: async (user) => {
         dispatch({ type: 'setUser', payload: user });
         const str = JSON.stringify(user);
@@ -156,6 +125,7 @@ const App = () => {
                   component={UserPreferenceScreen}
                 />
               ),
+              Splash: <Stack.Screen name="Splash" component={SplashScreen} />,
             }[state.screen]
           }
         </Stack.Navigator>

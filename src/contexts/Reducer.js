@@ -24,7 +24,7 @@ export const Reducer = (state, action) => {
 };
 
 export const initialState = {
-  screen: 'Main',
+  screen: 'Splash',
   previousScreen: null,
   userID: null,
   preferences: null,
