@@ -122,12 +122,16 @@ const KVPY = {
   description: 'Kishore Vaigyanik Protsahan Yojana',
 };
 
+const CA = {
+  key: 'CA',
+  description: 'ICAI CA Exam',
+};
+
 const MBA = [CAT, XAT];
 const Banking = [SBI, RBI, IBPS];
 const SSC = [SSCCGL, SSCJE, SSCGD, SSCCPO, SSCCHSL];
 
-const AE = 'Aerospace Engineering';
-const BIO = 'Bio Technology Engineering';
+const BIO = 'Bio-Technology Engineering';
 const CER = 'Ceramic Engineering';
 const CHE = 'Chemical Engineering';
 const CE = 'Civil Engineering';
@@ -141,7 +145,6 @@ const MIN = 'Mining Engineering';
 const FOO = 'Food Process Engineering';
 
 export const Branches = [
-  AE,
   BIO,
   CER,
   CHE,
@@ -159,19 +162,19 @@ export const Branches = [
 export const educations = [
   {
     level: 'Class 9',
-    exams: [CBSE, ICSE, HSCE, KVPY, JEE, NEET],
+    exams: [CBSE, ICSE, HSCE, JEE, NEET],
   },
   {
     level: 'Class 10',
-    exams: [CBSE, ICSE, HSCE, KVPY, JEE, NEET],
+    exams: [CBSE, ICSE, HSCE, JEE, NEET],
   },
   {
     level: 'Class 11',
-    exams: [CBSE, ICSE, CHSE, NEET, JEE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
   },
   {
     level: 'Class 12',
-    exams: [CBSE, ICSE, CHSE, NEET, JEE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
   },
   {
     level: 'B.Tech',
@@ -180,7 +183,11 @@ export const educations = [
   },
   {
     level: 'MBBS',
-    exams: [NEETPG, AIIMSPG, JIPMERPG, PGIMER, NIMHANS, CAT],
+    exams: [AIIMSPG, JIPMERPG, PGIMER, NIMHANS, NEETPG, CSE, CAT],
+  },
+  {
+    level: 'Chartered Accountant (CA)',
+    exams: [CA],
   },
   {
     level: 'B.Com',
@@ -190,7 +197,6 @@ export const educations = [
     level: 'B.Sc',
     exams: [CAT, CSE, IFS, ...SSC, ...Banking, RRBNTPC],
   },
-  // { level: 'Chartered Accountant (CA)' },
   // { level: 'Certified Management AccountantCMA (CMA)' },
   // { level: 'Company secretary(CS)' },
   {

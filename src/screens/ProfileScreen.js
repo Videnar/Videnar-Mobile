@@ -63,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
             text2: 'See Ya 👋',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         })
@@ -77,7 +77,7 @@ const ProfileScreen = ({ navigation }) => {
         text2: 'Please, try signing out again 🤕',
         visibilityTime: 1000,
         autoHide: true,
-        topOffset: 30,
+        topOffset: 40,
         bottomOffset: 40,
       });
     }

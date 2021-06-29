@@ -11,21 +11,26 @@ import {
 import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
 
-const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
+const ExamSelectionComponent = ({
+  userPref,
+  education,
+  branch,
+  saveEnable,
+}) => {
   const [visibleExamSelection, setVisibleExamSelection] = useState('false');
   const [exams, setExams] = useState([]);
   const [selectText, setSelectText] = useState('Select');
 
   const allExams = educations.filter((item) => item.level === education)[0]
     .exams;
-
   const onPressHandler = (exam) => {
     const dataArray = [...exams];
-    const index = dataArray.indexOf(exam);
+    let newExam = getRightExamName(exam);
+    const index = dataArray.indexOf(newExam);
     if (index > -1) {
       dataArray.splice(index, 1);
     } else {
-      dataArray.push(exam);
+      dataArray.push(newExam);
     }
     setExams(dataArray);
   };
@@ -57,8 +62,16 @@ const ExamSelectionComponent = ({ userPref, education, saveEnable }) => {
     setVisibleExamSelection(false);
   };
 
+  const getRightExamName = (exam) => {
+    let newExam = exam;
+    if (exam === 'GATE' || exam === 'IES') {
+      newExam = exam + ' (' + branch + ')';
+    }
+    return newExam;
+  };
+
   const RenderItem = allExams.map((item) =>
-    [...exams].includes(item.key) ? (
+    [...exams].includes(getRightExamName(item.key)) ? (
       //Item Selected
       <ListItem onPress={() => onPressHandler(item.key)} key={item.key}>
         <ListItem.Content>

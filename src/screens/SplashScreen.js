@@ -42,7 +42,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('../assets/startIcon.json')}
+        source={require('../assets/Icons/logo_lottie.json')}
         autoPlay
         loop
         style={styles.LottieView}
@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   LottieView: {
-    height: 300,
+    height: '50%',
+    alignSelf: 'center',
   },
 });
 

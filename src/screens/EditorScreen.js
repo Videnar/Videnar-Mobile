@@ -27,12 +27,12 @@ const EditorScreen = ({
     } else {
       if (functionName === 'submitQuestion') {
         try {
-          firestore()
+          await firestore()
             .collection('questions')
             .add({
               userID,
               userDisplayName,
-              content: str,
+              content: str + firestore.Timestamp.now(),
               upvotes: 0,
               view: 0,
               noOfAnswers: 0,
@@ -47,7 +47,7 @@ const EditorScreen = ({
             text2: 'Hurrah 😃',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         } catch (err) {
@@ -59,13 +59,13 @@ const EditorScreen = ({
             text2: 'Please, try again 🙁',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         }
       } else if (functionName === 'updateQuestion') {
         try {
-          firestore()
+          await firestore()
             .collection('questions')
             .doc(questionId)
             .update({
@@ -82,7 +82,7 @@ const EditorScreen = ({
             text2: 'Hurrah 😃',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         } catch (err) {
@@ -94,7 +94,7 @@ const EditorScreen = ({
             text2: 'Please, try again 🙁',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         }
@@ -119,7 +119,7 @@ const EditorScreen = ({
             text2: 'Hurrah 😎',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         } catch (err) {
@@ -131,7 +131,7 @@ const EditorScreen = ({
             text2: 'Please, try again 🤕',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         }
@@ -153,7 +153,7 @@ const EditorScreen = ({
             text2: 'Hurrah 😎',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         } catch (err) {
@@ -165,7 +165,7 @@ const EditorScreen = ({
             text2: 'Please, try again 🤕',
             visibilityTime: 1000,
             autoHide: true,
-            topOffset: 30,
+            topOffset: 40,
             bottomOffset: 40,
           });
         }
