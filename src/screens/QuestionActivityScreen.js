@@ -67,6 +67,8 @@ const ActivityScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching questions', err);
+    } finally {
+      setLoadingQuestions(false);
     }
   }, [userID]);
 
@@ -120,7 +122,11 @@ const ActivityScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>No more questions to show 👽</Text>
+      {questions.length === 0 ? (
+        <Text>You have not asked any questions yet 😐</Text>
+      ) : (
+        <Text>You have reached the end 👽</Text>
+      )}
     </View>
   );
 
@@ -135,7 +141,7 @@ const ActivityScreen = ({ navigation }) => {
       <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       {loadingQuestions ? (
         <View style={styles.loadingContainer}>
-          <DotsLottie text="Loading Questions ❓" />
+          <DotsLottie text="Loading Your questions 🦉" />
         </View>
       ) : (
         <FlatList
