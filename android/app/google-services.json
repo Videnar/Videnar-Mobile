@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "492932528639-ne47hifodc0go1fr2qbeoan3qg6cud5h.apps.googleusercontent.com",
+          "client_id": "492932528639-2f0tpvnnuc5kdi3hbsgnao4q03c0ankr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.videnar",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "492932528639-4ic7r90uars0p82taulbsom42d8afh9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videnar",
+            "certificate_hash": "65590edb3561b7dea014254b493da3e20d5b4f34"
           }
         },
         {

@@ -58,12 +58,13 @@ const ActivityScreen = ({ navigation }) => {
         }
 
         setAnswers(newAnswers);
-        setLoadingAnswers(false);
       } else {
         setLastDocument(null);
       }
     } catch (err) {
       console.log('error fetching answers', err);
+    } finally {
+      setLoadingAnswers(false);
     }
   }, [userID]);
 
@@ -112,7 +113,11 @@ const ActivityScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>You have reached the end 💀</Text>
+      {answers.length === 0 ? (
+        <Text>You have not answered any questions yet 😐</Text>
+      ) : (
+        <Text>You have reached the end 💀</Text>
+      )}
     </View>
   );
 
