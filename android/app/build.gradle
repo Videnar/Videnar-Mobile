@@ -133,8 +133,8 @@ android {
         applicationId "com.videnar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "0.3.0.4"
+        versionCode 11
+        versionName "0.3.0.6"
         multiDexEnabled true
     }
     splits {
@@ -168,7 +168,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            //signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
@@ -198,7 +198,7 @@ dependencies {
     
     implementation 'com.android.support:multidex:2.0.1'
 
-    implementation 'com.facebook.android:facebook-login:8.2.0'
+    implementation 'com.facebook.android:facebook-login:[8.1)'
 
 
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
@@ -213,10 +213,10 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-perf'
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    implementation "com.google.android.material:material:1.3.0"
-    implementation 'com.google.android.play:core:1.10.0' // In-App Update
+    implementation "com.google.android.material:material:1.1.0"
+    implementation 'com.google.android.play:core:1.7.3' // In-App Update
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

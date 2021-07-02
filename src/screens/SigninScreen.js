@@ -21,62 +21,49 @@ import Toast from 'react-native-toast-message';
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
   const signIn = (emailID, password) => {
-    try {
-      auth()
-        .signInWithEmailAndPassword(emailID, password)
-        .then(async (userCredential) => {
-          const { displayName, email, photoURL, uid } = userCredential.user;
-          await setUser({
-            userDisplayName: displayName,
-            email,
-            photoURL,
-            userID: uid,
-          });
-          var docRef = firestore().collection('users').doc(uid);
-          docRef
-            .get()
-            .then(async (doc) => {
-              if (doc.exists) {
-                const { education, branch, exams } = doc.data();
-                const userPref = { education, branch, exams };
-                updateUserPreferences(userPref);
-                const str = JSON.stringify(userPref);
-                await AsyncStorage.setItem('@preferences', str);
-                changeScreen('Main', 'Auth');
-              } else {
-                changeScreen('UserPref', 'Auth');
-              }
-            })
-            .catch((error) => {
-              console.log('Error getting document:', error);
-              Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: 'Error while getting Document',
-                text2: error,
-                visibilityTime: 10000,
-                autoHide: true,
-                topOffset: 40,
-                bottomOffset: 40,
-              });
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Error while SignIn',
-            text2: error,
-            visibilityTime: 10000,
-            autoHide: true,
-            topOffset: 40,
-            bottomOffset: 40,
-          });
+    console.log('Clicked');
+    auth()
+      .signInWithEmailAndPassword(emailID, password)
+      .then(async (userCredential) => {
+        const { displayName, email, photoURL, uid } = userCredential.user;
+        await setUser({
+          userDisplayName: displayName,
+          email,
+          photoURL,
+          userID: uid,
         });
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
+        var docRef = firestore().collection('users').doc(uid);
+        docRef
+          .get()
+          .then(async (doc) => {
+            if (doc.exists) {
+              const { education, branch, exams } = doc.data();
+              const userPref = { education, branch, exams };
+              updateUserPreferences(userPref);
+              const str = JSON.stringify(userPref);
+              await AsyncStorage.setItem('@preferences', str);
+              changeScreen('Main', 'Auth');
+            } else {
+              changeScreen('UserPref', 'Auth');
+            }
+          })
+          .catch((error) => {
+            console.log('Error getting document:', error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'User Email or Password is incorrect',
+          text2: 'Oops! 🤦‍♂️',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      });
   };
 
   return (

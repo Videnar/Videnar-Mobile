@@ -77,11 +77,11 @@ const SocialAuthComponent = () => {
     } catch (err) {
       console.log('Error ---> ' + err);
       Toast.show({
-        type: 'success',
+        type: 'error',
         position: 'bottom',
         text1: 'Error while Facebook SignIn',
-        text2: err,
-        visibilityTime: 10000,
+        text2: err.toString(),
+        visibilityTime: 3000,
         autoHide: true,
         topOffset: 40,
         bottomOffset: 40,
@@ -96,13 +96,13 @@ const SocialAuthComponent = () => {
       await auth().signInWithCredential(googleCredential);
       getUserData();
     } catch (err) {
-      console.log('Error ---> ' + err);
+      console.log('Error ---> ' + err.toString());
       Toast.show({
-        type: 'success',
+        type: 'error',
         position: 'bottom',
         text1: 'Error while Google SignIn',
-        text2: err,
-        visibilityTime: 10000,
+        text2: err.toString(),
+        visibilityTime: 3000,
         autoHide: true,
         topOffset: 40,
         bottomOffset: 40,
