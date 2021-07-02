@@ -9,6 +9,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from '../contexts';
 import Google from '../utilities/Icons/Google';
 import Facebook from '../utilities/Icons/Facebook';
+import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   webClientId:
@@ -75,6 +76,16 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err);
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Error while Facebook SignIn',
+        text2: err,
+        visibilityTime: 10000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 40,
+      });
     }
   };
 
@@ -86,6 +97,16 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err);
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Error while Google SignIn',
+        text2: err,
+        visibilityTime: 10000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 40,
+      });
     }
   };
 

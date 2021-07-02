@@ -16,6 +16,7 @@ import SocialAuth from '../components/SocialAuthComponent';
 import { Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
+import Toast from 'react-native-toast-message';
 
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
@@ -48,10 +49,30 @@ const SigninScreen = ({ navigation }) => {
             })
             .catch((error) => {
               console.log('Error getting document:', error);
+              Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: 'Error while getting Document',
+                text2: error,
+                visibilityTime: 10000,
+                autoHide: true,
+                topOffset: 40,
+                bottomOffset: 40,
+              });
             });
         })
         .catch((error) => {
           console.error(error);
+          Toast.show({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Error while SignIn',
+            text2: error,
+            visibilityTime: 10000,
+            autoHide: true,
+            topOffset: 40,
+            bottomOffset: 40,
+          });
         });
     } catch (error) {
       console.log('error signing up:', error);
