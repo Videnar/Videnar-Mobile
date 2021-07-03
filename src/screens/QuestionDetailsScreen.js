@@ -65,7 +65,14 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
   }, [questionIdfromProps]);
 
   const renderItems = ({ item }) => {
-    return <AnswerComponent answer={item} questionId={questionIdfromProps} />;
+    return (
+      <AnswerComponent
+        answer={item}
+        questionId={questionIdfromProps}
+        route={route}
+        navigation={navigation}
+      />
+    );
   };
 
   return (
