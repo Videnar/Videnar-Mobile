@@ -1,12 +1,10 @@
 import React from 'react';
-import { Dimensions, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 import firestore from '@react-native-firebase/firestore';
 import { GREY } from '../assets/colors/colors';
 import { View } from 'react-native';
-
-const WIDTH = Dimensions.get('window').width;
 
 const QuestionMoreOverlayComponent = ({
   popupVisible,
@@ -99,12 +97,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   button: {
-    width: WIDTH * 0.45,
+    width: '45%',
     margin: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: WIDTH * 0.1,
+    paddingHorizontal: '10%',
     paddingVertical: 5,
   },
   buttonText: {

@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Icon, Text, Tooltip } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const UpVoteDownVoteComponent = ({
   upVotes,
@@ -169,7 +167,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   upvoteContainer: {
-    width: WIDTH * 0.35,
+    width: '35%',
     alignItems: 'center',
   },
   upVotes: {

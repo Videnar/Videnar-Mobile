@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import { navigate } from '../navigation/RootNavigation';
 import { GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
@@ -103,12 +101,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
   button: {
-    width: WIDTH * 0.45,
+    width: '45%',
     margin: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: WIDTH * 0.1,
+    paddingHorizontal: '10%',
     paddingVertical: 5,
   },
   optionText: {

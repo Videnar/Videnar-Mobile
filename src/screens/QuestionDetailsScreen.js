@@ -85,6 +85,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           containerStyle={styles.iconContainer}
           onPress={() => navigation.goBack()}
           size={30}
+          color={GREY}
         />
       </View>
       {loadingAnswers ? (
