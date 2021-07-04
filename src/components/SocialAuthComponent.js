@@ -4,6 +4,7 @@ import { Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from '../contexts';
@@ -13,7 +14,7 @@ import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   webClientId:
-    '492932528639-jcas4av97bd4t80jvhd86p2fl7711amp.apps.googleusercontent.com',
+    '492932528639-ql1i95fmilq5m00jme4ga34b8fjvi2ig.apps.googleusercontent.com',
 });
 
 const SocialAuthComponent = () => {
@@ -53,6 +54,7 @@ const SocialAuthComponent = () => {
         })
         .catch((error) => {
           console.log('Error getting document:', error);
+          crashlytics().recordError(error);
         });
     }
   };
@@ -76,6 +78,7 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err);
+      crashlytics().recordError(err);
       Toast.show({
         type: 'error',
         position: 'bottom',
@@ -97,6 +100,7 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err.toString());
+      crashlytics().recordError(err);
       Toast.show({
         type: 'error',
         position: 'bottom',

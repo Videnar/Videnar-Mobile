@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "492932528639-ql1i95fmilq5m00jme4ga34b8fjvi2ig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videnar",
+            "certificate_hash": "65590edb3561b7dea014254b493da3e20d5b4f34"
+          }
+        },
+        {
           "client_id": "492932528639-jcas4av97bd4t80jvhd86p2fl7711amp.apps.googleusercontent.com",
           "client_type": 3
         }

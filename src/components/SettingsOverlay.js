@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Pressable, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
@@ -39,6 +40,7 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
       })
       .catch((error) => {
         console.log('Error updating password:', error);
+        crashlytics().recordError(error);
         Toast.show({
           type: 'error',
           position: 'bottom',

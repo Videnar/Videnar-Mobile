@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { navigate } from '../navigation/RootNavigation';
 import { GREY } from '../assets/colors/colors';
 
@@ -40,6 +41,7 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
         bottomOffset: 40,
       });
     } catch (err) {
+      crashlytics().recordError(err);
       console.log('error deleting answer:', err);
       Toast.show({
         type: 'error',

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Context } from '../contexts';
 import AnswerComponent from '../components/AnswerComponent';
 import { WHITE } from '../assets/colors/colors';
@@ -63,6 +64,7 @@ const ActivityScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('error fetching answers', err);
+      crashlytics().recordError(err);
     } finally {
       setLoadingAnswers(false);
     }
@@ -97,6 +99,7 @@ const ActivityScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('error fetching questions', err);
+      crashlytics().recordError(err);
     }
   };
 

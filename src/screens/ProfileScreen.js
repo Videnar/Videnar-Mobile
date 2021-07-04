@@ -3,6 +3,7 @@ import { StyleSheet, Image, ScrollView, View, StatusBar } from 'react-native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Text, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
@@ -39,6 +40,7 @@ const ProfileScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('err', err);
+      crashlytics().recordError(err);
     }
   };
 
@@ -67,9 +69,13 @@ const ProfileScreen = ({ navigation }) => {
             bottomOffset: 40,
           });
         })
-        .catch((err) => console.log(err, 'err'));
+        .catch((err) => {
+          console.log(err, 'err');
+          crashlytics().recordError(err);
+        });
     } catch (err) {
       console.log('er', err);
+      crashlytics().recordError(err);
       Toast.show({
         type: 'error',
         position: 'bottom',

@@ -9,6 +9,7 @@ import {
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
@@ -80,6 +81,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       setIsEdited(false);
     } catch (err) {
       console.log(err);
+      crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }
   };

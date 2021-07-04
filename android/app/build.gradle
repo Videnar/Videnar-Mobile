@@ -133,8 +133,8 @@ android {
         applicationId "com.videnar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11
-        versionName "0.3.0.6"
+        versionCode 13
+        versionName "0.3.0.8"
         multiDexEnabled true
     }
     splits {
@@ -197,9 +197,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  
     
     implementation 'com.android.support:multidex:2.0.1'
-
+    
     implementation 'com.facebook.android:facebook-login:[8.1)'
-
 
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon, Overlay, Text } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
 import firestore from '@react-native-firebase/firestore';
 import { GREY } from '../assets/colors/colors';
@@ -46,6 +47,7 @@ const QuestionMoreOverlayComponent = ({
       });
     } catch (err) {
       console.log('error deleting Question:', err);
+      crashlytics().recordError(err);
       Toast.show({
         type: 'error',
         position: 'bottom',

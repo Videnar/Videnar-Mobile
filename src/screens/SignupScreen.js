@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
@@ -35,14 +36,16 @@ const SignupScreen = ({ navigation }) => {
             })
             .catch((error) => {
               console.log('Error setting user', error);
+              crashlytics().recordError(error);
             });
-          console.log('User account created & signed in!', user);
         })
         .catch((error) => {
           console.error(error);
+          crashlytics().recordError(error);
         });
     } catch (error) {
       console.log('error signing up:', error);
+      crashlytics().recordError(error);
     }
   };
 

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import QuestionComponent from '../components/QuestionComponent';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
@@ -66,6 +67,7 @@ const HomeScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching questions', err);
+      crashlytics().recordError(err);
     } finally {
       setLoading(false);
     }
@@ -103,6 +105,7 @@ const HomeScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching more Questions', err);
+      crashlytics().recordError(err);
     }
   };
 

@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
@@ -92,6 +93,7 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
       setIsEdited(false);
     } catch (err) {
       console.log(err);
+      crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }
   };

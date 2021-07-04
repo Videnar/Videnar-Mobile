@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
@@ -49,10 +50,12 @@ const SigninScreen = ({ navigation }) => {
           })
           .catch((error) => {
             console.log('Error getting document:', error);
+            crashlytics().recordError(error);
           });
       })
       .catch((error) => {
         console.error(error);
+        crashlytics().recordError(error);
         Toast.show({
           type: 'error',
           position: 'bottom',
