@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 
-const LoadingCircle = () => {
+const LoadingCircle = ({ height, width }) => {
   return (
     <AnimatedLottieView
-      style={styles.loadingCircle}
+      style={styles.loadingCircle(height, width)}
       source={require('../../assets/Icons/loading-circle.json')}
       autoPlay={true}
       loop={true}
@@ -14,10 +14,12 @@ const LoadingCircle = () => {
 };
 
 const styles = StyleSheet.create({
-  loadingCircle: {
-    height: '85%',
-    width: '85%',
-    alignSelf: 'center',
+  loadingCircle: (height, width) => {
+    return {
+      height: height,
+      width: width,
+      alignSelf: 'center',
+    };
   },
 });
 

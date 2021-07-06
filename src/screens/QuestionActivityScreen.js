@@ -16,6 +16,7 @@ import { WHITE } from '../assets/colors/colors';
 import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
 import DotsLottie from '../components/UI/DotsLottie';
+import LoadingCircle from '../components/UI/LoadingCircle';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -28,6 +29,8 @@ const ActivityScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
+  const [isMoreQuestionsLoading, setIsMoreQuestionsLoading] = useState(false);
+
   const route = useRoute();
 
   useEffect(() => {
@@ -75,6 +78,7 @@ const ActivityScreen = ({ navigation }) => {
   }, [userID]);
 
   const loadMoreQuestions = useCallback(async () => {
+    setIsMoreQuestionsLoading(true);
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -107,6 +111,8 @@ const ActivityScreen = ({ navigation }) => {
     } catch (err) {
       console.log('Error fetching more Questions', err);
       crashlytics().recordError(err);
+    } finally {
+      setIsMoreQuestionsLoading(false);
     }
   }, [lastDocument, userID, questions]);
 
@@ -127,6 +133,8 @@ const ActivityScreen = ({ navigation }) => {
     <View style={styles.lastItem}>
       {questions.length === 0 ? (
         <Text>You have not asked any questions yet 😐</Text>
+      ) : isMoreQuestionsLoading ? (
+        <LoadingCircle height="130%" width="130%" />
       ) : (
         <Text>You have reached the end 👽</Text>
       )}
