@@ -1,7 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Dimensions,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import { Overlay, Button, Input, Icon, Text } from 'react-native-elements';
+import { Overlay, Divider, Button, Input, Icon } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
@@ -11,6 +17,7 @@ const WIDTH = Dimensions.get('window').width;
 
 const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
   const {
+    changeScreen,
     state: { email },
   } = useContext(Context);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -54,6 +61,40 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
       });
   };
 
+  const deleteAccount = () => {
+    const user = auth().currentUser;
+
+    user
+      .delete()
+      .then(() => {
+        changeScreen('Auth', 'Main');
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Your account has been deleted.',
+          text2: 'Sorry to see you leave 😔',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1:
+            'This operation is sensitive and requires recent authentication. Please, sign out and Sign in again before retrying.',
+          text2: 'We will miss you 😢',
+          visibilityTime: 8000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      });
+  };
+
   return (
     <Overlay
       isVisible={visible}
@@ -81,7 +122,16 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
           onPress={changePassword}
         />
       </ScrollView>
-      {/* <Text>More Features Coming Soon...</Text> */}
+      <Divider />
+      <Text style={styles.text}>
+        Danger!! If you delete your Account it can not be recovered.
+      </Text>
+      <Button
+        type="solid"
+        title="Delete My Account"
+        buttonStyle={styles.dangerButton}
+        onPress={deleteAccount}
+      />
     </Overlay>
   );
 };
@@ -113,6 +163,17 @@ const styles = StyleSheet.create({
     backgroundColor: DEEP_GREEN,
     borderRadius: 10,
     width: '80%',
+  },
+  dangerButton: {
+    alignSelf: 'center',
+    backgroundColor: '#ff0000',
+    borderRadius: 10,
+    width: '80%',
+    marginVertical: '5%',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
