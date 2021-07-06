@@ -32,7 +32,7 @@ const ActivityScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions, questions]);
+  }, [fetchQuestions]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -74,7 +74,7 @@ const ActivityScreen = ({ navigation }) => {
     }
   }, [userID]);
 
-  const loadMoreQuestions = async () => {
+  const loadMoreQuestions = useCallback(async () => {
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -108,7 +108,7 @@ const ActivityScreen = ({ navigation }) => {
       console.log('Error fetching more Questions', err);
       crashlytics().recordError(err);
     }
-  };
+  }, [lastDocument, userID, questions]);
 
   const RenderItem = ({ item }) => (
     <QuestionComponent

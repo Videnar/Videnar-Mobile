@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   SafeAreaView,
   View,
@@ -31,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions, state.exams, state.preferences, questions]);
+  }, [fetchQuestions, state.exams, state.preferences]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const loadMoreQuestions = async () => {
+  const loadMoreQuestions = useCallback(async () => {
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }) => {
       console.log('Error fetching more Questions', err);
       crashlytics().recordError(err);
     }
-  };
+  }, [questions, lastDocument, state.preferences.exams]);
 
   const RenderItem = ({ item }) => {
     return (

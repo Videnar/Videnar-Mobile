@@ -28,7 +28,7 @@ const ActivityScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchAnswers();
-  }, [fetchAnswers, answers]);
+  }, [fetchAnswers]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -70,7 +70,7 @@ const ActivityScreen = ({ navigation }) => {
     }
   }, [userID]);
 
-  const loadMoreAnswers = async () => {
+  const loadMoreAnswers = useCallback(async () => {
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -101,7 +101,7 @@ const ActivityScreen = ({ navigation }) => {
       console.log('error fetching questions', err);
       crashlytics().recordError(err);
     }
-  };
+  }, [lastDocument, userID]);
 
   const RenderItem = ({ item }) => {
     return (
