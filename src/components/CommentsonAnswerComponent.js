@@ -92,7 +92,9 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
       }
       setIsEdited(false);
     } catch (err) {
-      console.log(err);
+      crashlytics().log(
+        'Error While Posting/Editing new Comments, onNewCommentPostHandler, commentsonAnswerComponent',
+      );
       crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }

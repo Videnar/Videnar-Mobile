@@ -80,7 +80,9 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       }
       setIsEdited(false);
     } catch (err) {
-      console.log(err);
+      crashlytics().log(
+        'Error While Posting/Editing new Comments, onNewCommentPostHandler, CommentsonQuestionComponent',
+      );
       crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }

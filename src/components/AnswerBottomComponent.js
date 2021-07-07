@@ -69,6 +69,9 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
       });
     } catch (err) {
       console.log("Can't find from Database");
+      crashlytics().log(
+        "Can't find from Database, checkuserExistsInUpVote ,AnswerBottomComponent",
+      );
       crashlytics().recordError(err);
     }
   }, [questionId, answer.id, userID]);
@@ -101,6 +104,9 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
           setUserUpVoteData({});
           upVoteIdRef.current = '';
         } catch (err) {
+          crashlytics().log(
+            'Error while Deleting from upvotes, addUpvoteData, AnswerBottomComponent',
+          );
           crashlytics().recordError(err);
           console.log('Error while Deleting from upvotes');
         }
@@ -119,6 +125,9 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
             });
         } catch (err) {
           console.log('Error while Updating in upvotes');
+          crashlytics().log(
+            'Error while Updating upvotes, addUpvoteData, AnswerBottomComponent',
+          );
           crashlytics().recordError(err);
         }
       }
@@ -135,6 +144,9 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
             voteType: voteType,
           });
       } catch (err) {
+        crashlytics().log(
+          'Error while adding to upvotes, addUpvoteData, AnswerBottomComponent',
+        );
         crashlytics().recordError(err);
         console.log('Error while adding to upvotes');
       }

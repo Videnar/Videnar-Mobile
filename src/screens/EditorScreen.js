@@ -53,6 +53,9 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error creating Question:', err);
+          crashlytics().log(
+            'error creating Question, saveToCloud,  EditorScreen',
+          );
           crashlytics().recordError(err);
           Toast.show({
             type: 'error',
@@ -89,6 +92,9 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error updating Question:', err);
+          crashlytics().log(
+            'error updating Question, saveToCloud,  EditorScreen',
+          );
           crashlytics().recordError(err);
           Toast.show({
             type: 'error',
@@ -127,6 +133,9 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error creating Answer:', err);
+          crashlytics().log(
+            'error creating answer, saveToCloud,  EditorScreen',
+          );
           crashlytics().recordError(err);
           Toast.show({
             type: 'error',
@@ -162,6 +171,9 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error updating Answer:', err);
+          crashlytics().log(
+            'error updating Answer, saveToCloud,  EditorScreen',
+          );
           crashlytics().recordError(err);
           Toast.show({
             type: 'error',

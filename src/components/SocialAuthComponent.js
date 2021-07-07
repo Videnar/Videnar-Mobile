@@ -54,6 +54,9 @@ const SocialAuthComponent = () => {
         })
         .catch((error) => {
           console.log('Error getting document:', error);
+          crashlytics().log(
+            'Error getting document, getUserData, SocialAuthComponent',
+          );
           crashlytics().recordError(error);
         });
     }
@@ -78,6 +81,9 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err);
+      crashlytics().log(
+        'Error while Facebook SignIn, onFacebookButtonPress, SocialAuthComponent',
+      );
       crashlytics().recordError(err);
       Toast.show({
         type: 'error',
@@ -100,6 +106,9 @@ const SocialAuthComponent = () => {
       getUserData();
     } catch (err) {
       console.log('Error ---> ' + err.toString());
+      crashlytics().log(
+        'Error while Google SignIn, onGoogleButtonPress, in SocialAuthComponent',
+      );
       crashlytics().recordError(err);
       Toast.show({
         type: 'error',

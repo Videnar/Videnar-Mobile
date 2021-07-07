@@ -41,6 +41,9 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
         bottomOffset: 40,
       });
     } catch (err) {
+      crashlytics().log(
+        'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+      );
       crashlytics().recordError(err);
       console.log('error deleting answer:', err);
       Toast.show({

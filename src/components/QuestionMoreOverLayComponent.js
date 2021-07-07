@@ -47,6 +47,9 @@ const QuestionMoreOverlayComponent = ({
       });
     } catch (err) {
       console.log('error deleting Question:', err);
+      crashlytics().log(
+        'error deleting Question, deleteSelectedQuestion, QuestioMoreOverlayComponent',
+      );
       crashlytics().recordError(err);
       Toast.show({
         type: 'error',

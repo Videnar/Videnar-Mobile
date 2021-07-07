@@ -41,6 +41,7 @@ const SigninScreen = ({ navigation }) => {
           });
         })
         .catch(function (error) {
+          crashlytics().log('Error, onSubmitHandler, ForgotPasswordScreen');
           crashlytics().recordError(error);
           Toast.show({
             type: 'error',

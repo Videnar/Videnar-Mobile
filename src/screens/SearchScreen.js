@@ -51,6 +51,7 @@ const SearchScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('error fetching items', err);
+      crashlytics().log('Error fetching items, search, SearchScreen');
       crashlytics().recordError(err);
     }
   };

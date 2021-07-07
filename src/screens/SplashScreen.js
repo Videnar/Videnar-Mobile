@@ -36,6 +36,7 @@ const SplashScreen = ({ navigation }) => {
         }
       } catch (e) {
         console.log(e);
+        crashlytics().log('Error in SplashScreen');
         crashlytics().recordError(e);
       }
     })();

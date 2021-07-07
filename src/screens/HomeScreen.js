@@ -67,6 +67,7 @@ const HomeScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching questions', err);
+      crashlytics().log('Error fetching questions, fetchQuestions, HomeScreen');
       crashlytics().recordError(err);
     } finally {
       setLoading(false);
@@ -105,6 +106,9 @@ const HomeScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching more Questions', err);
+      crashlytics().log(
+        'Error fetching more questions, loadMoreQuestions, HomeScreen',
+      );
       crashlytics().recordError(err);
     }
   };

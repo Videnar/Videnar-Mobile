@@ -47,6 +47,9 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
       })
       .catch((error) => {
         console.log('Error updating password:', error);
+        crashlytics().log(
+          'Error updating password, changePassword, settingsOverlay',
+        );
         crashlytics().recordError(error);
         Toast.show({
           type: 'error',

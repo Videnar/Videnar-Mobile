@@ -14,39 +14,36 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const SignupScreen = ({ navigation }) => {
   const { setUser, changeScreen } = useContext(Context);
   const signUp = (emailID, password, name) => {
-    try {
-      auth()
-        .createUserWithEmailAndPassword(emailID, password)
-        .then(() => {
-          let user = auth().currentUser;
-          user
-            .updateProfile({
-              displayName: name,
-            })
-            .then(() => {
-              user = auth().currentUser;
-              const { displayName, email, photoURL, uid } = user;
-              setUser({
-                userDisplayName: displayName,
-                email,
-                photoURL,
-                userID: uid,
-              });
-              changeScreen('UserPref', 'Auth');
-            })
-            .catch((error) => {
-              console.log('Error setting user', error);
-              crashlytics().recordError(error);
+    auth()
+      .createUserWithEmailAndPassword(emailID, password)
+      .then(() => {
+        let user = auth().currentUser;
+        user
+          .updateProfile({
+            displayName: name,
+          })
+          .then(() => {
+            user = auth().currentUser;
+            const { displayName, email, photoURL, uid } = user;
+            setUser({
+              userDisplayName: displayName,
+              email,
+              photoURL,
+              userID: uid,
             });
-        })
-        .catch((error) => {
-          console.error(error);
-          crashlytics().recordError(error);
-        });
-    } catch (error) {
-      console.log('error signing up:', error);
-      crashlytics().recordError(error);
-    }
+            changeScreen('UserPref', 'Auth');
+          })
+          .catch((error) => {
+            console.log('Error setting user', error);
+            crashlytics().log('Error setting user, Signup, SignupScreen');
+            crashlytics().recordError(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        crashlytics().log('Error signing up, SignupScreen, SignupScreen');
+        crashlytics().recordError(error);
+      });
   };
 
   return (

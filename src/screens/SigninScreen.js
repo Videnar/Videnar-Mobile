@@ -50,11 +50,15 @@ const SigninScreen = ({ navigation }) => {
           })
           .catch((error) => {
             console.log('Error getting document:', error);
+            crashlytics().log('Error getting document, signIn, SigninScreen');
             crashlytics().recordError(error);
           });
       })
       .catch((error) => {
         console.error(error);
+        crashlytics().log(
+          'User Email or Password is incorrect, signIn, SigninScreen',
+        );
         crashlytics().recordError(error);
         Toast.show({
           type: 'error',

@@ -68,6 +68,9 @@ const ActivityScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching questions', err);
+      crashlytics().log(
+        'Error fetching questions, fetchQuestions, QuestionActivityScreen',
+      );
       crashlytics().recordError(err);
     } finally {
       setLoadingQuestions(false);
@@ -106,6 +109,9 @@ const ActivityScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error fetching more Questions', err);
+      crashlytics().log(
+        'Error fetching more Questions, loadMoreQuestions, QuestionActivityScreen',
+      );
       crashlytics().recordError(err);
     }
   };
