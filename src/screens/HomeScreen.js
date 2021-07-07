@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   SafeAreaView,
   View,
@@ -17,6 +17,7 @@ import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
 import LoadingAnimation from '../components/UI/LoadingAnimation';
+import LoadingCircle from '../components/UI/LoadingCircle';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -26,12 +27,13 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMoreQuestionsLoading, setIsMoreQuestionsLoading] = useState(false);
 
   const route = useRoute();
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions, state.exams, state.preferences, questions]);
+  }, [fetchQuestions, state.exams, state.preferences]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -74,7 +76,8 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const loadMoreQuestions = async () => {
+  const loadMoreQuestions = useCallback(async () => {
+    setIsMoreQuestionsLoading(true);
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -110,8 +113,10 @@ const HomeScreen = ({ navigation }) => {
         'Error fetching more questions, loadMoreQuestions, HomeScreen',
       );
       crashlytics().recordError(err);
+    } finally {
+      setIsMoreQuestionsLoading(false);
     }
-  };
+  }, [questions, lastDocument, state.preferences.exams]);
 
   const RenderItem = ({ item }) => {
     return (
@@ -136,7 +141,11 @@ const HomeScreen = ({ navigation }) => {
 
   const lastItem = (
     <View style={styles.lastItem}>
-      <Text>No more questions to show 🐹</Text>
+      {isMoreQuestionsLoading ? (
+        <LoadingCircle height="90%" width="90%" />
+      ) : (
+        <Text>No more questions to show 🐹</Text>
+      )}
     </View>
   );
 

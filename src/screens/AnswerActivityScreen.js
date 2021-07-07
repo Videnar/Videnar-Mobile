@@ -15,20 +15,24 @@ import AnswerComponent from '../components/AnswerComponent';
 import { WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
 import { useRoute } from '@react-navigation/native';
+import LoadingCircle from '../components/UI/LoadingCircle';
 
 const ActivityScreen = ({ navigation }) => {
   const {
     state: { userID },
   } = useContext(Context);
+
   const [answers, setAnswers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
+  const [isMoreAnswersLoading, setIsMoreAnswersLoading] = useState(false);
+
   const route = useRoute();
 
   useEffect(() => {
     fetchAnswers();
-  }, [fetchAnswers, answers]);
+  }, [fetchAnswers]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -73,7 +77,8 @@ const ActivityScreen = ({ navigation }) => {
     }
   }, [userID]);
 
-  const loadMoreAnswers = async () => {
+  const loadMoreAnswers = useCallback(async () => {
+    setIsMoreAnswersLoading(true);
     try {
       if (lastDocument) {
         const snapShot = await firestore()
@@ -106,8 +111,10 @@ const ActivityScreen = ({ navigation }) => {
         'Error fetching questions, loadMoreAnswers, AnswerActivityScreen',
       );
       crashlytics().recordError(err);
+    } finally {
+      setIsMoreAnswersLoading(false);
     }
-  };
+  }, [lastDocument, userID]);
 
   const RenderItem = ({ item }) => {
     return (
@@ -124,6 +131,11 @@ const ActivityScreen = ({ navigation }) => {
     <View style={styles.lastItem}>
       {answers.length === 0 ? (
         <Text>You have not answered any questions yet 😐</Text>
+      ) : isMoreAnswersLoading ? (
+        <>
+          {console.log(isMoreAnswersLoading)}
+          <LoadingCircle height="130%" width="130%" />
+        </>
       ) : (
         <Text>You have reached the end 💀</Text>
       )}

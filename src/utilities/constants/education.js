@@ -170,11 +170,11 @@ export const educations = [
   },
   {
     level: 'Class 11',
-    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, CHSE],
   },
   {
     level: 'Class 12',
-    exams: [JEE, NEET, KVPY, CBSE, ICSE, HSCE],
+    exams: [JEE, NEET, KVPY, CBSE, ICSE, CHSE],
   },
   {
     level: 'B.Tech',
