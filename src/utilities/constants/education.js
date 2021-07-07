@@ -10,23 +10,11 @@ const NEETPG = {
   key: 'NEET PG',
   description: 'National Eligibility cum Entrance Test (PG)',
 };
-const AIIMSPG = {
-  key: 'AIIMS PG',
-  description: 'All India Institute of Medical Science (PG)',
+const INICET = {
+  key: 'INI CET',
+  description: 'Institute of National Importance Combined Entrance Test',
 };
-const JIPMERPG = {
-  key: 'JIPMER PG',
-  description:
-    'Jawaharlal Institute of Postgraduate Medical Education & Research (PG)',
-};
-const PGIMER = {
-  key: 'PGIMER',
-  description: 'Postgraduate Institute of Medical Education and Research',
-};
-const NIMHANS = {
-  key: 'NIMHANS',
-  description: 'National Institute of Mental Health and Neurosciences',
-};
+
 const SSCCGL = {
   key: 'SSC-CGL',
   description: 'Combined Graduate Level',
@@ -183,7 +171,7 @@ export const educations = [
   },
   {
     level: 'MBBS',
-    exams: [AIIMSPG, JIPMERPG, PGIMER, NIMHANS, NEETPG, CSE, CAT],
+    exams: [INICET, NEETPG, CSE, CAT],
   },
   {
     level: 'Chartered Accountant (CA)',
