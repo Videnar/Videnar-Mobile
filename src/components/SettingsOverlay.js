@@ -3,6 +3,7 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
+  View,
   Text,
   Dimensions,
 } from 'react-native';
@@ -11,7 +12,7 @@ import { Overlay, Divider, Button, Input, Icon } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
 import auth from '@react-native-firebase/auth';
 import { Context } from '../contexts';
-import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, ORANGE } from '../assets/colors/colors';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -107,34 +108,38 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
         <Icon type="material" name="close" size={30} />
       </Pressable>
       <ScrollView style={styles.container}>
-        <Text style={styles.header}>Change Password</Text>
-        <Input
-          placeholder="Current Password"
-          value={currentPassword}
-          onChangeText={setCurrentPassword}
-        />
-        <Input
-          placeholder="New Password"
-          value={newPassword}
-          onChangeText={setNewPassword}
-        />
-        <Button
-          type="solid"
-          title="Change Password"
-          buttonStyle={styles.button}
-          onPress={changePassword}
-        />
+        <View style={styles.changePasswordContainer}>
+          <Text style={styles.text}>Change Password</Text>
+          <Input
+            placeholder="Current Password"
+            value={currentPassword}
+            onChangeText={setCurrentPassword}
+          />
+          <Input
+            placeholder="New Password"
+            value={newPassword}
+            onChangeText={setNewPassword}
+          />
+          <Button
+            type="solid"
+            title="Change Password"
+            buttonStyle={styles.button}
+            onPress={changePassword}
+          />
+        </View>
+        <Divider />
+        <View style={styles.deleteAccountContainer}>
+          <Text style={styles.deleteText}>
+            Danger!! If you delete your Account it can not be recovered.
+          </Text>
+          <Button
+            type="solid"
+            title="Delete My Account"
+            buttonStyle={styles.dangerButton}
+            onPress={deleteAccount}
+          />
+        </View>
       </ScrollView>
-      <Divider />
-      <Text style={styles.text}>
-        Danger!! If you delete your Account it can not be recovered.
-      </Text>
-      <Button
-        type="solid"
-        title="Delete My Account"
-        buttonStyle={styles.dangerButton}
-        onPress={deleteAccount}
-      />
     </Overlay>
   );
 };
@@ -155,7 +160,11 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
-  header: {
+  changePasswordContainer: {
+    marginTop: '5%',
+    marginBottom: '15%',
+  },
+  text: {
     fontSize: 20,
     paddingLeft: 10,
     fontWeight: 'bold',
@@ -167,16 +176,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%',
   },
+  deleteAccountContainer: {
+    marginTop: '15%',
+  },
   dangerButton: {
     alignSelf: 'center',
-    backgroundColor: '#ff0000',
+    backgroundColor: ORANGE,
     borderRadius: 10,
     width: '80%',
     marginVertical: '5%',
   },
-  text: {
-    fontSize: 20,
+  deleteText: {
     fontWeight: 'bold',
+    fontSize: 16,
+    color: GREY,
+    paddingHorizontal: '5%',
   },
 });
 
