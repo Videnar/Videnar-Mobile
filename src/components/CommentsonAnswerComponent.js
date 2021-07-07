@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
 import {
-  Dimensions,
   FlatList,
   StyleSheet,
   TextInput,
@@ -8,12 +7,11 @@ import {
   View,
 } from 'react-native';
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const CommentsonAnswerComponent = ({ questionId, answerId }) => {
   const {
@@ -94,7 +92,10 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
       }
       setIsEdited(false);
     } catch (err) {
-      console.log(err);
+      crashlytics().log(
+        'Error While Posting/Editing new Comments, onNewCommentPostHandler, commentsonAnswerComponent',
+      );
+      crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }
   };
@@ -195,7 +196,7 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
               type="material"
               name="send"
               size={37}
-              color="grey"
+              color={GREY}
               onPress={onNewCommentPostHandler}
             />
           </View>
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    width: WIDTH * 0.8,
+    width: '80%',
     margin: 12,
     borderWidth: 0.5,
     borderColor: 'grey',

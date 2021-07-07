@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Dimensions, View, StyleSheet, Pressable } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { Card, Text, Icon, Overlay, Divider } from 'react-native-elements';
-
-const WIDTH = Dimensions.get('window').width;
+import { GREY } from '../assets/colors/colors';
+import { Context } from '../contexts';
 
 const IndividualCommentComponent = ({ comment, feedBack }) => {
+  const {
+    state: { userID },
+  } = useContext(Context);
   const [isVisible, setIsVisible] = useState(false);
 
   const onEditHandler = () => {
@@ -23,30 +26,35 @@ const IndividualCommentComponent = ({ comment, feedBack }) => {
     <>
       {/** User Detail */}
       <Text style={styles.userName}>{comment.userDisplayName}</Text>
-      <Card containerStyle={styles.comment}>
-        {/**More Options Button */}
-        <View style={styles.iconPress}>
-          <Icon
-            type="material"
-            name="expand-more"
-            onPress={() => setIsVisible(true)}
-          />
-        </View>
-        {/** Comment content */}
-        <Text style={styles.commentText}>{comment.content}</Text>
-      </Card>
+      <Pressable
+        onLongPress={() => comment.userID === userID && setIsVisible(true)}>
+        <Card containerStyle={styles.comment}>
+          {/** Comment content */}
+          <Text style={styles.commentText}>{comment.content}</Text>
+        </Card>
+      </Pressable>
       {/** Edit and Delete Buttons */}
       <Overlay
         isVisible={isVisible}
         onBackdropPress={() => setIsVisible(false)}
         backdropStyle={styles.backdrop}
         overlayStyle={styles.overlay}>
-        <Pressable onPress={onEditHandler}>
-          <Text style={styles.optionText}>Edit</Text>
+        <Pressable onPress={onEditHandler} style={styles.button}>
+          <View>
+            <Text style={styles.optionText}>Edit</Text>
+          </View>
+          <View>
+            <Icon type="material" name="edit" color={GREY} />
+          </View>
         </Pressable>
         <Divider />
-        <Pressable onPress={onDeleteHandler}>
-          <Text style={styles.optionText}>Delete</Text>
+        <Pressable onPress={onDeleteHandler} style={styles.button}>
+          <View>
+            <Text style={styles.optionText}>Delete</Text>
+          </View>
+          <View>
+            <Icon type="material" name="delete" color={GREY} />
+          </View>
         </Pressable>
       </Overlay>
     </>
@@ -60,39 +68,43 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
     marginLeft: 12,
     marginTop: 8,
+    color: GREY,
   },
   comment: {
-    width: WIDTH * 0.77,
-    backgroundColor: '#E8E8E8',
-    borderRadius: 8,
+    width: '83%',
+    backgroundColor: '#F1F3F6',
+    borderRadius: 5,
     marginLeft: 30,
     marginTop: 5,
-    elevation: 2,
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
   },
   commentText: {
-    letterSpacing: 0.5,
-    fontSize: 14,
-  },
-  iconPress: {
-    width: WIDTH * 0.68,
-    bottom: 8,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    letterSpacing: 1,
+    fontSize: 15,
   },
   overlay: {
-    width: 150,
-    alignItems: 'center',
-    borderRadius: 8,
-    elevation: 5,
+    borderRadius: 5,
+    elevation: 20,
   },
   backdrop: {
     backgroundColor: 'rgba(0,0,0,0.05)',
   },
   optionText: {
+    letterSpacing: 1,
+    fontSize: 16,
+    fontWeight: '700',
+    color: GREY,
+  },
+  button: {
+    width: '45%',
     margin: 5,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: '10%',
+    paddingVertical: 5,
   },
 });
 

@@ -3,6 +3,7 @@ import { StyleSheet, Image, ScrollView, View, StatusBar } from 'react-native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Text, Button } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
@@ -39,6 +40,10 @@ const ProfileScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('err', err);
+      crashlytics().log(
+        'error in saveUserPreference, saveUserPreference, ProfileScreen',
+      );
+      crashlytics().recordError(err);
     }
   };
 
@@ -50,37 +55,27 @@ const ProfileScreen = ({ navigation }) => {
 
   const signOut = async () => {
     await saveUserPreference();
-    try {
-      await auth()
-        .signOut()
-        .then(() => {
-          changeScreen('Auth', 'Main');
-          removeUser();
-          Toast.show({
-            type: 'success',
-            position: 'bottom',
-            text1: 'Your have signed out.',
-            text2: 'See Ya 👋',
-            visibilityTime: 1000,
-            autoHide: true,
-            topOffset: 40,
-            bottomOffset: 40,
-          });
-        })
-        .catch((err) => console.log(err, 'err'));
-    } catch (err) {
-      console.log('er', err);
-      Toast.show({
-        type: 'error',
-        position: 'bottom',
-        text1: 'Opps! Something went wrong.',
-        text2: 'Please, try signing out again 🤕',
-        visibilityTime: 1000,
-        autoHide: true,
-        topOffset: 40,
-        bottomOffset: 40,
+    await auth()
+      .signOut()
+      .then(() => {
+        changeScreen('Auth', 'Main');
+        removeUser();
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Your have signed out.',
+          text2: 'See Ya 👋',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+        crashlytics().log('error signing out, signout, ProfileScreen');
+        crashlytics().recordError(err);
       });
-    }
   };
 
   return (

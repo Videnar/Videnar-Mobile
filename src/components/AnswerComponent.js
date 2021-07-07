@@ -15,7 +15,12 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
   const ANSWER_HTML_ELEMENT = `<head>
                                 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                               </head>
-                              <body >
+                              <body 
+                                style="
+                                text-align:auto; 
+                                letter-spacing:0.5; 
+                                font-size: 1.075rem;
+                                color: black">
                                 <div>${answer.content}</div>
                               </body>`;
 
@@ -69,6 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginHorizontal: 10,
     marginBottom: 15,
+    width: '95%',
   },
   header: {
     marginHorizontal: 5,

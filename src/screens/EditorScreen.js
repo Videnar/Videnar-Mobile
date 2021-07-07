@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Alert } from 'react-native';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
@@ -52,6 +53,10 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error creating Question:', err);
+          crashlytics().log(
+            'error creating Question, saveToCloud,  EditorScreen',
+          );
+          crashlytics().recordError(err);
           Toast.show({
             type: 'error',
             position: 'bottom',
@@ -87,6 +92,10 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error updating Question:', err);
+          crashlytics().log(
+            'error updating Question, saveToCloud,  EditorScreen',
+          );
+          crashlytics().recordError(err);
           Toast.show({
             type: 'error',
             position: 'bottom',
@@ -124,6 +133,10 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error creating Answer:', err);
+          crashlytics().log(
+            'error creating answer, saveToCloud,  EditorScreen',
+          );
+          crashlytics().recordError(err);
           Toast.show({
             type: 'error',
             position: 'bottom',
@@ -158,6 +171,10 @@ const EditorScreen = ({
           });
         } catch (err) {
           console.log('error updating Answer:', err);
+          crashlytics().log(
+            'error updating Answer, saveToCloud,  EditorScreen',
+          );
+          crashlytics().recordError(err);
           Toast.show({
             type: 'error',
             position: 'bottom',

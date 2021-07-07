@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { Icon, Text, Tooltip } from 'react-native-elements';
+import { StyleSheet, View } from 'react-native';
+import { Icon, Text } from 'react-native-elements';
+import Toast from 'react-native-toast-message';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const UpVoteDownVoteComponent = ({
   upVotes,
@@ -94,6 +93,18 @@ const UpVoteDownVoteComponent = ({
     addUpvoteData(voteType);
   };
 
+  const disabledVoteHandler = () => {
+    Toast.show({
+      type: 'info',
+      position: 'bottom',
+      text1: "Can't vote your Question/Answer 🤐",
+      visibilityTime: 2000,
+      autoHide: true,
+      topOffset: 40,
+      bottomOffset: 80,
+    });
+  };
+
   return (
     <>
       <View style={styles.upvoteContainer}>
@@ -122,29 +133,25 @@ const UpVoteDownVoteComponent = ({
         </View>
       ) : (
         // Disabled vote
-        <Tooltip
-          popover={<Text>Can't Vote Your Question / Answer 🤐</Text>}
-          containerStyle={styles.disabled}
-          backgroundColor="white"
-          overlayColor="transparent"
-          width={270}>
-          <View style={styles.vote}>
-            <Icon
-              name="forward"
-              type="material"
-              size={28}
-              color={voteColor.upVote}
-              containerStyle={styles.upVote}
-            />
-            <Icon
-              name="forward"
-              type="material"
-              size={28}
-              color={voteColor.downVote}
-              containerStyle={styles.downVote}
-            />
-          </View>
-        </Tooltip>
+
+        <View style={styles.vote}>
+          <Icon
+            name="forward"
+            type="material"
+            size={28}
+            color={voteColor.upVote}
+            containerStyle={styles.upVote}
+            onPress={disabledVoteHandler}
+          />
+          <Icon
+            name="forward"
+            type="material"
+            size={28}
+            color={voteColor.downVote}
+            containerStyle={styles.downVote}
+            onPress={disabledVoteHandler}
+          />
+        </View>
       )}
     </>
   );
@@ -169,7 +176,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   upvoteContainer: {
-    width: WIDTH * 0.35,
+    width: '35%',
     alignItems: 'center',
   },
   upVotes: {

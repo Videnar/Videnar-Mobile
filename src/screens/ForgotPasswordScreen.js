@@ -7,6 +7,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Icon, Button, Text } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
@@ -40,6 +41,8 @@ const SigninScreen = ({ navigation }) => {
           });
         })
         .catch(function (error) {
+          crashlytics().log('Error, onSubmitHandler, ForgotPasswordScreen');
+          crashlytics().recordError(error);
           Toast.show({
             type: 'error',
             position: 'bottom',

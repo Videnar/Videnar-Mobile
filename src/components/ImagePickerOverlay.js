@@ -1,9 +1,7 @@
 import React from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-
-const WIDTH = Dimensions.get('window').width;
 
 const ImagePickerOverlay = ({
   isOverlayVisible,
@@ -91,7 +89,7 @@ const ImagePickerOverlay = ({
 
 const styles = StyleSheet.create({
   overlay: {
-    width: WIDTH * 0.7,
+    width: '70%',
     borderRadius: 10,
   },
   backdropOverlay: {
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#29BB89',
-    width: WIDTH * 0.6,
+    width: '60%',
     alignSelf: 'center',
     alignContent: 'center',
     borderRadius: 10,

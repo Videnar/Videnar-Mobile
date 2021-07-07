@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
@@ -16,46 +17,60 @@ import SocialAuth from '../components/SocialAuthComponent';
 import { Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
+import Toast from 'react-native-toast-message';
 
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
   const signIn = (emailID, password) => {
-    try {
-      auth()
-        .signInWithEmailAndPassword(emailID, password)
-        .then(async (userCredential) => {
-          const { displayName, email, photoURL, uid } = userCredential.user;
-          await setUser({
-            userDisplayName: displayName,
-            email,
-            photoURL,
-            userID: uid,
-          });
-          var docRef = firestore().collection('users').doc(uid);
-          docRef
-            .get()
-            .then(async (doc) => {
-              if (doc.exists) {
-                const { education, branch, exams } = doc.data();
-                const userPref = { education, branch, exams };
-                updateUserPreferences(userPref);
-                const str = JSON.stringify(userPref);
-                await AsyncStorage.setItem('@preferences', str);
-                changeScreen('Main', 'Auth');
-              } else {
-                changeScreen('UserPref', 'Auth');
-              }
-            })
-            .catch((error) => {
-              console.log('Error getting document:', error);
-            });
-        })
-        .catch((error) => {
-          console.error(error);
+    console.log('Clicked');
+    auth()
+      .signInWithEmailAndPassword(emailID, password)
+      .then(async (userCredential) => {
+        const { displayName, email, photoURL, uid } = userCredential.user;
+        await setUser({
+          userDisplayName: displayName,
+          email,
+          photoURL,
+          userID: uid,
         });
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
+        var docRef = firestore().collection('users').doc(uid);
+        docRef
+          .get()
+          .then(async (doc) => {
+            if (doc.exists) {
+              const { education, branch, exams } = doc.data();
+              const userPref = { education, branch, exams };
+              updateUserPreferences(userPref);
+              const str = JSON.stringify(userPref);
+              await AsyncStorage.setItem('@preferences', str);
+              changeScreen('Main', 'Auth');
+            } else {
+              changeScreen('UserPref', 'Auth');
+            }
+          })
+          .catch((error) => {
+            console.log('Error getting document:', error);
+            crashlytics().log('Error getting document, signIn, SigninScreen');
+            crashlytics().recordError(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        crashlytics().log(
+          'User Email or Password is incorrect, signIn, SigninScreen',
+        );
+        crashlytics().recordError(error);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'User Email or Password is incorrect',
+          text2: 'Oops! 🤦‍♂️',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      });
   };
 
   return (

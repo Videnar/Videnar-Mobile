@@ -65,7 +65,14 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
   }, [questionIdfromProps]);
 
   const renderItems = ({ item }) => {
-    return <AnswerComponent answer={item} questionId={questionIdfromProps} />;
+    return (
+      <AnswerComponent
+        answer={item}
+        questionId={questionIdfromProps}
+        route={route}
+        navigation={navigation}
+      />
+    );
   };
 
   return (
@@ -78,6 +85,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           containerStyle={styles.iconContainer}
           onPress={() => navigation.goBack()}
           size={30}
+          color={GREY}
         />
       </View>
       {loadingAnswers ? (

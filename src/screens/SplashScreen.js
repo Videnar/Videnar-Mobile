@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Context } from '../contexts';
 
 const SplashScreen = ({ navigation }) => {
@@ -35,6 +36,8 @@ const SplashScreen = ({ navigation }) => {
         }
       } catch (e) {
         console.log(e);
+        crashlytics().log('Error in SplashScreen');
+        crashlytics().recordError(e);
       }
     })();
   }, [changeScreen, setDeviceToken, setUser, updateUserPreferences]);

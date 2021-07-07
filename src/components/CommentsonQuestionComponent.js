@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
   TouchableOpacity,
-  Dimensions,
   StyleSheet,
   FlatList,
   View,
@@ -10,9 +9,8 @@ import {
 import { Header, Icon, Overlay, Text } from 'react-native-elements';
 import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
-
-const WIDTH = Dimensions.get('window').width;
 
 const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
   // OverLay Visible?
@@ -82,7 +80,10 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
       }
       setIsEdited(false);
     } catch (err) {
-      console.log(err);
+      crashlytics().log(
+        'Error While Posting/Editing new Comments, onNewCommentPostHandler, CommentsonQuestionComponent',
+      );
+      crashlytics().recordError(err);
       console.log('Error While Posting/Editing new Comments');
     }
   };
@@ -181,7 +182,7 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
               type="material"
               name="send"
               size={37}
-              color="grey"
+              color={GREY}
               onPress={onNewCommentPostHandler}
             />
           </View>
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    width: WIDTH * 0.8,
+    width: '80%',
     margin: 12,
     borderWidth: 0.5,
     borderColor: 'grey',

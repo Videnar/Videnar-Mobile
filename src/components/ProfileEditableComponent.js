@@ -60,7 +60,7 @@ const ProfileEditableComponent = ({ navigation }) => {
             onPress={() => setSettingsOverlay(true)}
             style={styles.cardItem}>
             <Icon name="settings" type="material" color={GREY} />
-            <Text style={styles.cardItemText}>Change Password</Text>
+            <Text style={styles.cardItemText}>Settings</Text>
           </TouchableOpacity>
           <Card.Divider style={styles.divider} />
           <TouchableOpacity

@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 import { Context } from '../contexts';
 
@@ -66,8 +67,12 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
           });
         }
       });
-    } catch {
+    } catch (err) {
       console.log("Can't find from Database");
+      crashlytics().log(
+        "Can't find from Database, checkuserExistsInUpVote ,AnswerBottomComponent",
+      );
+      crashlytics().recordError(err);
     }
   }, [questionId, answer.id, userID]);
 
@@ -98,7 +103,11 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
           setUserExistsInUpVote(false);
           setUserUpVoteData({});
           upVoteIdRef.current = '';
-        } catch {
+        } catch (err) {
+          crashlytics().log(
+            'Error while Deleting from upvotes, addUpvoteData, AnswerBottomComponent',
+          );
+          crashlytics().recordError(err);
           console.log('Error while Deleting from upvotes');
         }
       } else {
@@ -114,8 +123,12 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
               ...userUpVoteData,
               voteType: voteType,
             });
-        } catch {
+        } catch (err) {
           console.log('Error while Updating in upvotes');
+          crashlytics().log(
+            'Error while Updating upvotes, addUpvoteData, AnswerBottomComponent',
+          );
+          crashlytics().recordError(err);
         }
       }
     } else {
@@ -130,7 +143,11 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
             userId: userID,
             voteType: voteType,
           });
-      } catch {
+      } catch (err) {
+        crashlytics().log(
+          'Error while adding to upvotes, addUpvoteData, AnswerBottomComponent',
+        );
+        crashlytics().recordError(err);
         console.log('Error while adding to upvotes');
       }
     }

@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
-
-const WIDTH = Dimensions.get('window').width;
 
 const QuestionBottomComponent = ({
   questionerUId,
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
     height: 15,
   },
   upvoteContainer: {
-    width: WIDTH * 0.35,
+    width: '40%',
     alignItems: 'center',
   },
   upvoteText: {

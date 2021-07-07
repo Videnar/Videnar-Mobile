@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import algoliasearch from 'algoliasearch/lite';
+import crashlytics from '@react-native-firebase/crashlytics';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import Algolia from '../utilities/Icons/Algolia';
@@ -50,6 +51,8 @@ const SearchScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log('error fetching items', err);
+      crashlytics().log('Error fetching items, search, SearchScreen');
+      crashlytics().recordError(err);
     }
   };
 

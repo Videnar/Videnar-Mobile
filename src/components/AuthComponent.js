@@ -26,6 +26,7 @@ const AuthForm = ({
   });
 
   const onSubmitForm = () => {
+    console.log('Clicked here');
     let { nameError, emailError, pwdError } = {
       nameError: false,
       emailError: false,
@@ -47,8 +48,14 @@ const AuthForm = ({
       email: emailError,
       password: pwdError,
     });
-    if (nameError === false && emailError === false && pwdError === false) {
-      onSubmit(email, password, name);
+    if (submitButtonText === 'Login') {
+      if (emailError === false && pwdError === false) {
+        onSubmit(email, password, name);
+      }
+    } else {
+      if (nameError === false && emailError === false && pwdError === false) {
+        onSubmit(email, password, name);
+      }
     }
   };
 
