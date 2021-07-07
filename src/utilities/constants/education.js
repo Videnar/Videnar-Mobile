@@ -6,6 +6,10 @@ const JEE = {
   key: 'JEE',
   description: 'Joint Entrance Examination',
 };
+const NEXT = {
+  key: 'NEXT',
+  description: 'National Exit Test',
+};
 const NEETPG = {
   key: 'NEET PG',
   description: 'National Eligibility cum Entrance Test (PG)',
@@ -171,7 +175,7 @@ export const educations = [
   },
   {
     level: 'MBBS',
-    exams: [INICET, NEETPG, CSE, CAT],
+    exams: [NEXT, INICET, NEETPG, CSE, CAT],
   },
   {
     level: 'Chartered Accountant (CA)',
