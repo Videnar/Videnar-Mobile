@@ -6,7 +6,6 @@ import { Context } from '../contexts';
 import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Alert } from 'react-native';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 
 const EditorScreen = ({
@@ -18,13 +17,21 @@ const EditorScreen = ({
   const {
     state: { userDisplayName, userID, preferences, setDeviceToken },
   } = useContext(Context);
-  const defaultContent = '<p><br></p>';
-  const editorContentRef = useRef(content ? content : defaultContent);
+  const defaultContent = content ? content : '<p><br></p>';
+  const editorContentRef = useRef(defaultContent);
   const [buttonDisable, setButtonDisable] = useState(true);
 
   const saveToCloud = async (str) => {
     if (str === defaultContent) {
-      Alert.alert('Please Write something');
+      Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: 'Old and New contents are same! 🤐',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 80,
+        bottomOffset: 40,
+      });
     } else {
       if (functionName === 'submitQuestion') {
         try {
