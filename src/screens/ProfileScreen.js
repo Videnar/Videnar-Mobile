@@ -44,11 +44,19 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  const listExams = exams.map((exam, index) => (
-    <Text key={index} style={styles.examtags}>
-      {index === exams.length - 1 ? exam : exam + ', '}
-    </Text>
-  ));
+  const listExams = exams.map((exam, index) => {
+    if (exam.match('GATE')) {
+      exam = 'GATE';
+    }
+    if (exam.match('IES')) {
+      exam = 'IES';
+    }
+    return (
+      <Text key={index} style={styles.examtags}>
+        {index === exams.length - 1 ? exam : exam + ', '}
+      </Text>
+    );
+  });
 
   const signOut = async () => {
     await saveUserPreference();

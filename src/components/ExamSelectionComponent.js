@@ -40,6 +40,12 @@ const ExamSelectionComponent = ({
     userPref({ exams: exams });
     let populateExam = '';
     exams.forEach((exam) => {
+      if (exam.match('GATE')) {
+        exam = 'GATE';
+      }
+      if (exam.match('IES')) {
+        exam = 'IES';
+      }
       populateExam = populateExam.concat(exam + ', ');
     });
     if (populateExam.length > 20) {
