@@ -7,6 +7,7 @@ import Editor from '../components/Editor';
 import { Button, Header, Icon } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import EditorTagsOverlay from '../components/EditorTagsOverlay';
 
 const EditorScreen = ({
   navigation: { goBack },
@@ -20,9 +21,11 @@ const EditorScreen = ({
   const defaultContent = content ? content : '<p><br></p>';
   const editorContentRef = useRef(defaultContent);
   const [buttonDisable, setButtonDisable] = useState(true);
+  const [isProceedPressed, setIsProceedPressed] = useState(false);
 
-  const saveToCloud = async (str) => {
-    if (str === defaultContent) {
+  const saveToCloud = async (tags) => {
+    const editorContent = editorContentRef.current;
+    if (editorContent === defaultContent) {
       Toast.show({
         type: 'info',
         position: 'top',
@@ -40,12 +43,13 @@ const EditorScreen = ({
             .add({
               userID,
               userDisplayName,
-              content: str,
+              content: editorContent,
               upvotes: 0,
               view: 0,
               noOfAnswers: 0,
               deviceToken: setDeviceToken,
               createdAt: firestore.Timestamp.now(),
+              tags: tags,
               ...preferences,
             });
           Toast.show({
@@ -81,7 +85,8 @@ const EditorScreen = ({
             .collection('questions')
             .doc(questionId)
             .update({
-              content: str,
+              content: editorContent,
+              tags: tags,
               updatedAt: firestore.Timestamp.now(),
             })
             .then(() => {
@@ -121,7 +126,7 @@ const EditorScreen = ({
             .doc(questionId)
             .collection('answers')
             .add({
-              content: str,
+              content: editorContent,
               userDisplayName,
               userID,
               questionID: questionId,
@@ -163,7 +168,7 @@ const EditorScreen = ({
             .collection('answers')
             .doc(answerId)
             .update({
-              content: str,
+              content: editorContent,
               updatedAt: firestore.Timestamp.now(),
             });
           Toast.show({
@@ -216,15 +221,28 @@ const EditorScreen = ({
         }
         centerComponent={{ text: headerText, style: styles.headerText }}
         rightComponent={
-          // Submit Button
-          <Button
-            type="clear"
-            title="Submit"
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonText}
-            disabled={buttonDisable}
-            onPress={() => saveToCloud(editorContentRef.current)}
-          />
+          functionName === 'submitQuestion' ||
+          functionName === 'updateQuestion' ? (
+            // Proceed Button
+            <Button
+              type="clear"
+              title="Proceed"
+              buttonStyle={styles.button}
+              titleStyle={styles.buttonText}
+              disabled={buttonDisable}
+              onPress={() => setIsProceedPressed(true)}
+            />
+          ) : (
+            // Submit Button
+            <Button
+              type="clear"
+              title="Submit"
+              buttonStyle={styles.button}
+              titleStyle={styles.buttonText}
+              disabled={buttonDisable}
+              onPress={saveToCloud}
+            />
+          )
         }
         containerStyle={styles.header}
       />
@@ -232,6 +250,11 @@ const EditorScreen = ({
         contentRef={editorContentRef}
         setButtonDisable={setButtonDisable}
         buttonDisable={buttonDisable}
+      />
+      <EditorTagsOverlay
+        isVisible={isProceedPressed}
+        setIsVisible={setIsProceedPressed}
+        onSubmitPressed={saveToCloud}
       />
     </>
   );
