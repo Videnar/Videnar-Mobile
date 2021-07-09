@@ -1,0 +1,147 @@
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { BottomSheet, ListItem } from 'react-native-elements';
+import crashlytics from '@react-native-firebase/crashlytics';
+import Toast from 'react-native-toast-message';
+import firestore from '@react-native-firebase/firestore';
+import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
+
+const MoreOptionsQuestionBottomSheet = ({
+  popupVisible,
+  isPopupVisible,
+  questionId,
+  content,
+  navigate,
+  goBack,
+  route,
+}) => {
+  const LIST = [
+    // Edit Button
+    {
+      title: 'Edit',
+      titleStyle: styles.buttonText,
+      containerStyle: styles.buttonContainer,
+      onPress: () => editSelectedQuestion(),
+    },
+    // Delete Button
+    {
+      title: 'Delete',
+      titleStyle: styles.buttonText,
+      containerStyle: styles.buttonContainer,
+      onPress: () => deleteSelectedQuestion(),
+    },
+    // Cancel Button
+    {
+      title: 'Cancel',
+      containerStyle: styles.cancelContainer,
+      titleStyle: styles.cancelButton,
+      onPress: () => isPopupVisible(false),
+    },
+  ];
+
+  const editSelectedQuestion = () => {
+    isPopupVisible(false);
+    navigate('EditorScreen', {
+      content,
+      questionId: questionId,
+      functionName: 'updateQuestion',
+      headerText: 'Update Your Question',
+    });
+  };
+
+  const deleteSelectedQuestion = async () => {
+    try {
+      firestore()
+        .collection('questions')
+        .doc(questionId)
+        .delete()
+        .then(() => {
+          console.log('Question deleted!');
+        });
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Question deleted.',
+        text2: 'Shush 🤫',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 40,
+      });
+    } catch (err) {
+      console.log('error deleting Question:', err);
+      crashlytics().log(
+        'error deleting Question, deleteSelectedQuestion, QuestioMoreOverlayComponent',
+      );
+      crashlytics().recordError(err);
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Oops! Something went wrong.',
+        text2: 'Please, try again.😒',
+        visibilityTime: 1000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 40,
+      });
+    }
+    isPopupVisible(false);
+    route.name === 'QuestionDetails' && goBack();
+  };
+
+  return (
+    <BottomSheet
+      isVisible={popupVisible}
+      modalProps={{
+        animationType: 'slide',
+        onRequestClose: () => isPopupVisible(false),
+      }}
+      containerStyle={styles.container}>
+      {LIST.map((item, key) => (
+        <ListItem
+          key={key}
+          containerStyle={item.containerStyle}
+          onPress={item.onPress}>
+          <ListItem.Content>
+            <ListItem.Title style={item.titleStyle}>
+              {item.title}
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgba(0.5, 0.25, 0, 0.1)',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    letterSpacing: 1,
+    fontWeight: '700',
+    color: GREY,
+    alignSelf: 'center',
+    fontSize: 18,
+  },
+  iconStyle: {
+    top: 2,
+  },
+  cancelContainer: {
+    backgroundColor: WHITE,
+  },
+  cancelButton: {
+    color: ORANGE,
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    alignSelf: 'center',
+  },
+});
+
+export default React.memo(MoreOptionsQuestionBottomSheet);

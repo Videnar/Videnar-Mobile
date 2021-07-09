@@ -4,7 +4,7 @@ import { Card } from 'react-native-elements';
 import QuestionHeaderComponent from './QuestionHeaderComponent';
 import QuestionBodyComponent from './QuestionBodyComponent';
 import QuestionBottomComponent from './QuestionBottomComponent';
-import QuestionMoreOverlayComponent from './QuestionMoreOverLayComponent';
+import MoreOptionsQuestionBottomSheet from './MoreOptionsQuestionBottomSheet';
 import { WHITE } from '../assets/colors/colors';
 
 const QuestionComponent = ({
@@ -43,7 +43,7 @@ const QuestionComponent = ({
         />
       </Card>
       {/* Edit Delete actions */}
-      <QuestionMoreOverlayComponent
+      <MoreOptionsQuestionBottomSheet
         popupVisible={popupVisible}
         isPopupVisible={(event) => setPopupVisible(event)}
         questionId={questionId}

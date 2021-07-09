@@ -1,14 +1,38 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { Divider, Icon, Overlay, Text } from 'react-native-elements';
+import { BottomSheet, Icon, ListItem } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { navigate } from '../navigation/RootNavigation';
-import { GREY } from '../assets/colors/colors';
+import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
 
 const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
+
+  const LIST = [
+    // Edit Button
+    {
+      title: 'Edit',
+      titleStyle: styles.buttonText,
+      containerStyle: styles.buttonContainer,
+      onPress: () => onEditHandler(),
+    },
+    // Delete Button
+    {
+      title: 'Delete',
+      titleStyle: styles.buttonText,
+      containerStyle: styles.buttonContainer,
+      onPress: () => onDeleteHandler(),
+    },
+    // Cancel Button
+    {
+      title: 'Cancel',
+      containerStyle: styles.cancelContainer,
+      titleStyle: styles.cancelButton,
+      onPress: () => setMoreOptionVisible(false),
+    },
+  ];
 
   const onEditHandler = async () => {
     setMoreOptionVisible(false);
@@ -66,59 +90,58 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
         name="more-vert"
         onPress={() => setMoreOptionVisible(true)}
       />
-      <Overlay
+      <BottomSheet
         isVisible={moreOptionVisible}
-        onBackdropPress={() => {
-          setMoreOptionVisible(false);
+        modalProps={{
+          animationType: 'slide',
+          onRequestClose: () => setMoreOptionVisible(false),
         }}
-        overlayStyle={styles.overlay}
-        backdropStyle={styles.backdrop}>
-        {/** Edit */}
-        <Pressable onPress={onEditHandler} style={styles.button}>
-          <View>
-            <Text style={styles.optionText}>Edit</Text>
-          </View>
-          <View>
-            <Icon type="material" name="edit" color={GREY} />
-          </View>
-        </Pressable>
-        <Divider />
-        {/** Delete */}
-        <Pressable onPress={onDeleteHandler} style={styles.button}>
-          <View>
-            <Text style={styles.optionText}>Delete</Text>
-          </View>
-          <View>
-            <Icon type="material" name="delete" color={GREY} />
-          </View>
-        </Pressable>
-      </Overlay>
+        containerStyle={styles.container}>
+        {LIST.map((item, key) => (
+          <ListItem
+            key={key}
+            containerStyle={item.containerStyle}
+            onPress={item.onPress}>
+            <ListItem.Content>
+              <ListItem.Title style={item.titleStyle}>
+                {item.title}
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    borderRadius: 5,
-    elevation: 20,
+  container: {
+    backgroundColor: 'rgba(0.5, 0.25, 0, 0.1)',
   },
-  backdrop: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-  },
-  button: {
-    width: '45%',
-    margin: 5,
+  buttonContainer: {
     alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: '10%',
-    paddingVertical: 5,
+    backgroundColor: 'white',
+    alignSelf: 'center',
   },
-  optionText: {
+  buttonText: {
     letterSpacing: 1,
-    fontSize: 16,
     fontWeight: '700',
     color: GREY,
+    alignSelf: 'center',
+    fontSize: 18,
+  },
+  iconStyle: {
+    top: 2,
+  },
+  cancelContainer: {
+    backgroundColor: WHITE,
+  },
+  cancelButton: {
+    color: ORANGE,
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    alignSelf: 'center',
   },
 });
 
