@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { BottomSheet, Icon, ListItem } from 'react-native-elements';
+import { BottomSheet, ListItem } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { navigate } from '../navigation/RootNavigation';
 import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
+import MoreIcon from '../utilities/Icons/MoreIcon';
+import EditIcon from '../utilities/Icons/EditIcon';
+import DeleteIcon from '../utilities/Icons/DeleteIcon';
 
 const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
@@ -14,6 +17,7 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
     // Edit Button
     {
       title: 'Edit',
+      icon: <EditIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => onEditHandler(),
@@ -21,6 +25,7 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
     // Delete Button
     {
       title: 'Delete',
+      icon: <DeleteIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => onDeleteHandler(),
@@ -85,11 +90,9 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
 
   return (
     <>
-      <Icon
-        type="material"
-        name="more-vert"
-        onPress={() => setMoreOptionVisible(true)}
-      />
+      <TouchableOpacity onPress={() => setMoreOptionVisible(true)}>
+        <MoreIcon size={16} />
+      </TouchableOpacity>
       <BottomSheet
         isVisible={moreOptionVisible}
         modalProps={{
@@ -104,7 +107,7 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
             onPress={item.onPress}>
             <ListItem.Content>
               <ListItem.Title style={item.titleStyle}>
-                {item.title}
+                {item.title} {item.icon}
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>

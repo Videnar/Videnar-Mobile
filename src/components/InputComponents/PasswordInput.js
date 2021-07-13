@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import LockIcon from '../../utilities/Icons/LockIcon';
 
 const PasswordInput = ({ password, setPassword, hasError, setHasError }) => {
   const [pwdFocus, setPwdFocus] = useState(false);
@@ -19,7 +20,7 @@ const PasswordInput = ({ password, setPassword, hasError, setHasError }) => {
         <Input
           secureTextEntry={true}
           placeholder="password"
-          leftIcon={<Icon name="lock" size={24} color={GREY} />}
+          leftIcon={<LockIcon size={20} color={DEEP_GREEN} />}
           value={password}
           onChangeText={onEditPassword}
           autoCapitalize="none"
@@ -35,7 +36,7 @@ const PasswordInput = ({ password, setPassword, hasError, setHasError }) => {
         <Input
           secureTextEntry={true}
           placeholder="password"
-          leftIcon={<Icon name="lock" size={24} color={GREY} />}
+          leftIcon={<LockIcon size={20} color={DEEP_GREEN} />}
           value={password}
           onChangeText={setPassword}
           autoCapitalize="none"

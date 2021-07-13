@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Card, Divider, Icon, Text } from 'react-native-elements';
+import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
+import ProfileIcon from '../utilities/Icons/ProfileIcon';
 import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
@@ -33,7 +35,7 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
         }}>
         <View style={styles.header}>
           <View style={styles.user}>
-            <Icon name="person" type="material" color="grey" size={22} />
+            <ProfileIcon size={14} />
             <Text style={styles.userName}>{answer.userDisplayName}</Text>
           </View>
           {/** More Options component */}
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 14,
+    color: GREY,
     paddingHorizontal: 5,
     letterSpacing: 0.5,
   },

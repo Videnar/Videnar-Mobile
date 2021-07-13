@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-elements';
 import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
+import MoreIcon from '../utilities/Icons/MoreIcon';
+import ShareIcon from '../utilities/Icons/ShareIcon';
 
 const QuestionBottomComponent = ({
   questionerUId,
@@ -33,22 +35,16 @@ const QuestionBottomComponent = ({
       <View style={styles.upvoteContainer}>
         <Text style={styles.upvoteText}>Upvotes: {upVotes}</Text>
       </View>
-      <Icon
-        name="share"
-        type="material"
-        color={GREY}
-        size={20}
-        onPress={shareQuestionHandler}
-      />
+      <TouchableOpacity onPress={shareQuestionHandler}>
+        <ShareIcon size={22} />
+      </TouchableOpacity>
       {/** more options Edit/Delete */}
-      {questionerUId === userID && (
-        <Icon
-          name="more-vert"
-          type="material"
-          color={GREY}
-          size={22}
-          onPress={() => isPopupVisible(true)}
-        />
+      {questionerUId === userID ? (
+        <TouchableOpacity onPress={() => isPopupVisible(true)}>
+          <MoreIcon size={19} />
+        </TouchableOpacity>
+      ) : (
+        <View />
       )}
     </View>
   );

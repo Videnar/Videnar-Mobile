@@ -5,6 +5,7 @@ import {
   StyleSheet,
   StatusBar,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import { Icon, Button, Text } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -14,6 +15,7 @@ import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import Spacer from '../components/Spacer';
 import EmailInput from '../components/InputComponents/EmailInput';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -60,13 +62,9 @@ const SigninScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View style={styles.headerContainer}>
-        <Icon
-          type="material"
-          name="arrow-back"
-          containerStyle={styles.iconContainer}
-          onPress={() => navigation.goBack()}
-          size={30}
-        />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <BackArrowIcon size={22} />
+        </TouchableOpacity>
       </View>
       <ScrollView>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
@@ -112,6 +110,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     height: '7%',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
   iconContainer: {
     height: 30,

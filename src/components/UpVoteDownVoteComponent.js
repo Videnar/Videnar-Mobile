@@ -116,7 +116,7 @@ const UpVoteDownVoteComponent = ({
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.upVote}
             onPress={() => onVotePressHandler('upVote')}
             containerStyle={styles.upVote}
@@ -125,7 +125,7 @@ const UpVoteDownVoteComponent = ({
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.downVote}
             onPress={() => onVotePressHandler('downVote')}
             containerStyle={styles.downVote}
@@ -138,7 +138,7 @@ const UpVoteDownVoteComponent = ({
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.upVote}
             containerStyle={styles.upVote}
             onPress={disabledVoteHandler}
@@ -146,7 +146,7 @@ const UpVoteDownVoteComponent = ({
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.downVote}
             containerStyle={styles.downVote}
             onPress={disabledVoteHandler}
@@ -160,7 +160,7 @@ const UpVoteDownVoteComponent = ({
 const styles = StyleSheet.create({
   vote: {
     flexDirection: 'row',
-    width: 70,
+    width: 60,
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
@@ -180,9 +180,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upVotes: {
-    color: GREY,
+    color: 'black',
     letterSpacing: 1,
-    fontWeight: '700',
+    fontSize: 14,
   },
 });
 
