@@ -8,7 +8,7 @@ import {
   RefreshControl,
   Dimensions,
 } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import QuestionComponent from '../components/QuestionComponent';
@@ -18,22 +18,27 @@ import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
 import LoadingAnimation from '../components/UI/LoadingAnimation';
 import LoadingCircle from '../components/UI/LoadingCircle';
+import { GREY } from '../assets/colors/colors';
+import { getExamsString } from '../utilities/functions';
 
 const HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({ navigation }) => {
-  const { state } = useContext(Context);
+  const { changeScreen, state } = useContext(Context);
   const [questions, setQuestions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [lastDocument, setLastDocument] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMoreQuestionsLoading, setIsMoreQuestionsLoading] = useState(false);
+  const [examsListString, setExamsListString] = useState('');
 
   const route = useRoute();
 
   useEffect(() => {
+    const examsString = getExamsString(state.preferences.exams);
+    setExamsListString(examsString);
     fetchQuestions();
-  }, [fetchQuestions, state.exams, state.preferences]);
+  }, [fetchQuestions, state.preferences.exams]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -43,8 +48,7 @@ const HomeScreen = ({ navigation }) => {
     }, 1500);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     try {
       const snapShot = await firestore()
         .collection('questions')
@@ -74,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [state.preferences.exams]);
 
   const loadMoreQuestions = useCallback(async () => {
     setIsMoreQuestionsLoading(true);
@@ -153,8 +157,15 @@ const HomeScreen = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-        <View>
+        <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Videnar</Text>
+          <Text>{examsListString}</Text>
+          <Icon
+            name="filter"
+            type="fontisto"
+            iconStyle={styles.icon}
+            onPress={() => changeScreen('UserPref', 'Main')}
+          />
         </View>
         {loading ? (
           <LoadingAnimation autoplay={loading} />
@@ -182,12 +193,15 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
+  headerContainer: {
+    flexDirection: 'row',
+  },
   headerText: {
     color: DEEP_GREEN,
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 1.5,
-    paddingLeft: '5%',
+    letterSpacing: 0.5,
+    paddingLeft: '2%',
   },
   FlatList: { marginHorizontal: 2 },
   lastItem: {
@@ -222,6 +236,10 @@ const styles = StyleSheet.create({
   },
   loadingDots: {
     height: 50,
+  },
+  icon: {
+    paddingRight: 5,
+    color: GREY,
   },
 });
 

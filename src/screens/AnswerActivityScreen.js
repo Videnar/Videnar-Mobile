@@ -137,7 +137,7 @@ const ActivityScreen = ({ navigation }) => {
           <LoadingCircle height="130%" width="130%" />
         </>
       ) : (
-        <Text>You have reached the end 💀</Text>
+        <Text>You have reached the end 👻</Text>
       )}
     </View>
   );

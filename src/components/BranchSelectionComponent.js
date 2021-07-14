@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View, ScrollView } from 'react-native';
 import { Text, Overlay, ListItem, Header, Icon } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { Branches } from '../utilities/constants/education';
 
-const BranchSelectionComponent = ({ userPref }) => {
+const BranchSelectionComponent = ({ userPref, oldBranch }) => {
   const [showBranchOverlay, setShowBranchOverlay] = useState(false);
   const [selectText, setSelectText] = useState('Select');
+
+  useEffect(() => {
+    setSelectText(oldBranch);
+  }, [oldBranch]);
 
   const onPressHandler = (branch) => {
     setSelectText(branch);

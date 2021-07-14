@@ -4,7 +4,7 @@ import { Button, Icon, ListItem, Overlay, Text } from 'react-native-elements';
 import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { Context } from '../contexts';
 
-function EditorTagsOverlay({ isVisible, setIsVisible, onSubmitPressed }) {
+function EditorTagsOverlay({ isVisible, setIsVisible, onSubmit }) {
   const {
     state: {
       preferences: { exams },
@@ -58,7 +58,7 @@ function EditorTagsOverlay({ isVisible, setIsVisible, onSubmitPressed }) {
       visible={isVisible}
       onBackdropPress={() => setIsVisible(false)}
       overlayStyle={styles.overlay}>
-      <Text style={styles.headerText}>Select Exam tags</Text>
+      <Text style={styles.headerText}>Add Relevant Tags</Text>
       <View style={styles.scrollContainer}>
         <ScrollView>{renderItems}</ScrollView>
       </View>
@@ -67,7 +67,7 @@ function EditorTagsOverlay({ isVisible, setIsVisible, onSubmitPressed }) {
           title="Submit"
           buttonStyle={styles.submitButton}
           titleStyle={styles.titleText}
-          onPress={() => onSubmitPressed(tags)}
+          onPress={() => onSubmit(tags)}
         />
       </View>
     </Overlay>

@@ -254,7 +254,7 @@ const EditorScreen = ({
       <EditorTagsOverlay
         isVisible={isProceedPressed}
         setIsVisible={setIsProceedPressed}
-        onSubmitPressed={saveToCloud}
+        onSubmit={saveToCloud}
       />
     </>
   );

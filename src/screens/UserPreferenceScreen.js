@@ -13,10 +13,18 @@ const UserPreferenceScreen = () => {
   const {
     changeScreen,
     updateUserPreferences,
-    state: { previousScreen },
+    state: { previousScreen, preferences },
   } = useContext(Context);
-  const [userPref, setUserPref] = useState({});
+  const [userPref, setUserPref] = useState({
+    education: '',
+    branch: '',
+    exams: '',
+  });
   const [buttonEnable, setButtonEnable] = useState(false);
+
+  useEffect(() => {
+    setUserPref({ ...preferences });
+  }, [preferences]);
 
   // Populating UserPreference details from child components
   const updateUserPrefHandler = (pref) => {
@@ -83,11 +91,13 @@ const UserPreferenceScreen = () => {
         {/** Education level Selection */}
         <EducationSelectionComponent
           userPref={(input) => updateUserPrefHandler(input)}
+          education={userPref.education}
         />
         {/** Branch Selection conditional rendering based on B.Tech lavel */}
         {isBranchComponentVisible() ? (
           <BranchSelectionComponent
             userPref={(input) => updateUserPrefHandler(input)}
+            oldBranch={userPref.branch}
           />
         ) : (
           <></>
@@ -98,6 +108,7 @@ const UserPreferenceScreen = () => {
             userPref={(input) => updateUserPrefHandler(input)}
             education={userPref.education}
             branch={userPref.branch}
+            oldExams={userPref.exams}
             saveEnable={(input) => setButtonEnable(input)}
           />
         ) : (

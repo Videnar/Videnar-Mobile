@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Overlay, Header, ListItem, Icon } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
 
-const EducationSelectionComponent = ({ userPref }) => {
+const EducationSelectionComponent = ({ userPref, education }) => {
   const [showEduOverlay, setShowEduOverlay] = useState(false);
   const [selectText, setSelectText] = useState('Select');
 
-  const onPressHandler = (education) => {
+  useEffect(() => {
     setSelectText(education);
-    userPref({ education: education });
+  }, [education]);
+
+  const onPressHandler = (edu) => {
+    setSelectText(edu);
+    userPref({ education: edu });
     setShowEduOverlay(false);
   };
 

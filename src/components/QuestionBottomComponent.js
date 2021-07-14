@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
-import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
+import { shareQuestion } from '../utilities/functions';
 
 const QuestionBottomComponent = ({
   questionerUId,
@@ -15,19 +15,6 @@ const QuestionBottomComponent = ({
     state: { userID },
   } = useContext(Context);
 
-  const shareQuestionHandler = () => {
-    const options = {
-      message: `Can you answer this question on Videnar https://videnar.com/question?id=${questionId}`,
-    };
-    Share.open(options)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        err && console.log(err);
-      });
-  };
-
   return (
     <View style={styles.Options}>
       <View style={styles.upvoteContainer}>
@@ -38,7 +25,7 @@ const QuestionBottomComponent = ({
         type="material"
         color={GREY}
         size={20}
-        onPress={shareQuestionHandler}
+        onPress={() => shareQuestion(questionId)}
       />
       {/** more options Edit/Delete */}
       {questionerUId === userID && (
