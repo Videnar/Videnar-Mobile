@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { DEEP_GREEN } from '../assets/colors/colors';
 
 const ImagePickerOverlay = ({
   isOverlayVisible,
@@ -96,8 +97,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   button: {
-    backgroundColor: '#29BB89',
-    width: '60%',
+    backgroundColor: DEEP_GREEN,
+    width: '90%',
     alignSelf: 'center',
     alignContent: 'center',
     borderRadius: 10,

@@ -133,9 +133,9 @@ const SettingsOverlay = ({ visible, toggleVisible, navigation }) => {
             Danger!! If you delete your Account it can not be recovered.
           </Text>
           <Button
-            type="solid"
+            type="clear"
             title="Delete My Account"
-            buttonStyle={styles.dangerButton}
+            titleStyle={styles.buttonTitle}
             onPress={deleteAccount}
           />
         </View>
@@ -179,12 +179,8 @@ const styles = StyleSheet.create({
   deleteAccountContainer: {
     marginTop: '15%',
   },
-  dangerButton: {
-    alignSelf: 'center',
-    backgroundColor: ORANGE,
-    borderRadius: 10,
-    width: '80%',
-    marginVertical: '5%',
+  buttonTitle: {
+    color: ORANGE,
   },
   deleteText: {
     fontWeight: 'bold',

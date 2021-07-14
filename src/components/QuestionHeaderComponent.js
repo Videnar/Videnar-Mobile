@@ -1,14 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { GREY } from '../assets/colors/colors';
+import ProfileIcon from '../utilities/Icons/ProfileIcon';
+import MomentAgo from './MomentAgo';
 
-const QuestionHeaderComponent = ({ userDisplayName }) => {
+const QuestionHeaderComponent = ({ userDisplayName, createdAt }) => {
   return (
     <View style={styles.header}>
       <View style={styles.Profile}>
-        <Icon name="person" type="material" iconStyle={styles.image} />
+        <ProfileIcon size={15} />
         <Text style={styles.userName}>{userDisplayName}</Text>
+      </View>
+      <View>
+        <MomentAgo createdAt={createdAt} />
       </View>
     </View>
   );
@@ -20,19 +25,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 5,
+    paddingHorizontal: 5,
   },
   Profile: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  image: {
-    paddingRight: 5,
-    color: GREY,
-  },
   userName: {
+    paddingLeft: 5,
     letterSpacing: 1,
-    fontSize: 16,
+    fontSize: 14,
     color: GREY,
   },
 });

@@ -5,6 +5,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
 import firestore from '@react-native-firebase/firestore';
 import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
+import EditIcon from '../utilities/Icons/EditIcon';
+import DeleteIcon from '../utilities/Icons/DeleteIcon';
 
 const MoreOptionsQuestionBottomSheet = ({
   popupVisible,
@@ -19,6 +21,7 @@ const MoreOptionsQuestionBottomSheet = ({
     // Edit Button
     {
       title: 'Edit',
+      icon: <EditIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => editSelectedQuestion(),
@@ -26,6 +29,7 @@ const MoreOptionsQuestionBottomSheet = ({
     // Delete Button
     {
       title: 'Delete',
+      icon: <DeleteIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => deleteSelectedQuestion(),
@@ -104,7 +108,7 @@ const MoreOptionsQuestionBottomSheet = ({
           onPress={item.onPress}>
           <ListItem.Content>
             <ListItem.Title style={item.titleStyle}>
-              {item.title}
+              {item.title} {item.icon}
             </ListItem.Title>
           </ListItem.Content>
         </ListItem>

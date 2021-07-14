@@ -30,7 +30,7 @@ const EducationSelectionComponent = ({ userPref }) => {
         onPress={() => setShowEduOverlay(true)}
         style={styles.selector}>
         <Text style={styles.innerText}>{selectText}</Text>
-        <Icon name="arrow-drop-down" type="material" color={GREY} />
+        <Icon name="arrow-drop-down" type="material" color={DEEP_GREEN} />
       </Pressable>
       <Overlay
         isVisible={showEduOverlay}

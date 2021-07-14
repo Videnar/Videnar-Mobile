@@ -14,6 +14,10 @@ import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import HomeIcon from '../utilities/Icons/HomeIcon';
+import ActivityIcon from '../utilities/Icons/ActivityIcon';
+import SearchIcon from '../utilities/Icons/SearchIcon';
+import AvatarIcon from '../utilities/Icons/AvatarIcon';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,40 +51,46 @@ const MainTabs = () => (
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused }) => {
-        let iconName;
-        let fontsize;
-        let colorName;
-        let style;
-        const SELECTED_ICON_SIZE = 40;
-        const NOT_SELECTED_ICON_SIZE = 34;
+        let icon = null;
+        let activeColorName = DEEP_GREEN;
+        let defaultColorName = 'black';
+        const ICON_SIZE = 32;
         if (route.name === 'Home') {
-          iconName = 'home';
-          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
-          colorName = focused ? DEEP_GREEN : GREY;
+          icon = focused ? (
+            <HomeIcon size={ICON_SIZE} color={activeColorName} />
+          ) : (
+            <HomeIcon size={ICON_SIZE} color={defaultColorName} />
+          );
         } else if (route.name === 'Activity') {
-          iconName = 'done-all';
-          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
-          colorName = focused ? DEEP_GREEN : GREY;
+          icon = focused ? (
+            <ActivityIcon size={ICON_SIZE} color={activeColorName} />
+          ) : (
+            <ActivityIcon size={ICON_SIZE} color={defaultColorName} />
+          );
         } else if (route.name === 'Search') {
-          iconName = 'search';
-          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
-          colorName = focused ? DEEP_GREEN : GREY;
-          style = { transform: [{ rotateY: '180deg' }] };
+          icon = focused ? (
+            <SearchIcon size={ICON_SIZE} color={activeColorName} />
+          ) : (
+            <SearchIcon size={ICON_SIZE} color={defaultColorName} />
+          );
         } else {
-          iconName = 'person';
-          fontsize = focused ? SELECTED_ICON_SIZE : NOT_SELECTED_ICON_SIZE;
-          colorName = focused ? DEEP_GREEN : GREY;
+          icon = focused ? (
+            <AvatarIcon size={ICON_SIZE} color={activeColorName} />
+          ) : (
+            <AvatarIcon size={ICON_SIZE} color={defaultColorName} />
+          );
         }
 
         return (
-          <Icon
-            name={iconName}
-            type="material"
-            color={colorName}
-            size={fontsize}
-            iconStyle={style}
-            containerStyle={{ width: 45 }}
-          />
+          // <Icon
+          //   name={iconName}
+          //   type="material"
+          //   color={colorName}
+          //   size={fontsize}
+          //   iconStyle={style}
+          //   containerStyle={{ width: 45 }}
+          // />
+          <>{icon}</>
         );
       },
     })}>

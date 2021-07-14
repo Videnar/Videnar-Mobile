@@ -116,6 +116,8 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
         updateUpvote={(count) => updateUpvoteCountHandler(count)}
         addUpvoteData={(voteType) => addUpvoteData(voteType)}
       />
+      {/** Exam Tags Here */}
+      <View style={styles.tagsContainer}>{/* <Text>Tags</Text> */}</View>
     </View>
   );
 };
@@ -123,8 +125,11 @@ const QuestionDetailBottomComponent = ({ question, questionId }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 20,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    paddingLeft: '5%',
+  },
+  tagsContainer: {
+    width: '55%',
   },
 });
 

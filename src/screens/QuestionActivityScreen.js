@@ -128,6 +128,7 @@ const ActivityScreen = ({ navigation }) => {
       questionId={item.id}
       questionerUId={item.userID}
       upVotesCount={item.upvotes}
+      createdAt={item.createdAt}
       content={item.content}
       userDisplayName={item.userDisplayName}
       route={route}

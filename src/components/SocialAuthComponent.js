@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   container: {
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

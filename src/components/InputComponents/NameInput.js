@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import AvatarIcon from '../../utilities/Icons/AvatarIcon';
 
 const NameInput = ({ name, setName, hasError, setHasError }) => {
   const [nameFocus, setNameFocus] = useState(false);
@@ -18,7 +19,7 @@ const NameInput = ({ name, setName, hasError, setHasError }) => {
       {hasError ? (
         <Input
           placeholder="your name"
-          leftIcon={<Icon name="person" size={24} color={GREY} />}
+          leftIcon={<AvatarIcon size={20} color={DEEP_GREEN} />}
           value={name}
           onChangeText={onEditName}
           autoCapitalize="none"
@@ -33,7 +34,7 @@ const NameInput = ({ name, setName, hasError, setHasError }) => {
       ) : (
         <Input
           placeholder="your full name"
-          leftIcon={<Icon name="person" size={24} color={GREY} />}
+          leftIcon={<AvatarIcon size={20} color={DEEP_GREEN} />}
           value={name}
           onChangeText={setName}
           autoCapitalize="none"

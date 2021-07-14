@@ -4,9 +4,9 @@ import {
   FlatList,
   StyleSheet,
   View,
-  StatusBar,
+  TouchableOpacity,
 } from 'react-native';
-import { Card, FAB, Icon, Text } from 'react-native-elements';
+import { Card, FAB, Header, Text } from 'react-native-elements';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
@@ -14,8 +14,9 @@ import QuestionBodyComponent from '../components/QuestionBodyComponent';
 import QuestionDetailBottomComponent from '../components/QuestionDetailButtomComponent';
 import CommentsonQuestionComponent from '../components/CommentsonQuestionComponent';
 import AnswerComponent from '../components/AnswerComponent';
-import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
+import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
@@ -77,17 +78,15 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-      <View style={styles.headerContainer}>
-        <Icon
-          type="material"
-          name="arrow-back"
-          containerStyle={styles.iconContainer}
-          onPress={() => navigation.goBack()}
-          size={30}
-          color={GREY}
-        />
-      </View>
+      <Header
+        statusBarProps={{ backgroundColor: WHITE, barStyle: 'dark-content' }}
+        backgroundColor={WHITE}
+        leftComponent={
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackArrowIcon size={22} />
+          </TouchableOpacity>
+        }
+      />
       {loadingAnswers ? (
         <View style={styles.loadingContainer}>
           <DotsLottie text="Loading Answers 📚" />
@@ -100,6 +99,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
               <Card containerStyle={styles.card}>
                 <QuestionHeaderComponent
                   userDisplayName={question.userDisplayName}
+                  createdAt={question.createdAt}
                 />
                 <QuestionBodyComponent
                   content={question.content}
@@ -160,19 +160,13 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     height: '6%',
-  },
-  iconContainer: {
-    height: 30,
-    width: 30,
-    marginVertical: 2,
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
   card: {
     width: '100%',
     elevation: 2,
     marginHorizontal: 0,
-    marginVertical: 5,
-    padding: 10,
+    padding: '5%',
   },
   flatListContainer: {
     backgroundColor: WHITE,
@@ -194,7 +188,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: GREY,
+    color: DEEP_GREEN,
     marginVertical: 5,
     marginHorizontal: 10,
     letterSpacing: 1.2,
