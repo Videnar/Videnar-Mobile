@@ -166,8 +166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     elevation: 2,
     marginHorizontal: 0,
-    marginVertical: 5,
-    padding: 10,
+    padding: '5%',
   },
   flatListContainer: {
     backgroundColor: WHITE,

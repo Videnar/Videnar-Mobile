@@ -55,22 +55,6 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
         <Divider />
       </Pressable>
       <AnswerBottomComponent answer={answer} questionId={questionId} />
-      <View style={styles.bottomContainer}>
-        <CommentsonAnswerComponent
-          questionId={questionId}
-          answerId={answer.id}
-        />
-        {/** More Options component */}
-        {userID === answer.userID ? (
-          <AnswerMoreOptionComponent
-            answerId={answer.id}
-            answerContent={answer.content}
-            questionId={questionId}
-          />
-        ) : (
-          <></>
-        )}
-      </View>
     </Card>
   );
 };

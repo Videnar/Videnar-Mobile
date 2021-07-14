@@ -107,9 +107,6 @@ const UpVoteDownVoteComponent = ({
 
   return (
     <>
-      <View style={styles.upvoteContainer}>
-        <Text style={styles.upVotes}>Upvotes: {voteCountRef.current}</Text>
-      </View>
       {isVoteEditable ? (
         <View style={styles.vote}>
           {/**UpVote */}
@@ -121,6 +118,7 @@ const UpVoteDownVoteComponent = ({
             onPress={() => onVotePressHandler('upVote')}
             containerStyle={styles.upVote}
           />
+          <Text style={styles.upVotes}>{voteCountRef.current}</Text>
           {/**DownVote */}
           <Icon
             name="forward"
@@ -143,6 +141,7 @@ const UpVoteDownVoteComponent = ({
             containerStyle={styles.upVote}
             onPress={disabledVoteHandler}
           />
+          <Text style={styles.upVotes}>{voteCountRef.current}</Text>
           <Icon
             name="forward"
             type="material"
@@ -160,7 +159,7 @@ const UpVoteDownVoteComponent = ({
 const styles = StyleSheet.create({
   vote: {
     flexDirection: 'row',
-    width: 60,
+    width: 70,
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
