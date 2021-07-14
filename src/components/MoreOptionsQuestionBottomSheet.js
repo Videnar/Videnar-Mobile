@@ -12,25 +12,29 @@ const MoreOptionsQuestionBottomSheet = ({
   questionId,
   content,
   navigate,
+  noOfReports,
   goBack,
   route,
 }) => {
   const LIST = [
-    // Edit Button
     {
       title: 'Edit',
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => editSelectedQuestion(),
     },
-    // Delete Button
     {
       title: 'Delete',
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => deleteSelectedQuestion(),
     },
-    // Cancel Button
+    {
+      title: 'Report',
+      titleStyle: styles.buttonText,
+      containerStyle: styles.buttonContainer,
+      onPress: () => reportSelectedQuestion(),
+    },
     {
       title: 'Cancel',
       containerStyle: styles.cancelContainer,
@@ -87,6 +91,75 @@ const MoreOptionsQuestionBottomSheet = ({
     }
     isPopupVisible(false);
     route.name === 'QuestionDetails' && goBack();
+  };
+
+  const reportSelectedQuestion = async () => {
+    if (noOfReports > 5) {
+      try {
+        await firestore().collection('questions').doc(questionId).delete();
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Question is Repoted.',
+          text2: 'Thank you for reporting 🙂 ',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      } catch (err) {
+        crashlytics().log(
+          'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+        );
+        crashlytics().recordError(err);
+        console.log('error deleting answer:', err);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Opps! Something went wrong.',
+          text2: 'Please, try again 🤕',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      }
+    } else {
+      try {
+        await firestore()
+          .collection('questions')
+          .doc(questionId)
+          .update({
+            noOfReports: noOfReports + 1,
+          });
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Question is Repoted.',
+          text2: 'Thank you for reporting 🙂 ',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      } catch (err) {
+        crashlytics().log(
+          'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+        );
+        crashlytics().recordError(err);
+        console.log('error deleting answer:', err);
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Opps! Something went wrong.',
+          text2: 'Please, try again 🤕',
+          visibilityTime: 1000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 40,
+        });
+      }
+    }
   };
 
   return (

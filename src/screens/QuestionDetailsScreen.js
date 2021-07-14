@@ -122,6 +122,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
                 <CommentsonQuestionComponent
                   userName={userDisplayName}
                   userId={userID}
+                  noOfReports={question.noOfReports}
                   questionId={questionIdfromProps}
                 />
               </Card>

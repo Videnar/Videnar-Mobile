@@ -42,6 +42,7 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
               answerId={answer.id}
               answerContent={answer.content}
               questionId={questionId}
+              noOfReports={answer.noOfReports}
             />
           ) : (
             <></>
@@ -59,7 +60,11 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
         <Divider />
       </Pressable>
       <AnswerBottomComponent answer={answer} questionId={questionId} />
-      <CommentsonAnswerComponent questionId={questionId} answerId={answer.id} />
+      <CommentsonAnswerComponent
+        questionId={questionId}
+        answerId={answer.id}
+        noOfReports={answer.noOfReports}
+      />
     </Card>
   );
 };

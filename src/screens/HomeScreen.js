@@ -131,6 +131,7 @@ const HomeScreen = ({ navigation }) => {
         upVotesCount={item.upvotes}
         content={item.content}
         userDisplayName={item.userDisplayName}
+        noOfReports={item.noOfReports}
         route={route}
         navigation={navigation}
       />
