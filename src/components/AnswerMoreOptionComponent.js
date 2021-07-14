@@ -90,7 +90,9 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
 
   return (
     <>
-      <TouchableOpacity onPress={() => setMoreOptionVisible(true)}>
+      <TouchableOpacity
+        onPress={() => setMoreOptionVisible(true)}
+        style={styles.iconContainer}>
         <MoreIcon size={16} />
       </TouchableOpacity>
       <BottomSheet
@@ -118,6 +120,9 @@ const AnswerMoreOptionComponent = ({ answerId, questionId, answerContent }) => {
 };
 
 const styles = StyleSheet.create({
+  iconContainer: {
+    top: 20,
+  },
   container: {
     backgroundColor: 'rgba(0.5, 0.25, 0, 0.1)',
   },

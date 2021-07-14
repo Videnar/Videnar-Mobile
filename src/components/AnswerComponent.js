@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { Card, Divider, Icon, Text } from 'react-native-elements';
+import { Card, Divider, Text } from 'react-native-elements';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
 import ProfileIcon from '../utilities/Icons/ProfileIcon';
 import AnswerBottomComponent from './AnswerBottomComponent';
 import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 import CommentsonAnswerComponent from './CommentsonAnswerComponent';
+import MomentAgo from './MomentAgo';
 
 const AnswerComponent = ({ answer, questionId, route, navigation }) => {
   const {
@@ -38,16 +39,9 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
             <ProfileIcon size={14} />
             <Text style={styles.userName}>{answer.userDisplayName}</Text>
           </View>
-          {/** More Options component */}
-          {userID === answer.userID ? (
-            <AnswerMoreOptionComponent
-              answerId={answer.id}
-              answerContent={answer.content}
-              questionId={questionId}
-            />
-          ) : (
-            <></>
-          )}
+          <View>
+            <MomentAgo createdAt={answer.createdAt} />
+          </View>
         </View>
         {/**Answer Description */}
         <AutoHeightWebView
@@ -61,7 +55,22 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
         <Divider />
       </Pressable>
       <AnswerBottomComponent answer={answer} questionId={questionId} />
-      <CommentsonAnswerComponent questionId={questionId} answerId={answer.id} />
+      <View style={styles.bottomContainer}>
+        <CommentsonAnswerComponent
+          questionId={questionId}
+          answerId={answer.id}
+        />
+        {/** More Options component */}
+        {userID === answer.userID ? (
+          <AnswerMoreOptionComponent
+            answerId={answer.id}
+            answerContent={answer.content}
+            questionId={questionId}
+          />
+        ) : (
+          <></>
+        )}
+      </View>
     </Card>
   );
 };
@@ -69,7 +78,6 @@ const AnswerComponent = ({ answer, questionId, route, navigation }) => {
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: 0,
-    paddingHorizontal: 10,
     marginVertical: 5,
   },
   WebView: {
@@ -79,9 +87,10 @@ const styles = StyleSheet.create({
     width: '95%',
   },
   header: {
-    marginHorizontal: 5,
+    marginHorizontal: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   user: {
     flexDirection: 'row',
@@ -93,6 +102,11 @@ const styles = StyleSheet.create({
     color: GREY,
     paddingHorizontal: 5,
     letterSpacing: 0.5,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
 });
 

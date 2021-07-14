@@ -3,13 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { GREY } from '../assets/colors/colors';
 import ProfileIcon from '../utilities/Icons/ProfileIcon';
+import MomentAgo from './MomentAgo';
 
-const QuestionHeaderComponent = ({ userDisplayName }) => {
+const QuestionHeaderComponent = ({ userDisplayName, createdAt }) => {
   return (
     <View style={styles.header}>
       <View style={styles.Profile}>
         <ProfileIcon size={15} />
         <Text style={styles.userName}>{userDisplayName}</Text>
+      </View>
+      <View>
+        <MomentAgo createdAt={createdAt} />
       </View>
     </View>
   );

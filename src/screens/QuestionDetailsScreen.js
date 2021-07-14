@@ -99,6 +99,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
               <Card containerStyle={styles.card}>
                 <QuestionHeaderComponent
                   userDisplayName={question.userDisplayName}
+                  createdAt={question.createdAt}
                 />
                 <QuestionBodyComponent
                   content={question.content}

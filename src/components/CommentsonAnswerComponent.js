@@ -207,7 +207,6 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingLeft: 20,
     height: 20,
     marginTop: 20,
   },
