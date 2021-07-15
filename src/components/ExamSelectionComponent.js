@@ -90,7 +90,7 @@ const ExamSelectionComponent = ({
         onPress={() => setVisibleExamSelection(true)}
         style={styles.selector}>
         <Text style={styles.innerText}>{selectText}</Text>
-        <Icon name="library-add" type="material" color={GREY} />
+        <Icon name="library-add" type="material" color={DEEP_GREEN} />
       </Pressable>
       <Overlay
         isVisible={visibleExamSelection}

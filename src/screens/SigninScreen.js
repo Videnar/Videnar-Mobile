@@ -18,6 +18,7 @@ import { Text } from 'react-native-elements';
 import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import Toast from 'react-native-toast-message';
+import Spacer from '../components/Spacer';
 
 const SigninScreen = ({ navigation }) => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
@@ -79,18 +80,23 @@ const SigninScreen = ({ navigation }) => {
       <ScrollView>
         <View style={styles.logoContainer}>
           <Logo width={60} height={60} color={DEEP_GREEN} />
-          <Text style={styles.logoTextStyle}>Videnar</Text>
         </View>
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
         <AuthComponent
-          headerText="Sign In"
           // errorMessage={state.errorMessage}
           onSubmit={signIn}
           forgotPassword
           submitButtonText="Login"
         />
-        <NavLink text="Sign Up Here" routeName="Signup" />
+        {/** Social Buttons */}
         <SocialAuth />
+        {/** Navigation Links */}
+        <View style={styles.textContainer}>
+          <Spacer>
+            <Text>Don't have an account? </Text>
+            <NavLink text="Sign Up" routeName="Signup" />
+          </Spacer>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -113,14 +119,11 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignSelf: 'center',
+    marginBottom: '20%',
   },
-  logoTextStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    letterSpacing: 1,
-    color: DEEP_GREEN,
-    marginTop: 5,
+  textContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
 });
 

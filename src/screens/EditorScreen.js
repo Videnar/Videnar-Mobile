@@ -131,6 +131,7 @@ const EditorScreen = ({
               userID,
               questionID: questionId,
               upvotes: 0,
+              deviceToken: setDeviceToken,
               createdAt: firestore.Timestamp.now(),
             });
           Toast.show({

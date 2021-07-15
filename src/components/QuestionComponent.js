@@ -11,6 +11,7 @@ const QuestionComponent = ({
   questionId,
   questionerUId,
   upVotesCount,
+  createdAt,
   content,
   userDisplayName,
   noOfReports,
@@ -28,7 +29,10 @@ const QuestionComponent = ({
               navigate('QuestionDetails', { questionID: questionId });
           }}>
           {/* Header Section */}
-          <QuestionHeaderComponent userDisplayName={userDisplayName} />
+          <QuestionHeaderComponent
+            userDisplayName={userDisplayName}
+            createdAt={createdAt}
+          />
           {/* Question Asked */}
           <QuestionBodyComponent content={content} />
           {/* Interactivity Section */}

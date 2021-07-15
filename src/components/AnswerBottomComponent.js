@@ -10,6 +10,8 @@ import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import UpVoteDownVoteComponent from './UpVoteDownVoteComponent';
 import { Context } from '../contexts';
+import CommentsonAnswerComponent from './CommentsonAnswerComponent';
+import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
 
 const AnswerBottomComponent = ({ answer, questionId }) => {
   const {
@@ -156,11 +158,6 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
 
   return (
     <View style={styles.bottomContainer}>
-      {/** Answer Approval */}
-      {/* <View style={styles.feedBackContainer}>
-        <Icon type="material" name="history" size={16} />
-        <Text style={styles.feedBackText}>Pending</Text>
-      </View> */}
       <UpVoteDownVoteComponent
         upVotes={answer.upvotes}
         upVoteEditable={upVoteEditable}
@@ -168,6 +165,22 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         updateUpvote={(count) => updateUpvoteCountHandler(count)}
         addUpvoteData={(voteType) => addUpvoteData(voteType)}
       />
+      <CommentsonAnswerComponent
+        questionId={questionId}
+        answerId={answer.id}
+        noOfReports={answer.noOfReports}
+      />
+      {/** More Options component */}
+      {userID === answer.userID ? (
+        <AnswerMoreOptionComponent
+          answerId={answer.id}
+          answerContent={answer.content}
+          questionId={questionId}
+          noOfReports={answer.noOfReports}
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
@@ -176,16 +189,10 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    marginTop: 5,
-  },
-  feedBackContainer: {
-    flexDirection: 'row',
     alignContent: 'center',
-    alignItems: 'center',
-  },
-  feedBackText: {
-    paddingLeft: 3,
+    justifyContent: 'space-between',
+    paddingLeft: '5%',
+    marginTop: 15,
   },
 });
 

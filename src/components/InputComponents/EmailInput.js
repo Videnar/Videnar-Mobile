@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import MailIcon from '../../utilities/Icons/MailIcon';
 
 const EmailInput = ({ email, setEmail, hasError, setHasError }) => {
   const [emailFocus, setEmailFocus] = useState(false);
@@ -18,7 +19,7 @@ const EmailInput = ({ email, setEmail, hasError, setHasError }) => {
       {hasError ? (
         <Input
           placeholder="email@address.com"
-          leftIcon={<Icon name="email" size={24} color={GREY} />}
+          leftIcon={<MailIcon size={20} color={DEEP_GREEN} />}
           value={email}
           onChangeText={onEditMail}
           autoCapitalize="none"
@@ -33,7 +34,7 @@ const EmailInput = ({ email, setEmail, hasError, setHasError }) => {
       ) : (
         <Input
           placeholder="email@address.com"
-          leftIcon={<Icon name="email" size={24} color={GREY} />}
+          leftIcon={<MailIcon size={20} color={DEEP_GREEN} />}
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"

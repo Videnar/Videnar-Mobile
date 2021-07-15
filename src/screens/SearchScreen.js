@@ -13,9 +13,10 @@ import Toast from 'react-native-toast-message';
 import algoliasearch from 'algoliasearch/lite';
 import crashlytics from '@react-native-firebase/crashlytics';
 import FloatingAskQuestionButton from '../components/FloatingAskQuestionButton';
-import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
 import Algolia from '../utilities/Icons/Algolia';
 import SearchLottie from '../components/UI/SearchLottie';
+import SearchIcon from '../utilities/Icons/SearchIcon';
 
 const client = algoliasearch('57GDG0G124', 'fbf39f1bd5993e5e0c8fec4f3ba85e9a');
 const index = client.initIndex('questions');
@@ -113,12 +114,7 @@ const SearchScreen = ({ navigation }) => {
         />
         <Button
           type="clear"
-          icon={{
-            type: 'material',
-            name: 'search',
-            size: 32,
-            color: disabled ? 'grey' : DEEP_GREEN,
-          }}
+          icon={<SearchIcon size={35} color={disabled ? GREY : DEEP_GREEN} />}
           onPress={search}
           buttonStyle={styles.buttonStyle}
           disabled={disabled}

@@ -107,25 +107,23 @@ const UpVoteDownVoteComponent = ({
 
   return (
     <>
-      <View style={styles.upvoteContainer}>
-        <Text style={styles.upVotes}>Upvotes: {voteCountRef.current}</Text>
-      </View>
       {isVoteEditable ? (
         <View style={styles.vote}>
           {/**UpVote */}
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.upVote}
             onPress={() => onVotePressHandler('upVote')}
             containerStyle={styles.upVote}
           />
+          <Text style={styles.upVotes}>{voteCountRef.current}</Text>
           {/**DownVote */}
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.downVote}
             onPress={() => onVotePressHandler('downVote')}
             containerStyle={styles.downVote}
@@ -138,15 +136,16 @@ const UpVoteDownVoteComponent = ({
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.upVote}
             containerStyle={styles.upVote}
             onPress={disabledVoteHandler}
           />
+          <Text style={styles.upVotes}>{voteCountRef.current}</Text>
           <Icon
             name="forward"
             type="material"
-            size={28}
+            size={25}
             color={voteColor.downVote}
             containerStyle={styles.downVote}
             onPress={disabledVoteHandler}
@@ -180,9 +179,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upVotes: {
-    color: GREY,
+    color: 'black',
     letterSpacing: 1,
-    fontWeight: '700',
+    fontSize: 14,
   },
 });
 

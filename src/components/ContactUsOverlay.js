@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   insta: {
     width: 210,
     borderRadius: 30,
-    backgroundColor: '#E13EAD',
+    backgroundColor: '#FF3F6A',
   },
   twitter: {
     width: 210,

@@ -1,25 +1,22 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
-import Spacer from './Spacer';
+import { DEEP_GREEN } from '../assets/colors/colors.js';
 import * as RootNavigation from '../navigation/RootNavigation.js';
-import { GREY } from '../assets/colors/colors';
 
 const NavLink = ({ text, routeName }) => {
   return (
     <Pressable onPress={() => RootNavigation.navigate(routeName)}>
-      <Spacer>
-        <Text style={styles.link}>{text}</Text>
-      </Spacer>
+      <Text style={styles.link}>{text}</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   link: {
-    color: GREY,
-    fontSize: 19,
-    fontWeight: 'bold',
+    color: DEEP_GREEN,
+    fontSize: 16,
     textAlign: 'center',
+    letterSpacing: 0.5,
   },
 });
 

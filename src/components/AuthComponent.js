@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Spacer from './Spacer';
 import * as RootNavigation from '../navigation/RootNavigation';
 import { Button } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
@@ -65,13 +64,6 @@ const AuthForm = ({
 
   return (
     <View style={styles.container}>
-      <View>
-        <Spacer>
-          <Text h3 style={styles.headerText}>
-            {headerText}
-          </Text>
-        </Spacer>
-      </View>
       <View>
         {/** Name */}
         {nameInput ? (
@@ -138,10 +130,9 @@ const styles = StyleSheet.create({
   },
   forgetText: {
     fontSize: 15,
-    fontWeight: 'bold',
     textAlign: 'right',
     paddingRight: '4.5%',
-    color: 'grey',
+    color: GREY,
     letterSpacing: 0.5,
     marginBottom: 10,
   },

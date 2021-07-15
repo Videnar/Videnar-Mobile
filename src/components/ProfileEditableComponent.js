@@ -1,9 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { Icon, Text, Card } from 'react-native-elements';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, Card } from 'react-native-elements';
 import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
+import EditIcon from '../utilities/Icons/EditIcon';
+import InfoIcon from '../utilities/Icons/InfoIcon';
+import SettingIcon from '../utilities/Icons/SettingIcon';
+import ShareIcon from '../utilities/Icons/ShareIcon';
 import ContactUsOverlay from './ContactUsOverlay';
 import SettingsOverlay from './SettingsOverlay';
 
@@ -48,33 +52,31 @@ const ProfileEditableComponent = ({ navigation }) => {
   return (
     <>
       <Card containerStyle={styles.optionsCard}>
-        <View>
-          <TouchableOpacity
-            style={styles.cardItem}
-            onPress={onEditExamPreferences}>
-            <Icon name="edit" type="material" color={GREY} />
-            <Text style={styles.cardItemText}>Edit Exam Preference</Text>
-          </TouchableOpacity>
-          <Card.Divider style={styles.divider} />
-          <TouchableOpacity
-            onPress={() => setSettingsOverlay(true)}
-            style={styles.cardItem}>
-            <Icon name="settings" type="material" color={GREY} />
-            <Text style={styles.cardItemText}>Settings</Text>
-          </TouchableOpacity>
-          <Card.Divider style={styles.divider} />
-          <TouchableOpacity
-            onPress={contactSupportHandler}
-            style={styles.cardItem}>
-            <Icon type="material" name="info" color={GREY} />
-            <Text style={styles.cardItemText}>Contact Us</Text>
-          </TouchableOpacity>
-          <Card.Divider style={styles.divider} />
-          <TouchableOpacity onPress={shareAppHandler} style={styles.cardItem}>
-            <Icon type="material" name="share" color={GREY} />
-            <Text style={styles.cardItemText}>Invite Friends</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.cardItem}
+          onPress={onEditExamPreferences}>
+          <EditIcon size={30} />
+          <Text style={styles.cardItemText}>Edit Exam Preference</Text>
+        </TouchableOpacity>
+        <Card.Divider style={styles.divider} />
+        <TouchableOpacity
+          onPress={() => setSettingsOverlay(true)}
+          style={styles.cardItem}>
+          <SettingIcon size={30} />
+          <Text style={styles.cardItemText}>Settings</Text>
+        </TouchableOpacity>
+        <Card.Divider style={styles.divider} />
+        <TouchableOpacity
+          onPress={contactSupportHandler}
+          style={styles.cardItem}>
+          <InfoIcon size={28} />
+          <Text style={styles.cardItemText}>Contact Us</Text>
+        </TouchableOpacity>
+        <Card.Divider style={styles.divider} />
+        <TouchableOpacity onPress={shareAppHandler} style={styles.cardItem}>
+          <ShareIcon size={30} />
+          <Text style={styles.cardItemText}>Invite Friends</Text>
+        </TouchableOpacity>
       </Card>
       {/* Change Password */}
       <SettingsOverlay

@@ -12,6 +12,8 @@ import IndividualCommentComponent from './IndividualCommentComponent';
 import firestore from '@react-native-firebase/firestore';
 import { Context } from '../contexts';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import CommentIcon from '../utilities/Icons/CommentIcon';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
   const {
@@ -184,7 +186,7 @@ const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
       <TouchableOpacity
         style={styles.container}
         onPress={onOpenedCommentHandler}>
-        <Icon type="material" name="chat-bubble" color={GREY} />
+        <CommentIcon size={15} />
         <Text style={styles.text}>Comments</Text>
       </TouchableOpacity>
       {/**Comments Overlay */}
@@ -199,13 +201,9 @@ const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
               barStyle: 'dark-content',
             }}
             leftComponent={
-              <Icon
-                type="material"
-                name="arrow-back"
-                onPress={() => setIsCommentsVisible(false)}
-                color={GREY}
-                size={30}
-              />
+              <TouchableOpacity onPress={() => setIsCommentsVisible(false)}>
+                <BackArrowIcon size={22} />
+              </TouchableOpacity>
             }
             centerComponent={{
               text: 'Comments',
@@ -249,15 +247,13 @@ const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingLeft: 20,
-    height: 20,
-    marginTop: 20,
   },
   text: {
     fontWeight: 'bold',
     letterSpacing: 1,
     paddingLeft: 5,
     color: GREY,
+    bottom: 1,
   },
   headerText: {
     fontSize: 18,

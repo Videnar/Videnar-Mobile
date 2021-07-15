@@ -1,5 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, BackHandler, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  BackHandler,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -7,7 +12,8 @@ import BranchSelectionComponent from '../components/BranchSelectionComponent';
 import EducationSelectionComponent from '../components/EducationSelectionComponent';
 import ExamSelectionComponent from '../components/ExamSelectionComponent';
 import { Context } from '../contexts';
-import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import { DEEP_GREEN } from '../assets/colors/colors';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const UserPreferenceScreen = () => {
   const {
@@ -75,12 +81,12 @@ const UserPreferenceScreen = () => {
           barStyle: 'dark-content',
           backgroundColor: 'white',
         }}
-        leftComponent={{
-          icon: 'arrow-back',
-          onPress: () => changeScreen(previousScreen, 'UserPref'),
-          color: GREY,
-          size: 30,
-        }}
+        leftComponent={
+          <TouchableOpacity
+            onPress={() => changeScreen(previousScreen, 'UserPref')}>
+            <BackArrowIcon size={22} />
+          </TouchableOpacity>
+        }
         centerComponent={{
           text: 'Select Preferences',
           style: styles.headerText,
