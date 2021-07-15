@@ -8,7 +8,8 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { Card, FAB, Header, Text } from 'react-native-elements';
+import { Card, FAB, Header, Text, Icon } from 'react-native-elements';
+import { GREY } from '../assets/colors/colors';
 import { Context } from '../contexts';
 import firestore from '@react-native-firebase/firestore';
 import QuestionHeaderComponent from '../components/QuestionHeaderComponent';
