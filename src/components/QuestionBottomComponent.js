@@ -37,7 +37,7 @@ const QuestionBottomComponent = ({
           <Text style={styles.answerText}>0</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={shareQuestionHandler}>
+      <TouchableOpacity onPress={shareQuestion}>
         <ShareIcon size={22} />
       </TouchableOpacity>
       {/** more options Edit/Delete */}
