@@ -55,8 +55,11 @@ const MoreOptionsQuestionBottomSheet = ({
     },
   ];
 
+  // Deciding which options to show
   if (questionerUId !== userID) {
-    LIST = LIST.splice(2, 2);
+    LIST.splice(0, 2);
+  } else {
+    LIST.splice(2, 1);
   }
 
   const editSelectedQuestion = () => {
@@ -217,9 +220,6 @@ const styles = StyleSheet.create({
     color: GREY,
     alignSelf: 'center',
     fontSize: 18,
-  },
-  iconStyle: {
-    top: 2,
   },
   cancelContainer: {
     backgroundColor: WHITE,

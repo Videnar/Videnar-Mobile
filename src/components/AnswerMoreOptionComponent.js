@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { BottomSheet, ListItem } from 'react-native-elements';
@@ -10,16 +10,21 @@ import MoreIcon from '../utilities/Icons/MoreIcon';
 import EditIcon from '../utilities/Icons/EditIcon';
 import DeleteIcon from '../utilities/Icons/DeleteIcon';
 import ReportIcon from '../utilities/Icons/ReportIcon';
+import { Context } from '../contexts';
 
 const AnswerMoreOptionComponent = ({
   answerId,
   questionId,
+  answererId,
   noOfReports,
   answerContent,
 }) => {
+  const {
+    state: { userID },
+  } = useContext(Context);
   const [moreOptionVisible, setMoreOptionVisible] = useState(false);
 
-  const LIST = [
+  let LIST = [
     {
       title: 'Edit',
       icon: <EditIcon size={20} />,
@@ -48,6 +53,13 @@ const AnswerMoreOptionComponent = ({
       onPress: () => setMoreOptionVisible(false),
     },
   ];
+
+  // Deciding which options to show
+  if (answererId !== userID) {
+    LIST.splice(0, 2);
+  } else {
+    LIST.splice(2, 1);
+  }
 
   const onEditHandler = async () => {
     setMoreOptionVisible(false);
@@ -220,9 +232,6 @@ const styles = StyleSheet.create({
     color: GREY,
     alignSelf: 'center',
     fontSize: 18,
-  },
-  iconStyle: {
-    top: 2,
   },
   cancelContainer: {
     backgroundColor: WHITE,

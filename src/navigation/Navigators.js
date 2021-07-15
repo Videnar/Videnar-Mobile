@@ -2,7 +2,6 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import QuestionActivityScreen from '../screens/QuestionActivityScreen';
@@ -13,11 +12,12 @@ import EditorScreen from '../screens/EditorScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import { DEEP_GREEN, GREY } from '../assets/colors/colors';
+import { DEEP_GREEN, GREY, WHITE } from '../assets/colors/colors';
 import HomeIcon from '../utilities/Icons/HomeIcon';
 import ActivityIcon from '../utilities/Icons/ActivityIcon';
 import SearchIcon from '../utilities/Icons/SearchIcon';
 import AvatarIcon from '../utilities/Icons/AvatarIcon';
+import { Header } from 'react-native-elements';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -116,6 +116,15 @@ export const Auth = () => (
 
 export const ActivityTopTab = () => (
   <>
+    <Header
+      statusBarProps={{
+        barStyle: 'dark-content',
+        backgroundColor: WHITE,
+      }}
+      backgroundColor={WHITE}
+      // eslint-disable-next-line react-native/no-inline-styles
+      containerStyle={{ height: 10 }}
+    />
     <TopTab.Navigator
       initialRouteName="Questions"
       tabBarOptions={{

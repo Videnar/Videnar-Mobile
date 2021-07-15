@@ -3,9 +3,7 @@ import {
   FlatList,
   View,
   StyleSheet,
-  Dimensions,
   SafeAreaView,
-  StatusBar,
   RefreshControl,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -17,8 +15,6 @@ import { useRoute } from '@react-navigation/native';
 import { Context } from '../contexts';
 import DotsLottie from '../components/UI/DotsLottie';
 import LoadingCircle from '../components/UI/LoadingCircle';
-
-const HEIGHT = Dimensions.get('window').height;
 
 const ActivityScreen = ({ navigation }) => {
   const {
@@ -150,14 +146,13 @@ const ActivityScreen = ({ navigation }) => {
   );
 
   const getItemLayOut = (data, index) => ({
-    length: HEIGHT * 0.25,
+    length: 150,
     offset: 5 * index,
     index,
   });
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       {loadingQuestions ? (
         <View style={styles.loadingContainer}>
           <DotsLottie text="Loading Your questions 🦉" />

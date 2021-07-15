@@ -15,8 +15,8 @@ function ProfileDetails() {
   let firstHalfExams = [];
   let lastHalfExams = [];
   if (exams.length > 3) {
-    firstHalfExams = exams.slice(0, exams.length / 2);
-    lastHalfExams = exams.slice(exams.length / 2);
+    firstHalfExams = exams.slice(0, exams.length / 2 + 1);
+    lastHalfExams = exams.slice(exams.length / 2 + 1);
   } else {
     firstHalfExams = exams;
   }

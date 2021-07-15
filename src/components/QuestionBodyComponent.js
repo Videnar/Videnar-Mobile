@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { Text } from 'react-native-elements';
+import WebView from 'react-native-webview';
 import { GREY } from '../assets/colors/colors';
 
-const DEFAULT_HEIGHT = Dimensions.get('window').width * 0.1;
+const DEFAULT_HEIGHT = 100;
 
 const QuestionBodyComponent = ({ content, param }) => {
+  if (param !== 'questiondetails' && content.length > 140) {
+    content = content.slice(0, 140) + ' ...';
+  }
   // html contents to show
   const HTML_ELEMENT = `<head>
                           <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
@@ -20,56 +22,40 @@ const QuestionBodyComponent = ({ content, param }) => {
                             color: black" >
                           <div>${content}</div>
                         </body>`;
-  const [isMoreButtonVisible, setIsMoreButtonVisible] = useState(false);
-  const [isMoreClicked, setIsMoreClicked] = useState(false);
-
-  const updateAutoViewHeight = (height) => {
-    if (param !== 'questiondetails') {
-      if (height < DEFAULT_HEIGHT) {
-        setIsMoreButtonVisible(false);
-      } else if (height > DEFAULT_HEIGHT && isMoreClicked) {
-        setIsMoreButtonVisible(false);
-      } else {
-        setIsMoreButtonVisible(true);
-      }
-    } else {
-      setIsMoreClicked(true);
-    }
-  };
 
   return (
     <>
-      <AutoHeightWebView
-        originWhitelist={['*']}
-        onSizeUpdated={(size) => updateAutoViewHeight(size.height)}
-        source={{ html: HTML_ELEMENT }}
-        style={isMoreClicked ? styles.webViewAuto : styles.defaultWebView}
-      />
-      {/** see more button display as per content size */}
-      {isMoreButtonVisible ? (
-        <TouchableOpacity
-          onPress={() => setIsMoreClicked(true)}
-          style={styles.moreContainer}>
-          <Text style={styles.moreText}>... see more</Text>
-        </TouchableOpacity>
+      {param === 'questiondetails' ? (
+        <AutoHeightWebView
+          originWhitelist={['*']}
+          source={{ html: HTML_ELEMENT }}
+          style={styles.autoWebView}
+        />
       ) : (
-        <></>
+        <WebView
+          originWhitelist={['*']}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          source={{ html: HTML_ELEMENT }}
+          style={styles.webView}
+        />
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  defaultWebView: {
+  webView: {
     width: 'auto',
     height: DEFAULT_HEIGHT,
     marginVertical: 5,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
-  webViewAuto: {
+  autoWebView: {
     width: 'auto',
-    marginVertical: 5,
-    marginHorizontal: 10,
+    marginVertical: 20,
+    marginHorizontal: 5,
   },
   moreContainer: {
     flexDirection: 'row',

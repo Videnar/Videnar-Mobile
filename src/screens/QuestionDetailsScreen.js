@@ -94,6 +94,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
             <BackArrowIcon size={22} />
           </TouchableOpacity>
         }
+        containerStyle={styles.headerContainer}
       />
       {loadingAnswers ? (
         <View style={styles.loadingContainer}>
@@ -198,8 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
   },
   headerContainer: {
-    height: '6%',
-    paddingHorizontal: 10,
+    height: 60,
   },
   card: {
     width: '100%',

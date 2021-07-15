@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Button } from 'react-native-elements';
+import { Button, Header } from 'react-native-elements';
 import { Context } from '../contexts';
 import ProfileEditableComponent from '../components/ProfileEditableComponent';
 import { GREY, WHITE } from '../assets/colors/colors';
@@ -72,10 +72,16 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Header
+        statusBarProps={{
+          barStyle: 'dark-content',
+          backgroundColor: WHITE,
+        }}
+        backgroundColor={WHITE}
+      />
       <FlatList
         ListHeaderComponent={
           <>
-            <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
             <ProfileDetails />
             <ProfileEditableComponent navigation={navigation} />
             {/* SignOut Button */}
