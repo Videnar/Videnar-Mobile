@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -7,18 +7,25 @@ import firestore from '@react-native-firebase/firestore';
 import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
 import EditIcon from '../utilities/Icons/EditIcon';
 import DeleteIcon from '../utilities/Icons/DeleteIcon';
+import ReportIcon from '../utilities/Icons/ReportIcon';
+import { Context } from '../contexts';
 
 const MoreOptionsQuestionBottomSheet = ({
   popupVisible,
   isPopupVisible,
   questionId,
+  questionerUId,
   content,
   navigate,
   noOfReports,
   goBack,
   route,
 }) => {
-  const LIST = [
+  const {
+    state: { userID },
+  } = useContext(Context);
+
+  let LIST = [
     {
       title: 'Edit',
       icon: <EditIcon size={20} />,
@@ -35,6 +42,7 @@ const MoreOptionsQuestionBottomSheet = ({
     },
     {
       title: 'Report',
+      icon: <ReportIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => reportSelectedQuestion(),
@@ -46,6 +54,10 @@ const MoreOptionsQuestionBottomSheet = ({
       onPress: () => isPopupVisible(false),
     },
   ];
+
+  if (questionerUId !== userID) {
+    LIST = LIST.splice(2, 2);
+  }
 
   const editSelectedQuestion = () => {
     isPopupVisible(false);

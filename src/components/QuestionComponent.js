@@ -39,12 +39,12 @@ const QuestionComponent = ({
         </Pressable>
         <Card.Divider />
         <QuestionBottomComponent
-          questionerUId={questionerUId}
-          questionId={questionId}
           upVotes={upVotesCount}
           isPopupVisible={(event) => {
             setPopupVisible(event);
           }}
+          questionId={questionId}
+          navigate={navigate}
         />
       </Card>
       {/* Edit Delete actions */}
@@ -52,6 +52,7 @@ const QuestionComponent = ({
         popupVisible={popupVisible}
         isPopupVisible={(event) => setPopupVisible(event)}
         questionId={questionId}
+        questionerUId={questionerUId}
         content={content}
         navigate={navigate}
         noOfReports={noOfReports}

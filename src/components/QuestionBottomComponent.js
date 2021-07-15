@@ -1,28 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text } from 'react-native-elements';
 import { shareQuestion } from '../utilities/functions';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import Share from 'react-native-share';
-import { GREY } from '../assets/colors/colors';
-import { Context } from '../contexts';
-import AnswerIcon from '../utilities/Icons/AnswerIcon';
+import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import MoreIcon from '../utilities/Icons/MoreIcon';
 import ShareIcon from '../utilities/Icons/ShareIcon';
 
 const QuestionBottomComponent = ({
-  questionerUId,
-  questionId,
   upVotes,
   isPopupVisible,
+  questionId,
+  navigate,
 }) => {
-  const {
-    state: { userID },
-  } = useContext(Context);
+  const onAnswerClicked = () => {
+    navigate('EditorScreen', {
+      questionId: questionId,
+      functionName: 'submitAnswer',
+      headerText: 'Write an Answer',
+    });
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.noInteractionContainer}>
+      <View style={styles.leftContainer}>
         <View style={styles.upvoteContainer}>
           <Icon
             type="material"
@@ -32,22 +33,19 @@ const QuestionBottomComponent = ({
           />
           <Text style={styles.upvoteText}>{upVotes}</Text>
         </View>
-        <View style={styles.answerContainer}>
-          <AnswerIcon size={20} />
-          <Text style={styles.answerText}>0</Text>
-        </View>
+        <TouchableOpacity
+          onPress={onAnswerClicked}
+          style={styles.answerContainer}>
+          <Text style={styles.answerText}>Answer</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={shareQuestion}>
         <ShareIcon size={22} />
       </TouchableOpacity>
       {/** more options Edit/Delete */}
-      {questionerUId === userID ? (
-        <TouchableOpacity onPress={() => isPopupVisible(true)}>
-          <MoreIcon size={19} />
-        </TouchableOpacity>
-      ) : (
-        <View />
-      )}
+      <TouchableOpacity onPress={() => isPopupVisible(true)}>
+        <MoreIcon size={19} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -60,9 +58,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 15,
   },
-  noInteractionContainer: {
+  leftContainer: {
     flexDirection: 'row',
-    width: '35%',
+    width: '45%',
     justifyContent: 'space-between',
   },
   upvoteContainer: {
@@ -80,12 +78,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   answerContainer: {
-    width: 40,
+    width: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   answerText: {
-    color: GREY,
+    color: DEEP_GREEN,
     letterSpacing: 1,
     fontWeight: '700',
   },
