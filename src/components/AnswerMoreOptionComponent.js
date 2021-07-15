@@ -9,6 +9,7 @@ import { GREY, ORANGE, WHITE } from '../assets/colors/colors';
 import MoreIcon from '../utilities/Icons/MoreIcon';
 import EditIcon from '../utilities/Icons/EditIcon';
 import DeleteIcon from '../utilities/Icons/DeleteIcon';
+import ReportIcon from '../utilities/Icons/ReportIcon';
 
 const AnswerMoreOptionComponent = ({
   answerId,
@@ -35,6 +36,7 @@ const AnswerMoreOptionComponent = ({
     },
     {
       title: 'Report',
+      icon: <ReportIcon size={20} />,
       titleStyle: styles.buttonText,
       containerStyle: styles.buttonContainer,
       onPress: () => onReportHandler(),

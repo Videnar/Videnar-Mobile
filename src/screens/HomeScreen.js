@@ -7,8 +7,9 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import QuestionComponent from '../components/QuestionComponent';
@@ -20,6 +21,7 @@ import LoadingAnimation from '../components/UI/LoadingAnimation';
 import LoadingCircle from '../components/UI/LoadingCircle';
 import { GREY } from '../assets/colors/colors';
 import { getExamsString } from '../utilities/functions';
+import FilterIcon from '../utilities/Icons/FilterIcon';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -160,14 +162,15 @@ const HomeScreen = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Videnar</Text>
-          <Text>{examsListString}</Text>
-          <Icon
-            name="filter"
-            type="fontisto"
-            iconStyle={styles.icon}
-            onPress={() => changeScreen('UserPref', 'Main')}
-          />
+          <View>
+            <Text style={styles.headerText}>Videnar</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.filterContainer}
+            onPress={() => changeScreen('UserPref', 'Main')}>
+            <Text style={styles.filterText}>{examsListString}</Text>
+            <FilterIcon size={18} />
+          </TouchableOpacity>
         </View>
         {loading ? (
           <LoadingAnimation autoplay={loading} />
@@ -197,6 +200,15 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
   headerContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: '3%',
+  },
+  filterContainer: {
+    flexDirection: 'row',
+  },
+  filterText: {
+    fontWeight: 'bold',
+    color: GREY,
   },
   headerText: {
     color: DEEP_GREEN,
