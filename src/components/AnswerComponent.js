@@ -1,20 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Card, Divider, Text } from 'react-native-elements';
 import { GREY } from '../assets/colors/colors';
-import { Context } from '../contexts';
 import ProfileIcon from '../utilities/Icons/ProfileIcon';
 import AnswerBottomComponent from './AnswerBottomComponent';
-import AnswerMoreOptionComponent from './AnswerMoreOptionComponent';
-import CommentsonAnswerComponent from './CommentsonAnswerComponent';
 import MomentAgo from './MomentAgo';
 
 const AnswerComponent = ({ answer, questionId, route, navigation }) => {
-  const {
-    state: { userID },
-  } = useContext(Context);
-
   const ANSWER_HTML_ELEMENT = `<head>
                                 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
                               </head>
