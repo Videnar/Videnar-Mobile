@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-elements';
+import { shareQuestion } from '../utilities/functions';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Share from 'react-native-share';
 import { GREY } from '../assets/colors/colors';
@@ -18,19 +19,6 @@ const QuestionBottomComponent = ({
   const {
     state: { userID },
   } = useContext(Context);
-
-  const shareQuestionHandler = () => {
-    const options = {
-      message: `Can you answer this question on Videnar https://videnar.com/question?id=${questionId}`,
-    };
-    Share.open(options)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        err && console.log(err);
-      });
-  };
 
   return (
     <View style={styles.container}>

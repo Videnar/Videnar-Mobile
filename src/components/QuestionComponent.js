@@ -14,6 +14,7 @@ const QuestionComponent = ({
   createdAt,
   content,
   userDisplayName,
+  noOfReports,
   route,
   navigation: { navigate, goBack },
 }) => {
@@ -53,6 +54,7 @@ const QuestionComponent = ({
         questionId={questionId}
         content={content}
         navigate={navigate}
+        noOfReports={noOfReports}
         goBack={goBack}
         route={route}
       />

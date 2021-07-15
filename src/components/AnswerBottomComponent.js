@@ -165,13 +165,18 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         updateUpvote={(count) => updateUpvoteCountHandler(count)}
         addUpvoteData={(voteType) => addUpvoteData(voteType)}
       />
-      <CommentsonAnswerComponent questionId={questionId} answerId={answer.id} />
+      <CommentsonAnswerComponent
+        questionId={questionId}
+        answerId={answer.id}
+        noOfReports={answer.noOfReports}
+      />
       {/** More Options component */}
       {userID === answer.userID ? (
         <AnswerMoreOptionComponent
           answerId={answer.id}
           answerContent={answer.content}
           questionId={questionId}
+          noOfReports={answer.noOfReports}
         />
       ) : (
         <></>

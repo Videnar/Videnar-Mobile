@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   SafeAreaView,
   FlatList,
+  Modal,
+  Pressable,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -16,6 +18,7 @@ import CommentsonQuestionComponent from '../components/CommentsonQuestionCompone
 import AnswerComponent from '../components/AnswerComponent';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
+import { shareQuestion } from '../utilities/functions';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
@@ -27,6 +30,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchQuestion = firestore()
@@ -57,8 +61,11 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
               id: documentSnapshot.id,
             });
           });
-        setAnswers(ans);
+        ans.length > 0 ? setAnswers(ans) : setModalVisible(true);
         setLoadingAnswers(false);
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 10000);
       });
     return () => {
       fetchAnswers();
@@ -115,6 +122,7 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
                 <CommentsonQuestionComponent
                   userName={userDisplayName}
                   userId={userID}
+                  noOfReports={question.noOfReports}
                   questionId={questionIdfromProps}
                 />
               </Card>
@@ -137,6 +145,36 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
           style={styles.flatListContainer}
         />
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Know someone who can answer? Share this question via facebook,
+              text or email.
+            </Text>
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(false)}>
+                <Icon name="close" type="material" color={GREY} size={20} />
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+              <Pressable
+                style={styles.shareButton}
+                onPress={() => shareQuestion(questionIdfromProps)}>
+                <Icon name="share" type="material" color={GREY} size={20} />
+                <Text style={styles.textStyle}>Share</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <FAB
         title="Answer 🎯"
         placement="right"
@@ -198,6 +236,50 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     paddingVertical: 30,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  shareButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: DEEP_GREEN,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 

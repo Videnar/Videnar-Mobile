@@ -15,7 +15,7 @@ import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import CommentIcon from '../utilities/Icons/CommentIcon';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
-const CommentsonAnswerComponent = ({ questionId, answerId }) => {
+const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
   const {
     state: { userDisplayName, userID },
   } = useContext(Context);
@@ -123,6 +123,46 @@ const CommentsonAnswerComponent = ({ questionId, answerId }) => {
           .collection('comments')
           .doc(id)
           .delete();
+        break;
+      }
+      case 'Report': {
+        if (noOfReports > 5) {
+          try {
+            await firestore()
+              .collection('questions')
+              .doc(questionId)
+              .collection('answers')
+              .doc(answerId)
+              .collection('comments')
+              .doc(id)
+              .delete();
+          } catch (err) {
+            crashlytics().log(
+              'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+            );
+            crashlytics().recordError(err);
+            console.log('error deleting answer:', err);
+          }
+        } else {
+          try {
+            await firestore()
+              .collection('questions')
+              .doc(questionId)
+              .collection('answers')
+              .doc(answerId)
+              .collection('comments')
+              .doc(id)
+              .update({
+                noOfReports: noOfReports + 1,
+              });
+          } catch (err) {
+            crashlytics().log(
+              'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+            );
+            crashlytics().recordError(err);
+            console.log('error deleting answer:', err);
+          }
+        }
         break;
       }
       default:

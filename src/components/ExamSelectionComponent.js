@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, ScrollView, View } from 'react-native';
 import {
   Overlay,
@@ -10,16 +10,23 @@ import {
 } from 'react-native-elements';
 import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
+import { getExamsString } from '../utilities/functions';
 
 const ExamSelectionComponent = ({
   userPref,
   education,
   branch,
+  oldExams,
   saveEnable,
 }) => {
   const [visibleExamSelection, setVisibleExamSelection] = useState('false');
   const [exams, setExams] = useState([]);
   const [selectText, setSelectText] = useState('Select');
+
+  useEffect(() => {
+    const examsString = getExamsString(oldExams);
+    setSelectText(examsString);
+  }, [oldExams]);
 
   const allExams = educations.filter((item) => item.level === education)[0]
     .exams;
@@ -38,32 +45,8 @@ const ExamSelectionComponent = ({
   const continueHandler = () => {
     exams.length > 0 ? saveEnable(true) : saveEnable(false);
     userPref({ exams: exams });
-    let populateExam = '';
-    exams.forEach((exam) => {
-      if (exam.match('GATE')) {
-        exam = 'GATE';
-      }
-      if (exam.match('IES')) {
-        exam = 'IES';
-      }
-      populateExam = populateExam.concat(exam + ', ');
-    });
-    if (populateExam.length > 20) {
-      populateExam = populateExam.substring(0, 19);
-      populateExam = populateExam.concat('...');
-    } else if (populateExam.length === 0) {
-      populateExam = 'Select';
-    } else {
-      populateExam = populateExam
-        .split('')
-        .reverse()
-        .join('')
-        .replace(',', '')
-        .split('')
-        .reverse()
-        .join('');
-    }
-    setSelectText(populateExam);
+    const examsString = getExamsString(exams);
+    setSelectText(examsString);
 
     setVisibleExamSelection(false);
   };

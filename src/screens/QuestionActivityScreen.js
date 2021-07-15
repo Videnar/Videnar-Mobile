@@ -131,6 +131,7 @@ const ActivityScreen = ({ navigation }) => {
       createdAt={item.createdAt}
       content={item.content}
       userDisplayName={item.userDisplayName}
+      noOfReports={item.noOfReports}
       route={route}
       navigation={navigation}
     />

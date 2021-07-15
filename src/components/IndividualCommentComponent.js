@@ -22,6 +22,11 @@ const IndividualCommentComponent = ({ comment, feedBack }) => {
     feedBack(comment.id, 'Delete');
   };
 
+  const onReportHandler = () => {
+    setIsVisible(false);
+    feedBack(comment.id, 'Report');
+  };
+
   return (
     <>
       {/** User Detail */}
@@ -54,6 +59,15 @@ const IndividualCommentComponent = ({ comment, feedBack }) => {
           </View>
           <View>
             <Icon type="material" name="delete" color={GREY} />
+          </View>
+        </Pressable>
+        <Divider />
+        <Pressable onPress={onReportHandler} style={styles.button}>
+          <View>
+            <Text style={styles.optionText}>Report</Text>
+          </View>
+          <View>
+            <Icon type="material" name="report" color={GREY} />
           </View>
         </Pressable>
       </Overlay>

@@ -14,7 +14,12 @@ import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import CommentIcon from '../utilities/Icons/CommentIcon';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
-const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
+const CommentsonQuestionComponent = ({
+  userName,
+  userId,
+  questionId,
+  noOfReports,
+}) => {
   // OverLay Visible?
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 
@@ -109,6 +114,42 @@ const CommentsonQuestionComponent = ({ userName, userId, questionId }) => {
           .collection('comments')
           .doc(id)
           .delete();
+        break;
+      }
+      case 'Report': {
+        if (noOfReports > 5) {
+          try {
+            await firestore()
+              .collection('questions')
+              .doc(questionId)
+              .collection('comments')
+              .doc(id)
+              .delete();
+          } catch (err) {
+            crashlytics().log(
+              'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+            );
+            crashlytics().recordError(err);
+            console.log('error deleting answer:', err);
+          }
+        } else {
+          try {
+            await firestore()
+              .collection('questions')
+              .doc(questionId)
+              .collection('comments')
+              .doc(id)
+              .update({
+                noOfReports: noOfReports + 1,
+              });
+          } catch (err) {
+            crashlytics().log(
+              'error deleting answer, onDeleteHandler, AnswerMoreOptionsComponent',
+            );
+            crashlytics().recordError(err);
+            console.log('error deleting answer:', err);
+          }
+        }
         break;
       }
       default:
