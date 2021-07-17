@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  StatusBar,
   RefreshControl,
 } from 'react-native';
 import { Text } from 'react-native-elements';
@@ -144,7 +143,6 @@ const ActivityScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
       {loadingAnswers ? (
         <View style={styles.loadingContainer}>
           <DotsLottie text="Loading your answers 📝" />

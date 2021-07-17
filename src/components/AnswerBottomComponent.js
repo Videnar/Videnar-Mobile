@@ -171,16 +171,13 @@ const AnswerBottomComponent = ({ answer, questionId }) => {
         noOfReports={answer.noOfReports}
       />
       {/** More Options component */}
-      {userID === answer.userID ? (
-        <AnswerMoreOptionComponent
-          answerId={answer.id}
-          answerContent={answer.content}
-          questionId={questionId}
-          noOfReports={answer.noOfReports}
-        />
-      ) : (
-        <></>
-      )}
+      <AnswerMoreOptionComponent
+        answerId={answer.id}
+        answerContent={answer.content}
+        questionId={questionId}
+        answererId={answer.userID}
+        noOfReports={answer.noOfReports}
+      />
     </View>
   );
 };

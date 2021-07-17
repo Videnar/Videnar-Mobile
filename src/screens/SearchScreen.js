@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, SearchBar } from 'react-native-elements';
+import { Button, Header, SearchBar } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import {
   SafeAreaView,
@@ -7,7 +7,6 @@ import {
   Pressable,
   StyleSheet,
   FlatList,
-  StatusBar,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import algoliasearch from 'algoliasearch/lite';
@@ -98,7 +97,10 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+      <Header
+        statusBarProps={{ barStyle: 'dark-content', backgroundColor: WHITE }}
+        backgroundColor={WHITE}
+      />
       <View style={styles.searchContainer}>
         <SearchBar
           placeholder="Search here ..."

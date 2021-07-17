@@ -23,17 +23,17 @@ const QuestionComponent = ({
   return (
     <>
       <Card containerStyle={styles.Card}>
+        {/* Header Section */}
+        <QuestionHeaderComponent
+          userDisplayName={userDisplayName}
+          createdAt={createdAt}
+        />
+        {/* Question Asked */}
         <Pressable
           onPress={() => {
             route.name !== 'QuestionDetails' &&
               navigate('QuestionDetails', { questionID: questionId });
           }}>
-          {/* Header Section */}
-          <QuestionHeaderComponent
-            userDisplayName={userDisplayName}
-            createdAt={createdAt}
-          />
-          {/* Question Asked */}
           <QuestionBodyComponent content={content} />
           {/* Interactivity Section */}
         </Pressable>

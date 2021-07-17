@@ -2,14 +2,12 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   SafeAreaView,
   View,
-  StatusBar,
   StyleSheet,
   FlatList,
   RefreshControl,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Header, Text } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import QuestionComponent from '../components/QuestionComponent';
@@ -22,8 +20,6 @@ import LoadingCircle from '../components/UI/LoadingCircle';
 import { GREY } from '../assets/colors/colors';
 import { getExamsString } from '../utilities/functions';
 import FilterIcon from '../utilities/Icons/FilterIcon';
-
-const HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({ navigation }) => {
   const { changeScreen, state } = useContext(Context);
@@ -142,7 +138,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const getItemLayOut = (data, index) => ({
-    length: HEIGHT * 0.25,
+    length: 150,
     offset: 5 * index,
     index,
   });
@@ -160,18 +156,24 @@ const HomeScreen = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-        <View style={styles.headerContainer}>
-          <View>
-            <Text style={styles.headerText}>Videnar</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.filterContainer}
-            onPress={() => changeScreen('UserPref', 'Main')}>
-            <Text style={styles.filterText}>{examsListString}</Text>
-            <FilterIcon size={18} />
-          </TouchableOpacity>
-        </View>
+        <Header
+          statusBarProps={{ barStyle: 'dark-content', backgroundColor: WHITE }}
+          leftComponent={
+            <View>
+              <Text style={styles.headerText}>Videnar</Text>
+            </View>
+          }
+          placement="right"
+          centerComponent={
+            <TouchableOpacity
+              style={styles.filterContainer}
+              onPress={() => changeScreen('UserPref', 'Main')}>
+              <Text style={styles.filterText}>{examsListString}</Text>
+              <FilterIcon size={18} />
+            </TouchableOpacity>
+          }
+          backgroundColor={WHITE}
+        />
         {loading ? (
           <LoadingAnimation autoplay={loading} />
         ) : (
@@ -198,13 +200,9 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: '3%',
-  },
   filterContainer: {
     flexDirection: 'row',
+    marginTop: 4,
   },
   filterText: {
     fontWeight: 'bold',
@@ -212,7 +210,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: DEEP_GREEN,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: 0.5,
     paddingLeft: '2%',
