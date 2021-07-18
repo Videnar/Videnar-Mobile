@@ -17,6 +17,7 @@ import AnswerComponent from '../components/AnswerComponent';
 import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
+import ShareIcon from '../utilities/Icons/ShareIcon';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
@@ -85,6 +86,11 @@ const QuestionDetailsScreen = ({ navigation, route }) => {
         leftComponent={
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackArrowIcon size={22} />
+          </TouchableOpacity>
+        }
+        rightComponent={
+          <TouchableOpacity onPress={() => shareQuestion(questionIdfromProps)}>
+            <ShareIcon size={22} />
           </TouchableOpacity>
         }
         containerStyle={styles.headerContainer}
