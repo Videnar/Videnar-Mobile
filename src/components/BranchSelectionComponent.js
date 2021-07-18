@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View, ScrollView } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Text, Overlay, ListItem, Header, Icon } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { Branches } from '../utilities/constants/education';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const BranchSelectionComponent = ({ userPref, oldBranch }) => {
   const [showBranchOverlay, setShowBranchOverlay] = useState(false);
@@ -45,12 +52,11 @@ const BranchSelectionComponent = ({ userPref, oldBranch }) => {
             barStyle: 'dark-content',
             backgroundColor: 'white',
           }}
-          leftComponent={{
-            icon: 'arrow-back',
-            onPress: () => setShowBranchOverlay(false),
-            color: GREY,
-            size: 30,
-          }}
+          leftComponent={
+            <TouchableOpacity onPress={() => setShowBranchOverlay(false)}>
+              <BackArrowIcon size={22} />
+            </TouchableOpacity>
+          }
           centerComponent={{
             text: 'Select Your Branch',
             style: styles.headerText,
