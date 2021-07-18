@@ -1,13 +1,14 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import { Context } from '../contexts';
 import Editor from '../components/Editor';
-import { Button, Header, Icon } from 'react-native-elements';
+import { Button, Header } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import EditorTagsOverlay from '../components/EditorTagsOverlay';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const EditorScreen = ({
   navigation: { goBack },
@@ -212,13 +213,9 @@ const EditorScreen = ({
           barStyle: 'dark-content',
         }}
         leftComponent={
-          <Icon
-            name="arrow-back"
-            type="material"
-            onPress={goBack}
-            color={GREY}
-            size={30}
-          />
+          <TouchableOpacity onPress={goBack}>
+            <BackArrowIcon size={22} />
+          </TouchableOpacity>
         }
         centerComponent={{ text: headerText, style: styles.headerText }}
         rightComponent={
