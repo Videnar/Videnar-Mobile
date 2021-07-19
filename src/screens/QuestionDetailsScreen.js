@@ -18,6 +18,7 @@ import { DEEP_GREEN, WHITE } from '../assets/colors/colors';
 import DotsLottie from '../components/UI/DotsLottie';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 import ShareIcon from '../utilities/Icons/ShareIcon';
+import { shareQuestion } from '../utilities/functions';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;

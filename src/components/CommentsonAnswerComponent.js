@@ -126,7 +126,7 @@ const CommentsonAnswerComponent = ({ questionId, answerId, noOfReports }) => {
         break;
       }
       case 'Report': {
-        if (noOfReports > 5) {
+        if (noOfReports > 10) {
           try {
             await firestore()
               .collection('questions')
