@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Icon, Input } from 'react-native-elements';
-import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../../assets/colors/colors';
+import { Input } from 'react-native-elements';
+import { DEEP_GREEN, LIGHT_GREEN } from '../../assets/colors/colors';
 import AvatarIcon from '../../utilities/Icons/AvatarIcon';
 
 const NameInput = ({ name, setName, hasError, setHasError }) => {

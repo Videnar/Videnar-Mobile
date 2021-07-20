@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import { Icon, Button, Text } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, StatusBar, FlatList, View } from 'react-native';
+import { StyleSheet, FlatList, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
