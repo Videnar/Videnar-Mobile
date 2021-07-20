@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Text, Overlay, Header, ListItem, Icon } from 'react-native-elements';
 import { DEEP_GREEN, GREY } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const EducationSelectionComponent = ({ userPref, education }) => {
   const [showEduOverlay, setShowEduOverlay] = useState(false);
@@ -44,12 +51,11 @@ const EducationSelectionComponent = ({ userPref, education }) => {
             barStyle: 'dark-content',
             backgroundColor: 'white',
           }}
-          leftComponent={{
-            icon: 'arrow-back',
-            onPress: () => setShowEduOverlay(false),
-            color: GREY,
-            size: 30,
-          }}
+          leftComponent={
+            <TouchableOpacity onPress={() => setShowEduOverlay(false)}>
+              <BackArrowIcon size={22} />
+            </TouchableOpacity>
+          }
           centerComponent={{
             text: 'Select Your Education',
             style: styles.headerText,

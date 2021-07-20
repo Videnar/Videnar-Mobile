@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, ScrollView, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {
   Overlay,
   Button,
@@ -11,6 +17,7 @@ import {
 import { DEEP_GREEN, GREY, LIGHT_GREEN } from '../assets/colors/colors';
 import { educations } from '../utilities/constants/education';
 import { getExamsString } from '../utilities/functions';
+import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 
 const ExamSelectionComponent = ({
   userPref,
@@ -100,12 +107,11 @@ const ExamSelectionComponent = ({
             barStyle: 'dark-content',
             backgroundColor: 'white',
           }}
-          leftComponent={{
-            icon: 'arrow-back',
-            onPress: continueHandler,
-            color: GREY,
-            size: 30,
-          }}
+          leftComponent={
+            <TouchableOpacity onPress={continueHandler}>
+              <BackArrowIcon size={22} />
+            </TouchableOpacity>
+          }
           centerComponent={{
             text: 'Select Exams',
             style: styles.headerText,
