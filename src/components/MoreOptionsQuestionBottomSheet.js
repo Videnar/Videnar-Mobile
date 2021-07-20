@@ -113,7 +113,7 @@ const MoreOptionsQuestionBottomSheet = ({
   };
 
   const reportSelectedQuestion = async () => {
-    if (noOfReports > 5) {
+    if (noOfReports > 10) {
       try {
         await firestore().collection('questions').doc(questionId).delete();
         Toast.show({

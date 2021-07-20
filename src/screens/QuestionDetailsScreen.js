@@ -20,6 +20,7 @@ import DotsLottie from '../components/UI/DotsLottie';
 import BackArrowIcon from '../utilities/Icons/BackArrowIcon';
 import ShareIcon from '../utilities/Icons/ShareIcon';
 import RemovedQuestion from '../components/RemovedQuestion';
+import { shareQuestion } from '../utilities/functions';
 
 const QuestionDetailsScreen = ({ navigation, route }) => {
   const questionIdfromProps = route.params.questionID;
