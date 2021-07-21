@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
-import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
 import SocialAuth from '../components/SocialAuthComponent';
