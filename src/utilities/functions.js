@@ -15,6 +15,10 @@ export const shareQuestion = (questionId) => {
 
 export const getExamsString = (exams) => {
   let ExamsString = '';
+  if (exams === undefined) {
+    return ExamsString;
+  }
+
   exams.forEach((exam) => {
     if (exam.match('GATE')) {
       exam = 'GATE';

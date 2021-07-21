@@ -11,6 +11,7 @@ import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Spacer from '../components/Spacer';
+import Toast from 'react-native-toast-message';
 
 const SignupScreen = ({ navigation }) => {
   const { setUser, changeScreen } = useContext(Context);
@@ -41,7 +42,21 @@ const SignupScreen = ({ navigation }) => {
           });
       })
       .catch((error) => {
-        console.error(error);
+        if (
+          error.toString() ===
+          'Error: [auth/email-already-in-use] The email address is already in use by another account.'
+        ) {
+          Toast.show({
+            type: 'info',
+            position: 'bottom',
+            text1: 'This email is already in use',
+            text2: 'Try signing up with a diferent email 🙂',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 40,
+            bottomOffset: 40,
+          });
+        }
         crashlytics().log('Error signing up, SignupScreen, SignupScreen');
         crashlytics().recordError(error);
       });

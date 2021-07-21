@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
@@ -12,13 +12,15 @@ import Google from '../utilities/Icons/Google';
 import Facebook from '../utilities/Icons/Facebook';
 import Toast from 'react-native-toast-message';
 
-GoogleSignin.configure({
-  webClientId:
-    '492932528639-62jdb5ukam1udpq12a1v4qnjqlbt11n7.apps.googleusercontent.com',
-});
-
 const SocialAuthComponent = () => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '492932528639-62jdb5ukam1udpq12a1v4qnjqlbt11n7.apps.googleusercontent.com',
+    });
+  }, []);
 
   const getUserData = async () => {
     const {
@@ -105,7 +107,7 @@ const SocialAuthComponent = () => {
       await auth().signInWithCredential(googleCredential);
       getUserData();
     } catch (err) {
-      console.log('Error ---> ' + err.toString());
+      console.log('Error:' + err.toString());
       crashlytics().log(
         'Error while Google SignIn, onGoogleButtonPress, in SocialAuthComponent',
       );

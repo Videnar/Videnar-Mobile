@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "492932528639-1l4gm0vmiih4dnml4neppc64hluimsl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videnar",
+            "certificate_hash": "bbe6132d7aefbb627db9d10d5d61903f54aa8073"
+          }
+        },
+        {
           "client_id": "492932528639-2f0tpvnnuc5kdi3hbsgnao4q03c0ankr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
