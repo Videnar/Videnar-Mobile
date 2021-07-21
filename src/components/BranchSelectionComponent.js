@@ -16,7 +16,7 @@ const BranchSelectionComponent = ({ userPref, oldBranch }) => {
   const [selectText, setSelectText] = useState('Select');
 
   useEffect(() => {
-    setSelectText(oldBranch);
+    oldBranch && setSelectText(oldBranch);
   }, [oldBranch]);
 
   const onPressHandler = (branch) => {

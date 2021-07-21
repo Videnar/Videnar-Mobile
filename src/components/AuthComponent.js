@@ -25,7 +25,6 @@ const AuthForm = ({
   });
 
   const onSubmitForm = () => {
-    console.log('Clicked here');
     let { nameError, emailError, pwdError } = {
       nameError: false,
       emailError: false,

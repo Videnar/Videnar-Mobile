@@ -16,7 +16,7 @@ const EducationSelectionComponent = ({ userPref, education }) => {
   const [selectText, setSelectText] = useState('Select');
 
   useEffect(() => {
-    setSelectText(education);
+    education && setSelectText(education);
   }, [education]);
 
   const onPressHandler = (edu) => {

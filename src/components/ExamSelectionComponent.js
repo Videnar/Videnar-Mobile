@@ -31,8 +31,10 @@ const ExamSelectionComponent = ({
   const [selectText, setSelectText] = useState('Select');
 
   useEffect(() => {
-    const examsString = getExamsString(oldExams);
-    setSelectText(examsString);
+    if (oldExams) {
+      const examsString = getExamsString(oldExams);
+      setSelectText(examsString);
+    }
   }, [oldExams]);
 
   const allExams = educations.filter((item) => item.level === education)[0]

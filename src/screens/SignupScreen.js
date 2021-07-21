@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
+import Toast from 'react-native-toast-message';
 import { Context } from '../contexts';
 import AuthComponent from '../components/AuthComponent';
 import NavLink from '../components/NavLink';
@@ -11,10 +12,8 @@ import { DEEP_GREEN } from '../assets/colors/colors';
 import Logo from '../utilities/Icons/Logo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Spacer from '../components/Spacer';
-import Toast from 'react-native-toast-message';
 
 const SignupScreen = ({ navigation }) => {
-  const { setUser, changeScreen } = useContext(Context);
   const signUp = (emailID, password, name) => {
     auth()
       .createUserWithEmailAndPassword(emailID, password)
@@ -26,14 +25,19 @@ const SignupScreen = ({ navigation }) => {
           })
           .then(() => {
             user = auth().currentUser;
-            const { displayName, email, photoURL, uid } = user;
-            setUser({
-              userDisplayName: displayName,
-              email,
-              photoURL,
-              userID: uid,
+            navigation.navigate('Signin');
+            user.sendEmailVerification();
+            Toast.show({
+              type: 'info',
+              position: 'bottom',
+              text1: 'Verify your email and then Sign in',
+              text2:
+                'We have sent a verification mail to your email address 🙂',
+              visibilityTime: 20000,
+              autoHide: true,
+              topOffset: 40,
+              bottomOffset: 40,
             });
-            changeScreen('UserPref', 'Auth');
           })
           .catch((error) => {
             console.log('Error setting user', error);
