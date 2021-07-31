@@ -16,11 +16,17 @@ import { Reducer, initialState } from './src/contexts/Reducer';
 import messaging from '@react-native-firebase/messaging';
 import InAppUpdate from './src/utilities/InAppUpdate';
 import { Alert } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+
+  GoogleSignin.configure({
+    webClientId:
+      '492932528639-62jdb5ukam1udpq12a1v4qnjqlbt11n7.apps.googleusercontent.com',
+  });
 
   useEffect(() => {
     return () => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
@@ -14,13 +14,6 @@ import Toast from 'react-native-toast-message';
 
 const SocialAuthComponent = () => {
   const { changeScreen, setUser, updateUserPreferences } = useContext(Context);
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '492932528639-62jdb5ukam1udpq12a1v4qnjqlbt11n7.apps.googleusercontent.com',
-    });
-  }, []);
 
   const getUserData = async () => {
     const {
@@ -116,7 +109,7 @@ const SocialAuthComponent = () => {
         type: 'error',
         position: 'bottom',
         text1: 'Error while Google SignIn',
-        text2: err.toString(),
+        text2: err.code.toString(),
         visibilityTime: 3000,
         autoHide: true,
         topOffset: 40,
