@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "492932528639-1l4gm0vmiih4dnml4neppc64hluimsl4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.videnar",
-            "certificate_hash": "bbe6132d7aefbb627db9d10d5d61903f54aa8073"
-          }
-        },
-        {
           "client_id": "492932528639-2f0tpvnnuc5kdi3hbsgnao4q03c0ankr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,7 +22,15 @@
           }
         },
         {
-          "client_id": "492932528639-ql1i95fmilq5m00jme4ga34b8fjvi2ig.apps.googleusercontent.com",
+          "client_id": "492932528639-hd2vcmelrtboajig9862kgmq8nc787od.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videnar",
+            "certificate_hash": "2da6d56208bcb766180dfc9fffeed4cebc2aa901"
+          }
+        },
+        {
+          "client_id": "492932528639-s4l1m9m43vvlc5jlm5u71m6lk5htgiee.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.videnar",
